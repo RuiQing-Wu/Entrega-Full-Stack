@@ -1,15 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import App from './App';
+import { RouterProvider } from 'react-router-dom';
+import router from './router/Router';
 import reportWebVitals from './reportWebVitals';
-
-const router = createBrowserRouter([
-  { name: 'Home', path: '/', element: <App /> },
-  { name: 'About', path: '/about', element: <div>About me</div> },
-  { name: 'Login', path: '/login', element: <div>Login Page</div> },
-]);
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
