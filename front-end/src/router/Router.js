@@ -9,6 +9,7 @@ import {
 } from '../pages/index';
 import App from '../App';
 import VerCausaSolidaria from '../pages/Causa/VerCausaSolidaria';
+import AuthRoute from '../component/AuthRoute';
 
 const router = createBrowserRouter([
   {
@@ -19,12 +20,36 @@ const router = createBrowserRouter([
       { index: true, name: 'Home', element: <Home /> },
       { name: 'Login', path: '/login', element: <Login /> },
       { name: 'Registrar', path: '/registrar', element: <Registro /> },
-      { name: 'Comunidad', path: '/comunidad', element: <Comunidad /> },
-      { name: 'Causa', path: '/causa', element: <Causa /> },
-      { name: 'Accion', path: '/accion', element: <Accion /> },
+      {
+        name: 'Comunidad',
+        path: '/comunidad',
+        element: (
+          <AuthRoute>
+            <Comunidad />
+          </AuthRoute>
+        ),
+      },
+      {
+        name: 'Causa',
+        path: '/causa',
+        element: (
+          <AuthRoute>
+            <Causa />
+          </AuthRoute>
+        ),
+      },
+      {
+        name: 'Accion',
+        path: '/accion',
+        element: (
+          <AuthRoute>
+            <Accion />
+          </AuthRoute>
+        ),
+      },
       {
         name: 'VerCausaSolidaria',
-        path: '/verCausa',
+        path: '/vercausa',
         element: <VerCausaSolidaria />,
       },
       { name: 'Error', path: '*', element: <Error /> },

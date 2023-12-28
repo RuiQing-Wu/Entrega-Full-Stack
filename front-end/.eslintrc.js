@@ -30,12 +30,13 @@ module.exports = {
   plugins: ['react'],
   rules: {
     // quotes: ["warn", "single"],
-    'no-unused-vars': 'warn',
+    'no-unused-vars': 'off',
     'prettier/prettier': [
       'warn',
       {
         endOfLine: 'auto',
       },
     ],
+    'no-param-reassign': 'off',
   },
 };

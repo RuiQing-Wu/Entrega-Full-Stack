@@ -80,7 +80,7 @@ export default function Causa() {
   }
 
   return (
-    <div id="PaginaCausaSolidaria" class="container">
+    <div id="PaginaCausaSolidaria" className="container">
       <h1>Causa solidaria</h1>
       <form className="needs-validation" noValidate onSubmit={CausaSolidaria}>
         <div className="form-group mb-3">
@@ -89,7 +89,7 @@ export default function Causa() {
           </label>
           <input
             type="text"
-            name="titulo"
+            id="titulo"
             className={`form-control ${tituloError ? 'is-invalid' : ''} ${
               titulo && !tituloError ? 'is-valid' : ''
             }`}
@@ -100,8 +100,8 @@ export default function Causa() {
           />
           <div className="invalid-feedback">{tituloError}</div>
         </div>
-        <div class="form-group mb-3">
-          <label for="descripcion" class="form-label">
+        <div className="form-group mb-3">
+          <label htmlFor="descripcion" className="form-label">
             Descripción
           </label>
           <textarea
@@ -116,8 +116,8 @@ export default function Causa() {
           ></textarea>
           <div className="invalid-feedback">{descripcionError}</div>
         </div>
-        <div class="form-group mb-3">
-          <label for="fechaInicio" class="form-label">
+        <div className="form-group mb-3">
+          <label htmlFor="fechaInicio" className="form-label">
             Fecha de inicio
           </label>
           <input
@@ -130,8 +130,8 @@ export default function Causa() {
           />
           <div className="invalid-feedback">{fechaInicioError}</div>
         </div>
-        <div class="form-group mb-3">
-          <label for="fechaFin" class="form-label">
+        <div className="form-group mb-3">
+          <label htmlFor="fechaFin" className="form-label">
             Fecha de fin
           </label>
           <input
@@ -144,7 +144,7 @@ export default function Causa() {
           />
           <div className="invalid-feedback">{fechaFinError}</div>
         </div>
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" className="btn btn-primary">
           Submit
         </button>
       </form>
