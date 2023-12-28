@@ -8,6 +8,7 @@ import {
   Accion,
 } from '../pages/index';
 import App from '../App';
+import VerCausaSolidaria from '../pages/Causa/VerCausaSolidaria';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ const router = createBrowserRouter([
       { name: 'Comunidad', path: '/comunidad', element: <Comunidad /> },
       { name: 'Causa', path: '/causa', element: <Causa /> },
       { name: 'Accion', path: '/accion', element: <Accion /> },
+      {
+        name: 'VerCausaSolidaria',
+        path: '/verCausa',
+        element: <VerCausaSolidaria />,
+      },
       { name: 'Error', path: '*', element: <Error /> },
     ],
   },

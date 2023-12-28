@@ -31,5 +31,11 @@ module.exports = {
   rules: {
     // quotes: ["warn", "single"],
     'no-unused-vars': 'warn',
+    'prettier/prettier': [
+      'warn',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
 };
