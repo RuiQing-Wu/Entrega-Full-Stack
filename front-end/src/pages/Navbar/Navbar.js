@@ -18,6 +18,27 @@ export default function Navbar() {
             </Link>
           </li>
         </div>
+        <div className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <Link to={'/comunidad'} className="nav-link">
+              Comunidad
+            </Link>
+          </li>
+        </div>
+        <div className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <Link to={'/causa'} className="nav-link">
+              Causa Solidaria
+            </Link>
+          </li>
+        </div>
+        <div className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <Link to={'/accion'} className="nav-link">
+              Accion Solidaria
+            </Link>
+          </li>
+        </div>
         {currentUser ? (
           <div className="navbar-nav ml-auto">
             <li className="nav-item">

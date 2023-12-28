@@ -1,5 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Home, Login, Registro } from '../pages/index';
+import {
+  Home,
+  Login,
+  Registro,
+  Comunidad,
+  Causa,
+  Accion,
+} from '../pages/index';
 import App from '../App';
 
 const router = createBrowserRouter([
@@ -11,6 +18,9 @@ const router = createBrowserRouter([
       { index: true, name: 'Home', element: <Home /> },
       { name: 'Login', path: '/login', element: <Login /> },
       { name: 'Registrar', path: '/registrar', element: <Registro /> },
+      { name: 'Comunidad', path: '/comunidad', element: <Comunidad /> },
+      { name: 'Causa', path: '/causa', element: <Causa /> },
+      { name: 'Accion', path: '/accion', element: <Accion /> },
       { name: 'Error', path: '*', element: <Error /> },
     ],
   },
