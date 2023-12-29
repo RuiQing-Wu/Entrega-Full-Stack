@@ -1,0 +1,22 @@
+#cardHome{
+    display: flex;
+    flex-direction: initial;
+    padding: 5px;
+    width: 60%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+#cardHome img{
+    width: 20%;
+    border: 2px solid #000;
+    margin: 5px;
+}
+
+#cardHome .card-title{
+    text-align: left;
+}
+
+#cardHome button{
+    display: flex;
+}

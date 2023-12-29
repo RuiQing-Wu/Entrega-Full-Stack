@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import './CausaSolidaria.css';
+import ErrorMessage from '../Error/MensajeError';
 
 export default function Causa() {
   // Crear un hook para navegar entre páginas
@@ -98,7 +99,9 @@ export default function Causa() {
             value={titulo}
             required
           />
-          <div className="invalid-feedback">{tituloError}</div>
+          <div className="invalid-feedback">
+            {<ErrorMessage message={tituloError} />}
+          </div>
         </div>
         <div className="form-group mb-3">
           <label htmlFor="descripcion" className="form-label">
@@ -114,7 +117,9 @@ export default function Causa() {
             value={descripcion}
             required
           ></textarea>
-          <div className="invalid-feedback">{descripcionError}</div>
+          <div className="invalid-feedback">
+            {<ErrorMessage message={descripcionError} />}
+          </div>
         </div>
         <div className="form-group mb-3">
           <label htmlFor="fechaInicio" className="form-label">
@@ -128,7 +133,9 @@ export default function Causa() {
             id="fechaInicio"
             onChange={handleFechaInicioInput}
           />
-          <div className="invalid-feedback">{fechaInicioError}</div>
+          <div className="invalid-feedback">
+            {<ErrorMessage message={fechaInicioError} />}
+          </div>
         </div>
         <div className="form-group mb-3">
           <label htmlFor="fechaFin" className="form-label">
@@ -142,7 +149,9 @@ export default function Causa() {
             id="fechaFin"
             onChange={handleFechaFinInput}
           />
-          <div className="invalid-feedback">{fechaFinError}</div>
+          <div className="invalid-feedback">
+            {<ErrorMessage message={fechaFinError} />}
+          </div>
         </div>
         <button type="submit" className="btn btn-primary">
           Submit
