@@ -4,7 +4,7 @@ import CardComunidad from '../../component/CardComunidad';
 import NuevoContacto from '../../component/NuevoContacto';
 import './Home.css';
 
-export default function Home({ comunidades = [], addToCart }) {
+export default function Home({ comunidades = [] }) {
   // Estado local para almacenar las comunidades
   const [comunidadesLocales, setComunidadesLocales] = useState(comunidades);
 
@@ -20,6 +20,11 @@ export default function Home({ comunidades = [], addToCart }) {
     setComunidadesLocales([...comunidadesLocales, nuevaComunidad]);
   };
 
+  function likeCausa(id) {
+    // eslint-disable-next-line no-console
+    console.log(id);
+  }
+
   return (
     <div className="container mt-4">
       <div className="row">
@@ -29,7 +34,7 @@ export default function Home({ comunidades = [], addToCart }) {
             <CardComunidad
               imageUrl={comunidad.imageUrl}
               title={comunidad.title}
-              onAddToCartClicked={() => addToCart(comunidad.id)}
+              onAddToCartClicked={() => likeCausa(comunidad.id)}
             />
           </div>
         ))}
