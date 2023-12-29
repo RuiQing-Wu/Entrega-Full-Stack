@@ -51,6 +51,9 @@ export default function Navbar() {
             <NavLink to={'/comunidad'} className="nav-link">
               Comunidad
             </NavLink>
+            <NavLink to={'/listaComunidades'} className="nav-link">
+              Buscar comunidades
+            </NavLink>
             <NavLink to={'/causa'} className="nav-link">
               Causa Solidaria
             </NavLink>
