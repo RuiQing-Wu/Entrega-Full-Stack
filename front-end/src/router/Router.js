@@ -5,9 +5,11 @@ import {
   Registro,
   Comunidad,
   MostrarComunidad,
+  BuscarComunidades,
   Causa,
   Accion,
   Profile,
+  MostrarInformacionPerfil,
   Error,
   MostrarCausa,
 } from '../pages/index';
@@ -33,6 +35,15 @@ const router = createBrowserRouter([
         ),
       },
       {
+        name: 'ExternalProfile',
+        path: '/Profile/:nombrePerfil',
+        element: (
+          <AuthRoute>
+            <MostrarInformacionPerfil />,
+          </AuthRoute>
+        ),
+      },
+      {
         name: 'Comunidad',
         path: '/comunidad',
         element: (
@@ -47,6 +58,15 @@ const router = createBrowserRouter([
         element: (
           <AuthRoute>
             <MostrarComunidad />,
+          </AuthRoute>
+        ),
+      },
+      {
+        name: 'ListaComunidades',
+        path: '/listaComunidades',
+        element: (
+          <AuthRoute>
+            <BuscarComunidades />,
           </AuthRoute>
         ),
       },

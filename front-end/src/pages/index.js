@@ -7,6 +7,8 @@ import Causa from './Causa/CausaSolidaria';
 import Accion from './Accion/AccionSolidaria';
 import MostrarCausa from './Causa/VerCausaSolidaria';
 import MostrarComunidad from './Comunidad/VerComunidad';
+import BuscarComunidades from './Comunidad/ListaComunidades';
+import MostrarInformacionPerfil from './Profile/ExternalProfile';
 import Profile from './Profile/Profile';
 
 export {
@@ -16,6 +18,8 @@ export {
   Profile,
   Comunidad,
   MostrarComunidad,
+  BuscarComunidades,
+  MostrarInformacionPerfil,
   Causa,
   Accion,
   MostrarCausa,

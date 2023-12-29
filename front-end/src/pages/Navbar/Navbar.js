@@ -45,11 +45,14 @@ export default function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav mr-auto">
-            <NavLink exact to={'/'} className="nav-link">
+            <NavLink to={'/'} className="nav-link">
               Home
             </NavLink>
             <NavLink to={'/comunidad'} className="nav-link">
               Comunidad
+            </NavLink>
+            <NavLink to={'/listaComunidades'} className="nav-link">
+              Buscar comunidades
             </NavLink>
             <NavLink to={'/causa'} className="nav-link">
               Causa Solidaria

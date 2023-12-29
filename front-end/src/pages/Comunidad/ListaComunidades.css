@@ -1,4 +1,4 @@
-#PaginaComunidad{
+#PaginaListaComunidades{
     height: 100%;
     width: 100%;
     padding: 0;
@@ -8,7 +8,7 @@
     margin: auto;
   }
   
-  #PaginaComunidad form{
+  #PaginaListaComunidades form{
     background-color: #f3f2f2;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -21,12 +21,12 @@
     
   }
   
-  #PaginaComunidad form .form-label{
+  #PaginaListaComunidades form .form-label{
     font-weight: bold;
     color: #333;
   }
   
-  #PaginaComunidad form input{
+  #PaginaListaComunidades form input{
     width: 500px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -34,7 +34,7 @@
     padding-left: 10px;
   }
   
-  #PaginaComunidad form textarea{
+  #PaginaListaComunidades form textarea{
     width: 500px;
     border: 1px solid #ccc;
     border-radius: 5px;
