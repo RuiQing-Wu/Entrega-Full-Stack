@@ -16,13 +16,11 @@ export default function Login() {
 
   function handleUsernameInput(event) {
     setUsername(event.target.value);
-    // Limpiar el error al editar el campo
     setUsernameError('');
   }
 
   function handlePasswordInput(event) {
     setPassword(event.target.value);
-    // Limpiar el error al editar el campo
     setPasswordError('');
   }
 
