@@ -4,7 +4,11 @@ import { useState } from 'react';
 import Login from '../Login/Login';
 
 export default function Navbar() {
+  // const [currentUser, setCurrentUser] = useState({
+  //  username: 'isaac',
+  // });
   const [currentUser, setCurrentUser] = useState(undefined);
+
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">

@@ -26,7 +26,7 @@ export default function Login() {
 
   async function loginUser(event) {
     // eslint-disable-next-line no-console
-    console.log('Login');
+    // console.log('Login');
     event.preventDefault();
 
     // Resetear los errores
@@ -44,10 +44,21 @@ export default function Login() {
       return;
     }
 
-    // TODO Llamar a la API para iniciar sesión
-    // const response = await loginUser(username, password);
-    dispatch(setTokenRedux('MiToken'));
-    // TODO PROCESAR LA RESPUESTA DE LA API
+    try {
+      // TODO: Llamar a la API para iniciar sesión
+      // const response = await loginUser(username, password);
+
+      // TODO: Procesar la respuesta de la API si es necesario
+
+      // Simulación de éxito
+      dispatch(setTokenRedux('MiToken'));
+
+      // Redirigir al usuario a la página de inicio
+      navigate('/');
+    } catch (error) {
+      // Manejar errores de la API aquí
+      console.error('Error en la solicitud de inicio de sesión:', error);
+    }
 
     // Navegar a la página de inicio
     navigate('/');
