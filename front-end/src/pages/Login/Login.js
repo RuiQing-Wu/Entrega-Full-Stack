@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import './Login.css';
 import { setTokenRedux } from '../../store/module/user';
+import ErrorMessage from '../../component/MensajeError';
 
 export default function Login() {
   // Crear un hook para navegar entre páginas
@@ -15,10 +16,14 @@ export default function Login() {
 
   function handleUsernameInput(event) {
     setUsername(event.target.value);
+    // Limpiar el error al editar el campo
+    setUsernameError('');
   }
 
   function handlePasswordInput(event) {
     setPassword(event.target.value);
+    // Limpiar el error al editar el campo
+    setPasswordError('');
   }
 
   async function loginUser(event) {
@@ -51,7 +56,7 @@ export default function Login() {
   }
 
   return (
-    <div className="container">
+    <div id="PaginaLogin" className="container">
       <h1>Login</h1>
       <form onSubmit={loginUser}>
         <div className="mb-3">
@@ -60,13 +65,17 @@ export default function Login() {
           </label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${usernameError ? 'is-invalid' : ''} ${
+              username && !usernameError ? 'is-valid' : ''
+            }`}
             id="username"
             placeholder="Username"
             autoComplete="off"
             onChange={handleUsernameInput}
           />
-          <label>{usernameError}</label>
+          <div className="invalid-feedback">
+            {<ErrorMessage message={usernameError} />}
+          </div>
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -74,12 +83,16 @@ export default function Login() {
           </label>
           <input
             type="password"
-            className="form-control"
+            className={`form-control ${passwordError ? 'is-invalid' : ''} ${
+              password && !passwordError ? 'is-valid' : ''
+            }`}
             id="password"
             placeholder="Password"
             onChange={handlePasswordInput}
           />
-          <label>{passwordError}</label>
+          <div className="invalid-feedback">
+            {<ErrorMessage message={passwordError} />}
+          </div>
         </div>
         <button type="submit" className="btn btn-primary">
           Submit

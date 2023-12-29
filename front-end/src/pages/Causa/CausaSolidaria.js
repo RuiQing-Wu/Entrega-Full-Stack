@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import './CausaSolidaria.css';
-import ErrorMessage from '../Error/MensajeError';
+import ErrorMessage from '../../component/MensajeError';
 
 export default function Causa() {
-  // Crear un hook para navegar entre páginas
   const navigate = useNavigate();
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -18,32 +17,27 @@ export default function Causa() {
 
   function handleTituloInput(event) {
     setTitulo(event.target.value);
+    setTituloError('');
   }
 
   function handleDescripcionInput(event) {
     setDescripcion(event.target.value);
+    setDescripcionError('');
   }
 
   function handleFechaInicioInput(event) {
     setFechaInicio(event.target.value);
+    setFechaInicioError('');
   }
 
   function handleFechaFinInput(event) {
     setFechaFin(event.target.value);
+    setFechaFinError('');
   }
 
   async function CausaSolidaria(event) {
-    // eslint-disable-next-line no-console
-    console.log('Causa');
     event.preventDefault();
 
-    // Resetear los errores
-    setTituloError('');
-    setDescripcionError('');
-    setFechaInicioError('');
-    setFechaFinError('');
-
-    // Validar que el usuario y la contraseña no estén vacíos
     if (titulo === '') {
       setTituloError('El titulo no puede estar vacío');
       return;
@@ -64,12 +58,6 @@ export default function Causa() {
       return;
     }
 
-    // TODO Llamar a la API para iniciar sesión
-    // const response = await loginUser(username, password);
-
-    // TODO PROCESAR LA RESPUESTA DE LA API
-
-    // Navegar a la página de inicio
     navigate('/verCausa', {
       state: {
         titulo,

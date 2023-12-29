@@ -41,19 +41,3 @@
   margin: 5px;
   padding-left: 10px;
 }
-
-#cardCausaSolidaria{
-  width: 350px;
-  margin: auto;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #f3f2f2;
-}
-
