@@ -6,6 +6,8 @@ import {
   Comunidad,
   Causa,
   Accion,
+  Profile,
+  Error,
 } from '../pages/index';
 import App from '../App';
 import VerCausaSolidaria from '../pages/Causa/VerCausaSolidaria';
@@ -20,6 +22,7 @@ const router = createBrowserRouter([
       { index: true, name: 'Home', element: <Home /> },
       { name: 'Login', path: '/login', element: <Login /> },
       { name: 'Registrar', path: '/registrar', element: <Registro /> },
+      { name: 'Profile', path: '/profile', element: <Profile /> },
       {
         name: 'Comunidad',
         path: '/comunidad',

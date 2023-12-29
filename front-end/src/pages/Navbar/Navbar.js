@@ -1,13 +1,35 @@
 import './Navbar.css';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserInfo } from '../../store/module/user';
 import Login from '../Login/Login';
 
 export default function Navbar() {
+  const info = useSelector((state) => state.user.userInfo);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const dispatch = useDispatch();
+
+  function logOut() {
+    // eslint-disable-next-line no-console
+    console.log('LogOut');
+    setCurrentUser(undefined);
+    dispatch(setUserInfo({}));
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(info);
+  if (info.username !== '' && currentUser === undefined) {
+    setCurrentUser(info.username);
+    // eslint-disable-next-line no-console
+    console.log(info.username);
+    // eslint-disable-next-line no-console
+    console.log('Hello', currentUser);
+  }
+
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
+      <nav className="navbar navbar-expand bg-body-tertiary">
         <Link to={'/'} className="navbar-brand">
           SolidarianID
         </Link>
@@ -42,12 +64,12 @@ export default function Navbar() {
         {currentUser ? (
           <div className="navbar-nav ml-auto">
             <li className="nav-item">
-              <Link to={'/profile'} className="nav-link">
-                {currentUser.username}
-              </Link>
+              <a href="/profile" className="nav-link">
+                {info.username}
+              </a>
             </li>
             <li className="nav-item">
-              <a href="/login" className="nav-link">
+              <a href="/login" className="nav-link" onClick={logOut}>
                 LogOut
               </a>
             </li>

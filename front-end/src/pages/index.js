@@ -6,11 +6,13 @@ import Comunidad from './Comunidad/Comunidad';
 import Causa from './Causa/CausaSolidaria';
 import Accion from './Accion/AccionSolidaria';
 import VerCauSolidaria from './Causa/VerCausaSolidaria';
+import Profile from './Profile/Profile';
 
 export {
   Home,
   Login,
   Registro,
+  Profile,
   Comunidad,
   Causa,
   Accion,

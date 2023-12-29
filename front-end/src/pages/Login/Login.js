@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import './Login.css';
-import { setTokenRedux } from '../../store/module/user';
+import { setTokenRedux, setUserInfo } from '../../store/module/user';
 
 export default function Login() {
   // Crear un hook para navegar entre páginas
@@ -44,6 +44,7 @@ export default function Login() {
     // TODO Llamar a la API para iniciar sesión
     // const response = await loginUser(username, password);
     dispatch(setTokenRedux('MiToken'));
+    dispatch(setUserInfo({ username }));
     // TODO PROCESAR LA RESPUESTA DE LA API
 
     // Navegar a la página de inicio
