@@ -1,10 +1,14 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CardComunidad from '../../component/CardComunidad';
 
 export default function MostrarComunidad() {
   const location = useLocation();
   const comunidad = location.state;
+
+  const onApoyarComunidadClicked = () => {
+    // TODO: Implementar apoyar comunidad
+  };
 
   if (!comunidad) {
     return <div>No hay datos de la comunidad</div>;
@@ -16,6 +20,7 @@ export default function MostrarComunidad() {
         nombre={comunidad.nombre}
         descripcion={comunidad.descripcion}
         fechaInicio={comunidad.fechaInicio}
+        onApoyarComunidadClicked={onApoyarComunidadClicked}
       />
     </div>
   );
