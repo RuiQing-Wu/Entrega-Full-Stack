@@ -1,5 +1,5 @@
 import './Navbar.css';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserInfo } from '../../store/module/user';
@@ -28,66 +28,58 @@ export default function Navbar() {
 
   return (
     <div>
-      <nav className="navbar navbar-expand bg-body-tertiary">
+      <nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary">
         <Link to={'/'} className="navbar-brand">
           SolidarianID
         </Link>
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={'/'} className="nav-link">
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="true"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <div className="navbar-nav mr-auto">
+            <NavLink exact to={'/'} className="nav-link">
               Home
-            </Link>
-          </li>
-        </div>
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={'/comunidad'} className="nav-link">
+            </NavLink>
+            <NavLink to={'/comunidad'} className="nav-link">
               Comunidad
-            </Link>
-          </li>
-        </div>
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={'/causa'} className="nav-link">
+            </NavLink>
+            <NavLink to={'/causa'} className="nav-link">
               Causa Solidaria
-            </Link>
-          </li>
-        </div>
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={'/accion'} className="nav-link">
+            </NavLink>
+            <NavLink to={'/accion'} className="nav-link">
               Accion Solidaria
-            </Link>
-          </li>
+            </NavLink>
+          </div>
+          <div className="navbar-nav ml-auto">
+            {currentUser ? (
+              <>
+                <NavLink to={'/profile'} className="nav-link">
+                  {info.username}
+                </NavLink>
+                <a href="/login" className="nav-link" onClick={logOut}>
+                  LogOut
+                </a>
+              </>
+            ) : (
+              <>
+                <NavLink to={'/login'} className="nav-link">
+                  Login
+                </NavLink>
+                <NavLink to={'/registrar'} className="nav-link">
+                  Sign Up
+                </NavLink>
+              </>
+            )}
+          </div>
         </div>
-        {currentUser ? (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <a href="/profile" className="nav-link">
-                {info.username}
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
-                LogOut
-              </a>
-            </li>
-          </div>
-        ) : (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={'/login'} className="nav-link">
-                Login
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={'/registrar'} className="nav-link">
-                Sign Up
-              </Link>
-            </li>
-          </div>
-        )}
       </nav>
     </div>
   );
