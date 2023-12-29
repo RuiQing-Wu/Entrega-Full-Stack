@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
-import './CausaSolidaria.css';
+import './VerCausaSolidaria.css';
 
-const VerCausaSolidaria = () => {
+export default function VerCausaSolidaria() {
   const location = useLocation();
   const titulo = location.state && location.state.titulo;
   const descripcion = location.state && location.state.descripcion;
@@ -21,6 +21,4 @@ const VerCausaSolidaria = () => {
       </div>
     </div>
   );
-};
-
-export default VerCausaSolidaria;
+}

@@ -47,36 +47,37 @@ export default function Registro() {
   }
 
   return (
-    <div class="container">
-      <h1>Registrar</h1>
+    <div className="container">
+      <h1>registrar</h1>
       <form onSubmit={registerUser}>
-        <div class="mb-3">
-          <label for="username" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="username" className="form-label">
             User
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="username"
             placeholder="Username"
+            autoComplete="off"
             onChange={handleUsernameInput}
           />
           <label>{usernameError}</label>
         </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
             Password
           </label>
           <input
             type="password"
-            class="form-control"
+            className="form-control"
             id="password"
             placeholder="Password"
             onChange={handlePasswordInput}
           />
           <label>{passwordError}</label>
         </div>
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" className="btn btn-primary">
           Submit
         </button>
       </form>

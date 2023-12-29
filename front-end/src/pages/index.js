@@ -5,5 +5,15 @@ import Registro from './Registro/Registro';
 import Comunidad from './Comunidad/Comunidad';
 import Causa from './Causa/CausaSolidaria';
 import Accion from './Accion/AccionSolidaria';
+import VerCauSolidaria from './Causa/VerCausaSolidaria';
 
-export { Home, Login, Registro, Comunidad, Causa, Accion, Error };
+export {
+  Home,
+  Login,
+  Registro,
+  Comunidad,
+  Causa,
+  Accion,
+  VerCauSolidaria,
+  Error,
+};
