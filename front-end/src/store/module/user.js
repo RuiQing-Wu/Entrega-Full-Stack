@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getToken } from '../../utils/utils';
+import { getToken, setToken, removeToken } from '../../utils/utils';
 
 const userStore = createSlice({
   name: 'user',
@@ -9,16 +9,27 @@ const userStore = createSlice({
   },
   reducers: {
     // Funciones que modifican el estado
-    setToken(state, action) {
+    setTokenRedux(state, action) {
       state.token = action.payload;
+
+      // Guardar el token en localStorage
+      setToken(action.payload);
+    },
+
+    removeTokenRedux(state) {
+      state.token = '';
+
+      // Eliminar el token de localStorage
+      removeToken();
     },
   },
 });
 
-const { setToken } = userStore.actions;
+// Cada case reducer funtion have his own Action creators
+const { setTokenRedux, removeTokenRedux } = userStore.actions;
 
 const userReducer = userStore.reducer;
 
-export { setToken };
+export { setTokenRedux, removeTokenRedux };
 
 export default userReducer;
