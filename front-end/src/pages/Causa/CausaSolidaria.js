@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import './CausaSolidaria.css';
+import ErrorMessage from '../../component/MensajeError';
 
 export default function Causa() {
-  // Crear un hook para navegar entre páginas
   const navigate = useNavigate();
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -17,32 +17,27 @@ export default function Causa() {
 
   function handleTituloInput(event) {
     setTitulo(event.target.value);
+    setTituloError('');
   }
 
   function handleDescripcionInput(event) {
     setDescripcion(event.target.value);
+    setDescripcionError('');
   }
 
   function handleFechaInicioInput(event) {
     setFechaInicio(event.target.value);
+    setFechaInicioError('');
   }
 
   function handleFechaFinInput(event) {
     setFechaFin(event.target.value);
+    setFechaFinError('');
   }
 
   async function CausaSolidaria(event) {
-    // eslint-disable-next-line no-console
-    console.log('Causa');
     event.preventDefault();
 
-    // Resetear los errores
-    setTituloError('');
-    setDescripcionError('');
-    setFechaInicioError('');
-    setFechaFinError('');
-
-    // Validar que el usuario y la contraseña no estén vacíos
     if (titulo === '') {
       setTituloError('El titulo no puede estar vacío');
       return;
@@ -63,12 +58,6 @@ export default function Causa() {
       return;
     }
 
-    // TODO Llamar a la API para iniciar sesión
-    // const response = await loginUser(username, password);
-
-    // TODO PROCESAR LA RESPUESTA DE LA API
-
-    // Navegar a la página de inicio
     navigate('/verCausa', {
       state: {
         titulo,
@@ -98,7 +87,9 @@ export default function Causa() {
             value={titulo}
             required
           />
-          <div className="invalid-feedback">{tituloError}</div>
+          <div className="invalid-feedback">
+            {<ErrorMessage message={tituloError} />}
+          </div>
         </div>
         <div className="form-group mb-3">
           <label htmlFor="descripcion" className="form-label">
@@ -114,7 +105,9 @@ export default function Causa() {
             value={descripcion}
             required
           ></textarea>
-          <div className="invalid-feedback">{descripcionError}</div>
+          <div className="invalid-feedback">
+            {<ErrorMessage message={descripcionError} />}
+          </div>
         </div>
         <div className="form-group mb-3">
           <label htmlFor="fechaInicio" className="form-label">
@@ -128,7 +121,9 @@ export default function Causa() {
             id="fechaInicio"
             onChange={handleFechaInicioInput}
           />
-          <div className="invalid-feedback">{fechaInicioError}</div>
+          <div className="invalid-feedback">
+            {<ErrorMessage message={fechaInicioError} />}
+          </div>
         </div>
         <div className="form-group mb-3">
           <label htmlFor="fechaFin" className="form-label">
@@ -142,7 +137,9 @@ export default function Causa() {
             id="fechaFin"
             onChange={handleFechaFinInput}
           />
-          <div className="invalid-feedback">{fechaFinError}</div>
+          <div className="invalid-feedback">
+            {<ErrorMessage message={fechaFinError} />}
+          </div>
         </div>
         <button type="submit" className="btn btn-primary">
           Submit
