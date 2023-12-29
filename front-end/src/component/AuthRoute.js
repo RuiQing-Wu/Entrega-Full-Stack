@@ -5,7 +5,7 @@ import { getToken } from '../utils/utils';
 // Componente para comprueba si tiene permisos para acceder a la ruta
 // Si no tiene permisos, redirige a la página de login
 
-export default function AuthRoute(children) {
+export default function AuthRoute({ children }) {
   const token = getToken();
   // eslint-disable-next-line no-console
   console.log('Here Auth');
