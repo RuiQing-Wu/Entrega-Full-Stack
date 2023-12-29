@@ -69,7 +69,7 @@ export default function Causa() {
   }
 
   return (
-    <div id="PaginaCausaSolidaria" className="container">
+    <div id="PaginaCausaSolidaria" className="container mt-4">
       <h1>Causa solidaria</h1>
       <form className="needs-validation" noValidate onSubmit={CausaSolidaria}>
         <div className="form-group mb-3">

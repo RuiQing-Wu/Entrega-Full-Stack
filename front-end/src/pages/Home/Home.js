@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import CardComunidad from '../../component/CardComunidad';
 import NuevoContacto from '../../component/NuevoContacto';
+import './Home.css';
 
 export default function Home({ comunidades = [], addToCart }) {
   // Estado local para almacenar las comunidades
@@ -20,11 +21,11 @@ export default function Home({ comunidades = [], addToCart }) {
   };
 
   return (
-    <div className="container">
+    <div className="container mt-4">
       <div className="row">
         {/* Muestra las comunidades existentes */}
         {comunidadesLocales.map((comunidad) => (
-          <div key={comunidad.id} className="row-md-4">
+          <div key={comunidad.id}>
             <CardComunidad
               imageUrl={comunidad.imageUrl}
               title={comunidad.title}
@@ -34,7 +35,7 @@ export default function Home({ comunidades = [], addToCart }) {
         ))}
 
         {/* Botón para añadir una comunidad ficticia */}
-        <div className="row-md-4">
+        <div>
           <button
             className="btn btn-success"
             onClick={agregarComunidadFicticia}
@@ -43,7 +44,7 @@ export default function Home({ comunidades = [], addToCart }) {
           </button>
         </div>
 
-        <div className="row-md-4">
+        <div>
           <NuevoContacto />
         </div>
       </div>
