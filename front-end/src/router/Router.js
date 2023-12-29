@@ -4,6 +4,7 @@ import {
   Login,
   Registro,
   Comunidad,
+  MostrarComunidad,
   Causa,
   Accion,
   Profile,
@@ -37,6 +38,15 @@ const router = createBrowserRouter([
         element: (
           <AuthRoute>
             <Comunidad />
+          </AuthRoute>
+        ),
+      },
+      {
+        name: 'VerComunidad',
+        path: '/comunidad/:nombreComunidad',
+        element: (
+          <AuthRoute>
+            <MostrarComunidad />,
           </AuthRoute>
         ),
       },

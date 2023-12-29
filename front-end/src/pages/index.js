@@ -6,6 +6,7 @@ import Comunidad from './Comunidad/Comunidad';
 import Causa from './Causa/CausaSolidaria';
 import Accion from './Accion/AccionSolidaria';
 import MostrarCausa from './Causa/VerCausaSolidaria';
+import MostrarComunidad from './Comunidad/VerComunidad';
 import Profile from './Profile/Profile';
 
 export {
@@ -14,6 +15,7 @@ export {
   Registro,
   Profile,
   Comunidad,
+  MostrarComunidad,
   Causa,
   Accion,
   MostrarCausa,
