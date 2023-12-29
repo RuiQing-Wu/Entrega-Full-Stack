@@ -4,10 +4,10 @@ import { useState } from 'react';
 import Login from '../Login/Login';
 
 export default function Navbar() {
-  // const [currentUser, setCurrentUser] = useState({
-  //  username: 'isaac',
-  // });
-  const [currentUser, setCurrentUser] = useState(undefined);
+  const [currentUser, setCurrentUser] = useState({
+    username: 'isaac',
+  });
+  // const [currentUser, setCurrentUser] = useState(undefined);
 
   return (
     <div>
