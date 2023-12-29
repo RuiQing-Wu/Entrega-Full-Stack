@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserInfo } from '../../store/module/user';
-import Login from '../Login/Login';
 
 export default function Navbar() {
   const info = useSelector((state) => state.user.userInfo);

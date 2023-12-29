@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import CardComunidad from '../../component/CardComunidad';
 import NuevoContacto from '../../component/NuevoContacto';
 
-const ComunidadContainer = ({ comunidades = [], addToCart }) => {
+export default function Home({ comunidades = [], addToCart }) {
   // Estado local para almacenar las comunidades
   const [comunidadesLocales, setComunidadesLocales] = useState(comunidades);
 
@@ -49,6 +49,4 @@ const ComunidadContainer = ({ comunidades = [], addToCart }) => {
       </div>
     </div>
   );
-};
-
-export default ComunidadContainer;
+}

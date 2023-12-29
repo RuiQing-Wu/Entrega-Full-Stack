@@ -5,11 +5,7 @@ import Registro from './Registro/Registro';
 import Comunidad from './Comunidad/Comunidad';
 import Causa from './Causa/CausaSolidaria';
 import Accion from './Accion/AccionSolidaria';
-<<<<<<< HEAD
-import VerCauSolidaria from './Causa/VerCausaSolidaria';
-=======
-import VerCausaSolidaria from './Causa/VerCausaSolidaria';
->>>>>>> 284f58698d7ab82705d0a0ef3d4cea59ae0d88c8
+import MostrarCausa from './Causa/VerCausaSolidaria';
 import Profile from './Profile/Profile';
 
 export {
@@ -20,7 +16,6 @@ export {
   Comunidad,
   Causa,
   Accion,
-  VerCausaSolidaria,
+  MostrarCausa,
   Error,
-  Profile,
 };

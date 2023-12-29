@@ -6,13 +6,9 @@ import {
   Comunidad,
   Causa,
   Accion,
-<<<<<<< HEAD
   Profile,
   Error,
-=======
-  VerCausaSolidaria,
-  Profile,
->>>>>>> 284f58698d7ab82705d0a0ef3d4cea59ae0d88c8
+  MostrarCausa,
 } from '../pages/index';
 import App from '../App';
 import AuthRoute from '../component/AuthRoute';
@@ -57,18 +53,9 @@ const router = createBrowserRouter([
       {
         name: 'VerCausaSolidaria',
         path: '/vercausa',
-        element: <VerCausaSolidaria />,
+        element: <MostrarCausa />,
       },
       { name: 'Error', path: '*', element: <Error /> },
-      {
-        name: 'Profile',
-        path: '/profile',
-        element: (
-          <AuthRoute>
-            <Profile />
-          </AuthRoute>
-        ),
-      },
     ],
   },
   {
