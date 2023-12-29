@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import './Login.css';
 import ErrorMessage from '../../component/MensajeError';
 import { setTokenRedux, setUserInfo } from '../../store/module/user';
+import { login } from '../../services/auth.service';
 
 export default function Login() {
   // Crear un hook para navegar entre páginas
@@ -45,7 +46,11 @@ export default function Login() {
     }
 
     // TODO Llamar a la API para iniciar sesión
-    // const response = await loginUser(username, password);
+
+    const response = await login(username, password);
+    // eslint-disable-next-line no-console
+    console.log(response);
+
     dispatch(setTokenRedux('MiToken'));
     dispatch(setUserInfo({ username }));
     // TODO PROCESAR LA RESPUESTA DE LA API

@@ -1,6 +1,6 @@
-const API_URL = 'http://localhost:3000/auth';
+const API_URL = 'http://localhost:3001/user';
 
-async function loginUser(username, password) {
+async function login(username, password) {
   const response = await fetch(`${API_URL}/login`, {
     method: 'POST',
     headers: {
@@ -14,7 +14,16 @@ async function loginUser(username, password) {
 }
 
 async function registerUser(username, password) {
-  return null;
+  const response = await fetch(`${API_URL}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
+  });
+
+  const data = await response.json();
+  return data;
 }
 
-export { loginUser, registerUser };
+export { login, registerUser };

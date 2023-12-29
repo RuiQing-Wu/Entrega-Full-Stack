@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import TOKEN from '../utils/utils';
 
 export const BASE_URL = 'http://localhost:3000';
 
 export default async function api(url, options) {
   const accessToken = localStorage.getItem(TOKEN);
+  const navigate = useNavigate();
 
   await fetch(BASE_URL + url, {
     ...options,
@@ -16,6 +18,7 @@ export default async function api(url, options) {
     .then((response) => {
       if (response.status === 401) {
         localStorage.removeItem(TOKEN);
+        navigate('/login');
         window.location.href = '/login';
       }
     })
