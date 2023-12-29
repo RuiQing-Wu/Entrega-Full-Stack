@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 
-const MostrarCausa = () => {
+export default function MostrarCausa() {
   const location = useLocation();
   const causa = location.state;
 
@@ -20,6 +20,4 @@ const MostrarCausa = () => {
       />
     </div>
   );
-};
-
-export default MostrarCausa;
+}

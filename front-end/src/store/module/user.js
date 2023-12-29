@@ -6,6 +6,7 @@ const userStore = createSlice({
   initialState: {
     // Datos compartidos entre todos los componentes
     token: getToken() || '',
+    userInfo: { username: '' },
   },
   reducers: {
     // Funciones que modifican el estado
@@ -22,14 +23,18 @@ const userStore = createSlice({
       // Eliminar el token de localStorage
       removeToken();
     },
+
+    setUserInfo(state, action) {
+      state.userInfo = action.payload;
+    },
   },
 });
 
 // Cada case reducer funtion have his own Action creators
-const { setTokenRedux, removeTokenRedux } = userStore.actions;
+const { setTokenRedux, removeTokenRedux, setUserInfo } = userStore.actions;
 
 const userReducer = userStore.reducer;
 
-export { setTokenRedux, removeTokenRedux };
+export { setTokenRedux, removeTokenRedux, setUserInfo };
 
 export default userReducer;

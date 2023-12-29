@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import './Login.css';
-import { setTokenRedux } from '../../store/module/user';
 import ErrorMessage from '../../component/MensajeError';
+import { setTokenRedux, setUserInfo } from '../../store/module/user';
 
 export default function Login() {
   // Crear un hook para navegar entre páginas
@@ -44,21 +44,11 @@ export default function Login() {
       return;
     }
 
-    try {
-      // TODO: Llamar a la API para iniciar sesión
-      // const response = await loginUser(username, password);
-
-      // TODO: Procesar la respuesta de la API si es necesario
-
-      // Simulación de éxito
-      dispatch(setTokenRedux('MiToken'));
-
-      // Redirigir al usuario a la página de inicio
-      navigate('/');
-    } catch (error) {
-      // Manejar errores de la API aquí
-      console.error('Error en la solicitud de inicio de sesión:', error);
-    }
+    // TODO Llamar a la API para iniciar sesión
+    // const response = await loginUser(username, password);
+    dispatch(setTokenRedux('MiToken'));
+    dispatch(setUserInfo({ username }));
+    // TODO PROCESAR LA RESPUESTA DE LA API
 
     // Navegar a la página de inicio
     navigate('/');
