@@ -45,7 +45,7 @@ export default function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav mr-auto">
-            <NavLink exact to={'/'} className="nav-link">
+            <NavLink to={'/'} className="nav-link">
               Home
             </NavLink>
             <NavLink to={'/comunidad'} className="nav-link">

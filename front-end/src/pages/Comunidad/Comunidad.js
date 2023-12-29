@@ -37,19 +37,21 @@ export default function Comunidad() {
     }
 
     if (descripcion === '') {
-      setDescripcionError('La descripción de la comunidad no puede estar vacía');
+      setDescripcionError(
+        'La descripción de la comunidad no puede estar vacía',
+      );
       return;
     }
 
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString();
 
-    console.log("Fecha formateada");
+    console.log('Fecha formateada');
     console.log(formattedDate); // Devuelve un valor
 
     setFechaInicio(formattedDate);
 
-    console.log("Fecha registrada");
+    console.log('Fecha registrada');
     console.log(fechaInicio); // Esto no devuelve nada
 
     // Navegar a la página que contiene los detalles de la nueva comunidad
@@ -63,36 +65,36 @@ export default function Comunidad() {
   }
 
   return (
-    <div class="container">
+    <div className="container">
       <h1>Crear una nueva comunidad</h1>
       <form onSubmit={crearComunidad}>
-        <div class="mb-3">
-          <label for="Nombre" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="Nombre" className="form-label">
             Nombre de la comunidad
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="nombre"
             placeholder="NombreDeComunidad"
             onChange={handleNombreInput}
           />
           <label>{nombreError}</label>
         </div>
-        <div class="mb-3">
-          <label for="descripcion" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="descripcion" className="form-label">
             Descripción breve de la comunidad
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="descripcion"
             placeholder="DescripcionDeComunidad"
             onChange={handleDescripcionInput}
           />
           <label>{descripcionError}</label>
         </div>
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" className="btn btn-primary">
           Crear comunidad
         </button>
       </form>
