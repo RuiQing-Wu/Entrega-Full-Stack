@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,13 +10,25 @@ export default function Menu() {
   const dispatch = useDispatch();
 
   function logOut() {
+    // eslint-disable-next-line no-console
+    console.log('LogOut');
     setCurrentUser(undefined);
     dispatch(setUserInfo({}));
   }
 
-  if (info.username !== '' && currentUser === undefined) {
-    setCurrentUser(info.username);
-  }
+  // eslint-disable-next-line no-console
+  console.log(info);
+  // El useEffect soluciona el error al lanzar el logOut
+  useEffect(() => {
+    // Solo ejecutar una vez al montar el componente
+    if (info.username !== '' && currentUser === undefined) {
+      setCurrentUser(info.username);
+      // eslint-disable-next-line no-console
+      console.log(info.username);
+      // eslint-disable-next-line no-console
+      console.log('Hello', currentUser);
+    }
+  }, [info.username, currentUser]); // Dependencia vacía para que solo se ejecute al montar el componente
 
   return (
     <Navbar bg="light" expand="lg">
@@ -62,9 +74,9 @@ export default function Menu() {
             </>
           )}
           {currentUser && (
-            <Nav.Link href="/login" onClick={logOut}>
+            <NavLink to="/login" className="nav-link" onClick={logOut}>
               LogOut
-            </Nav.Link>
+            </NavLink>
           )}
         </Nav>
       </Navbar.Collapse>
