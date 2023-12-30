@@ -1,44 +1,13 @@
-#PaginaRegistro{
-    height: 100%;
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    margin-top: 20px;
-    margin-bottom: 100px;
-  }
-
-  #PaginaRegistro h1{
-    margin: 15px;
-    text-align: center;
-    color: #333;
-  }
-  
-  #PaginaRegistro form{
-    background-color: #f3f2f2;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    width: 600px;
-    border: 2px solid #ccc;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto;
-    
-  }
+#PaginaRegistro form{
+  width: 50%;
+  background-color: #f3f2f2;
+  border: 2px solid #ccc;
+  margin: auto;
+  padding: 10px;
+  margin-bottom: 150px;
+}
   
   #PaginaRegistro form .form-label{
     font-weight: bold;
     color: #333;
   }
-  
-  #PaginaRegistro form input{
-    width: 500px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin: 5px;
-    padding-left: 10px;
-  }
-  
-  

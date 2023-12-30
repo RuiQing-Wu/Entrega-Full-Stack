@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Form, Button, Col } from 'react-bootstrap';
 import './Login.css';
 import ErrorMessage from '../../component/MensajeError';
 import { setTokenRedux, setUserInfo } from '../../store/module/user';
@@ -60,48 +61,56 @@ export default function Login() {
   }
 
   return (
-    <div id="PaginaLogin" className="container">
+    <div id="PaginaLogin">
       <h1>Login</h1>
-      <form onSubmit={loginUser}>
-        <div className="mb-3">
-          <label htmlFor="username" className="form-label">
-            User
-          </label>
-          <input
-            type="text"
-            className={`form-control ${usernameError ? 'is-invalid' : ''} ${
-              username && !usernameError ? 'is-valid' : ''
-            }`}
-            id="username"
-            placeholder="Username"
-            autoComplete="off"
-            onChange={handleUsernameInput}
-          />
-          <div className="invalid-feedback">
-            {<ErrorMessage message={usernameError} />}
-          </div>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            className={`form-control ${passwordError ? 'is-invalid' : ''} ${
-              password && !passwordError ? 'is-valid' : ''
-            }`}
-            id="password"
-            placeholder="Password"
-            onChange={handlePasswordInput}
-          />
-          <div className="invalid-feedback">
-            {<ErrorMessage message={passwordError} />}
-          </div>
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
+      <Form onSubmit={loginUser}>
+        <Col sd={10} md={10} lg={8} className="mx-auto">
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="username">User</Form.Label>
+            <Form.Control
+              type="text"
+              id="username"
+              placeholder="Username"
+              autoComplete="off"
+              value={username}
+              onChange={handleUsernameInput}
+              isInvalid={!!usernameError}
+              isValid={username && !usernameError}
+            />
+            {/* Reemplaza Form.Control.Feedback con tu componente ErrorMessage */}
+            {usernameError && (
+              <ErrorMessage
+                message={
+                  usernameError
+                } /* Pasa otras props según sea necesario */
+              />
+            )}
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="password">Password</Form.Label>
+            <Form.Control
+              type="password"
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={handlePasswordInput}
+              isInvalid={!!passwordError}
+              isValid={password && !passwordError}
+            />
+            {/* Reemplaza Form.Control.Feedback con tu componente ErrorMessage */}
+            {passwordError && (
+              <ErrorMessage
+                message={
+                  passwordError
+                } /* Pasa otras props según sea necesario */
+              />
+            )}
+          </Form.Group>
+          <Button type="submit" variant="primary">
+            Submit
+          </Button>
+        </Col>
+      </Form>
     </div>
   );
 }
