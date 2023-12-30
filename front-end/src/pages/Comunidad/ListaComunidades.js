@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Breadcrumb } from 'react-bootstrap';
+import { getComunidades } from '../../services/auth.service';
 
 export default function BuscarComunidades() {
   const navigate = useNavigate();
@@ -8,36 +9,39 @@ export default function BuscarComunidades() {
   const [comunidadesFiltradas, setComunidadesFiltradas] = useState([]);
   const [error, setError] = useState('');
 
-  const todasLasComunidades = [
-    {
-      id: 1,
-      nombre: 'Comunidad1',
-      descripcion: 'Descripción de la Comunidad1',
-    },
-    {
-      id: 2,
-      nombre: 'Comunidad2',
-      descripcion: 'Descripción de la Comunidad2',
-    },
-  ];
-
-  function handleBusquedaInput(event) {
-    setBusqueda(event.target.value);
-  }
-
   function filtrarComunidades() {
-    setComunidadesFiltradas(
-      todasLasComunidades.filter((comunidad) =>
+    setComunidadesFiltradas((comunidades) =>
+      comunidades.filter((comunidad) =>
         comunidad.nombre.toLowerCase().includes(busqueda.toLowerCase()),
       ),
     );
+  }
+
+  async function fetchData() {
+    try {
+      const response = await getComunidades();
+      const todasLasComunidades = response;
+      setComunidadesFiltradas(todasLasComunidades);
+    } catch (errorGet) {
+      setError(
+        'Error al obtener las comunidades. Por favor, inténtalo de nuevo.',
+      );
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  function handleBusquedaInput(event) {
+    setBusqueda(event.target.value);
   }
 
   function handleBuscarComunidades(event) {
     event.preventDefault();
 
     if (busqueda.trim() === '') {
-      setComunidadesFiltradas(todasLasComunidades);
+      fetchData();
       return;
     }
 
@@ -46,7 +50,7 @@ export default function BuscarComunidades() {
   }
 
   function handleRedireccionarComunidad(nombre) {
-    const comunidadSeleccionada = todasLasComunidades.find(
+    const comunidadSeleccionada = comunidadesFiltradas.find(
       (comunidad) => comunidad.nombre === nombre,
     );
 
@@ -55,14 +59,11 @@ export default function BuscarComunidades() {
         state: {
           nombre,
           descripcion: comunidadSeleccionada.descripcion,
+          fechaInicio: comunidadSeleccionada.fechaInicio,
         },
       });
     }
   }
-
-  React.useEffect(() => {
-    setComunidadesFiltradas(todasLasComunidades);
-  }, []);
 
   return (
     <div id="PaginaBuscarComunidades">
@@ -100,8 +101,8 @@ export default function BuscarComunidades() {
           <div className="mt-3">
             <h2>Comunidades encontradas:</h2>
             <ul>
-              {comunidadesFiltradas.map((comunidad) => (
-                <li key={comunidad.id}>
+              {comunidadesFiltradas.map((comunidad, index) => (
+                <li key={index}>
                   {comunidad.nombre}
                   <button
                     className="btn btn-secondary btn-sm ms-2"

@@ -26,4 +26,23 @@ async function registerUser(username, password) {
   return data;
 }
 
-export { login, registerUser };
+async function saveComunidad(nombre, descripcion, fechaInicio) {
+  const response = await fetch('http://localhost:3001/comunidades', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ nombre, descripcion, fechaInicio }),
+  });
+
+  const data = await response.json();
+  return data;
+}
+
+async function getComunidades() {
+  const response = await fetch('http://localhost:3001/comunidades');
+  const data = await response.json();
+  return data;
+}
+
+export { login, registerUser, saveComunidad, getComunidades };

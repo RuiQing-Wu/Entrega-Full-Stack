@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { saveComunidad } from '../../services/auth.service';
+import ErrorMessage from '../../component/MensajeError';
 import './Comunidad.css';
 
 export default function Comunidad() {
@@ -43,7 +45,21 @@ export default function Comunidad() {
     }
 
     const currentDate = new Date();
-    const formattedDate = currentDate.toLocaleDateString('es-ES');
+    const formattedDate = currentDate.toLocaleDateString('en-EN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+
+    // TODO Llamar a la API para iniciar sesión
+    try {
+      const response = await saveComunidad(nombre, descripcion, formattedDate);
+      // eslint-disable-next-line no-console
+      console.log(response);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
 
     // Navegar a la página que contiene los detalles de la nueva comunidad
     navigate(`/comunidad/${nombre}`, {
@@ -60,7 +76,7 @@ export default function Comunidad() {
       <h1>Crear una nueva comunidad</h1>
       <form onSubmit={crearComunidad}>
         <div className="mb-3">
-          <label htmlFor="Nombre" className="form-label">
+          <label htmlFor="nombre" className="form-label">
             Nombre de la comunidad
           </label>
           <input
@@ -70,7 +86,7 @@ export default function Comunidad() {
             placeholder="NombreDeComunidad"
             onChange={handleNombreInput}
           />
-          <label>{nombreError}</label>
+          {nombreError && <ErrorMessage message={nombreError} />}
         </div>
         <div className="mb-3">
           <label htmlFor="descripcion" className="form-label">
@@ -83,7 +99,7 @@ export default function Comunidad() {
             placeholder="DescripcionDeComunidad"
             onChange={handleDescripcionInput}
           />
-          <label>{descripcionError}</label>
+          {descripcionError && <ErrorMessage message={descripcionError} />}
         </div>
         <button type="submit" className="btn btn-primary">
           Crear comunidad

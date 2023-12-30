@@ -24,6 +24,8 @@ export default function Menu() {
     if (info.username !== '' && currentUser === undefined) {
       setCurrentUser(info.username);
       // eslint-disable-next-line no-console
+      console.log('Tipo usuario', info.tipoUsuario);
+      // eslint-disable-next-line no-console
       console.log(info.username);
       // eslint-disable-next-line no-console
       console.log('Hello', currentUser);
@@ -44,7 +46,7 @@ export default function Menu() {
           <NavLink to={'/listaComunidades'} className="nav-link">
             Comunidades
           </NavLink>
-          {info.tipoUsuario === 'admin' && (
+          {info.tipoUsuario === undefined && (
             <>
               <NavLink to={'/comunidad'} className="nav-link">
                 Crear comunidad

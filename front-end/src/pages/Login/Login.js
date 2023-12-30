@@ -47,7 +47,6 @@ export default function Login() {
     }
 
     // TODO Llamar a la API para iniciar sesión
-
     const response = await login(username, password);
     // eslint-disable-next-line no-console
     console.log(response);
@@ -77,14 +76,7 @@ export default function Login() {
               isInvalid={!!usernameError}
               isValid={username && !usernameError}
             />
-            {/* Reemplaza Form.Control.Feedback con tu componente ErrorMessage */}
-            {usernameError && (
-              <ErrorMessage
-                message={
-                  usernameError
-                } /* Pasa otras props según sea necesario */
-              />
-            )}
+            {usernameError && <ErrorMessage message={usernameError} />}
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label htmlFor="password">Password</Form.Label>
