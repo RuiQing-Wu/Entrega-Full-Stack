@@ -7,7 +7,6 @@ export default function Comunidad() {
   const navigate = useNavigate();
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const [fechaInicio, setFechaInicio] = useState('');
   const [nombreError, setNombreError] = useState('');
   const [descripcionError, setDescripcionError] = useState('');
 
@@ -44,22 +43,14 @@ export default function Comunidad() {
     }
 
     const currentDate = new Date();
-    const formattedDate = currentDate.toISOString();
-
-    console.log('Fecha formateada');
-    console.log(formattedDate); // Devuelve un valor
-
-    setFechaInicio(formattedDate);
-
-    console.log('Fecha registrada');
-    console.log(fechaInicio); // Esto no devuelve nada
+    const formattedDate = currentDate.toLocaleDateString('es-ES');
 
     // Navegar a la página que contiene los detalles de la nueva comunidad
     navigate(`/comunidad/${nombre}`, {
       state: {
         nombre,
         descripcion,
-        formattedDate,
+        fechaInicio: formattedDate,
       },
     });
   }
