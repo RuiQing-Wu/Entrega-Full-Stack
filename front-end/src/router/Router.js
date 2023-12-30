@@ -90,7 +90,7 @@ const router = createBrowserRouter([
       },
       {
         name: 'VerCausaSolidaria',
-        path: '/vercausa',
+        path: '/causa/:titulo',
         element: <MostrarCausa />,
       },
       { name: 'Error', path: '*', element: <Error /> },

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
+import { Breadcrumb } from 'react-bootstrap';
 
 export default function MostrarCausa() {
   const location = useLocation();
@@ -12,6 +13,12 @@ export default function MostrarCausa() {
 
   return (
     <div>
+      <Breadcrumb>
+        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+        <Breadcrumb.Item href="/causa">Causas solidarias</Breadcrumb.Item>
+        <Breadcrumb.Item active>{causa.titulo}</Breadcrumb.Item>
+      </Breadcrumb>
+
       <CardCausaSolidaria
         titulo={causa.titulo}
         descripcion={causa.descripcion}

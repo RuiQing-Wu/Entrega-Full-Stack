@@ -17,12 +17,9 @@ export default function MostrarComunidad() {
 
   return (
     <div>
-
       <Breadcrumb>
         <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-        <Breadcrumb.Item href="/listaComunidades">
-          Comunidades
-        </Breadcrumb.Item>
+        <Breadcrumb.Item href="/listaComunidades">Comunidades</Breadcrumb.Item>
         <Breadcrumb.Item active>{comunidad.nombre}</Breadcrumb.Item>
       </Breadcrumb>
 

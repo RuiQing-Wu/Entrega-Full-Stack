@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import './CausaSolidaria.css';
 import ErrorMessage from '../../component/MensajeError';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 
 export default function Causa() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ export default function Causa() {
       return;
     }
 
-    navigate('/verCausa', {
+    navigate(`/causa/${titulo}`, {
       state: {
         titulo,
         descripcion,
@@ -71,80 +72,81 @@ export default function Causa() {
   return (
     <div id="PaginaCausaSolidaria" className="container mt-4">
       <h1>Causa solidaria</h1>
-      <form className="needs-validation" noValidate onSubmit={CausaSolidaria}>
-        <div className="form-group mb-3">
-          <label htmlFor="titulo" className="form-label">
-            Titulo
-          </label>
-          <input
-            type="text"
-            id="titulo"
-            className={`form-control ${tituloError ? 'is-invalid' : ''} ${
-              titulo && !tituloError ? 'is-valid' : ''
-            }`}
-            placeholder="Titulo de la causa solidaria"
-            onChange={handleTituloInput}
-            value={titulo}
-            required
-          />
-          <div className="invalid-feedback">
-            {<ErrorMessage message={tituloError} />}
-          </div>
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="descripcion" className="form-label">
-            Descripción
-          </label>
-          <textarea
-            className={`form-control ${descripcionError ? 'is-invalid' : ''} ${
-              descripcion && !descripcionError ? 'is-valid' : ''
-            }`}
-            id="descripcion"
-            rows="3"
-            onChange={handleDescripcionInput}
-            value={descripcion}
-            required
-          ></textarea>
-          <div className="invalid-feedback">
-            {<ErrorMessage message={descripcionError} />}
-          </div>
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="fechaInicio" className="form-label">
-            Fecha de inicio
-          </label>
-          <input
-            type="date"
-            className={`form-control ${fechaInicioError ? 'is-invalid' : ''} ${
-              fechaInicio && !fechaInicioError ? 'is-valid' : ''
-            }`}
-            id="fechaInicio"
-            onChange={handleFechaInicioInput}
-          />
-          <div className="invalid-feedback">
-            {<ErrorMessage message={fechaInicioError} />}
-          </div>
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="fechaFin" className="form-label">
-            Fecha de fin
-          </label>
-          <input
-            type="date"
-            className={`form-control ${fechaFinError ? 'is-invalid' : ''} ${
-              fechaFin && !fechaFinError ? 'is-valid' : ''
-            }`}
-            id="fechaFin"
-            onChange={handleFechaFinInput}
-          />
-          <div className="invalid-feedback">
-            {<ErrorMessage message={fechaFinError} />}
-          </div>
-        </div>
-        <button type="submit" className="btn btn-primary">
+      <Form className="needs-validation" noValidate onSubmit={CausaSolidaria}>
+        <Row className="mb-3">
+          <Form.Group as={Col} controlId="titulo">
+            <Form.Label>Titulo</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Titulo de la causa solidaria"
+              className={`form-control ${tituloError ? 'is-invalid' : ''} ${
+                titulo && !tituloError ? 'is-valid' : ''
+              }`}
+              onChange={handleTituloInput}
+              value={titulo}
+              required
+            />
+            <div className="invalid-feedback">
+              <ErrorMessage message={tituloError} />
+            </div>
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col} controlId="descripcion">
+            <Form.Label>Descripción</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              className={`form-control ${
+                descripcionError ? 'is-invalid' : ''
+              } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+              onChange={handleDescripcionInput}
+              value={descripcion}
+              required
+            />
+            <div className="invalid-feedback">
+              <ErrorMessage message={descripcionError} />
+            </div>
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col} controlId="fechaInicio">
+            <Form.Label>Fecha de inicio</Form.Label>
+            <Form.Control
+              type="date"
+              className={`form-control ${
+                fechaInicioError ? 'is-invalid' : ''
+              } ${fechaInicio && !fechaInicioError ? 'is-valid' : ''}`}
+              onChange={handleFechaInicioInput}
+            />
+            <div className="invalid-feedback">
+              <ErrorMessage message={fechaInicioError} />
+            </div>
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col} controlId="fechaFin">
+            <Form.Label>Fecha de fin</Form.Label>
+            <Form.Control
+              type="date"
+              className={`form-control ${fechaFinError ? 'is-invalid' : ''} ${
+                fechaFin && !fechaFinError ? 'is-valid' : ''
+              }`}
+              onChange={handleFechaFinInput}
+            />
+            <div className="invalid-feedback">
+              <ErrorMessage message={fechaFinError} />
+            </div>
+          </Form.Group>
+        </Row>
+
+        <Button type="submit" className="btn btn-primary">
           Submit
-        </button>
-      </form>
+        </Button>
+      </Form>
     </div>
   );
 }
