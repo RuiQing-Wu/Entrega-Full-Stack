@@ -12,6 +12,8 @@ export default function MostrarCausa() {
     return <div>No hay datos de la causa</div>;
   }
 
+  const objetivosAccion = ['objetivo1', 'objetivo2', 'objetivo3', 'objetivo4'];
+
   return (
     <div>
       <Breadcrumb>
@@ -40,7 +42,8 @@ export default function MostrarCausa() {
           <Tab eventKey="acciones" title="Acciones solidarias">
             <StackAccionSolidaria
               titulo={'accion1'}
-              objetivos={'objetivo1, objetivo2'}
+              objetivos={objetivosAccion}
+              progreso={'20%'}
             />
           </Tab>
         </Tabs>

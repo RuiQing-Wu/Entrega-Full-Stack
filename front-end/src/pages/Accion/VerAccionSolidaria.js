@@ -14,7 +14,7 @@ export default function MostrarAcciones() {
     <div>
       <CardAccionSolidaria
         titulo={accion.titulo}
-        objetivos={accion.objetivos}
+        objetivos={accion.ObjetivosAccion}
         progreso={accion.progreso}
       />
     </div>
