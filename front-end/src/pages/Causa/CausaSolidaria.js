@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
+import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import './CausaSolidaria.css';
 import ErrorMessage from '../../component/MensajeError';
-import { Form, Button, Row, Col } from 'react-bootstrap';
 
 export default function Causa() {
   const navigate = useNavigate();
@@ -70,11 +70,11 @@ export default function Causa() {
   }
 
   return (
-    <div id="PaginaCausaSolidaria" className="container mt-4">
+    <div id="PaginaCausaSolidaria">
       <h1>Causa solidaria</h1>
       <Form className="needs-validation" noValidate onSubmit={CausaSolidaria}>
-        <Row className="mb-3">
-          <Form.Group as={Col} controlId="titulo">
+        <Col sd={10} md={10} lg={8} className="mx-auto">
+          <Form.Group controlId="titulo" className="mb-3">
             <Form.Label>Titulo</Form.Label>
             <Form.Control
               type="text"
@@ -90,10 +90,8 @@ export default function Causa() {
               <ErrorMessage message={tituloError} />
             </div>
           </Form.Group>
-        </Row>
 
-        <Row className="mb-3">
-          <Form.Group as={Col} controlId="descripcion">
+          <Form.Group controlId="descripcion" className="mb-3">
             <Form.Label>Descripción</Form.Label>
             <Form.Control
               as="textarea"
@@ -109,10 +107,8 @@ export default function Causa() {
               <ErrorMessage message={descripcionError} />
             </div>
           </Form.Group>
-        </Row>
 
-        <Row className="mb-3">
-          <Form.Group as={Col} controlId="fechaInicio">
+          <Form.Group controlId="fechaInicio" className="mb-3">
             <Form.Label>Fecha de inicio</Form.Label>
             <Form.Control
               type="date"
@@ -125,10 +121,8 @@ export default function Causa() {
               <ErrorMessage message={fechaInicioError} />
             </div>
           </Form.Group>
-        </Row>
 
-        <Row className="mb-3">
-          <Form.Group as={Col} controlId="fechaFin">
+          <Form.Group controlId="fechaFin" className="mb-3">
             <Form.Label>Fecha de fin</Form.Label>
             <Form.Control
               type="date"
@@ -141,11 +135,13 @@ export default function Causa() {
               <ErrorMessage message={fechaFinError} />
             </div>
           </Form.Group>
-        </Row>
 
-        <Button type="submit" className="btn btn-primary">
-          Submit
-        </Button>
+          <div className="mb-3 text-center">
+            <Button type="submit" className="btn btn-primary">
+              Submit
+            </Button>
+          </div>
+        </Col>
       </Form>
     </div>
   );
