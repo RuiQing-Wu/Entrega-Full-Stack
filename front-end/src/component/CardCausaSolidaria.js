@@ -9,7 +9,7 @@ const CardCausaSolidaria = ({
   onAddToCartClicked,
 }) => {
   return (
-    <div className="container">
+    <div>
       <h3 className="mt-4">Detalles de la Causa Solidaria</h3>
       <div id="cardCausaSolidaria" className="card mt-3">
         <div className="card-body">

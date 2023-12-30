@@ -1,7 +1,8 @@
 import React from 'react';
+import { Breadcrumb, Tabs, Tab, Col } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
-import { Breadcrumb } from 'react-bootstrap';
+import StackAccionSolidaria from '../../component/StackAccionSolidaria';
 
 export default function MostrarCausa() {
   const location = useLocation();
@@ -25,6 +26,25 @@ export default function MostrarCausa() {
         fechaInicio={causa.fechaInicio}
         fechaFin={causa.fechaFin}
       />
+
+      <Col sd={10} md={10} lg={8} className="mx-auto">
+        <Tabs
+          defaultActiveKey="acciones"
+          id="uncontrolled-tab-example"
+          className="mb-3 mt-4 custom-size-tabs"
+          fill
+        >
+          <Tab eventKey="causas" title="Causas solidarias">
+            Tab content for Causas
+          </Tab>
+          <Tab eventKey="acciones" title="Acciones solidarias">
+            <StackAccionSolidaria
+              titulo={'accion1'}
+              objetivos={'objetivo1, objetivo2'}
+            />
+          </Tab>
+        </Tabs>
+      </Col>
     </div>
   );
 }

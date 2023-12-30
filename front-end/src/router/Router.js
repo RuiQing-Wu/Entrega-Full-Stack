@@ -12,6 +12,7 @@ import {
   MostrarInformacionPerfil,
   Error,
   MostrarCausa,
+  MostrarAcciones,
 } from '../pages/index';
 import App from '../App';
 import AuthRoute from '../component/AuthRoute';
@@ -92,6 +93,11 @@ const router = createBrowserRouter([
         name: 'VerCausaSolidaria',
         path: '/causa/:titulo',
         element: <MostrarCausa />,
+      },
+      {
+        name: 'VerAccionSolidaria',
+        path: '/accion/:titulo',
+        element: <MostrarAcciones />,
       },
       { name: 'Error', path: '*', element: <Error /> },
     ],

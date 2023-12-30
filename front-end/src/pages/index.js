@@ -10,6 +10,7 @@ import MostrarComunidad from './Comunidad/VerComunidad';
 import BuscarComunidades from './Comunidad/ListaComunidades';
 import MostrarInformacionPerfil from './Profile/ExternalProfile';
 import Profile from './Profile/Profile';
+import MostrarAcciones from './Accion/VerAccionSolidaria';
 
 export {
   Home,
@@ -24,4 +25,5 @@ export {
   Accion,
   MostrarCausa,
   Error,
+  MostrarAcciones,
 };
