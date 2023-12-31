@@ -9,6 +9,8 @@ async function bootstrap() {
     ],
   }
   );
-  await app.listen(3001);
+
+  console.log("Aplication listen on the port: ", process.env.PORT);
+  await app.listen(process.env.PORT || 3002);
 }
 bootstrap();
