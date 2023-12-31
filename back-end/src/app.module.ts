@@ -7,7 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import CacheConfigService from './cache/cache.config.service';
+import CacheConfigService from './data_base_service/cache.config.service';
+import MongooseConfigService from './data_base_service/mongo.config.service';
 
 @Module({
   imports: [
@@ -18,16 +19,14 @@ import CacheConfigService from './cache/cache.config.service';
         : `./config/${process.env.NODE_ENV}.env`,
     }),
 
-    MongooseModule.forRoot(`${process.env.MONGO_URL}`, {
-      user: `${process.env.MONGO_USER}`,
-      pass: `${process.env.MONGO_PASS}`,
-      dbName: `${process.env.MONGO_DBNAME}`,
+    MongooseModule.forRootAsync({
+      useClass: MongooseConfigService,
     }),
 
     CacheModule.registerAsync({
       useClass: CacheConfigService,
     }),
-    
+
     // ComunidadModule,
     //AuthModule,
     //UsersModule,
