@@ -1,4 +1,4 @@
-import { CausaSolidaria } from '../domain/comunidades.domain';
+import { CausaSolidaria } from "src/causas/domain/causa_solidaria.domain";
 
 export class CreateComunidadDto {
   nombre: string;

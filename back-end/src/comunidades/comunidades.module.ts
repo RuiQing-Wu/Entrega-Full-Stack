@@ -1,32 +1,19 @@
-import { Module } from '@nestjs/common';
-import { ComunidadesServiceImpl } from './comunidades.service';
-import { IComunidadesService } from './interfaces/comunidades.service.interface';
-import { ComunidadesController } from './comunidades.controller';
-import { ComunidadModel, ComunidadSchema } from './entities/comunidades.model';
-import { CausaModel, CausaSchema } from './entities/comunidades.model';
-import { AccionModel, AccionSchema } from './entities/comunidades.model';
-import { Comunidad } from './domain/comunidades.domain';
-import { IGenericRepository } from 'src/base/generic.repository';
-import { ComunidadRepositoryMongose } from './repositories/comunidades.repository.mongo';
-import { MongooseModule } from '@nestjs/mongoose';
+import { Module } from "@nestjs/common";
+import { MongooseModule } from "@nestjs/mongoose";
+import { Comunidad } from "./domain/comunidades.domain";
+import { ComunidadSchema } from "./schemas/comunidad.schema";
+import { ComunidadesController } from "./comunidades.controller";
+import { IComunidadesService } from "./interfaces/comunidades.service.interface";
+import { ComunidadesServiceImpl } from "./comunidades.service";
+import { ComunidadesRepository } from "./repositories/comunidades.repository";
+import { ComunidadesRepositoryMongo } from "./repositories/comunidades.repository.mongo";
+
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      {
-        name: ComunidadModel.name,
-        schema: ComunidadSchema,
-      },
-      {
-        name: CausaModel.name,
-        schema: CausaSchema,
-      },
-      {
-        name: AccionModel.name,
-        schema: AccionSchema,
-      },
-    ]),
+    MongooseModule.forFeature([{ name: Comunidad.name, schema: ComunidadSchema }]),
   ],
+
   controllers: [ComunidadesController],
   providers: [
     {
@@ -34,9 +21,12 @@ import { MongooseModule } from '@nestjs/mongoose';
       useClass: ComunidadesServiceImpl,
     },
     {
-      provide: IGenericRepository<Comunidad>,
-      useClass: ComunidadRepositoryMongose,
+      provide: ComunidadesRepository,
+      useClass: ComunidadesRepositoryMongo,
     },
   ],
+
+  exports: [IComunidadesService, ComunidadesRepository],
 })
+
 export class ComunidadModule {}

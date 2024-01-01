@@ -6,9 +6,9 @@ class MongooseConfigService implements MongooseOptionsFactory {
     createMongooseOptions(): MongooseModuleOptions {
         return {
             uri: process.env.MONGO_URL,
+            dbName: process.env.MONGO_DB_NAME,
             user: process.env.MONGO_USER,
             pass: process.env.MONGO_PASS,
-            dbName: process.env.MONGO_DBNAME,
         };
     }
 }

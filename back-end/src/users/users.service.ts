@@ -1,30 +1,47 @@
-import { Injectable } from '@nestjs/common';
-
-// This should be a real class/interface representing a user entity
-export type User = any;
+import { Inject, Injectable } from '@nestjs/common';
+import { IUserService } from './interfaces/user.service.interface';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './domain/user.domain';
+import { UsersRepository } from './repositories/users.repository';
 
 export enum Role {
   User = 'user',
   Admin = 'admin',
 }
 @Injectable()
-export class UsersService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-      role: Role.Admin,
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-      role: Role.User,
-    },
-  ];
+export class UsersServiceImp extends IUserService {
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+  constructor(
+    @Inject(UsersRepository)
+    private usersRepository: UsersRepository,
+  ) {
+    super();
   }
+
+
+  create(createUserDto: CreateUserDto) {
+    const user = new User({
+      ...createUserDto,
+    });
+
+    return this.usersRepository.create(user);
+  }
+
+  findAll(): Promise<any[]> {
+    throw new Error('Method not implemented.');
+  }
+  findOne(id: string) {
+    return null;
+  }
+  update(id: string, updateUserDto: UpdateUserDto) {
+    throw new Error('Method not implemented.');
+  }
+  remove(id: string): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
+
+
 }
+export { User };
+

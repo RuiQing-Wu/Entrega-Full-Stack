@@ -4,4 +4,3 @@ export class CreateCausaDto {
     fechaInio: Date;
     fechaFin: Date;
   }
-  

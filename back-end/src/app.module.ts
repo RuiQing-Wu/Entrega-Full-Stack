@@ -7,6 +7,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { AccionesModule } from './acciones/acciones.module';
+import { CausasModule } from './causas/causas.module';
 import CacheConfigService from './data_base_service/cache.config.service';
 import MongooseConfigService from './data_base_service/mongo.config.service';
 
@@ -26,10 +28,12 @@ import MongooseConfigService from './data_base_service/mongo.config.service';
     CacheModule.registerAsync({  
       useClass: CacheConfigService,   
     }),   
-
+    
     AuthModule,
     UsersModule,
-    // ComunidadModule,
+    ComunidadModule,
+    CausasModule,
+    AccionesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

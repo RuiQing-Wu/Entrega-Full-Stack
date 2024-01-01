@@ -1,19 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateComunidadDto } from './dto/create-comunidad.dto';
 import { UpdateComunidadDto } from './dto/update-comunidad.dto';
-import { IGenericRepository } from 'src/base/generic.repository';
-import {
-  Comunidad,
-  CausaSolidaria,
-} from '../comunidades/domain/comunidades.domain';
+import { Comunidad } from '../comunidades/domain/comunidades.domain';
 import { IComunidadesService } from './interfaces/comunidades.service.interface';
-import { CreateCausaDto } from './dto/create-causa.dto';
-
+import { ComunidadesRepository } from './repositories/comunidades.repository';
 @Injectable()
 export class ComunidadesServiceImpl extends IComunidadesService {
   constructor(
-    @Inject(IGenericRepository<Comunidad>)
-    private comunidadesRepository: IGenericRepository<Comunidad>,
+    @Inject(ComunidadesRepository)
+    private comunidadesRepository: ComunidadesRepository,
   ) {
     super();
   }

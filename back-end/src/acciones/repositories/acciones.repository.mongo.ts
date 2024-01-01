@@ -1,14 +1,14 @@
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { ComunidadesRepository } from "./comunidades.repository";
-import { Comunidad } from "../domain/comunidades.domain";
-import { ComunidadMongoModel } from "../schemas/comunidad.schema";
+import { AccionesRepository } from "./acciones.repository";
+import { AccionSolidaria } from "../domain/accion_solidaria.domain";
+import { AccionMongoModel } from "../schemas/accion.schema";
 
-export class ComunidadesRepositoryMongo extends ComunidadesRepository {
+export class AccionesRepositoryMongo extends AccionesRepository {
 
     constructor(
-        @InjectModel(Comunidad.name)
-        private readonly comunidadModel: Model<ComunidadMongoModel>,
+        @InjectModel(AccionSolidaria.name)
+        private readonly accionModel: Model<AccionMongoModel>,
     ) {
         super();
     }
@@ -17,7 +17,7 @@ export class ComunidadesRepositoryMongo extends ComunidadesRepository {
         throw new Error("Method not implemented.");
     }
 
-    async create(item: Comunidad): Promise<Comunidad> {
+    async create(item: AccionSolidaria): Promise<AccionSolidaria> {
         throw new Error("Method not implemented.");
     }
 

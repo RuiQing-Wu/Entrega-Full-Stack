@@ -14,12 +14,14 @@ import JwtConfigService from 'src/jwt_service/jwt_config_service';
       useClass: JwtConfigService,
     })
   ],
+
   providers: [AuthService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
-    },],
-    
+    },
+  ],
+
   controllers: [AuthController],
   exports: [AuthService],
 })
