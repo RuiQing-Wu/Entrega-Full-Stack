@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ComunidadModule } from './comunidades/comunidades.module';
-//import { AuthModule } from './auth/auth.module';
-//import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
@@ -25,9 +23,9 @@ import MongooseConfigService from './data_base_service/mongo.config.service';
       useClass: MongooseConfigService,
     }),
 
-    CacheModule.registerAsync({
-      useClass: CacheConfigService,
-    }),
+    CacheModule.registerAsync({  
+      useClass: CacheConfigService,   
+    }),   
 
     AuthModule,
     UsersModule,

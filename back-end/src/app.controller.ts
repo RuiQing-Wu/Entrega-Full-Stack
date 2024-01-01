@@ -1,7 +1,6 @@
 import { Controller, Get, Inject, Post, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Public } from './auth/public.decorator';
+import { Public } from './decorators/public.decorator';
 
 @Controller('user')
 export class AppController {

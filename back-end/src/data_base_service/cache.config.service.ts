@@ -1,7 +1,6 @@
 import { CacheModuleOptions, CacheOptionsFactory } from "@nestjs/cache-manager";
 import { Injectable } from "@nestjs/common";
-import { redisStore } from "cache-manager-redis-yet";
-
+import { redisStore } from 'cache-manager-redis-yet';
 @Injectable()
 class CacheConfigService implements CacheOptionsFactory {
     createCacheOptions(): CacheModuleOptions {

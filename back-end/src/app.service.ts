@@ -5,10 +5,21 @@ import { RedisStore } from 'cache-manager-redis-yet';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
+  private redisStore: RedisStore;
+  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {
+    this.redisStore = cacheManager.store as RedisStore;
+  }
+  
   async getHello(): Promise<string> {
-    const cachedData = await this.cacheManager.set('hola', 'sss');
+    // GET REDIS CONNECTION FROM CACHE MANAGER
+    const redisClient = this.redisStore.client;
+    // SET KEY VALUE WITH CLIENT
+    redisClient.set('keySdddSS', 'value');
+    // GET KEY VALUE WITH CLIENT
+    const value = await redisClient.get('key');
+    // RETURN VALUE AND CLOSE CONNECTION
+    redisClient.quit();
     return 'Hello World!';
   }
 }

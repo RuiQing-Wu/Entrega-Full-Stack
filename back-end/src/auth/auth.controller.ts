@@ -8,12 +8,12 @@ import {
     Request,
     UseGuards
 } from '@nestjs/common';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 import { AuthService } from './auth.service';
-import { Public } from './public.decorator';
+import { Public } from '../decorators/public.decorator';
 import { Role } from 'src/users/users.service';
-import { Roles } from './roles.decorator';
-import { RolesGuard } from './roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { RolesGuard } from '../guards/roles.guard';
 
 @Controller('auth')
 export class AuthController {
