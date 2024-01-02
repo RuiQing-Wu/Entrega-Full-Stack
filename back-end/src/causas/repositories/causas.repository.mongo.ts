@@ -2,6 +2,7 @@ import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { CausasRepository } from "./causas.repository";
 import { CausaSolidaria } from "../domain/causa_solidaria.domain";
+import { AccionSolidaria } from "../../acciones/domain/accion_solidaria.domain";
 import { CausaMongoModel } from "../schemas/causa.schema";
 
 export class CausasRepositoryMongo extends CausasRepository {
@@ -13,23 +14,70 @@ export class CausasRepositoryMongo extends CausasRepository {
         super();
     }
 
-    getByName(name: string): Promise<any> {
-        throw new Error("Method not implemented.");
+    private transform(causaMongoModel: CausaMongoModel): CausaSolidaria {
+        const causa = new CausaSolidaria({
+            id: causaMongoModel.id,
+            titulo: causaMongoModel.titulo,
+            descripcion: causaMongoModel.descripcion,
+            fechaInicio: causaMongoModel.fechaInicio,
+            fechaFin: causaMongoModel.fechaFin,
+            accionSolidaria: causaMongoModel.acciones,
+            comunidad: causaMongoModel.comunidad,
+        });
+        
+        return causa;
     }
 
     async create(item: CausaSolidaria): Promise<CausaSolidaria> {
-        throw new Error("Method not implemented.");
+        const causaModel: CausaMongoModel =
+            await this.causaModel.create(item);
+
+        const causaCreated =
+            await this.causaModel.create(causaModel);
+
+        const causa = new CausaSolidaria({
+            id: causaCreated.id,
+            titulo: causaCreated.titulo,
+            descripcion: causaCreated.descripcion,
+            fechaInicio: causaCreated.fechaInicio,
+            fechaFin: causaCreated.fechaFin,
+            accionSolidaria: [],
+            comunidad: causaCreated.comunidad,
+        });
+
+        return causa;
     }
 
-    get(id: string): Promise<any> {
-        throw new Error("Method not implemented.");
+    async get(id: string): Promise<CausaSolidaria> {
+        const causa = await this.causaModel.findById(id).exec();
+
+        return this.transform(causa);
     }
-    getAll(): Promise<any[]> {
-        throw new Error("Method not implemented.");
+
+    async getByName(titulo: string): Promise<CausaSolidaria[]> {
+        const causasModel = await this.causaModel.find({ titulo }).exec();
+
+        const causas = causasModel.map((causaModel) => {
+            return this.transform(causaModel);
+        });
+
+        return causas;
     }
+
+    async getAll(): Promise<CausaSolidaria[]> {
+        const causasModel = await this.causaModel.find().exec();
+
+        const causas = causasModel.map((causaModel) => {
+            return this.transform(causaModel);
+        });
+
+        return causas;
+    }
+
     update(id: string, item: any): Promise<any> {
         throw new Error("Method not implemented.");
     }
+    
     delete(id: string): Promise<any> {
         throw new Error("Method not implemented.");
     }

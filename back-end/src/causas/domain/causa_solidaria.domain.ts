@@ -1,4 +1,5 @@
 import { AccionSolidaria } from "src/acciones/domain/accion_solidaria.domain";
+import { Comunidad } from "src/comunidades/domain/comunidades.domain";
 
 export class CausaSolidaria {
     readonly id?: string;
@@ -7,21 +8,24 @@ export class CausaSolidaria {
     readonly fechaInicio: Date;
     readonly fechaFin: Date;
     readonly acciones: AccionSolidaria[];
+    readonly comunidad: Comunidad;
   
-    constructor(data: {
-      id?: string;
-      titulo: string;
-      descripcion: string;
-      fechaInicio: Date;
-      fechaFin: Date;
-      accionSolidaria: AccionSolidaria[];
+    constructor({
+      id,
+      titulo,
+      descripcion,
+      fechaInicio,
+      fechaFin,
+      accionSolidaria,
+      comunidad,
     }) {
-      this.id = data.id;
-      this.titulo = data.titulo;
-      this.descripcion = data.descripcion;
-      this.fechaInicio = data.fechaInicio;
-      this.fechaFin = data.fechaFin;
-      this.acciones = data.accionSolidaria;
+      this.id = id;
+      this.titulo = titulo;
+      this.descripcion = descripcion;
+      this.fechaInicio = fechaInicio;
+      this.fechaFin = fechaFin;
+      this.acciones = accionSolidaria;
+      this.comunidad = comunidad;
     }
   }
   
