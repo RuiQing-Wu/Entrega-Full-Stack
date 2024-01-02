@@ -25,20 +25,16 @@ export class ComunidadesRepositoryMongo extends ComunidadesRepository {
   }
 
   async create(item: Comunidad): Promise<Comunidad> {
-    // creamos un objeto de tipo ReunionModel a partir del objeto del dominio
     const comunidadModel: ComunidadMongoModel =
       await this.comunidadModel.create(item);
 
-    // Tras almacenarlo se obtiene el id
-    const reunionCreated = await this.comunidadModel.create(comunidadModel);
+    const comunidadCreated = await this.comunidadModel.create(comunidadModel);
 
-    // creamos un objeto de tipo Reunion a partir de los datos de comunidadModel
-    // En la creación no se almacenan ni causas ni acciones
     const comunidad = new Comunidad({
-      id: reunionCreated.id,
-      nombre: reunionCreated.nombre,
-      descripcion: reunionCreated.descripcion,
-      fechaInicio: reunionCreated.fechaInicio,
+      id: comunidadCreated.id,
+      nombre: comunidadCreated.nombre,
+      descripcion: comunidadCreated.descripcion,
+      fechaInicio: comunidadCreated.fechaInicio,
       causas: [],
     });
 
