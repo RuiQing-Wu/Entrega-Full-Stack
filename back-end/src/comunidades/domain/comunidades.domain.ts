@@ -7,18 +7,24 @@ export class Comunidad {
   readonly fechaInicio: Date;
   readonly causas: CausaSolidaria[];
 
-  constructor(data: {
-    id?: string;
-    nombre: string;
-    descripcion: string;
-    fechaInicio: Date;
-    causas: CausaSolidaria[];
+  constructor({
+    id,
+    nombre,
+    descripcion,
+    fechaInicio,
+    causas
+  }: {
+    id?: string,
+    nombre: string,
+    descripcion: string,
+    fechaInicio: Date,
+    causas: CausaSolidaria[],
   }) {
-    this.id = data.id;
-    this.nombre = data.nombre;
-    this.descripcion = data.descripcion;
-    this.fechaInicio = data.fechaInicio;
-    this.causas = data.causas;
+    this.id = id;
+    this.nombre = nombre;
+    this.descripcion = descripcion;
+    this.fechaInicio = fechaInicio;
+    this.causas = causas;
   }
 }
 

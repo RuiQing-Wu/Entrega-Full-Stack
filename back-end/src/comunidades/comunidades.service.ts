@@ -25,6 +25,10 @@ export class ComunidadesServiceImpl extends IComunidadesService {
     return this.comunidadesRepository.create(comunidad);
   }
 
+  getByName(nombre: string) {
+    return this.comunidadesRepository.getByName(nombre);
+  }
+
   findAll() {
     return this.comunidadesRepository.getAll();
   }
@@ -52,12 +56,4 @@ export class ComunidadesServiceImpl extends IComunidadesService {
   remove(id: string) {
     return this.comunidadesRepository.delete(id);
   }
-
-  /*async addCausa(id: string, causa: CreateCausaDto): Promise<Comunidad> {
-    const comunidad = await this.comunidadesRepository.get(id);
-    comunidad.causas.push(new CausaSolidaria(causa));
-
-    await this.comunidadesRepository.update(id, comunidad);
-    return comunidad;
-  }*/
 }
