@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { saveComunidad } from '../../services/auth.service';
+import { saveComunidad } from '../../services/comunidades.service';
 import ErrorMessage from '../../component/MensajeError';
 import './Comunidad.css';
 

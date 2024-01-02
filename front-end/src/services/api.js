@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import TOKEN from '../utils/utils';
 
-export const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = 'http://localhost:3001';
 
 export default async function api(url, options) {
   const accessToken = localStorage.getItem(TOKEN);

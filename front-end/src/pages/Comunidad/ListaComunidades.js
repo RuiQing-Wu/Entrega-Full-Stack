@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Breadcrumb, Stack } from 'react-bootstrap';
-import { getComunidades } from '../../services/auth.service';
+import {
+  getComunidades,
+  getComunidadByName,
+} from '../../services/comunidades.service';
 
 export default function BuscarComunidades() {
   const navigate = useNavigate();
@@ -29,6 +32,16 @@ export default function BuscarComunidades() {
     }
   }
 
+  async function fetchDataByName() {
+    try {
+      const response = await getComunidadByName(busqueda);
+      const comunidad = response ? [response] : [];
+      setComunidadesFiltradas(comunidad);
+    } catch (errorGet) {
+      setError('No se encontraron comunidades que coincidan con la búsqueda.');
+    }
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -42,11 +55,11 @@ export default function BuscarComunidades() {
 
     if (busqueda.trim() === '') {
       fetchData();
-      return;
+      // filtrarComunidades();
+    } else if (busqueda.trim() !== '') {
+      fetchDataByName();
+      setError('');
     }
-
-    setError('');
-    filtrarComunidades();
   }
 
   function handleRedireccionarComunidad(nombre) {
@@ -98,28 +111,27 @@ export default function BuscarComunidades() {
         </form>
 
         {comunidadesFiltradas.length > 0 && (
-          <Stack>
-            <h2>Comunidades encontradas:</h2>
-            <ul>
-              {comunidadesFiltradas.map((comunidad, index) => (
-                <li key={index}>
-                  {comunidad.nombre}
-                  <button
-                    className="btn btn-secondary btn-sm ms-2"
-                    onClick={() =>
-                      handleRedireccionarComunidad(comunidad.nombre)
-                    }
-                  >
-                    Ver Detalles
-                  </button>
-                </li>
-              ))}
-            </ul>
+          <Stack gap={1}>
+            <h2 className="mt-4">Comunidades encontradas:</h2>
+            {comunidadesFiltradas?.map((comunidad, index) => (
+              <div className="p-2 comunidad-item" key={index}>
+                {comunidad.nombre}
+                <button
+                  className="btn btn-secondary btn-sm ms-2"
+                  onClick={() => handleRedireccionarComunidad(comunidad.nombre)}
+                >
+                  <i className="fas fa-eye"></i> Ver Detalles
+                </button>
+              </div>
+            ))}
           </Stack>
         )}
 
         {comunidadesFiltradas.length === 0 && (
-          <p>No se encontraron comunidades que coincidan con la búsqueda.</p>
+          <p>
+            {error ||
+              'No se encontraron comunidades que coincidan con la búsqueda.'}
+          </p>
         )}
       </div>
     </div>
