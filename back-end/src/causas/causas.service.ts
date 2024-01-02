@@ -7,6 +7,7 @@ import { CausasRepository } from './repositories/causas.repository';
 
 @Injectable()
 export class CausasService extends ICausasService{
+  
 
   constructor(
     @Inject(CausasRepository)
@@ -17,11 +18,13 @@ export class CausasService extends ICausasService{
 
   create(createCausaDto: CreateCausaDto): Promise<CausaSolidaria> {
     const causa = new CausaSolidaria({
+      id: createCausaDto.id,
       titulo: createCausaDto.titulo,
       descripcion: createCausaDto.descripcion,
       fechaInicio: createCausaDto.fechaInicio,
       fechaFin: createCausaDto.fechaFin,
       accionSolidaria: [],
+      comunidad: createCausaDto.comunidad,
     });
 
     return this.causasRepository.create(causa);
@@ -35,6 +38,10 @@ export class CausasService extends ICausasService{
     return this.causasRepository.get(id);
   }
 
+  getByName(titulo: string): Promise<CausaSolidaria[]> {
+    return this.causasRepository.getByName(titulo);
+  }
+
   async update(id: string, updateCausaDto: UpdateCausaDto) {
     const causa = await this.causasRepository.get(id);
 
@@ -46,6 +53,7 @@ export class CausasService extends ICausasService{
       fechaInicio: updateCausaDto.fechaInicio ?? causa.fechaInicio,
       fechaFin: updateCausaDto.fechaFin ?? causa.fechaFin,
       accionSolidaria: updateCausaDto.acciones ?? causa.acciones,
+      comunidad: updateCausaDto.comunidad ?? causa.comunidad,
     });
 
     return this.causasRepository.update(id, comunidadActualizada);
