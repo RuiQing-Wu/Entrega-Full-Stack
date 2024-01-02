@@ -1,6 +1,9 @@
+import { AccionSolidaria } from "src/acciones/domain/accion_solidaria.domain";
+
 export class CreateCausaDto {
     titulo: string;
     descripcion: string;
-    fechaInio: Date;
+    fechaInicio: Date;
     fechaFin: Date;
+    acciones: AccionSolidaria[];
   }

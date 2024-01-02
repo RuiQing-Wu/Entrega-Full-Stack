@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Breadcrumb } from 'react-bootstrap';
+import { Breadcrumb, Stack } from 'react-bootstrap';
 import { getComunidades } from '../../services/auth.service';
 
 export default function BuscarComunidades() {
@@ -98,7 +98,7 @@ export default function BuscarComunidades() {
         </form>
 
         {comunidadesFiltradas.length > 0 && (
-          <div className="mt-3">
+          <Stack>
             <h2>Comunidades encontradas:</h2>
             <ul>
               {comunidadesFiltradas.map((comunidad, index) => (
@@ -115,7 +115,7 @@ export default function BuscarComunidades() {
                 </li>
               ))}
             </ul>
-          </div>
+          </Stack>
         )}
 
         {comunidadesFiltradas.length === 0 && (

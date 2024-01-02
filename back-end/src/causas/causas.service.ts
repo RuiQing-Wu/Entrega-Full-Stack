@@ -16,19 +16,39 @@ export class CausasService extends ICausasService{
   }
 
   create(createCausaDto: CreateCausaDto): Promise<CausaSolidaria> {
-    throw new Error('Method not implemented.');
+    const causa = new CausaSolidaria({
+      titulo: createCausaDto.titulo,
+      descripcion: createCausaDto.descripcion,
+      fechaInicio: createCausaDto.fechaInicio,
+      fechaFin: createCausaDto.fechaFin,
+      accionSolidaria: [],
+    });
+
+    return this.causasRepository.create(causa);
   }
 
   findAll(): Promise<CausaSolidaria[]> {
-    throw new Error('Method not implemented.');
+    return this.causasRepository.getAll();
   }
 
   findOne(id: string): Promise<CausaSolidaria> {
-    throw new Error('Method not implemented.');
+    return this.causasRepository.get(id);
   }
 
-  update(id: string, updateCausaDto: UpdateCausaDto) {
-    throw new Error('Method not implemented.');
+  async update(id: string, updateCausaDto: UpdateCausaDto) {
+    const causa = await this.causasRepository.get(id);
+
+    // creamos un objeto del dominio combinado con el DTO
+    const comunidadActualizada = new CausaSolidaria({
+      id: causa.id,
+      titulo: updateCausaDto.titulo ?? causa.titulo,
+      descripcion: updateCausaDto.descripcion ?? causa.descripcion,
+      fechaInicio: updateCausaDto.fechaInicio ?? causa.fechaInicio,
+      fechaFin: updateCausaDto.fechaFin ?? causa.fechaFin,
+      accionSolidaria: updateCausaDto.acciones ?? causa.acciones,
+    });
+
+    return this.causasRepository.update(id, comunidadActualizada);
   }
 
   remove(id: string): Promise<CausaSolidaria> {
