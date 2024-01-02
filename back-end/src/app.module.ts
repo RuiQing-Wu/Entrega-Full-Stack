@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AccionesModule } from './acciones/acciones.module';
 import { CausasModule } from './causas/causas.module';
+import { SolicitudModule } from './solicitud/solicitud.module';
 import CacheConfigService from './data_base_service/cache.config.service';
 import MongooseConfigService from './data_base_service/mongo.config.service';
 
@@ -34,7 +35,9 @@ import MongooseConfigService from './data_base_service/mongo.config.service';
     ComunidadModule,
     CausasModule,
     AccionesModule,
+    SolicitudModule,
   ],
+  
   controllers: [AppController],
   providers: [AppService],
 })
