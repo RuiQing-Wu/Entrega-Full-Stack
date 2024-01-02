@@ -42,8 +42,8 @@ export class ComunidadesController {
   }
 
   @Public()
-  @Get(':nombre')
-  findByName(@Param('nombre') nombre: string) {
+  @Get('/name/:nombre')
+  getByName(@Param('nombre') nombre: string) {
     return this.comunidadesService.getByName(nombre);
   }
 

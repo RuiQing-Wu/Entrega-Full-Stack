@@ -25,8 +25,9 @@ export class ComunidadesServiceImpl extends IComunidadesService {
     return this.comunidadesRepository.create(comunidad);
   }
 
-  getByName(nombre: string) {
-    return this.comunidadesRepository.getByName(nombre);
+  async getByName(nombre: string): Promise<Comunidad> {
+    const comunidad = await this.comunidadesRepository.getByName(nombre);
+    return comunidad;
   }
 
   findAll() {

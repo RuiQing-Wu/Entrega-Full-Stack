@@ -13,7 +13,6 @@ import { ComunidadesRepositoryMongo } from "./repositories/comunidades.repositor
   imports: [
     MongooseModule.forFeature([{ name: Comunidad.name, schema: ComunidadSchema }]),
   ],
-
   controllers: [ComunidadesController],
   providers: [
     {

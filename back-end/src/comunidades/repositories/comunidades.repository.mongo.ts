@@ -53,9 +53,8 @@ export class ComunidadesRepositoryMongo extends ComunidadesRepository {
         return this.transform(comunidad);
     }
 
-    async getByName(nombre: string): Promise<Comunidad> {
-        const comunidad = await this.comunidadModel.findOne({ nombre }).exec();
-
+    async getByName(name: string): Promise<Comunidad> {
+        const comunidad = await this.comunidadModel.findOne({ nombre:name });
         return this.transform(comunidad);
     }
 
