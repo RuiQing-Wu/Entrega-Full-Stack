@@ -5,13 +5,14 @@ import { IUserService } from 'src/users/interfaces/user.service.interface';
 
 @Injectable()
 export class AuthService {
+
   constructor(
     private usersService: IUserService,
     private jwtService: JwtService
   ) { }
 
   async signIn(username, pass) {
-    const user = await this.usersService.findOne(username);
+    const user = await this.usersService.getByName(username);
     if (user?.password !== pass) {
       throw new UnauthorizedException();
     }
@@ -24,9 +25,11 @@ export class AuthService {
 
   async signUp(createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
-    const payload = { sub: user.id, username: user.username, role: user.role };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    return user;
   }
+
+  async getProfile(id) {
+    const user = await this.usersService.getByName(id);
+    return user;
+}
 }

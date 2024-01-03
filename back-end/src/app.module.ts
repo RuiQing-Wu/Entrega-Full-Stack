@@ -12,6 +12,7 @@ import { CausasModule } from './causas/causas.module';
 import { SolicitudModule } from './solicitud/solicitud.module';
 import CacheConfigService from './data_base_service/cache.config.service';
 import MongooseConfigService from './data_base_service/mongo.config.service';
+import { Neo4jModule } from 'nest-neo4j/dist';
 
 @Module({
   imports: [
@@ -28,7 +29,16 @@ import MongooseConfigService from './data_base_service/mongo.config.service';
 
     CacheModule.registerAsync({  
       useClass: CacheConfigService,   
-    }),   
+    }),
+
+    /* Neo4jModule.forRoot({  
+        scheme: 'neo4j',
+        host: 'localhost',
+        port: '7687',
+        database: 'neo4j',
+        username: 'neo4j',
+        password: 'testtest',
+    }), */
     
     AuthModule,
     UsersModule,

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserInfo } from '../../store/module/user';
+import { removeUserInfo, setUserInfo } from '../../store/module/user';
+import { getProfileThunk } from '../../services/auth.service';
+import { removeToken } from '../../utils/utils';
 
 export default function Menu() {
-  const info = useSelector((state) => state.user.userInfo);
+  const user = useSelector((state) => state.user.userInfo);
   const [currentUser, setCurrentUser] = useState(undefined);
   const dispatch = useDispatch();
 
@@ -13,24 +15,15 @@ export default function Menu() {
     // eslint-disable-next-line no-console
     console.log('LogOut');
     setCurrentUser(undefined);
-    dispatch(setUserInfo({}));
+    dispatch(removeUserInfo());
+    dispatch(removeToken());
   }
 
-  // eslint-disable-next-line no-console
-  console.log(info);
-  // El useEffect soluciona el error al lanzar el logOut
   useEffect(() => {
-    // Solo ejecutar una vez al montar el componente
-    if (info.username !== '' && currentUser === undefined) {
-      setCurrentUser(info.username);
-      // eslint-disable-next-line no-console
-      console.log('Tipo usuario', info.tipoUsuario);
-      // eslint-disable-next-line no-console
-      console.log(info.username);
-      // eslint-disable-next-line no-console
-      console.log('Hello', currentUser);
-    }
-  }, [info.username, currentUser]); // Dependencia vacía para que solo se ejecute al montar el componente
+    dispatch(getProfileThunk());
+    // eslint-disable-next-line no-console
+    console.log('profile useEffect', user.username);
+  }, [currentUser]); // Dependencia vacía para que solo se ejecute al montar el componente
 
   return (
     <Navbar bg="light" expand="lg">
@@ -49,7 +42,7 @@ export default function Menu() {
           <NavLink to={'/listaCausas'} className="nav-link">
             Causas
           </NavLink>
-          {info.tipoUsuario === undefined && (
+          {user.username && (
             <>
               <NavLink to={'/comunidad'} className="nav-link">
                 Crear comunidad
@@ -64,9 +57,9 @@ export default function Menu() {
           )}
         </Nav>
         <Nav className="p-2">
-          {currentUser ? (
+          {user.username ? (
             <NavLink to={'/profile'} className="nav-link">
-              {info.username}
+              {user.username}
             </NavLink>
           ) : (
             <>
@@ -78,7 +71,7 @@ export default function Menu() {
               </NavLink>
             </>
           )}
-          {currentUser && (
+          {user.username && (
             <NavLink to="/login" className="nav-link" onClick={logOut}>
               LogOut
             </NavLink>

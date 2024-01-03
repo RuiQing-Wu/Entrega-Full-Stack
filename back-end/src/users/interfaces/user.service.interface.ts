@@ -1,6 +1,6 @@
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { CreateUserDto } from "../dto/create-user.dto";
-import { User } from "../users.service";
+import { User } from "../domain/user.domain";
 
 export abstract class IUserService {
     abstract create(createUserDto: CreateUserDto): Promise<User>;
@@ -8,4 +8,5 @@ export abstract class IUserService {
     abstract findOne(id: string): Promise<User>;
     abstract update(id: string, updateUserDto: UpdateUserDto);
     abstract remove(id: string): Promise<User>;
+    abstract getByName(name: string): Promise<User>;
 }

@@ -1,14 +1,18 @@
 import './Profile.css';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function Profile() {
   const initialUser = {
-    nombre: 'John Doe',
+    username: 'John Doe',
     telefono: '123456789',
     ciudad: 'Ciudad Ejemplo',
     pais: 'País Ejemplo',
     esAdministrador: true,
+    role: 'ROLE_ADMIN',
   };
+
+  const userSelected = useSelector((state) => state.user.userInfo);
 
   const [user, setUser] = useState({ ...initialUser });
   const [isEditing, setIsEditing] = useState(false);
@@ -51,7 +55,7 @@ export default function Profile() {
                   className="form-control"
                 />
               ) : (
-                user.nombre
+                userSelected.username
               )}
             </p>
             <p>

@@ -11,7 +11,7 @@ export enum Role {
 }
 @Injectable()
 export class UsersServiceImp extends IUserService {
-
+  
   constructor(
     @Inject(UsersRepository)
     private usersRepository: UsersRepository,
@@ -19,9 +19,9 @@ export class UsersServiceImp extends IUserService {
     super();
   }
 
-
   create(createUserDto: CreateUserDto) {
     const user = new User({
+      role: Role.User,
       ...createUserDto,
     });
 
@@ -31,17 +31,20 @@ export class UsersServiceImp extends IUserService {
   findAll(): Promise<any[]> {
     throw new Error('Method not implemented.');
   }
+
   findOne(id: string) {
-    return null;
+    return this.usersRepository.get(id);
   }
+
   update(id: string, updateUserDto: UpdateUserDto) {
     throw new Error('Method not implemented.');
   }
+
   remove(id: string): Promise<any> {
     throw new Error('Method not implemented.');
   }
 
-
+  async getByName(name: string): Promise<User> {
+    return this.usersRepository.getByName(name);
+  }
 }
-export { User };
-

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button, Col } from 'react-bootstrap';
 import { useState } from 'react';
 import ErrorMessage from '../../component/MensajeError';
+import { registerUser } from '../../services/auth.service';
 
 export default function Registro() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function Registro() {
   const [telefono, setTelefono] = useState('');
   const [ciudad, setCiudad] = useState('');
   const [pais, setPais] = useState('');
+
   const [usernameError, setUsernameError] = useState('');
   const [telefonoError, setTelefonoError] = useState('');
   const [ciudadError, setCiudadError] = useState('');
@@ -26,9 +28,9 @@ export default function Registro() {
     setTelefono(event.target.value);
     setTelefonoError('');
 
-    if (!/^\d+$/.test(event.target.value)) {
+    /* if (!/^\d+$/.test(event.target.value)) {
       setTelefonoError('Ingresa solo números en el teléfono');
-    }
+    } */
   }
 
   function handleCiudadInput(event) {
@@ -46,9 +48,9 @@ export default function Registro() {
     setPasswordError('');
   }
 
-  async function registerUser(event) {
+  async function registrarUser(event) {
     // eslint-disable-next-line no-console
-    console.log('Login');
+    console.log('Registrar');
     event.preventDefault();
 
     // Resetear los errores
@@ -85,18 +87,25 @@ export default function Registro() {
     }
 
     // TODO Llamar a la API para iniciar sesión
-    // const response = await loginUser(username, password);
+    const response = await registerUser(username, password);
 
-    // TODO PROCESAR LA RESPUESTA DE LA API
+    // eslint-disable-next-line no-console
+    console.log(response);
 
-    // Navegar a la página de inicio
-    navigate('/login');
+    // Procesar respuesta exitosa
+    if (response.status === 201) {
+      // Navegar a la página de inicio
+      navigate('/login');
+    } else {
+      // eslint-disable-next-line no-alert
+      navigate('/registro');
+    }
   }
 
   return (
     <div id="PaginaRegistro">
       <h1>Registrar</h1>
-      <Form onSubmit={registerUser}>
+      <Form onSubmit={registrarUser}>
         <Col sd={10} md={10} lg={8} className="mx-auto">
           <Form.Group className="mb-3">
             <Form.Label htmlFor="username">User</Form.Label>

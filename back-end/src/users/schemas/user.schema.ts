@@ -5,6 +5,7 @@ export type UserDocument = HydratedDocument<UserMongoModel>;
 
 @Schema()
 export class UserMongoModel {
+
     @Prop({ required: true })
     username: string;
         

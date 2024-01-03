@@ -1,8 +1,8 @@
-import { Model } from "mongoose";
+import { HydratedDocument, Model } from "mongoose";
 import { UserMongoModel } from "../schemas/user.schema";
 import { UsersRepository } from "./users.repository";
 import { InjectModel } from "@nestjs/mongoose";
-import { User } from "../users.service";
+import { User } from "../domain/user.domain";
 
 export class UsersRepositoryMongo extends UsersRepository {
 
@@ -13,9 +13,18 @@ export class UsersRepositoryMongo extends UsersRepository {
         super();
     }
 
-    getByName(name: string): Promise<any> {
-        throw new Error("Method not implemented.");
-    }
+    private toUserDomain(userMongo: HydratedDocument<UserMongoModel>): User {
+        if (userMongo) {
+          const user = new User({
+            id: userMongo._id.toString(),
+            username: userMongo.username,
+            password: userMongo.password,
+            role: userMongo.role,
+          });
+
+          return user;
+        }
+      }
 
     async create(item: User): Promise<User> {
         const createdUserMongo = await this.userModel.create(item); // modelo mongo
@@ -29,9 +38,11 @@ export class UsersRepositoryMongo extends UsersRepository {
         return newUser;
     }
 
-    get(id: string): Promise<any> {
-        throw new Error("Method not implemented.");
+    async get(id: string): Promise<User> {
+        const userMongo = await this.userModel.findById(id).exec();
+        return this.toUserDomain(userMongo);
     }
+    
     getAll(): Promise<any[]> {
         throw new Error("Method not implemented.");
     }
@@ -40,6 +51,11 @@ export class UsersRepositoryMongo extends UsersRepository {
     }
     delete(id: string): Promise<any> {
         throw new Error("Method not implemented.");
+    }
+
+    async getByName(name: string): Promise<User> {
+        const userMongo = await this.userModel.findOne({ username: name }).exec();
+        return this.toUserDomain(userMongo);
     }
 
 }

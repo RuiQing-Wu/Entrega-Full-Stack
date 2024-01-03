@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Button, Col } from 'react-bootstrap';
 import './Login.css';
 import ErrorMessage from '../../component/MensajeError';
-import { setTokenRedux, setUserInfo } from '../../store/module/user';
+import { setTokenRedux } from '../../store/module/user';
 import { login } from '../../services/auth.service';
 
 export default function Login() {
@@ -28,7 +28,7 @@ export default function Login() {
 
   async function loginUser(event) {
     // eslint-disable-next-line no-console
-    // console.log('Login');
+    console.log('Login');
     event.preventDefault();
 
     // Resetear los errores
@@ -49,13 +49,18 @@ export default function Login() {
     // TODO Llamar a la API para iniciar sesión
     const response = await login(username, password);
     // eslint-disable-next-line no-console
-    console.log(response);
+    console.log(response.access_token);
 
-    dispatch(setTokenRedux('MiToken'));
-    dispatch(setUserInfo({ username }));
-    // TODO PROCESAR LA RESPUESTA DE LA API
+    // Procesar la respuesta de la API
+    if (response.access_token === undefined) {
+      // Mostrar un mensaje de error
+      setUsernameError('Usuario o contraseña incorrectos');
+      setPasswordError('Usuario o contraseña incorrectos');
+      return;
+    }
 
-    // Navegar a la página de inicio
+    dispatch(setTokenRedux(response.access_token));
+    window.location.reload(true);
     navigate('/');
   }
 

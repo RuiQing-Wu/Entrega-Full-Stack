@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { User, UsersServiceImp } from './users.service';
+import { UsersServiceImp } from './users.service';
 import { IUserService } from './interfaces/user.service.interface';
 import { UsersRepository } from './repositories/users.repository';
 import { UsersRepositoryMongo } from './repositories/users.repository.mongo';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserMongoModel, UserSchema } from './schemas/user.schema';
+import { UserSchema } from './schemas/user.schema';
+import { User } from './domain/user.domain';
 
 @Module({
   
