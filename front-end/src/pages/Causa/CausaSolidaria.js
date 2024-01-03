@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { useState } from 'react';
+import { saveCausa } from '../../services/causas.service';
 import './CausaSolidaria.css';
 import ErrorMessage from '../../component/MensajeError';
 
@@ -57,6 +58,17 @@ export default function Causa() {
     if (fechaFin === '') {
       setFechaFinError('La fecha de fin no puede estar vacía');
       return;
+    }
+
+    try {
+      const response = await saveCausa(
+        titulo,
+        descripcion,
+        fechaInicio,
+        fechaFin,
+      );
+    } catch (error) {
+      throw new Error('Error al crear la causa');
     }
 
     navigate(`/causa/${titulo}`, {

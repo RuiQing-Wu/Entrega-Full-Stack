@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs } from 'react-bootstrap';
+import { getCausas } from '../../services/causas.service';
 import CardComunidad from '../../component/CardComunidad';
 import StackAccionSolidaria from '../../component/StackAccionSolidaria';
 import CardExternalProfile from '../../component/CardExternalProfile';
@@ -15,8 +16,6 @@ export default function MostrarComunidad() {
   const [popupMessage, setPopupMessage] = React.useState('');
 
   const onApoyarComunidadClicked = () => {
-    // TODO: Implementar apoyar comunidad
-
     setTimeout(() => {
       navigate(
         '.',
@@ -37,9 +36,20 @@ export default function MostrarComunidad() {
     return <div>No hay datos de la comunidad</div>;
   }
 
+  async function causas() {
+    try {
+      const response = await getCausas();
+      const causa = response;
+    } catch (errorGet) {
+      throw new Error(
+        'Error al obtener las causas. Por favor, inténtalo de nuevo.',
+      );
+    }
+  }
+
   return (
     <div>
-      <Breadcrumb>
+      <Breadcrumb className="p-2">
         <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
         <Breadcrumb.Item href="/listaComunidades">Comunidades</Breadcrumb.Item>
         <Breadcrumb.Item active>{comunidad.nombre}</Breadcrumb.Item>

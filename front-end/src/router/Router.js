@@ -13,6 +13,7 @@ import {
   Error,
   MostrarCausa,
   MostrarAcciones,
+  BuscarCausas,
 } from '../pages/index';
 import App from '../App';
 import AuthRoute from '../component/AuthRoute';
@@ -40,7 +41,7 @@ const router = createBrowserRouter([
         path: '/Profile/:nombrePerfil',
         element: (
           <AuthRoute>
-            <MostrarInformacionPerfil />,
+            <MostrarInformacionPerfil />
           </AuthRoute>
         ),
       },
@@ -58,7 +59,7 @@ const router = createBrowserRouter([
         path: '/comunidad/:nombreComunidad',
         element: (
           <AuthRoute>
-            <MostrarComunidad />,
+            <MostrarComunidad />
           </AuthRoute>
         ),
       },
@@ -67,7 +68,16 @@ const router = createBrowserRouter([
         path: '/listaComunidades',
         element: (
           <AuthRoute>
-            <BuscarComunidades />,
+            <BuscarComunidades />
+          </AuthRoute>
+        ),
+      },
+      {
+        name: 'ListaCausas',
+        path: '/listaCausas',
+        element: (
+          <AuthRoute>
+            <BuscarCausas />
           </AuthRoute>
         ),
       },

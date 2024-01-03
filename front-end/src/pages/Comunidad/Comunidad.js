@@ -23,8 +23,6 @@ export default function Comunidad() {
   }
 
   async function crearComunidad(event) {
-    // eslint-disable-next-line no-console
-    console.log('Login');
     event.preventDefault();
 
     // Resetear los errores
@@ -54,11 +52,8 @@ export default function Comunidad() {
     // TODO Llamar a la API para iniciar sesión
     try {
       const response = await saveComunidad(nombre, descripcion, formattedDate);
-      // eslint-disable-next-line no-console
-      console.log(response);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
+      throw new Error('Error al crear la comunidad');
     }
 
     // Navegar a la página que contiene los detalles de la nueva comunidad
@@ -83,7 +78,7 @@ export default function Comunidad() {
             type="text"
             className="form-control"
             id="nombre"
-            placeholder="NombreDeComunidad"
+            placeholder="Nombre de la comunidad"
             onChange={handleNombreInput}
           />
           {nombreError && <ErrorMessage message={nombreError} />}
@@ -96,7 +91,7 @@ export default function Comunidad() {
             type="text"
             className="form-control"
             id="descripcion"
-            placeholder="DescripcionDeComunidad"
+            placeholder="Descripcion de la comunidad"
             onChange={handleDescripcionInput}
           />
           {descripcionError && <ErrorMessage message={descripcionError} />}

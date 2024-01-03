@@ -11,6 +11,7 @@ import BuscarComunidades from './Comunidad/ListaComunidades';
 import MostrarInformacionPerfil from './Profile/ExternalProfile';
 import Profile from './Profile/Profile';
 import MostrarAcciones from './Accion/VerAccionSolidaria';
+import BuscarCausas from './Causa/ListarCausa';
 
 export {
   Home,
@@ -26,4 +27,5 @@ export {
   MostrarCausa,
   Error,
   MostrarAcciones,
+  BuscarCausas,
 };

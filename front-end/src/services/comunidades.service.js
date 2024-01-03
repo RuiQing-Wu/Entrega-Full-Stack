@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000/comunidades';
+const BASE_URL = 'http://localhost:3001/comunidades';
 
 async function saveComunidad(nombre, descripcion, fechaInicio) {
   const response = await fetch(`${BASE_URL}`, {

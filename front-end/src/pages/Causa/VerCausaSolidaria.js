@@ -16,7 +16,7 @@ export default function MostrarCausa() {
 
   return (
     <div>
-      <Breadcrumb>
+      <Breadcrumb className="p-2">
         <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
         <Breadcrumb.Item href="/causa">Causas solidarias</Breadcrumb.Item>
         <Breadcrumb.Item active>{causa.titulo}</Breadcrumb.Item>

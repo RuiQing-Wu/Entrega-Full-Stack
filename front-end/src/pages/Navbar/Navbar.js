@@ -46,6 +46,9 @@ export default function Menu() {
           <NavLink to={'/listaComunidades'} className="nav-link">
             Comunidades
           </NavLink>
+          <NavLink to={'/listaCausas'} className="nav-link">
+            Causas
+          </NavLink>
           {info.tipoUsuario === undefined && (
             <>
               <NavLink to={'/comunidad'} className="nav-link">
