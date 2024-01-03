@@ -13,7 +13,7 @@ const CardAccionSolidaria = ({ titulo, objetivos, progreso }) => {
           <h5 className="card-title">{titulo}</h5>
           <h6>Objetivos:</h6>
           <ul>{listaObjetivos}</ul>
-          <h6>Progreso:</h6>
+          <h6>Progreso: {progreso}</h6>
         </div>
       </div>
     </div>

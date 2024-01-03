@@ -6,7 +6,8 @@ const CardCausaSolidaria = ({
   descripcion,
   fechaInicio,
   fechaFin,
-  onAddToCartClicked,
+  accionSolidaria,
+  idComunidad,
 }) => {
   return (
     <div>
@@ -17,6 +18,8 @@ const CardCausaSolidaria = ({
           <p className="card-text">{descripcion}</p>
           <p className="card-text">{fechaInicio}</p>
           <p className="card-text">{fechaFin}</p>
+          <p className="card-text">{accionSolidaria}</p>
+          <p className="card-text">{idComunidad}</p>
         </div>
       </div>
     </div>

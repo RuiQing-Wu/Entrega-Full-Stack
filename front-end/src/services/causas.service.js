@@ -1,7 +1,13 @@
 const BASE_URL = 'http://localhost:3001/causas';
 
-async function saveCausa(titulo, descripcion, fechaInicio, fechaFin) {
-  const response = await fetch(`${BASE_URL}`, {
+async function saveCausa(
+  titulo,
+  descripcion,
+  fechaInicio,
+  fechaFin,
+  idComunidad,
+) {
+  const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -11,22 +17,31 @@ async function saveCausa(titulo, descripcion, fechaInicio, fechaFin) {
       descripcion,
       fechaInicio,
       fechaFin,
+      accionSolidaria: [],
+      idComunidad,
     }),
   });
+
   const data = await response.json();
   return data;
 }
 
 async function getCausas() {
-  const response = await fetch(`${BASE_URL}`);
+  const response = await fetch(BASE_URL);
   const data = await response.json();
   return data;
 }
 
-async function getCausaByName(nombre) {
-  const response = await fetch(`${BASE_URL}/name/${nombre}`);
+async function getCausa(id) {
+  const response = await fetch(`${BASE_URL}/${id}`);
   const data = await response.json();
   return data;
 }
 
-export { saveCausa, getCausas, getCausaByName };
+async function getCausasByName(name) {
+  const response = await fetch(`${BASE_URL}/name/${name}`);
+  const data = await response.json();
+  return data;
+}
+
+export { saveCausa, getCausas, getCausa, getCausasByName };

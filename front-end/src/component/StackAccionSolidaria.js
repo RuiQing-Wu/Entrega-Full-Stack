@@ -2,10 +2,16 @@ import React from 'react';
 import { Stack, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-export default function StackAccionSolidaria({ titulo, objetivos, progreso }) {
+export default function StackAccionSolidaria({
+  causa,
+  titulo,
+  objetivos,
+  progreso,
+}) {
   const navigate = useNavigate();
 
   function handleRedirecciónAAccion(
+    causaAccion,
     tituloAccion,
     objetivosAccion,
     progresoAccion,
@@ -13,6 +19,7 @@ export default function StackAccionSolidaria({ titulo, objetivos, progreso }) {
     if (tituloAccion !== ' ') {
       navigate(`/accion/${tituloAccion}`, {
         state: {
+          causaAccion,
           tituloAccion,
           ObjetivosAccion: objetivosAccion,
           progresoAccion,
@@ -33,7 +40,7 @@ export default function StackAccionSolidaria({ titulo, objetivos, progreso }) {
           <div className="p-2">{progreso}</div>
           <Button
             onClick={() =>
-              handleRedirecciónAAccion(titulo, objetivos, progreso)
+              handleRedirecciónAAccion(causa, titulo, objetivos, progreso)
             }
             variant="outline-primary"
             size="sm"

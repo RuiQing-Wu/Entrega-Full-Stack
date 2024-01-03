@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs } from 'react-bootstrap';
 import { getCausas } from '../../services/causas.service';
 import CardComunidad from '../../component/CardComunidad';
-import StackAccionSolidaria from '../../component/StackAccionSolidaria';
+import StackCausaSolidaria from '../../component/StackCausaSolidaria';
 import CardExternalProfile from '../../component/CardExternalProfile';
 import Popup from '../../component/Popup';
 
@@ -47,11 +47,21 @@ export default function MostrarComunidad() {
     }
   }
 
+  function onHomeClicked() {
+    navigate('/');
+  }
+
+  function onComunidadesClicked() {
+    navigate('/listaComunidades');
+  }
+
   return (
     <div>
       <Breadcrumb className="p-2">
-        <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-        <Breadcrumb.Item href="/listaComunidades">Comunidades</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onComunidadesClicked}>
+          Comunidades
+        </Breadcrumb.Item>
         <Breadcrumb.Item active>{comunidad.nombre}</Breadcrumb.Item>
       </Breadcrumb>
 
@@ -68,7 +78,14 @@ export default function MostrarComunidad() {
         className="mb-3"
       >
         <Tab eventKey="causasSolidarias" title="Causas solidarias">
-          <StackAccionSolidaria titulo={'accion1'} objetivos={objetivos} />
+          <StackCausaSolidaria
+            titulo={'titulo1'}
+            descripcion={'descripcion1'}
+            fechaInicio={'2024/12/12'}
+            fechaFin={'2024/12/13'}
+            accionSolidaria={[]}
+            idComunidad={'idComunidad1'}
+          />
         </Tab>
         <Tab eventKey="seguidores" title="Seguidores">
           <CardExternalProfile

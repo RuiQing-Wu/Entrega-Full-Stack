@@ -1,7 +1,7 @@
 const BASE_URL = 'http://localhost:3001/comunidades';
 
 async function saveComunidad(nombre, descripcion, fechaInicio) {
-  const response = await fetch(`${BASE_URL}`, {
+  const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -14,7 +14,7 @@ async function saveComunidad(nombre, descripcion, fechaInicio) {
 }
 
 async function getComunidades() {
-  const response = await fetch(`${BASE_URL}`);
+  const response = await fetch(BASE_URL);
   const data = await response.json();
   return data;
 }

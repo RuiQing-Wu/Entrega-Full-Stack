@@ -1,12 +1,21 @@
 import React from 'react';
 import { Breadcrumb, Tabs, Tab, Col } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import StackAccionSolidaria from '../../component/StackAccionSolidaria';
 
 export default function MostrarCausa() {
   const location = useLocation();
   const causa = location.state;
+  const navigate = useNavigate();
+
+  function onHomeClicked() {
+    navigate('/');
+  }
+
+  function onCausasClicked() {
+    navigate('/listaCausas');
+  }
 
   if (!causa) {
     return <div>No hay datos de la causa</div>;
@@ -17,8 +26,10 @@ export default function MostrarCausa() {
   return (
     <div>
       <Breadcrumb className="p-2">
-        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-        <Breadcrumb.Item href="/causa">Causas solidarias</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onCausasClicked}>
+          Causas-solidarias
+        </Breadcrumb.Item>
         <Breadcrumb.Item active>{causa.titulo}</Breadcrumb.Item>
       </Breadcrumb>
 
@@ -41,6 +52,7 @@ export default function MostrarCausa() {
           </Tab>
           <Tab eventKey="acciones" title="Acciones solidarias">
             <StackAccionSolidaria
+              causa={causa}
               titulo={'accion1'}
               objetivos={objetivosAccion}
               progreso={'20%'}

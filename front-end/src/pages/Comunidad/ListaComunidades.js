@@ -79,14 +79,16 @@ export default function BuscarComunidades() {
     }
   }
 
+  function onHomeClicked() {
+    navigate('/');
+  }
+
   return (
     <div>
       <div>
         <Breadcrumb className="p-2">
-          <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href="/listaComunidades">
-            Comunidades
-          </Breadcrumb.Item>
+          <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
+          <Breadcrumb.Item active>Comunidades</Breadcrumb.Item>
         </Breadcrumb>
       </div>
       <div className="container">

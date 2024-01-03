@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Breadcrumb, Stack } from 'react-bootstrap';
-import { getCausas, getCausaByName } from '../../services/causas.service';
+import { getCausas, getCausasByName } from '../../services/causas.service';
 import Busqueda from '../../component/Buscar';
 
 export default function BuscarCausas() {
@@ -18,6 +18,14 @@ export default function BuscarCausas() {
     );
   } */
 
+  function onHomeClicked() {
+    navigate('/');
+  }
+
+  function onCausasClicked() {
+    navigate('/listaCausas');
+  }
+
   async function fetchData() {
     try {
       const response = await getCausas();
@@ -30,7 +38,7 @@ export default function BuscarCausas() {
 
   async function fetchDataByName() {
     try {
-      const response = await getCausaByName(busqueda);
+      const response = await getCausasByName(busqueda);
       const causa = response ? [response] : [];
       setCausasFiltradas(causa);
     } catch (errorGet) {
@@ -69,6 +77,8 @@ export default function BuscarCausas() {
           descripcion: causaSeleccionada.descripcion,
           fechaInicio: causaSeleccionada.fechaInicio,
           fechaFin: causaSeleccionada.fechaFin,
+          accionSolidaria: causaSeleccionada.accionSolidaria,
+          idComunidad: causaSeleccionada.idComunidad,
         },
       });
     }
@@ -78,8 +88,8 @@ export default function BuscarCausas() {
     <div>
       <div>
         <Breadcrumb className="p-2">
-          <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href="/listaCausas">Causas</Breadcrumb.Item>
+          <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
+          <Breadcrumb.Item active>Causas-solidarias</Breadcrumb.Item>
         </Breadcrumb>
       </div>
       <div className="container">

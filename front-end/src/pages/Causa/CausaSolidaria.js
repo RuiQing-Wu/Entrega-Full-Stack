@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col, Container } from 'react-bootstrap';
+import { Breadcrumb, Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import { saveCausa } from '../../services/causas.service';
 import './CausaSolidaria.css';
@@ -81,80 +81,90 @@ export default function Causa() {
     });
   }
 
+  function onHomeClicked() {
+    navigate('/');
+  }
+
   return (
-    <div id="PaginaCausaSolidaria">
-      <h1>Causa solidaria</h1>
-      <Form className="needs-validation" noValidate onSubmit={CausaSolidaria}>
-        <Col sd={10} md={10} lg={8} className="mx-auto">
-          <Form.Group controlId="titulo" className="mb-3">
-            <Form.Label>Titulo</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Titulo de la causa solidaria"
-              className={`form-control ${tituloError ? 'is-invalid' : ''} ${
-                titulo && !tituloError ? 'is-valid' : ''
-              }`}
-              onChange={handleTituloInput}
-              value={titulo}
-              required
-            />
-            <div className="invalid-feedback">
-              <ErrorMessage message={tituloError} />
-            </div>
-          </Form.Group>
+    <div>
+      <Breadcrumb>
+        <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
+        <Breadcrumb.Item active>Crear-causa-solidaria</Breadcrumb.Item>
+      </Breadcrumb>
+      <div id="PaginaCausaSolidaria">
+        <h1>Causa solidaria</h1>
+        <Form className="needs-validation" noValidate onSubmit={CausaSolidaria}>
+          <Col sd={10} md={10} lg={8} className="mx-auto">
+            <Form.Group controlId="titulo" className="mb-3">
+              <Form.Label>Titulo</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Titulo de la causa solidaria"
+                className={`form-control ${tituloError ? 'is-invalid' : ''} ${
+                  titulo && !tituloError ? 'is-valid' : ''
+                }`}
+                onChange={handleTituloInput}
+                value={titulo}
+                required
+              />
+              <div className="invalid-feedback">
+                <ErrorMessage message={tituloError} />
+              </div>
+            </Form.Group>
 
-          <Form.Group controlId="descripcion" className="mb-3">
-            <Form.Label>Descripción</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              className={`form-control ${
-                descripcionError ? 'is-invalid' : ''
-              } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
-              onChange={handleDescripcionInput}
-              value={descripcion}
-              required
-            />
-            <div className="invalid-feedback">
-              <ErrorMessage message={descripcionError} />
-            </div>
-          </Form.Group>
+            <Form.Group controlId="descripcion" className="mb-3">
+              <Form.Label>Descripción</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                className={`form-control ${
+                  descripcionError ? 'is-invalid' : ''
+                } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+                onChange={handleDescripcionInput}
+                value={descripcion}
+                required
+              />
+              <div className="invalid-feedback">
+                <ErrorMessage message={descripcionError} />
+              </div>
+            </Form.Group>
 
-          <Form.Group controlId="fechaInicio" className="mb-3">
-            <Form.Label>Fecha de inicio</Form.Label>
-            <Form.Control
-              type="date"
-              className={`form-control ${
-                fechaInicioError ? 'is-invalid' : ''
-              } ${fechaInicio && !fechaInicioError ? 'is-valid' : ''}`}
-              onChange={handleFechaInicioInput}
-            />
-            <div className="invalid-feedback">
-              <ErrorMessage message={fechaInicioError} />
-            </div>
-          </Form.Group>
+            <Form.Group controlId="fechaInicio" className="mb-3">
+              <Form.Label>Fecha de inicio</Form.Label>
+              <Form.Control
+                type="date"
+                className={`form-control ${
+                  fechaInicioError ? 'is-invalid' : ''
+                } ${fechaInicio && !fechaInicioError ? 'is-valid' : ''}`}
+                onChange={handleFechaInicioInput}
+              />
+              <div className="invalid-feedback">
+                <ErrorMessage message={fechaInicioError} />
+              </div>
+            </Form.Group>
 
-          <Form.Group controlId="fechaFin" className="mb-3">
-            <Form.Label>Fecha de fin</Form.Label>
-            <Form.Control
-              type="date"
-              className={`form-control ${fechaFinError ? 'is-invalid' : ''} ${
-                fechaFin && !fechaFinError ? 'is-valid' : ''
-              }`}
-              onChange={handleFechaFinInput}
-            />
-            <div className="invalid-feedback">
-              <ErrorMessage message={fechaFinError} />
-            </div>
-          </Form.Group>
+            <Form.Group controlId="fechaFin" className="mb-3">
+              <Form.Label>Fecha de fin</Form.Label>
+              <Form.Control
+                type="date"
+                className={`form-control ${fechaFinError ? 'is-invalid' : ''} ${
+                  fechaFin && !fechaFinError ? 'is-valid' : ''
+                }`}
+                onChange={handleFechaFinInput}
+              />
+              <div className="invalid-feedback">
+                <ErrorMessage message={fechaFinError} />
+              </div>
+            </Form.Group>
 
-          <div className="mb-3 text-center">
-            <Button type="submit" className="btn btn-primary">
-              Submit
-            </Button>
-          </div>
-        </Col>
-      </Form>
+            <div className="mb-3 text-center">
+              <Button type="submit" className="btn btn-primary">
+                Submit
+              </Button>
+            </div>
+          </Col>
+        </Form>
+      </div>
     </div>
   );
 }

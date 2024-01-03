@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { Breadcrumb } from 'react-bootstrap';
 import { useState } from 'react';
 import { saveComunidad } from '../../services/comunidades.service';
 import ErrorMessage from '../../component/MensajeError';
@@ -66,40 +67,50 @@ export default function Comunidad() {
     });
   }
 
+  function onHomeClicked() {
+    navigate('/');
+  }
+
   return (
-    <div className="container">
-      <h1>Crear una nueva comunidad</h1>
-      <form onSubmit={crearComunidad}>
-        <div className="mb-3">
-          <label htmlFor="nombre" className="form-label">
-            Nombre de la comunidad
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="nombre"
-            placeholder="Nombre de la comunidad"
-            onChange={handleNombreInput}
-          />
-          {nombreError && <ErrorMessage message={nombreError} />}
-        </div>
-        <div className="mb-3">
-          <label htmlFor="descripcion" className="form-label">
-            Descripción breve de la comunidad
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="descripcion"
-            placeholder="Descripcion de la comunidad"
-            onChange={handleDescripcionInput}
-          />
-          {descripcionError && <ErrorMessage message={descripcionError} />}
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Crear comunidad
-        </button>
-      </form>
+    <div>
+      <Breadcrumb>
+        <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
+        <Breadcrumb.Item active>Crear-comunidad</Breadcrumb.Item>
+      </Breadcrumb>
+      <div className="container">
+        <h1>Crear una nueva comunidad</h1>
+        <form onSubmit={crearComunidad}>
+          <div className="mb-3">
+            <label htmlFor="nombre" className="form-label">
+              Nombre de la comunidad
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="nombre"
+              placeholder="Nombre de la comunidad"
+              onChange={handleNombreInput}
+            />
+            {nombreError && <ErrorMessage message={nombreError} />}
+          </div>
+          <div className="mb-3">
+            <label htmlFor="descripcion" className="form-label">
+              Descripción breve de la comunidad
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="descripcion"
+              placeholder="Descripcion de la comunidad"
+              onChange={handleDescripcionInput}
+            />
+            {descripcionError && <ErrorMessage message={descripcionError} />}
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Crear comunidad
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
