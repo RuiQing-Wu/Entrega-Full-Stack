@@ -47,7 +47,7 @@ const router = createBrowserRouter([
       },
       {
         name: 'Comunidad',
-        path: '/comunidad',
+        path: '/crear-comunidad',
         element: (
           <AuthRoute>
             <Comunidad />
@@ -65,12 +65,8 @@ const router = createBrowserRouter([
       },
       {
         name: 'ListaComunidades',
-        path: '/listaComunidades',
-        element: (
-          <AuthRoute>
-            <BuscarComunidades />
-          </AuthRoute>
-        ),
+        path: '/comunidades',
+        element: <BuscarComunidades />,
       },
       {
         name: 'ListaCausas',

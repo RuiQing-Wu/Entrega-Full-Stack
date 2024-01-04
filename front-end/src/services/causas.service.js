@@ -44,4 +44,10 @@ async function getCausasByName(name) {
   return data;
 }
 
-export { saveCausa, getCausas, getCausa, getCausasByName };
+async function getCausasToComunity() {
+  const response = await fetch(`${BASE_URL}/causa/}`);
+  const data = await response.json();
+  return data;
+}
+
+export { saveCausa, getCausas, getCausa, getCausasByName, getCausasToComunity };

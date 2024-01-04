@@ -9,6 +9,8 @@ export default function StackCausaSolidaria({
   fechaFin,
   accionSolidaria,
   idComunidad,
+  onApoyarCausaClicked,
+  index,
 }) {
   const navigate = useNavigate();
 
@@ -27,6 +29,10 @@ export default function StackCausaSolidaria({
     }
   }
 
+  const handleApoyarClick = () => {
+    onApoyarCausaClicked(index);
+  };
+
   return (
     <div>
       <Stack gap={2}>
@@ -37,10 +43,17 @@ export default function StackCausaSolidaria({
           <div className="p-2">{fechaFin}</div>
           <Button
             onClick={() => handleRedirecciónACausa()}
-            variant="outline-primary"
+            variant="outline-secondary"
             size="sm"
           >
             Ver más detalles
+          </Button>
+          <Button
+            onClick={handleApoyarClick}
+            variant="outline-primary"
+            size="sm"
+          >
+            Apoyar Causa
           </Button>
         </Stack>
       </Stack>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Stack } from 'react-bootstrap';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 
 export default function Busqueda({
   titulo,
@@ -10,26 +10,27 @@ export default function Busqueda({
 }) {
   return (
     <div className="mb-4">
-      <h1>Buscar {titulo}</h1>
+      <h5>Buscar {titulo}</h5>
       <Form onSubmit={handleBuscar}>
-        <div>
-          <label htmlFor="busqueda" className="form-label">
-            Nombre de la {titulo}
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="busqueda"
-            placeholder="Buscar ..."
-            value={busqueda}
-            onChange={handleBusquedaInput}
-          />
-          <label>{error}</label>
-        </div>
-        <Button type="submit" className="btn btn-primary">
-          Buscar {titulo}
-        </Button>
+        <Row className="d-flex flex-wrap">
+          <Col xs={12} md={8} lg={9} className="p-1">
+            <input
+              type="text"
+              className="form-control"
+              id="busqueda"
+              placeholder="Filtrar por nombre..."
+              value={busqueda}
+              onChange={handleBusquedaInput}
+            />
+          </Col>
+          <Col xs={12} md={4} lg={3} className="p-1">
+            <Button type="submit" className="btn btn-primary">
+              Buscar {titulo}
+            </Button>
+          </Col>
+        </Row>
       </Form>
+      <label>{error}</label>
     </div>
   );
 }

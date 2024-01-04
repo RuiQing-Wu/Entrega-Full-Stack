@@ -3,11 +3,11 @@ import { Row, Col, Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
-export default function Home({ comunidades = [] }) {
+export default function Home() {
   const navigate = useNavigate();
 
   function handleRedireccionAComunidades() {
-    navigate('/listaComunidades');
+    navigate('/comunidades');
   }
 
   return (

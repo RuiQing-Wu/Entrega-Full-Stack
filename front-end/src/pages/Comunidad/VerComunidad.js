@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs } from 'react-bootstrap';
 import { getCausas } from '../../services/causas.service';
@@ -10,12 +10,13 @@ import Popup from '../../component/Popup';
 export default function MostrarComunidad() {
   const location = useLocation();
   const comunidad = location.state;
+  const [todasLasCausas, setTodasLasCausas] = React.useState([]);
   const navigate = useNavigate();
   const objetivos = ['objetivo1', 'objetivo2'];
 
   const [popupMessage, setPopupMessage] = React.useState('');
 
-  const onApoyarComunidadClicked = () => {
+  const onApoyarCausaClicked = () => {
     setTimeout(() => {
       navigate(
         '.',
@@ -28,18 +29,15 @@ export default function MostrarComunidad() {
         { replace: true },
       );
 
-      setPopupMessage('¡Comunidad apoyada exitosamente!');
+      setPopupMessage('¡Causa apoyada exitosamente!');
     }, 1000);
   };
-
-  if (!comunidad) {
-    return <div>No hay datos de la comunidad</div>;
-  }
 
   async function causas() {
     try {
       const response = await getCausas();
-      const causa = response;
+      const totalCausas = response;
+      setTodasLasCausas(totalCausas);
     } catch (errorGet) {
       throw new Error(
         'Error al obtener las causas. Por favor, inténtalo de nuevo.',
@@ -47,12 +45,19 @@ export default function MostrarComunidad() {
     }
   }
 
+  if (!comunidad) {
+    return <div>No hay datos de la comunidad</div>;
+  }
+  causas();
+  console.log(comunidad.id);
+  console.log(comunidad.fechaInicio);
+
   function onHomeClicked() {
     navigate('/');
   }
 
   function onComunidadesClicked() {
-    navigate('/listaComunidades');
+    navigate('/comunidades');
   }
 
   return (
@@ -69,7 +74,6 @@ export default function MostrarComunidad() {
         nombre={comunidad.nombre}
         descripcion={comunidad.descripcion}
         fechaInicio={comunidad.fechaInicio}
-        onApoyarComunidadClicked={onApoyarComunidadClicked}
       />
 
       <Tabs
@@ -77,16 +81,22 @@ export default function MostrarComunidad() {
         id="uncontrolled-tab-example"
         className="mb-3"
       >
-        <Tab eventKey="causasSolidarias" title="Causas solidarias">
-          <StackCausaSolidaria
-            titulo={'titulo1'}
-            descripcion={'descripcion1'}
-            fechaInicio={'2024/12/12'}
-            fechaFin={'2024/12/13'}
-            accionSolidaria={[]}
-            idComunidad={'idComunidad1'}
-          />
-        </Tab>
+        {todasLasCausas.length > 0 && (
+          <Tab eventKey="causasSolidarias" title="Causas solidarias">
+            {todasLasCausas?.map((cau, index) => (
+              <StackCausaSolidaria
+                titulo={cau.titulo}
+                descripcion={cau.descripcion}
+                fechaInicio={cau.fechaInicio}
+                fechaFin={cau.fechaFin}
+                accionSolidaria={[]}
+                idComunidad={comunidad.id}
+                onApoyarCausaClicked={onApoyarCausaClicked}
+                index={index}
+              />
+            ))}
+          </Tab>
+        )}
         <Tab eventKey="seguidores" title="Seguidores">
           <CardExternalProfile
             nombre={'nombre1'}

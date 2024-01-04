@@ -36,15 +36,15 @@ export default function Menu() {
           <NavLink to={'/'} className="nav-link">
             Home
           </NavLink>
-          <NavLink to={'/listaComunidades'} className="nav-link">
+          <NavLink to={'/comunidades'} className="nav-link">
             Comunidades
-          </NavLink>
-          <NavLink to={'/listaCausas'} className="nav-link">
-            Causas
           </NavLink>
           {user.username && (
             <>
-              <NavLink to={'/comunidad'} className="nav-link">
+              <NavLink to={'/listaCausas'} className="nav-link">
+                Causas
+              </NavLink>
+              <NavLink to={'/crear-comunidad'} className="nav-link">
                 Crear comunidad
               </NavLink>
               <NavLink to={'/causa'} className="nav-link">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Breadcrumb, Stack } from 'react-bootstrap';
+import { Breadcrumb, Stack, Button } from 'react-bootstrap';
 import {
   getComunidades,
   getComunidadByName,
@@ -13,12 +13,10 @@ export default function BuscarComunidades() {
   const [comunidadesFiltradas, setComunidadesFiltradas] = useState([]);
   const [error, setError] = useState('');
 
-  function filtrarComunidades() {
-    setComunidadesFiltradas((comunidades) =>
-      comunidades.filter((comunidad) =>
-        comunidad.nombre.toLowerCase().includes(busqueda.toLowerCase()),
-      ),
-    );
+  function handleRedireccionarACrearComunidad() {
+    return () => {
+      navigate('/crear-comunidad');
+    };
   }
 
   async function fetchData() {
@@ -67,11 +65,12 @@ export default function BuscarComunidades() {
     const comunidadSeleccionada = comunidadesFiltradas.find(
       (comunidad) => comunidad.nombre === nombre,
     );
-
+    console.log('id', comunidadSeleccionada.id);
     if (comunidadSeleccionada) {
       navigate(`/comunidad/${nombre}`, {
         state: {
-          nombre,
+          id: comunidadSeleccionada.id,
+          nombre: comunidadSeleccionada.nombre,
           descripcion: comunidadSeleccionada.descripcion,
           fechaInicio: comunidadSeleccionada.fechaInicio,
         },
@@ -91,31 +90,44 @@ export default function BuscarComunidades() {
           <Breadcrumb.Item active>Comunidades</Breadcrumb.Item>
         </Breadcrumb>
       </div>
-      <div className="container">
-        <Busqueda
-          titulo={'comunidades'}
-          handleBuscar={handleBuscarComunidades}
-          handleBusquedaInput={handleBusquedaInput}
-          error={error}
-          handleRedireccionar={handleRedireccionarComunidad}
-          elementoFiltrado={comunidadesFiltradas}
-        />
-        {comunidadesFiltradas.length > 0 && (
-          <Stack gap={1}>
-            <h2>Comunidades encontradas:</h2>
-            {comunidadesFiltradas?.map((elemento, index) => (
-              <div className="p-1 elemento-item" key={index}>
-                {elemento.nombre}
-                <button
-                  className="btn btn-secondary btn-sm ms-2"
-                  onClick={() => handleRedireccionarComunidad(elemento.nombre)}
-                >
-                  <i className="fas fa-eye"></i> Ver Detalles
-                </button>
-              </div>
-            ))}
-          </Stack>
-        )}
+      <div className="d-flex flex-column m-auto w-75">
+        <div className="ms-auto p-2">
+          <Button
+            variant="outline-success"
+            size="sm"
+            onClick={handleRedireccionarACrearComunidad()}
+          >
+            Crear comunidad
+          </Button>
+        </div>
+        <div className="container">
+          <Busqueda
+            titulo={'comunidades'}
+            handleBuscar={handleBuscarComunidades}
+            handleBusquedaInput={handleBusquedaInput}
+            error={error}
+            handleRedireccionar={handleRedireccionarComunidad}
+            elementoFiltrado={comunidadesFiltradas}
+          />
+          {comunidadesFiltradas.length > 0 && (
+            <Stack gap={1}>
+              <h2>Comunidades encontradas:</h2>
+              {comunidadesFiltradas?.map((elemento, index) => (
+                <div className="p-1 elemento-item" key={index}>
+                  {elemento.nombre}
+                  <button
+                    className="btn btn-secondary btn-sm ms-2"
+                    onClick={() =>
+                      handleRedireccionarComunidad(elemento.nombre)
+                    }
+                  >
+                    <i className="fas fa-eye"></i> Ver Detalles
+                  </button>
+                </div>
+              ))}
+            </Stack>
+          )}
+        </div>
       </div>
     </div>
   );

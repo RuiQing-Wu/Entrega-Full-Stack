@@ -6,7 +6,6 @@ export default function CardComunidad({
   nombre,
   descripcion,
   fechaInicio,
-  onApoyarComunidadClicked,
 }) {
   return (
     <div id="cardComunidad" className="card">
@@ -15,9 +14,6 @@ export default function CardComunidad({
         <h5 className="card-title">{nombre}</h5>
         <p className="card-text">Descripción: {descripcion}</p>
         <p className="card-text">Fecha de creación: {fechaInicio}</p>
-        <button className="btn btn-primary" onClick={onApoyarComunidadClicked}>
-          <i className="bi bi-heart"></i> Apoyar Causa
-        </button>
       </div>
     </div>
   );
