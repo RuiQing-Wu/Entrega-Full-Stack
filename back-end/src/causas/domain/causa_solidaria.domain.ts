@@ -20,6 +20,15 @@ export class CausaSolidaria {
       accionSolidaria,
       comunidad,
       categorias,
+    }: {
+      id?: string,
+      titulo: string,
+      descripcion: string,
+      fechaInicio: Date,
+      fechaFin: Date,
+      accionSolidaria: AccionSolidaria[],
+      comunidad: string,
+      categorias: string[],
     }) {
       this.id = id;
       this.titulo = titulo;

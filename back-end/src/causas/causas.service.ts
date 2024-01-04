@@ -18,7 +18,6 @@ export class CausasService extends ICausasService{
 
   create(createCausaDto: CreateCausaDto): Promise<CausaSolidaria> {
     const causa = new CausaSolidaria({
-      id: createCausaDto.id,
       titulo: createCausaDto.titulo,
       descripcion: createCausaDto.descripcion,
       fechaInicio: createCausaDto.fechaInicio,

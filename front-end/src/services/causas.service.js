@@ -45,7 +45,7 @@ async function getCausasByName(name) {
 }
 
 async function getCausasByComunityId(idComunidad) {
-  const response = await fetch(`${BASE_URL}/idComunidad/${idComunidad}`);
+  const response = await fetch(`${BASE_URL}/comunidad/${idComunidad}`);
   const data = await response.json();
   return data;
 }

@@ -7,9 +7,6 @@ export type UserDocument = HydratedDocument<CausaMongoModel>;
 @Schema()
 export class CausaMongoModel {
   @Prop()
-  id: string;
-
-  @Prop()
   titulo: string;
 
   @Prop()
