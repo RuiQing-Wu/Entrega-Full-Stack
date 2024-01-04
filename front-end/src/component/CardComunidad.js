@@ -1,6 +1,7 @@
 import './Style/CardComunidad.css';
 import { useState } from 'react';
 import Solicitud from '../pages/Solicitud/Solicitud';
+import Apoyo from '../pages/ApoyarCausa/Apoyo';
 
 export default function CardComunidad({
   imageUrl,
@@ -9,8 +10,14 @@ export default function CardComunidad({
   fechaInicio,
 }) {
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowApoyo, setModalShowApoyo] = useState(false);
+
   function showModal() {
     setModalShow(true);
+  }
+
+  function showModalApoyo() {
+    setModalShowApoyo(true);
   }
 
   console.log(imageUrl);
@@ -31,6 +38,18 @@ export default function CardComunidad({
           onHide={() => setModalShow(false)}
           nombreUsuario="Cambiar Aqui por el nombre del usuario"
           nombreComunidad="Cambiar Aqui por el nombre de la comunidad"
+        />
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={showModalApoyo}
+        >
+          Apoyar
+        </button>
+        <Apoyo
+          show={modalShowApoyo}
+          onHide={() => setModalShowApoyo(false)}
+          nombreCausa="Cambiar Aqui por el nombre del causa"
         />
       </div>
     </div>
