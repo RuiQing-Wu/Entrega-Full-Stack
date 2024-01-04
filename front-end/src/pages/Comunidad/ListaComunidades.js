@@ -6,6 +6,7 @@ import {
   getComunidadByName,
 } from '../../services/comunidades.service';
 import Busqueda from '../../component/Buscar';
+import { getToken } from '../../utils/utils';
 
 export default function BuscarComunidades() {
   const navigate = useNavigate();
@@ -92,13 +93,15 @@ export default function BuscarComunidades() {
       </div>
       <div className="d-flex flex-column m-auto w-75">
         <div className="ms-auto p-2">
-          <Button
-            variant="outline-success"
-            size="sm"
-            onClick={handleRedireccionarACrearComunidad()}
-          >
-            Crear comunidad
-          </Button>
+          {getToken() && (
+            <Button
+              variant="outline-success"
+              size="sm"
+              onClick={handleRedireccionarACrearComunidad()}
+            >
+              Crear comunidad
+            </Button>
+          )}
         </div>
         <div className="container">
           <Busqueda

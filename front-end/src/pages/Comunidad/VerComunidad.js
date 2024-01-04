@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs } from 'react-bootstrap';
-import { getCausasByComunityId } from '../../services/causas.service';
+import { getCausas } from '../../services/causas.service';
 import CardComunidad from '../../component/CardComunidad';
 import StackCausaSolidaria from '../../component/StackCausaSolidaria';
 import CardExternalProfile from '../../component/CardExternalProfile';
@@ -35,7 +35,7 @@ export default function MostrarComunidad() {
 
   async function causas() {
     try {
-      const response = await getCausasByComunityId(comunidad.id);
+      const response = await getCausas(comunidad.id);
       const totalCausas = response;
       setTodasLasCausas(totalCausas);
     } catch (errorGet) {
@@ -72,11 +72,13 @@ export default function MostrarComunidad() {
       </Breadcrumb>
 
       <CardComunidad
+        imageUrl={'comunidad.jpeg'}
+        id={comunidad.id}
         nombre={comunidad.nombre}
         descripcion={comunidad.descripcion}
         fechaInicio={comunidad.fechaInicio}
       />
-
+      <img src="./public/comunidad.jpeg" alt="comunidad" />
       <Tabs
         defaultActiveKey="causasSolidarias"
         id="uncontrolled-tab-example"
