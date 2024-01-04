@@ -1,8 +1,11 @@
 import React from 'react';
+import './Style/CardAccionSolidaria.css';
 
-const CardAccionSolidaria = ({ titulo, objetivos, progreso }) => {
+const CardAccionSolidaria = ({ titulo, descripcion, objetivos, progreso }) => {
   const listaObjetivos = objetivos.map((objetivo, index) => (
-    <li key={index}>{objetivo}</li>
+    <p key={index} style={{ marginBottom: '5px' }}>
+      {index + 1}. {objetivo}
+    </p>
   ));
 
   return (
@@ -11,9 +14,11 @@ const CardAccionSolidaria = ({ titulo, objetivos, progreso }) => {
       <div id="CardAccionSolidaria" className="card mt-3">
         <div className="card-body">
           <h5 className="card-title">{titulo}</h5>
+          <h6>Descripción:</h6>
+          <p className="card-text">{descripcion}</p>
           <h6>Objetivos:</h6>
-          <ul>{listaObjetivos}</ul>
-          <h6>Progreso: {progreso}</h6>
+          <div id="lista-objetivos">{listaObjetivos}</div>
+          <h6>Progreso:</h6> <p>{progreso}%</p>
         </div>
       </div>
     </div>

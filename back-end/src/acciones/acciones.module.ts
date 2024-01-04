@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AccionesService } from './acciones.service';
+import { AccionesServiceImpl } from './acciones.service';
 import { AccionesController } from './acciones.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AccionSolidaria } from './domain/accion_solidaria.domain';
@@ -10,22 +10,23 @@ import { AccionesRepositoryMongo } from './repositories/acciones.repository.mong
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: AccionSolidaria.name, schema: AccionSchema }]),
+    MongooseModule.forFeature([
+      { name: AccionSolidaria.name, schema: AccionSchema },
+    ]),
   ],
 
   controllers: [AccionesController],
   providers: [
     {
       provide: IAccionService,
-      useClass: AccionesService
+      useClass: AccionesServiceImpl,
     },
     {
       provide: AccionesRepository,
-      useClass: AccionesRepositoryMongo
-    }
+      useClass: AccionesRepositoryMongo,
+    },
   ],
 
-  exports: [IAccionService, AccionesRepository]
+  exports: [IAccionService, AccionesRepository],
 })
-
-export class AccionesModule { }
+export class AccionesModule {}

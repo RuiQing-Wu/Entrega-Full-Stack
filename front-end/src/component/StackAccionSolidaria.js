@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export default function StackAccionSolidaria({
   causa,
   titulo,
+  descripcion,
   objetivos,
   progreso,
 }) {
@@ -13,6 +14,7 @@ export default function StackAccionSolidaria({
   function handleRedirecciónAAccion(
     causaAccion,
     tituloAccion,
+    descripcionAccion,
     objetivosAccion,
     progresoAccion,
   ) {
@@ -21,6 +23,7 @@ export default function StackAccionSolidaria({
         state: {
           causaAccion,
           tituloAccion,
+          descripcionAccion,
           ObjetivosAccion: objetivosAccion,
           progresoAccion,
         },
@@ -36,11 +39,18 @@ export default function StackAccionSolidaria({
       <Stack gap={2}>
         <Stack direction="horizontal" gap={2}>
           <div className="p-2">{titulo}</div>
+          <div className="p-2">{descripcion}</div>
           <div className="p-2">{listaObjetivos}</div>
           <div className="p-2">{progreso}</div>
           <Button
             onClick={() =>
-              handleRedirecciónAAccion(causa, titulo, objetivos, progreso)
+              handleRedirecciónAAccion(
+                causa,
+                titulo,
+                descripcion,
+                objetivos,
+                progreso,
+              )
             }
             variant="outline-primary"
             size="sm"

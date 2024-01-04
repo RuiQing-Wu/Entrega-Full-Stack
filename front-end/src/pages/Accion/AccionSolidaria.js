@@ -1,17 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Breadcrumb } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 import './AccionSolidaria.css';
 import ErrorMessage from '../../component/MensajeError';
+import { saveAccion } from '../../services/acciones.service';
 
 export default function Accion() {
   const navigate = useNavigate();
   const [titulo, setTitulo] = useState('');
+  const [descripcion, setDescripcion] = useState('');
   const [objetivo, setObjetivo] = useState('');
-  const [objetivos, setObjetivos] = useState([]);
+  const [objetivos, setObjetivos] = useState('');
   const [progreso, setProgreso] = useState(0);
 
   const [tituloError, setTituloError] = useState('');
+  const [descripcionError, setDescripcionError] = useState('');
   const [objetivoError, setObjetivoError] = useState('');
   const [progresoError, setProgresoError] = useState('');
 
@@ -20,16 +23,21 @@ export default function Accion() {
     setTituloError('');
   }
 
+  function handleDescripcionInput(event) {
+    setDescripcion(event.target.value);
+    setDescripcionError('');
+  }
+
   function handleObjetivoInput(event) {
     const { value } = event.target;
     setObjetivo(value);
     setObjetivoError('');
 
-    // Separar los objetivos por coma si hay comas, de lo contrario, usar el valor como un solo objetivo
+    // Separar los objetivos por coma y eliminar espacios en blanco alrededor de cada objetivo
     const objetivosArray = value
       .split(',')
-      .map((item) => objetivo.trim())
-      .filter((item) => objetivo !== '');
+      .map((item) => item.trim())
+      .filter((item) => item !== '');
 
     setObjetivos(objetivosArray);
   }
@@ -47,6 +55,11 @@ export default function Accion() {
       return;
     }
 
+    if (descripcion === '') {
+      setDescripcionError('La descripción no puede estar vacía');
+      return;
+    }
+
     if (objetivos.length === 0 || objetivos[0] === '') {
       setObjetivoError('Se debe añadir al menos un objetivo');
     }
@@ -55,58 +68,71 @@ export default function Accion() {
       setProgresoError('El progreso no puede estar vacío');
     }
 
-    navigate('/verAcciones', {
+    try {
+      const response = await saveAccion(
+        titulo,
+        descripcion,
+        objetivos,
+        progreso,
+      );
+    } catch (error) {
+      throw new Error('Error al crear la acción solidaria');
+    }
+
+    navigate(`/accion/${titulo}`, {
       state: {
         titulo,
+        descripcion,
         objetivos,
         progreso,
       },
     });
   }
 
-  function onHomeClicked() {
-    navigate('/');
-  }
-
   return (
-    <div>
-      <Breadcrumb>
-        <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
-        <Breadcrumb.Item active>Crear-accion-solidaria</Breadcrumb.Item>
-      </Breadcrumb>
-      <div id="PaginaAccionSolidaria" className="container mt-4">
-        <h1>Acción solidaria</h1>
-        <form
-          className="needs-validation"
-          noValidate
-          onSubmit={AccionSolidaria}
-        >
-          <div className="form-group mb-3">
-            <label htmlFor="titulo" className="form-label">
-              Título de la acción solidaria
-            </label>
-            <input
+    <div id="PaginaAccionSolidaria">
+      <h1>Acción solidaria</h1>
+      <Form className="needs-validation" noValidate onSubmit={AccionSolidaria}>
+        <Col sd={10} md={10} lg={8} className="mx-auto">
+          <Form.Group controlId="titulo" className="mb-3">
+            <Form.Label>Titulo</Form.Label>
+            <Form.Control
               type="text"
-              id="titulo"
+              placeholder="Titulo de la causa solidaria"
               className={`form-control ${tituloError ? 'is-invalid' : ''} ${
                 titulo && !tituloError ? 'is-valid' : ''
               }`}
-              placeholder="Titulo de la acción solidaria"
               onChange={handleTituloInput}
               value={titulo}
               required
             />
             <div className="invalid-feedback">
-              {<ErrorMessage message={tituloError} />}
+              <ErrorMessage message={tituloError} />
             </div>
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="objetivo" className="form-label">
-              Objetivos de la acción solidaria
-            </label>
-            <input
-              type="text"
-              id="objetivo"
+          </Form.Group>
+
+          <Form.Group controlId="descripcion" className="mb-3">
+            <Form.Label>Descripción</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              className={`form-control ${
+                descripcionError ? 'is-invalid' : ''
+              } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+              onChange={handleDescripcionInput}
+              value={descripcion}
+              required
+            />
+            <div className="invalid-feedback">
+              <ErrorMessage message={descripcionError} />
+            </div>
+          </Form.Group>
+
+          <Form.Group controlId="objetivos" className="mb-3">
+            <Form.Label>Objetivos</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
               className={`form-control ${objetivoError ? 'is-invalid' : ''} ${
                 objetivo && !objetivoError ? 'is-valid' : ''
               }`}
@@ -116,16 +142,14 @@ export default function Accion() {
               required
             />
             <div className="invalid-feedback">
-              {<ErrorMessage message={objetivoError} />}
+              <ErrorMessage message={objetivoError} />
             </div>
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="progreso" className="form-label">
-              Progreso de la acción solidaria
-            </label>
-            <input
+          </Form.Group>
+
+          <Form.Group controlId="progreso" className="mb-3">
+            <Form.Label>Progreso de la acción solidaria</Form.Label>
+            <Form.Control
               type="range"
-              id="progreso"
               className={`form-range ${progresoError ? 'is-invalid' : ''}`}
               min="0"
               max="100"
@@ -134,33 +158,21 @@ export default function Accion() {
               value={progreso}
               required
             />
-            <output htmlFor="progreso">{progreso}%</output>
-            <style>{`
-        input[type='range'] {
-          --value: ${((progreso - 0) * 100) / (100 - 0)}%;
-          --track-color: #ddd;
-          --thumb-color: #3498db;
-          --range-background: linear-gradient(to right, var(--thumb-color) 0%, var(--thumb-color) var(--value), var(--track-color) var(--value), var(--track-color) 100%);
-        }
-        input[type='range']::-webkit-slider-runnable-track {
-          background: var(--range-background);
-        }
-        input[type='range']::-moz-range-track {
-          background: var(--range-background);
-        }
-        input[type='range']::-ms-track {
-          background: var(--range-background);
-        }
-      `}</style>
+            <Form.Text id="progresoHelpBlock" muted>
+              {progreso}%
+            </Form.Text>
             <div className="invalid-feedback">
-              {<ErrorMessage message={progresoError} />}
+              <ErrorMessage message={progresoError} />
             </div>
+          </Form.Group>
+
+          <div className="mb-3 text-center">
+            <Button type="submit" className="btn btn-primary">
+              Crear
+            </Button>
           </div>
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-        </form>
-      </div>
+        </Col>
+      </Form>
     </div>
   );
 }
