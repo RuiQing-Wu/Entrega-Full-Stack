@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs } from 'react-bootstrap';
 import { getCausasByComunityId } from '../../services/causas.service';
 import CardComunidad from '../../component/CardComunidad';
@@ -10,11 +10,18 @@ import Popup from '../../component/Popup';
 export default function MostrarComunidad() {
   const location = useLocation();
   const comunidad = location.state;
+  const param = useParams();
   const [todasLasCausas, setTodasLasCausas] = React.useState([]);
   const navigate = useNavigate();
   const objetivos = ['objetivo1', 'objetivo2'];
 
   const [popupMessage, setPopupMessage] = React.useState('');
+  console.log('comunidad: ', comunidad );
+  console.log('nombreComunidad: ', param);
+  if (comunidad === null) {
+    console.log('No hay datos de la comunidad');
+    comunidad.id = param.nombreComunidad;
+  }
 
   const onApoyarCausaClicked = async () => {
     try {

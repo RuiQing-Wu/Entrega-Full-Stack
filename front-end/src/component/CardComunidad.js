@@ -44,28 +44,27 @@ export default function CardComunidad({
             xs={12}
             md={2}
             className="d-flex align-items-center justify-content-md-end"
-          >
-            <Button variant="primary" size="sm" onClick={showModal}>
-              Solicitar
-            </Button>
-          </Col>
+          ></Col>
         </Row>
       </Card.Body>
 
       <Card.Footer>
+        <Button variant="primary" size="sm" onClick={showModal}>
+          Solicitar
+        </Button>
         <Solicitud
           show={modalShow}
           onHide={() => setModalShow(false)}
           nombreUsuario="Cambiar Aqui por el nombre del usuario"
           nombreComunidad="Cambiar Aqui por el nombre de la comunidad"
         />
-        <button
+        <Button
           type="button"
           className="btn btn-primary"
           onClick={showModalApoyo}
         >
           Apoyar
-        </button>
+        </Button>
         <Apoyo
           show={modalShowApoyo}
           onHide={() => setModalShowApoyo(false)}
