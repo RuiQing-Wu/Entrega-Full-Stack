@@ -1,5 +1,6 @@
 import './Style/CardComunidad.css';
 import { useState } from 'react';
+import { Card, Row, Col, Button } from 'react-bootstrap';
 import Solicitud from '../pages/Solicitud/Solicitud';
 import Apoyo from '../pages/ApoyarCausa/Apoyo';
 
@@ -20,19 +21,38 @@ export default function CardComunidad({
     setModalShowApoyo(true);
   }
 
-  console.log(imageUrl);
-
   return (
-    <div id="cardComunidad" className="card">
-      <div className="card-body">
-        <h5 className="card-title">{nombre}</h5>
-        <p className="card-text">Descripción: {descripcion}</p>
-        <p className="card-text">Fecha de creación: {fechaInicio}</p>
-      </div>
-      <div className="card-footer">
-        <button type="button" className="btn btn-primary" onClick={showModal}>
-          Solicitar
-        </button>
+    <Card id="cardComunidad" className="mb-3">
+      <Card.Body>
+        <Row>
+          <Col xs={12} md={4}>
+            <Card.Img
+              variant="top"
+              src={imageUrl}
+              alt="comunidad"
+              className="img-fluid img-thumbnail"
+            />
+          </Col>
+
+          <Col xs={12} md={6}>
+            <Card.Title>{nombre}</Card.Title>
+            <Card.Text>Descripción: {descripcion}</Card.Text>
+            <Card.Text>Fecha de creación: {fechaInicio}</Card.Text>
+          </Col>
+
+          <Col
+            xs={12}
+            md={2}
+            className="d-flex align-items-center justify-content-md-end"
+          >
+            <Button variant="primary" size="sm" onClick={showModal}>
+              Solicitar
+            </Button>
+          </Col>
+        </Row>
+      </Card.Body>
+
+      <Card.Footer>
         <Solicitud
           show={modalShow}
           onHide={() => setModalShow(false)}
@@ -51,7 +71,7 @@ export default function CardComunidad({
           onHide={() => setModalShowApoyo(false)}
           nombreCausa="Cambiar Aqui por el nombre del causa"
         />
-      </div>
-    </div>
+      </Card.Footer>
+    </Card>
   );
 }
