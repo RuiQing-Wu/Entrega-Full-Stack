@@ -1,6 +1,7 @@
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ComunidadesRepository } from './comunidades.repository';
+import { HydratedDocument } from 'mongoose';
 import { Comunidad } from '../domain/comunidades.domain';
 import { ComunidadMongoModel } from '../schemas/comunidad.schema';
 
@@ -13,9 +14,11 @@ export class ComunidadesRepositoryMongo extends ComunidadesRepository {
   }
 
   //Transforma un objeto del modelo de persistencia en un objeto de dominio
-  private transform(comunidadModel: ComunidadMongoModel): Comunidad {
+  private transform(
+    comunidadModel: HydratedDocument<ComunidadMongoModel>,
+  ): Comunidad {
     const comunidad = new Comunidad({
-      id: comunidadModel.id,
+      id: comunidadModel._id.toString(),
       nombre: comunidadModel.nombre,
       descripcion: comunidadModel.descripcion,
       fechaInicio: comunidadModel.fechaInicio,
@@ -31,7 +34,7 @@ export class ComunidadesRepositoryMongo extends ComunidadesRepository {
     const comunidadCreated = await this.comunidadModel.create(comunidadModel);
 
     const comunidad = new Comunidad({
-      id: comunidadCreated.id,
+      id: comunidadCreated._id.toString(),
       nombre: comunidadCreated.nombre,
       descripcion: comunidadCreated.descripcion,
       fechaInicio: comunidadCreated.fechaInicio,
