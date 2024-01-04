@@ -25,6 +25,7 @@ export class CausasService extends ICausasService{
       fechaFin: createCausaDto.fechaFin,
       accionSolidaria: [],
       comunidad: createCausaDto.comunidad,
+      categorias: createCausaDto.categorias,
     });
 
     return this.causasRepository.create(causa);
@@ -42,6 +43,10 @@ export class CausasService extends ICausasService{
     return this.causasRepository.getByName(titulo);
   }
 
+  getByComunidadId(comunidad: string): Promise<CausaSolidaria[]> {
+    return this.causasRepository.getByComunidadId(comunidad);
+  }
+
   async update(id: string, updateCausaDto: UpdateCausaDto) {
     const causa = await this.causasRepository.get(id);
 
@@ -54,6 +59,7 @@ export class CausasService extends ICausasService{
       fechaFin: updateCausaDto.fechaFin ?? causa.fechaFin,
       accionSolidaria: updateCausaDto.acciones ?? causa.acciones,
       comunidad: updateCausaDto.comunidad ?? causa.comunidad,
+      categorias: updateCausaDto.categorias ?? causa.categorias,
     });
 
     return this.causasRepository.update(id, comunidadActualizada);

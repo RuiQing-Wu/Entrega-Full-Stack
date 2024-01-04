@@ -8,5 +8,6 @@ export class CreateCausaDto {
     fechaInicio: Date;
     fechaFin: Date;
     acciones: AccionSolidaria[];
-    comunidad: Comunidad;
+    comunidad: string;
+    categorias: string[];
   }

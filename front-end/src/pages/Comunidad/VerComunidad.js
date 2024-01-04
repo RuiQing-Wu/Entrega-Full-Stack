@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs } from 'react-bootstrap';
 import { getCausas } from '../../services/causas.service';
@@ -48,9 +48,10 @@ export default function MostrarComunidad() {
   if (!comunidad) {
     return <div>No hay datos de la comunidad</div>;
   }
-  causas();
-  console.log(comunidad.id);
-  console.log(comunidad.fechaInicio);
+
+  useEffect(() => {
+    causas();
+  }, []);
 
   function onHomeClicked() {
     navigate('/');

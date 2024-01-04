@@ -23,6 +23,7 @@ export class CausasRepositoryMongo extends CausasRepository {
             fechaFin: causaMongoModel.fechaFin,
             accionSolidaria: causaMongoModel.acciones,
             comunidad: causaMongoModel.comunidad,
+            categorias: causaMongoModel.categorias,
         });
         
         return causa;
@@ -43,6 +44,7 @@ export class CausasRepositoryMongo extends CausasRepository {
             fechaFin: causaCreated.fechaFin,
             accionSolidaria: [],
             comunidad: causaCreated.comunidad,
+            categorias: causaCreated.categorias,
         });
 
         return causa;
@@ -56,6 +58,16 @@ export class CausasRepositoryMongo extends CausasRepository {
 
     async getByName(titulo: string): Promise<CausaSolidaria[]> {
         const causasModel = await this.causaModel.find({ titulo }).exec();
+
+        const causas = causasModel.map((causaModel) => {
+            return this.transform(causaModel);
+        });
+
+        return causas;
+    }
+
+    async getByComunidadId(comunidad: string): Promise<CausaSolidaria[]> {
+        const causasModel = await this.causaModel.find({ comunidad }).exec();
 
         const causas = causasModel.map((causaModel) => {
             return this.transform(causaModel);

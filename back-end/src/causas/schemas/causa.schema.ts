@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
 import { AccionMongoModel } from "src/acciones/schemas/accion.schema";
-import { ComunidadMongoModel } from "src/comunidades/schemas/comunidad.schema";
 
 export type UserDocument = HydratedDocument<CausaMongoModel>;
 
@@ -26,7 +25,10 @@ export class CausaMongoModel {
   acciones: AccionMongoModel[];
 
   @Prop({ type: mongoose.Types.ObjectId, ref: 'ComunidadMongoModel' })
-  comunidad: ComunidadMongoModel;
+  comunidad: string;
+
+  @Prop()
+  categorias: string[];
 }
 
 export const CausaSchema = SchemaFactory.createForClass(CausaMongoModel);
