@@ -66,7 +66,7 @@ export default function BuscarComunidades() {
     const comunidadSeleccionada = comunidadesFiltradas.find(
       (comunidad) => comunidad.nombre === nombre,
     );
-    console.log('id', comunidadSeleccionada.id);
+
     if (comunidadSeleccionada) {
       navigate(`/comunidad/${nombre}`, {
         state: {

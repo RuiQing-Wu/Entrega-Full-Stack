@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs } from 'react-bootstrap';
-import { getCausas } from '../../services/causas.service';
+import { getCausasByComunityId } from '../../services/causas.service';
 import CardComunidad from '../../component/CardComunidad';
 import StackCausaSolidaria from '../../component/StackCausaSolidaria';
 import CardExternalProfile from '../../component/CardExternalProfile';
@@ -16,42 +16,51 @@ export default function MostrarComunidad() {
 
   const [popupMessage, setPopupMessage] = React.useState('');
 
-  const onApoyarCausaClicked = () => {
-    setTimeout(() => {
+  const onApoyarCausaClicked = async () => {
+    try {
+      const response = await getCausasByComunityId(comunidad.id);
+      const totalCausas = response;
+      setTodasLasCausas(totalCausas);
+
       navigate(
-        '.',
+        `/comunidad/${comunidad.nombre}`,
         {
           state: {
+            id: comunidad.id,
             nombre: comunidad.nombre,
             descripcion: comunidad.descripcion,
+            fechaInicio: comunidad.fechaInicio,
           },
         },
         { replace: true },
       );
 
       setPopupMessage('¡Causa apoyada exitosamente!');
-    }, 1000);
-  };
-
-  async function causas() {
-    try {
-      const response = await getCausas(comunidad.id);
-      const totalCausas = response;
-      setTodasLasCausas(totalCausas);
-    } catch (errorGet) {
-      throw new Error(
-        'Error al obtener las causas. Por favor, inténtalo de nuevo.',
+    } catch (error) {
+      setPopupMessage(
+        'Error al apoyar la causa. Por favor, inténtalo de nuevo.',
       );
     }
-  }
+  };
+
+  useEffect(() => {
+    async function causas() {
+      try {
+        const response = await getCausasByComunityId(comunidad.id);
+        const totalCausas = response;
+        setTodasLasCausas(totalCausas);
+      } catch (errorGet) {
+        throw new Error(
+          'Error al obtener las causas. Por favor, inténtalo de nuevo.',
+        );
+      }
+    }
+    causas();
+  }, [comunidad.id, setTodasLasCausas]);
 
   if (!comunidad) {
     return <div>No hay datos de la comunidad</div>;
   }
-
-  useEffect(() => {
-    causas();
-  }, []);
 
   function onHomeClicked() {
     navigate('/');
@@ -72,13 +81,13 @@ export default function MostrarComunidad() {
       </Breadcrumb>
 
       <CardComunidad
-        imageUrl={'comunidad.jpeg'}
+        imageUrl={'../../../imagenes/comunidad.jpeg'}
         id={comunidad.id}
         nombre={comunidad.nombre}
         descripcion={comunidad.descripcion}
         fechaInicio={comunidad.fechaInicio}
       />
-      <img src="./public/comunidad.jpeg" alt="comunidad" />
+
       <Tabs
         defaultActiveKey="causasSolidarias"
         id="uncontrolled-tab-example"
