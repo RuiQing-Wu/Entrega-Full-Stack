@@ -7,9 +7,6 @@ export type UserDocument = HydratedDocument<ComunidadMongoModel>;
 @Schema()
 export class ComunidadMongoModel {
   @Prop()
-  id: string;
-
-  @Prop()
   nombre: string;
 
   @Prop()

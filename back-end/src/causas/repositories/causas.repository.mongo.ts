@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { HydratedDocument, Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { CausasRepository } from "./causas.repository";
 import { CausaSolidaria } from "../domain/causa_solidaria.domain";
@@ -14,15 +14,16 @@ export class CausasRepositoryMongo extends CausasRepository {
         super();
     }
 
-    private transform(causaMongoModel: CausaMongoModel): CausaSolidaria {
+    private transform(causaMongoModel: HydratedDocument<CausaMongoModel>,): CausaSolidaria {
         const causa = new CausaSolidaria({
-            id: causaMongoModel.id,
+            id: causaMongoModel._id.toString(),
             titulo: causaMongoModel.titulo,
             descripcion: causaMongoModel.descripcion,
             fechaInicio: causaMongoModel.fechaInicio,
             fechaFin: causaMongoModel.fechaFin,
             accionSolidaria: causaMongoModel.acciones,
             comunidad: causaMongoModel.comunidad,
+            categorias: causaMongoModel.categorias,
         });
         
         return causa;
@@ -36,13 +37,14 @@ export class CausasRepositoryMongo extends CausasRepository {
             await this.causaModel.create(causaModel);
 
         const causa = new CausaSolidaria({
-            id: causaCreated.id,
+            id: causaCreated._id.toString(),
             titulo: causaCreated.titulo,
             descripcion: causaCreated.descripcion,
             fechaInicio: causaCreated.fechaInicio,
             fechaFin: causaCreated.fechaFin,
             accionSolidaria: [],
             comunidad: causaCreated.comunidad,
+            categorias: causaCreated.categorias,
         });
 
         return causa;
@@ -56,6 +58,16 @@ export class CausasRepositoryMongo extends CausasRepository {
 
     async getByName(titulo: string): Promise<CausaSolidaria[]> {
         const causasModel = await this.causaModel.find({ titulo }).exec();
+
+        const causas = causasModel.map((causaModel) => {
+            return this.transform(causaModel);
+        });
+
+        return causas;
+    }
+
+    async getByComunidadId(comunidad: string): Promise<CausaSolidaria[]> {
+        const causasModel = await this.causaModel.find({ comunidad }).exec();
 
         const causas = causasModel.map((causaModel) => {
             return this.transform(causaModel);

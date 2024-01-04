@@ -40,6 +40,12 @@ export class CausasController {
     return this.causasService.getByName(titulo);
   }
 
+  @Public()
+  @Get('/comunidad/:comunidad')
+  findByComunidad(@Param('comunidad') comunidad: string) {
+    return this.causasService.getByComunidadId(comunidad);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCausaDto: UpdateCausaDto) {
     return this.causasService.update(id, updateCausaDto);

@@ -3,6 +3,7 @@ import { Stack, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 export default function StackCausaSolidaria({
+  idCausa,
   titulo,
   descripcion,
   fechaInicio,
@@ -10,7 +11,6 @@ export default function StackCausaSolidaria({
   accionSolidaria,
   idComunidad,
   onApoyarCausaClicked,
-  index,
 }) {
   const navigate = useNavigate();
 
@@ -30,13 +30,13 @@ export default function StackCausaSolidaria({
   }
 
   const handleApoyarClick = () => {
-    onApoyarCausaClicked(index);
+    onApoyarCausaClicked(idCausa);
   };
 
   return (
     <div>
-      <Stack gap={2}>
-        <Stack direction="horizontal" gap={2}>
+      <Stack key={idCausa} gap={2}>
+        <Stack key={idCausa} direction="horizontal" gap={2}>
           <div className="p-2">{titulo}</div>
           <div className="p-2">{descripcion}</div>
           <div className="p-2">{fechaInicio}</div>

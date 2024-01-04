@@ -50,7 +50,7 @@ export default function Menu() {
               <NavLink to={'/causa'} className="nav-link">
                 Crear causa solidaria
               </NavLink>
-              <NavLink to={'/accion'} className="nav-link">
+              <NavLink to={'/crear-accion'} className="nav-link">
                 Crear acción solidaria
               </NavLink>
             </>

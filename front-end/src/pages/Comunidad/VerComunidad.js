@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs } from 'react-bootstrap';
-import { getCausas } from '../../services/causas.service';
+import { getCausasByComunityId } from '../../services/causas.service';
 import CardComunidad from '../../component/CardComunidad';
 import StackCausaSolidaria from '../../component/StackCausaSolidaria';
 import CardExternalProfile from '../../component/CardExternalProfile';
@@ -35,7 +35,7 @@ export default function MostrarComunidad() {
 
   async function causas() {
     try {
-      const response = await getCausas();
+      const response = await getCausasByComunityId(comunidad.id);
       const totalCausas = response;
       setTodasLasCausas(totalCausas);
     } catch (errorGet) {
@@ -48,9 +48,10 @@ export default function MostrarComunidad() {
   if (!comunidad) {
     return <div>No hay datos de la comunidad</div>;
   }
-  // causas();
-  console.log(comunidad.id);
-  console.log(comunidad.fechaInicio);
+
+  useEffect(() => {
+    causas();
+  }, []);
 
   function onHomeClicked() {
     navigate('/');
@@ -83,18 +84,23 @@ export default function MostrarComunidad() {
       >
         {todasLasCausas.length > 0 && (
           <Tab eventKey="causasSolidarias" title="Causas solidarias">
-            {todasLasCausas?.map((cau, index) => (
-              <StackCausaSolidaria
-                titulo={cau.titulo}
-                descripcion={cau.descripcion}
-                fechaInicio={cau.fechaInicio}
-                fechaFin={cau.fechaFin}
-                accionSolidaria={[]}
-                idComunidad={comunidad.id}
-                onApoyarCausaClicked={onApoyarCausaClicked}
-                index={index}
-              />
-            ))}
+            {todasLasCausas.isEmpty ? (
+              <p>No hay causas en la comunidad</p>
+            ) : (
+              todasLasCausas.map((cau, index) => (
+                <StackCausaSolidaria
+                  key={index}
+                  idCausa={cau.id}
+                  titulo={cau.titulo}
+                  descripcion={cau.descripcion}
+                  fechaInicio={cau.fechaInicio}
+                  fechaFin={cau.fechaFin}
+                  accionSolidaria={[]}
+                  idComunidad={comunidad.id}
+                  onApoyarCausaClicked={onApoyarCausaClicked}
+                />
+              ))
+            )}
           </Tab>
         )}
         <Tab eventKey="seguidores" title="Seguidores">

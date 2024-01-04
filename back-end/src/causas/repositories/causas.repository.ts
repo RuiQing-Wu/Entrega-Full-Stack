@@ -3,5 +3,6 @@ import { CausaSolidaria } from "../domain/causa_solidaria.domain";
 
 export abstract class CausasRepository extends IGenericRepository<CausaSolidaria> {
     abstract getByName(name: string): Promise<CausaSolidaria[]>;
+    abstract getByComunidadId(comunidad: string): Promise<CausaSolidaria[]>;
 }
 
