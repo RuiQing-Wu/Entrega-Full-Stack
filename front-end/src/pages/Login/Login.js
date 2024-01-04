@@ -60,8 +60,9 @@ export default function Login() {
     }
 
     dispatch(setTokenRedux(response.access_token));
-    window.location.reload(true);
+    // window.location.reload(true);
     navigate('/');
+    window.location.reload(true);
   }
 
   return (

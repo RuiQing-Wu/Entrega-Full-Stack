@@ -48,7 +48,7 @@ export default function MostrarComunidad() {
   if (!comunidad) {
     return <div>No hay datos de la comunidad</div>;
   }
-  causas();
+  // causas();
   console.log(comunidad.id);
   console.log(comunidad.fechaInicio);
 
