@@ -21,11 +21,10 @@ export default function StackAccionSolidaria({
     if (tituloAccion !== ' ') {
       navigate(`/accion/${tituloAccion}`, {
         state: {
-          causaAccion,
-          tituloAccion,
-          descripcionAccion,
-          ObjetivosAccion: objetivosAccion,
-          progresoAccion,
+          titulo: tituloAccion,
+          descripcion: descripcionAccion,
+          objetivos: objetivosAccion,
+          progreso: progresoAccion,
         },
       });
     }
@@ -41,7 +40,7 @@ export default function StackAccionSolidaria({
           <div className="p-2">{titulo}</div>
           <div className="p-2">{descripcion}</div>
           <div className="p-2">{listaObjetivos}</div>
-          <div className="p-2">{progreso}</div>
+          <div className="p-2">{progreso}%</div>
           <Button
             onClick={() =>
               handleRedirecciónAAccion(

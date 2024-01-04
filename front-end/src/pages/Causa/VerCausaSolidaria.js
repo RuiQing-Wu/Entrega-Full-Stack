@@ -54,8 +54,9 @@ export default function MostrarCausa() {
             <StackAccionSolidaria
               causa={causa}
               titulo={'accion1'}
+              descripcion={'descripcion1'}
               objetivos={objetivosAccion}
-              progreso={'20%'}
+              progreso={'20'}
             />
           </Tab>
         </Tabs>
