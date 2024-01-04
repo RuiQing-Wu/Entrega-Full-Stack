@@ -88,7 +88,7 @@ const router = createBrowserRouter([
       },
       {
         name: 'Accion',
-        path: '/accion',
+        path: '/crear-accion',
         element: (
           <AuthRoute>
             <Accion />
