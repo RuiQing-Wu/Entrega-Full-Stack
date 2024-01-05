@@ -8,19 +8,26 @@ export class AccionSolidaria {
   readonly progreso: number;
   readonly causa: CausaSolidaria;
 
-  constructor(data: {
-    id;
-    titulo;
-    descripcion;
-    listaObjetivos;
-    progreso;
-    causa;
+  constructor({
+    id,
+    titulo,
+    descripcion,
+    listaObjetivos,
+    progreso,
+    causa,
+  }: {
+    id?: string;
+    titulo: string;
+    descripcion: string;
+    listaObjetivos: string[];
+    progreso: number;
+    causa: CausaSolidaria;
   }) {
-    this.id = data.id;
-    this.titulo = data.titulo;
-    this.descripcion = data.descripcion;
-    this.listaObjetivos = data.listaObjetivos;
-    this.progreso = data.progreso;
-    this.causa = data.causa;
+    this.id = id;
+    this.titulo = titulo;
+    this.descripcion = descripcion;
+    this.listaObjetivos = listaObjetivos;
+    this.progreso = progreso;
+    this.causa = causa;
   }
 }

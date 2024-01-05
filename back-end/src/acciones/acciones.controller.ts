@@ -41,6 +41,12 @@ export class AccionesController {
     return this.accionesService.getByName(titulo);
   }
 
+  @Public()
+  @Get('/causa/:causa')
+  findByCausa(@Param('causa') causa: string) {
+    return this.accionesService.getByCausaId(causa);
+  }
+
   @Get(':nombre')
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAccioneDto: UpdateAccionDto) {

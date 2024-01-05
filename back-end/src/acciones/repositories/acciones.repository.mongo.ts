@@ -1,5 +1,6 @@
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 import { AccionesRepository } from './acciones.repository';
 import { AccionSolidaria } from '../domain/accion_solidaria.domain';
 import { AccionMongoModel } from '../schemas/accion.schema';
@@ -12,9 +13,9 @@ export class AccionesRepositoryMongo extends AccionesRepository {
     super();
   }
 
-  transform(accionModel: AccionMongoModel): AccionSolidaria {
+  transform(accionModel: HydratedDocument<AccionSolidaria>): AccionSolidaria {
     const accion = new AccionSolidaria({
-      id: accionModel.id,
+      id: accionModel._id.toString(),
       titulo: accionModel.titulo,
       descripcion: accionModel.descripcion,
       listaObjetivos: accionModel.listaObjetivos,
@@ -30,7 +31,7 @@ export class AccionesRepositoryMongo extends AccionesRepository {
     const accionCreated = await this.accionModel.create(accionModel);
 
     const accion = new AccionSolidaria({
-      id: accionCreated.id,
+      id: accionCreated._id.toString(),
       titulo: accionCreated.titulo,
       descripcion: accionCreated.descripcion,
       listaObjetivos: accionCreated.listaObjetivos,
@@ -51,6 +52,16 @@ export class AccionesRepositoryMongo extends AccionesRepository {
     const accion = await this.accionModel.findOne({ titulo }).exec();
 
     return this.transform(accion);
+  }
+
+  async getByCausaId(causa: string): Promise<AccionSolidaria[]> {
+    const accionesModel = await this.accionModel.find({ causa }).exec();
+
+    const acciones = accionesModel.map((accionModel) => {
+      return this.transform(accionModel);
+    });
+
+    return acciones;
   }
 
   async getAll(): Promise<AccionSolidaria[]> {

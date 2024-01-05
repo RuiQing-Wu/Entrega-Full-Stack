@@ -7,6 +7,7 @@ export abstract class IAccionService {
   abstract findAll(): Promise<AccionSolidaria[]>;
   abstract findOne(id: string): Promise<AccionSolidaria>;
   abstract getByName(nombre: string): Promise<AccionSolidaria>;
+  abstract getByCausaId(causa: string): Promise<AccionSolidaria[]>;
   abstract update(id: string, updateAccionDto: UpdateAccionDto);
   abstract remove(id: string): Promise<AccionSolidaria>;
 }

@@ -14,7 +14,7 @@ export class CausasRepositoryMongo extends CausasRepository {
         super();
     }
 
-    private transform(causaMongoModel: HydratedDocument<CausaMongoModel>,): CausaSolidaria {
+    private transform(causaMongoModel: HydratedDocument<CausaMongoModel>): CausaSolidaria {
         const causa = new CausaSolidaria({
             id: causaMongoModel._id.toString(),
             titulo: causaMongoModel.titulo,

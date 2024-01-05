@@ -43,4 +43,16 @@ async function getAccionByName(nombre) {
   return data;
 }
 
-export { saveAccion, getAcciones, getAccionById, getAccionByName };
+async function getAccionesByCausaId(idCausa) {
+  const response = await fetch(`${BASE_URL}/causa/${idCausa}`);
+  const data = await response.json();
+  return data;
+}
+
+export {
+  saveAccion,
+  getAcciones,
+  getAccionById,
+  getAccionByName,
+  getAccionesByCausaId,
+};

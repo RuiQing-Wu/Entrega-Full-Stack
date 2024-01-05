@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Breadcrumb, Tabs, Tab, Col, Button } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getAccionesByCausaId } from '../../services/acciones.service';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import StackAccionSolidaria from '../../component/StackAccionSolidaria';
 
 export default function MostrarCausa() {
   const location = useLocation();
+  const [todasLasAcciones, setTodasLasAcciones] = React.useState([]);
   const causa = location.state;
   const navigate = useNavigate();
 
@@ -20,6 +22,21 @@ export default function MostrarCausa() {
   function onCausasClicked() {
     navigate('/listaCausas');
   }
+
+  useEffect(() => {
+    async function acciones() {
+      try {
+        const response = await getAccionesByCausaId(causa.id);
+        const totalAcciones = response;
+        setTodasLasAcciones(totalAcciones);
+      } catch (errorGet) {
+        throw new Error(
+          'Error al obtener las acciones. Por favor, inténtalo de nuevo.',
+        );
+      }
+    }
+    acciones();
+  }, [causa.id, setTodasLasAcciones]);
 
   if (!causa) {
     return <div>No hay datos de la causa</div>;
@@ -42,7 +59,7 @@ export default function MostrarCausa() {
           <Button
             variant="outline-success"
             size="sm"
-            onClick={handleRedireccionarACrearAccion()}
+            onClick={handleRedireccionarACrearAccion}
           >
             Crear accion
           </Button>
@@ -66,15 +83,33 @@ export default function MostrarCausa() {
           <Tab eventKey="causas" title="Causas solidarias">
             Tab content for Causas
           </Tab>
-          <Tab eventKey="acciones" title="Acciones solidarias">
-            <StackAccionSolidaria
-              causa={causa}
-              titulo={'accion1'}
-              descripcion={'descripcion1'}
-              objetivos={objetivosAccion}
-              progreso={'20'}
-            />
-          </Tab>
+          {todasLasAcciones.length > 0 && (
+            <Tab eventKey="acciones" title="Acciones solidarias">
+              {todasLasAcciones.isEmpty ? (
+                <p>No hay acciones en la causa</p>
+              ) : (
+                todasLasAcciones.map((acc, index) => (
+                  <StackAccionSolidaria
+                    key={index}
+                    idAccion={acc.id}
+                    titulo={acc.titulo}
+                    descripcion={acc.descripcion}
+                    fechaInicio={acc.fechaInicio}
+                    fechaFin={acc.fechaFin}
+                    objetivos={acc.objetivos}
+                    progreso={acc.progreso}
+                  />
+                ))
+              )}
+              <StackAccionSolidaria
+                causa={causa}
+                titulo={'accion1'}
+                descripcion={'descripcion1'}
+                objetivos={objetivosAccion}
+                progreso={'20'}
+              />
+            </Tab>
+          )}
         </Tabs>
       </Col>
     </div>

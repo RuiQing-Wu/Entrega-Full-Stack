@@ -16,7 +16,6 @@ export class AccionesServiceImpl extends IAccionService {
 
   create(createAccionDto: CreateAccionDto): Promise<AccionSolidaria> {
     const accion = new AccionSolidaria({
-      id: createAccionDto.id,
       titulo: createAccionDto.titulo,
       descripcion: createAccionDto.descripcion,
       listaObjetivos: createAccionDto.listaObjetivos,
@@ -29,6 +28,10 @@ export class AccionesServiceImpl extends IAccionService {
 
   getByName(nombre: string): Promise<AccionSolidaria> {
     return this.accionesRepository.getByName(nombre);
+  }
+
+  getByCausaId(causa: string): Promise<AccionSolidaria[]> {
+    return this.accionesRepository.getByCausaId(causa);
   }
 
   findAll(): Promise<AccionSolidaria[]> {
