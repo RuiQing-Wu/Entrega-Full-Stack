@@ -78,7 +78,8 @@ export default function MostrarComunidad() {
   }
 
   function handleRedireccionarACrearCausa() {
-    navigate('/crear-causa', {
+    // navigate(`/comunidad/${comunidad.nombre}/crear-causa`, {
+    navigate(`/crear-causa`, {
       state: {
         id: comunidad.id,
         nombre: comunidad.nombre,

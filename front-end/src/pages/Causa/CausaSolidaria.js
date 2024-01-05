@@ -88,8 +88,9 @@ export default function Causa() {
 
   return (
     <div>
-      <Breadcrumb>
+      <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
+        <Breadcrumb.Item href="/comunidades">Comunidades</Breadcrumb.Item>
         <Breadcrumb.Item active>Crear-causa-solidaria</Breadcrumb.Item>
       </Breadcrumb>
       <div id="PaginaCausaSolidaria">

@@ -75,6 +75,7 @@ export default function Comunidad() {
     <div>
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
+        <Breadcrumb.Item href="/comunidades">Comunidades</Breadcrumb.Item>
         <Breadcrumb.Item active>Crear-comunidad</Breadcrumb.Item>
       </Breadcrumb>
       <div id="PaginaComunidad">

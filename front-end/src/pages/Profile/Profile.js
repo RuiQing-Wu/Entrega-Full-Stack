@@ -1,129 +1,179 @@
-import './Profile.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Nav } from 'react-bootstrap';
 
 export default function Profile() {
-  const initialUser = {
-    username: 'John Doe',
-    telefono: '123456789',
-    ciudad: 'Ciudad Ejemplo',
-    pais: 'País Ejemplo',
-    esAdministrador: true,
-    role: 'ROLE_ADMIN',
+  const [selectedMenuItem, setSelectedMenuItem] = useState('perfil');
+  const [isEditing, setIsEditing] = useState(false);
+  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+  const [editedFields, setEditedFields] = useState({
+    username: false,
+    telefono: false,
+    ciudad: false,
+    pais: false,
+  });
+
+  const handleMenuClick = (eventKey) => {
+    setSelectedMenuItem(eventKey);
   };
 
-  const userSelected = useSelector((state) => state.user.userInfo);
-
-  const [user, setUser] = useState({ ...initialUser });
-  const [isEditing, setIsEditing] = useState(false);
-
-  const handleEditClick = () => {
+  const handleEditClick = (field) => {
     setIsEditing(true);
+    setEditedFields({ ...editedFields, [field]: true });
   };
 
   const handleSaveClick = () => {
+    const editedData = {};
+    Object.keys(editedFields).forEach((field) => {
+      if (editedFields[field]) {
+        editedData[field] = user[field];
+      }
+    });
+
+    console.log('Campos editados:', editedData);
+
+    setEditedFields({
+      username: false,
+      telefono: false,
+      ciudad: false,
+      pais: false,
+    });
     setIsEditing(false);
-    // Aquí podrías realizar alguna acción para guardar los cambios en la base de datos
   };
 
   const handleCancelClick = () => {
-    setUser({ ...initialUser });
+    setEditedFields({
+      username: false,
+      telefono: false,
+      ciudad: false,
+      pais: false,
+    });
     setIsEditing(false);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUser((prevUser) => ({ ...prevUser, [name]: value }));
+  const handleInputChange = (e, field) => {
+    const { value } = e.target;
+    setEditedFields({ ...editedFields, [field]: true });
+    // Update local user state
+    setUser((prevUser) => ({ ...prevUser, [field]: value }));
+  };
+
+  const renderProfileContent = () => {
+    switch (selectedMenuItem) {
+      case 'perfil':
+        return (
+          <div className="card">
+            <div className="card-header">
+              <h6 className="card-title text-center">Datos del perfil</h6>
+            </div>
+            <div className="card-body">
+              {isEditing ? (
+                <div>
+                  <p>
+                    <strong>Nombre:</strong>{' '}
+                    <input
+                      type="text"
+                      name="nombre"
+                      value={user.username}
+                      onChange={(e) => handleInputChange(e, 'username')}
+                      className="form-control"
+                    />
+                  </p>
+                  <p>
+                    <strong>Teléfono Móvil:</strong>{' '}
+                    <input
+                      type="text"
+                      name="telefono"
+                      value={user.telefono}
+                      onChange={(e) => handleInputChange(e, 'telefono')}
+                      className="form-control"
+                    />
+                  </p>
+                  <p>
+                    <strong>Ciudad:</strong>{' '}
+                    <input
+                      type="text"
+                      name="ciudad"
+                      value={user.ciudad}
+                      onChange={(e) => handleInputChange(e, 'ciudad')}
+                      className="form-control"
+                    />
+                  </p>
+                  <p>
+                    <strong>País:</strong>{' '}
+                    <input
+                      type="text"
+                      name="pais"
+                      value={user.pais}
+                      onChange={(e) => handleInputChange(e, 'pais')}
+                      className="form-control"
+                    />
+                  </p>
+                  <div className="text-center">
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleSaveClick}
+                    >
+                      Guardar
+                    </button>
+                    {'  '}
+                    <button
+                      className="btn btn-secondary"
+                      onClick={handleCancelClick}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <div>
+                    <p>{user.username}</p>
+                    <p>{user.telefono}</p>
+                    <p>{user.ciudad}</p>
+                    <p>{user.pais}</p>
+                  </div>
+                  <button
+                    className="btn btn-info"
+                    onClick={() => handleEditClick(user)}
+                  >
+                    Editar
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      case 'link-1':
+        return (
+          <div>
+            <h1>Contenido del Link 1</h1>
+          </div>
+        );
+      case 'link-2':
+        return (
+          <div>
+            <h1>Contenido del Link 2</h1>
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
-    <div className="container mt-4">
-      <div className="card">
-        <div className="card-header">
-          <h1 className="card-title text-center">Perfil de Usuario</h1>
-        </div>
-        <div className="card-body">
-          <div className="profile-info">
-            <p>
-              <strong>Nombre:</strong>{' '}
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="nombre"
-                  value={user.nombre}
-                  onChange={handleInputChange}
-                  className="form-control"
-                />
-              ) : (
-                userSelected.username
-              )}
-            </p>
-            <p>
-              <strong>Teléfono Móvil:</strong>{' '}
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="telefono"
-                  value={user.telefono}
-                  onChange={handleInputChange}
-                  className="form-control"
-                />
-              ) : (
-                user.telefono
-              )}
-            </p>
-            <p>
-              <strong>Ciudad:</strong>{' '}
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="ciudad"
-                  value={user.ciudad}
-                  onChange={handleInputChange}
-                  className="form-control"
-                />
-              ) : (
-                user.ciudad
-              )}
-            </p>
-            <p>
-              <strong>País:</strong>{' '}
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="pais"
-                  value={user.pais}
-                  onChange={handleInputChange}
-                  className="form-control"
-                />
-              ) : (
-                user.pais
-              )}
-            </p>
-            <p>
-              <strong>Administrador de Comunidad:</strong>{' '}
-              {user.esAdministrador ? 'Sí' : 'No'}
-            </p>
-          </div>
-          {isEditing ? (
-            <div className="text-center">
-              <button className="btn btn-primary" onClick={handleSaveClick}>
-                Guardar
-              </button>
-              {'  '}
-              <button className="btn btn-secondary" onClick={handleCancelClick}>
-                Cancelar
-              </button>
-            </div>
-          ) : (
-            <div className="text-center">
-              <button className="btn btn-info" onClick={handleEditClick}>
-                Editar
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+    <div className="d-flex">
+      <Nav
+        defaultActiveKey="perfil"
+        className="flex-column bg-light p-4"
+        onSelect={handleMenuClick}
+      >
+        <Nav.Link eventKey="perfil">Datos del perfil</Nav.Link>
+        <Nav.Link eventKey="link-1">Link 1</Nav.Link>
+        <Nav.Link eventKey="link-2">Link 2</Nav.Link>
+      </Nav>
+      <div className="container mt-4">{renderProfileContent()}</div>
     </div>
   );
 }
