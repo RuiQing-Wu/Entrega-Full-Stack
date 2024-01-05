@@ -16,7 +16,7 @@ export default function MostrarComunidad() {
   const objetivos = ['objetivo1', 'objetivo2'];
 
   const [popupMessage, setPopupMessage] = React.useState('');
-  console.log('comunidad: ', comunidad );
+  console.log('comunidad: ', comunidad);
   console.log('nombreComunidad: ', param);
   if (comunidad === null) {
     console.log('No hay datos de la comunidad');

@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { Breadcrumb } from 'react-bootstrap';
+import { Breadcrumb, Col, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import { saveComunidad } from '../../services/comunidades.service';
-import ErrorMessage from '../../component/MensajeError';
 import './Comunidad.css';
+import ErrorMessage from '../../component/MensajeError';
 
 export default function Comunidad() {
   // Crear un hook para navegar entre páginas
@@ -73,43 +73,55 @@ export default function Comunidad() {
 
   return (
     <div>
-      <Breadcrumb>
+      <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
         <Breadcrumb.Item active>Crear-comunidad</Breadcrumb.Item>
       </Breadcrumb>
-      <div className="container">
+      <div id="PaginaComunidad">
         <h1>Crear una nueva comunidad</h1>
-        <form onSubmit={crearComunidad}>
-          <div className="mb-3">
-            <label htmlFor="nombre" className="form-label">
-              Nombre de la comunidad
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="nombre"
-              placeholder="Nombre de la comunidad"
-              onChange={handleNombreInput}
-            />
-            {nombreError && <ErrorMessage message={nombreError} />}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="descripcion" className="form-label">
-              Descripción breve de la comunidad
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="descripcion"
-              placeholder="Descripcion de la comunidad"
-              onChange={handleDescripcionInput}
-            />
-            {descripcionError && <ErrorMessage message={descripcionError} />}
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Crear comunidad
-          </button>
-        </form>
+        <Form onSubmit={crearComunidad} className="needs-validation" noValidate>
+          <Col sd={10} md={10} lg={8} className="mx-auto">
+            <Form.Group controlId="nombre" className="mb-3">
+              <Form.Label>Nombre de la comunidad</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nombre de la comunidad"
+                className={`form-control ${nombreError ? 'is-invalid' : ''} ${
+                  nombre && !nombreError ? 'is-valid' : ''
+                }`}
+                onChange={handleNombreInput}
+                value={nombre}
+                required
+              />
+              <div className="invalid-feedback">
+                <ErrorMessage message={nombreError} />
+              </div>
+            </Form.Group>
+            <Form.Group controlId="descripcion" className="mb-3">
+              <Form.Label>Descripción de la comunidad</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                placeholder="Descripción de la comunidad"
+                className={`form-control ${
+                  descripcionError ? 'is-invalid' : ''
+                } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+                onChange={handleDescripcionInput}
+                value={descripcion}
+                required
+              />
+
+              <div className="invalid-feedback">
+                <ErrorMessage message={descripcionError} />
+              </div>
+            </Form.Group>
+            <div className="mb-3 text-center">
+              <Button type="submit" className="btn btn-primary">
+                Crear comunidad
+              </Button>
+            </div>
+          </Col>
+        </Form>
       </div>
     </div>
   );

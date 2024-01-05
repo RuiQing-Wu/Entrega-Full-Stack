@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getAccionesByCausaId } from '../../services/acciones.service';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import StackAccionSolidaria from '../../component/StackAccionSolidaria';
+import { getToken } from '../../utils/utils';
 
 export default function MostrarCausa() {
   const location = useLocation();
@@ -56,13 +57,15 @@ export default function MostrarCausa() {
 
       <div className="d-flex flex-column m-auto w-75">
         <div className="ms-auto p-2">
-          <Button
-            variant="outline-success"
-            size="sm"
-            onClick={handleRedireccionarACrearAccion}
-          >
-            Crear accion
-          </Button>
+          {getToken() && (
+            <Button
+              variant="outline-success"
+              size="sm"
+              onClick={handleRedireccionarACrearAccion}
+            >
+              Crear accion
+            </Button>
+          )}
         </div>
         <div>
           <CardCausaSolidaria

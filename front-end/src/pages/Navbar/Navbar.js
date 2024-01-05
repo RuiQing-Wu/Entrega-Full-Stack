@@ -47,7 +47,7 @@ export default function Menu() {
           </NavLink>
           {user.username && (
             <>
-              <NavLink to={'/listaCausas'} className="nav-link">
+              <NavLink to={'/causas'} className="nav-link">
                 Causas
               </NavLink>
               <NavLink to={'/crear-comunidad'} className="nav-link">
