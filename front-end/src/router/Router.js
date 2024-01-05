@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       },
       {
         name: 'ExternalProfile',
-        path: '/Profile/:nombrePerfil',
+        path: '/profile/:nombrePerfil',
         element: (
           <AuthRoute>
             <MostrarInformacionPerfil />
@@ -71,7 +71,7 @@ const router = createBrowserRouter([
       },
       {
         name: 'Causa',
-        path: '/crear-causa',
+        path: '/comunidad/:idComunidad/crear-causa',
         element: (
           <AuthRoute>
             <Causa />

@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Breadcrumb, Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import { saveCausa } from '../../services/causas.service';
@@ -6,8 +6,6 @@ import './CausaSolidaria.css';
 import ErrorMessage from '../../component/MensajeError';
 
 export default function Causa() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [fechaInicio, setFechaInicio] = useState('');
@@ -16,7 +14,8 @@ export default function Causa() {
   const [descripcionError, setDescripcionError] = useState('');
   const [fechaInicioError, setFechaInicioError] = useState('');
   const [fechaFinError, setFechaFinError] = useState('');
-  const comunidad = location.state;
+  const param = useParams();
+  const navigate = useNavigate();
 
   function handleTituloInput(event) {
     setTitulo(event.target.value);
@@ -67,6 +66,7 @@ export default function Causa() {
         descripcion,
         fechaInicio,
         fechaFin,
+        param.idComunidad,
       );
     } catch (error) {
       throw new Error('Error al crear la causa');

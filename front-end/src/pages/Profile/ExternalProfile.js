@@ -1,12 +1,15 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import CardExternalProfile from '../../component/CardExternalProfile';
 
 export default function MostrarInformacionPerfil() {
-  const location = useLocation();
-  const usuario = location.state;
+  const username = useParams();
+  const [usuario, setUsuario] = useState(
+    useSelector((state) => state.user.userInfo),
+  );
 
-  if (!usuario) {
+  if (!username) {
     return <div>No hay datos del usuario</div>;
   }
 
@@ -14,8 +17,8 @@ export default function MostrarInformacionPerfil() {
     <div>
       <CardExternalProfile
         username={usuario.username}
-        telefono={usuario.telefono}
-        correo={usuario.correo}
+        role={usuario.role}
+        imageUrl={'../../../imagenes/usuario.png'}
       />
     </div>
   );

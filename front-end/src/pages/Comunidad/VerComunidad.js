@@ -35,28 +35,20 @@ export default function MostrarComunidad() {
   };
 
   const fetchComunidad = useCallback(async () => {
-    // eslint-disable-next-line no-console
-    console.log('UseCallback');
     const response = await getComunidadById(param.idComunidad);
     setComunidad(response);
   }, [param.idComunidad]);
 
   const fetchCausas = useCallback(async () => {
-    // eslint-disable-next-line no-console
-    console.log('UseCallback fetchCausa');
     const response = await getCausasByComunityId(param.idComunidad);
     setTodasLasCausas(response);
   }, [param.idComunidad]);
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('Fetch comunidad');
     fetchComunidad();
   }, [fetchComunidad]);
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('Fetch causas');
     fetchCausas();
   }, [fetchCausas]);
 
@@ -73,15 +65,7 @@ export default function MostrarComunidad() {
   }
 
   function handleRedireccionarACrearCausa() {
-    // navigate(`/comunidad/${comunidad.nombre}/crear-causa`, {
-    navigate(`/crear-causa`, {
-      state: {
-        id: comunidad.id,
-        nombre: comunidad.nombre,
-        descripcion: comunidad.descripcion,
-        fechaInicio: comunidad.fechaInicio,
-      },
-    });
+    navigate(`/comunidad/${param.idComunidad}/crear-causa`);
   }
 
   return (

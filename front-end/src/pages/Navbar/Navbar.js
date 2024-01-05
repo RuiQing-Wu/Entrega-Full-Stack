@@ -71,7 +71,7 @@ export default function Menu() {
           <Nav className="p-2">
             {user.username ? (
               <NavLink
-                to={{ pathname: `/profile`, state: { usuario: user } }}
+                to={{ pathname: `/profile/${user.username}` }}
                 className="nav-link"
               >
                 {user.username}
