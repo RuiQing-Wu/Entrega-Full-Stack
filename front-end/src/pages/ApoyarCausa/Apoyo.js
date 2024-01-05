@@ -1,17 +1,18 @@
-import './Solicitud.css';
+import './Apoyo.css';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { useState } from 'react';
 
-export default function Solicitud(props) {
-  // const [modalShow, setModalShow] = useState(props.show);
+export default function Apoyo(props) {
+  const [correo, setCorreo] = useState('');
   // eslint-disable-next-line no-console
   console.log('modalShow: ', props.show);
-  function enviar() {
+  function handleCorreoInput(event) {
+    setCorreo(event.target.value);
+  }
+
+  function apoyar() {
     // eslint-disable-next-line no-console
-    console.log(
-      'enviar Solicutud nombre comunidad: ',
-      props.nombreUsuario,
-      props.nombreComunidad,
-    );
+    console.log('Apoyar: ', props.nombreCausa, correo);
 
     // TODO ENVIAR SOLICITUD
     props.onHide();
@@ -19,7 +20,7 @@ export default function Solicitud(props) {
 
   function close() {
     // eslint-disable-next-line no-console
-    console.log('No enviar Solicutud');
+    console.log('No enviar Correo');
     props.onHide();
   }
 
@@ -37,21 +38,24 @@ export default function Solicitud(props) {
           className="text-center"
           style={{ textAlign: 'center' }}
         >
-          Solicitud de ingreso a comunidad
+          Apoyar Causa
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Nombre Usuario: {props.nombreUsuario}</p>
-        <p>Nombre Comunidad: {props.nombreComunidad}</p>
         <Form>
-          <Form.Group controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Descripción</Form.Label>
-            <Form.Control as="textarea" rows={3} />
+          <Form.Group className="mb-3" controlId="inputCorreo">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="name@example.com"
+              autoFocus={false}
+              onChange={handleCorreoInput}
+            />
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={enviar}>Enviar solicitud</Button>
+        <Button onClick={apoyar}>Apoyar</Button>
         <Button onClick={close} variant="danger">
           Close
         </Button>

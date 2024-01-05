@@ -2,6 +2,7 @@ import './Style/CardComunidad.css';
 import { useState } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import Solicitud from '../pages/Solicitud/Solicitud';
+import Apoyo from '../pages/ApoyarCausa/Apoyo';
 
 export default function CardComunidad({
   imageUrl,
@@ -10,8 +11,14 @@ export default function CardComunidad({
   fechaInicio,
 }) {
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowApoyo, setModalShowApoyo] = useState(false);
+
   function showModal() {
     setModalShow(true);
+  }
+
+  function showModalApoyo() {
+    setModalShowApoyo(true);
   }
 
   return (
@@ -37,20 +44,31 @@ export default function CardComunidad({
             xs={12}
             md={2}
             className="d-flex align-items-center justify-content-md-end"
-          >
-            <Button variant="primary" size="sm" onClick={showModal}>
-              Solicitar
-            </Button>
-          </Col>
+          ></Col>
         </Row>
       </Card.Body>
 
       <Card.Footer>
+        <Button variant="primary" size="sm" onClick={showModal}>
+          Solicitar
+        </Button>
         <Solicitud
           show={modalShow}
           onHide={() => setModalShow(false)}
           nombreUsuario="Cambiar Aqui por el nombre del usuario"
           nombreComunidad="Cambiar Aqui por el nombre de la comunidad"
+        />
+        <Button
+          type="button"
+          className="btn btn-primary"
+          onClick={showModalApoyo}
+        >
+          Apoyar
+        </Button>
+        <Apoyo
+          show={modalShowApoyo}
+          onHide={() => setModalShowApoyo(false)}
+          nombreCausa="Cambiar Aqui por el nombre del causa"
         />
       </Card.Footer>
     </Card>

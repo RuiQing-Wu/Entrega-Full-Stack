@@ -1,29 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeUserInfo, setUserInfo } from '../../store/module/user';
+import { removeUserInfo } from '../../store/module/user';
 import { getProfileThunk } from '../../services/auth.service';
-import { removeToken } from '../../utils/utils';
+import { getToken, removeToken } from '../../utils/utils';
 
 export default function Menu() {
-  const user = useSelector((state) => state.user.userInfo);
-  const [currentUser, setCurrentUser] = useState(undefined);
+  const user = useSelector((state) => {
+    console.log('state.user.userInfo', state.user.userInfo);
+    return state.user.userInfo;
+  });
+  const [token, setToken] = useState(getToken());
   const dispatch = useDispatch();
 
   function logOut() {
     // eslint-disable-next-line no-console
     console.log('LogOut');
-    setCurrentUser(undefined);
+    setToken('');
     dispatch(removeUserInfo());
     dispatch(removeToken());
   }
 
   useEffect(() => {
+    if (!token) {
+      return;
+    }
     dispatch(getProfileThunk());
     // eslint-disable-next-line no-console
     console.log('profile useEffect', user.username);
-  }, [currentUser]); // Dependencia vacía para que solo se ejecute al montar el componente
+  }, [token]); // Dependencia vacía para que solo se ejecute al montar el componente
 
   return (
     <Navbar bg="light" expand="lg">
