@@ -71,7 +71,7 @@ const router = createBrowserRouter([
       },
       {
         name: 'Causa',
-        path: '/causa',
+        path: '/crear-causa',
         element: (
           <AuthRoute>
             <Causa />

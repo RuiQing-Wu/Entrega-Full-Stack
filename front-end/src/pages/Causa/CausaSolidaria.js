@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Breadcrumb, Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import { saveCausa } from '../../services/causas.service';
@@ -7,15 +7,16 @@ import ErrorMessage from '../../component/MensajeError';
 
 export default function Causa() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
-
   const [tituloError, setTituloError] = useState('');
   const [descripcionError, setDescripcionError] = useState('');
   const [fechaInicioError, setFechaInicioError] = useState('');
   const [fechaFinError, setFechaFinError] = useState('');
+  const comunidad = location.state;
 
   function handleTituloInput(event) {
     setTitulo(event.target.value);

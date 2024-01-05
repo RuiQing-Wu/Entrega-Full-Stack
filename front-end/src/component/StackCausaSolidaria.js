@@ -18,6 +18,7 @@ export default function StackCausaSolidaria({
     if (titulo !== ' ') {
       navigate(`/causa/${titulo}`, {
         state: {
+          idCausa,
           titulo,
           descripcion,
           fechaInicio,
@@ -42,7 +43,7 @@ export default function StackCausaSolidaria({
           <div className="p-2">{fechaInicio}</div>
           <div className="p-2">{fechaFin}</div>
           <Button
-            onClick={() => handleRedirecciónACausa()}
+            onClick={handleRedirecciónACausa}
             variant="outline-secondary"
             size="sm"
           >

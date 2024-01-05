@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { Form, Button, Col } from 'react-bootstrap';
 import './AccionSolidaria.css';
@@ -7,12 +7,13 @@ import { saveAccion } from '../../services/acciones.service';
 
 export default function Accion() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const causa = location.state;
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [objetivo, setObjetivo] = useState('');
   const [objetivos, setObjetivos] = useState('');
   const [progreso, setProgreso] = useState(0);
-
   const [tituloError, setTituloError] = useState('');
   const [descripcionError, setDescripcionError] = useState('');
   const [objetivoError, setObjetivoError] = useState('');

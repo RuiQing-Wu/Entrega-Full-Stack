@@ -2,6 +2,7 @@ import React from 'react';
 import './Style/CardCausaSolidaria.css';
 
 const CardCausaSolidaria = ({
+  idCausa,
   titulo,
   descripcion,
   fechaInicio,

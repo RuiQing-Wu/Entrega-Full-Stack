@@ -17,11 +17,15 @@ export default function MostrarCausa() {
   }
 
   function handleRedireccionarACrearAccion() {
-    navigate('/crear-accion');
+    navigate('/crear-accion', {
+      state: {
+        idCausa: causa.idCausa,
+      },
+    });
   }
 
   function onCausasClicked() {
-    navigate('/listaCausas');
+    navigate('/causas');
   }
 
   useEffect(() => {
@@ -69,6 +73,7 @@ export default function MostrarCausa() {
         </div>
         <div>
           <CardCausaSolidaria
+            idCausa={causa.id}
             titulo={causa.titulo}
             descripcion={causa.descripcion}
             fechaInicio={causa.fechaInicio}

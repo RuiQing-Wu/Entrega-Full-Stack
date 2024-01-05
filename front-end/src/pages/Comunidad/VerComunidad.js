@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Breadcrumb, Tab, Tabs } from 'react-bootstrap';
+import { Breadcrumb, Tab, Tabs, Button } from 'react-bootstrap';
 import { getCausasByComunityId } from '../../services/causas.service';
 import CardComunidad from '../../component/CardComunidad';
 import StackCausaSolidaria from '../../component/StackCausaSolidaria';
 import CardExternalProfile from '../../component/CardExternalProfile';
 import Popup from '../../component/Popup';
+import { getToken } from '../../utils/utils';
 
 export default function MostrarComunidad() {
   const location = useLocation();
@@ -13,9 +14,8 @@ export default function MostrarComunidad() {
   const param = useParams();
   const [todasLasCausas, setTodasLasCausas] = React.useState([]);
   const navigate = useNavigate();
-  const objetivos = ['objetivo1', 'objetivo2'];
-
   const [popupMessage, setPopupMessage] = React.useState('');
+
   console.log('comunidad: ', comunidad);
   console.log('nombreComunidad: ', param);
   if (comunidad === null) {
@@ -77,6 +77,18 @@ export default function MostrarComunidad() {
     navigate('/comunidades');
   }
 
+  function handleRedireccionarACrearCausa() {
+    console.log('comunidad.id', comunidad.id);
+    navigate('/crear-causa', {
+      state: {
+        id: comunidad.id,
+        nombre: comunidad.nombre,
+        descripcion: comunidad.descripcion,
+        fechaInicio: comunidad.fechaInicio,
+      },
+    });
+  }
+
   return (
     <div>
       <Breadcrumb className="p-2">
@@ -87,13 +99,28 @@ export default function MostrarComunidad() {
         <Breadcrumb.Item active>{comunidad.nombre}</Breadcrumb.Item>
       </Breadcrumb>
 
-      <CardComunidad
-        imageUrl={'../../../imagenes/comunidad.jpeg'}
-        id={comunidad.id}
-        nombre={comunidad.nombre}
-        descripcion={comunidad.descripcion}
-        fechaInicio={comunidad.fechaInicio}
-      />
+      <div className="d-flex flex-column m-auto w-75">
+        <div className="ms-auto p-2">
+          {getToken() && (
+            <Button
+              variant="outline-success"
+              size="sm"
+              onClick={handleRedireccionarACrearCausa}
+            >
+              Crear causa
+            </Button>
+          )}
+        </div>
+        <div>
+          <CardComunidad
+            imageUrl={'../../../imagenes/comunidad.jpeg'}
+            id={comunidad.id}
+            nombre={comunidad.nombre}
+            descripcion={comunidad.descripcion}
+            fechaInicio={comunidad.fechaInicio}
+          />
+        </div>
+      </div>
 
       <Tabs
         defaultActiveKey="causasSolidarias"
