@@ -16,10 +16,10 @@ export default function MostrarComunidad() {
   const navigate = useNavigate();
   const [popupMessage, setPopupMessage] = React.useState('');
 
-  console.log('comunidad: ', comunidad);
-  console.log('nombreComunidad: ', param);
+  // console.log('comunidad: ', comunidad);
+  // console.log('nombreComunidad: ', param);
   if (comunidad === null) {
-    console.log('No hay datos de la comunidad');
+    // console.log('No hay datos de la comunidad');
     comunidad.id = param.nombreComunidad;
   }
 
@@ -78,7 +78,6 @@ export default function MostrarComunidad() {
   }
 
   function handleRedireccionarACrearCausa() {
-    console.log('comunidad.id', comunidad.id);
     navigate('/crear-causa', {
       state: {
         id: comunidad.id,

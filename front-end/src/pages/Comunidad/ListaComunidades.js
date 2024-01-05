@@ -66,7 +66,6 @@ export default function BuscarComunidades() {
     const comunidadSeleccionada = comunidadesFiltradas.find(
       (comunidad) => comunidad.nombre === nombre,
     );
-
     if (comunidadSeleccionada) {
       navigate(`/comunidad/${nombre}`, {
         state: {
@@ -84,7 +83,7 @@ export default function BuscarComunidades() {
   }
 
   return (
-    <div>
+    <div id="PaginaListaComunidades">
       <div>
         <Breadcrumb className="p-2">
           <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>

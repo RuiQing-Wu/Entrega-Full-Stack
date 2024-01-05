@@ -8,7 +8,7 @@ import { getToken, removeToken } from '../../utils/utils';
 
 export default function Menu() {
   const user = useSelector((state) => {
-    console.log('state.user.userInfo', state.user.userInfo);
+    // console.log('state.user.userInfo', state.user.userInfo);
     return state.user.userInfo;
   });
   const [token, setToken] = useState(getToken());
@@ -16,7 +16,7 @@ export default function Menu() {
 
   function logOut() {
     // eslint-disable-next-line no-console
-    console.log('LogOut');
+    // console.log('LogOut');
     setToken('');
     dispatch(removeUserInfo());
     dispatch(removeToken());
@@ -28,7 +28,7 @@ export default function Menu() {
     }
     dispatch(getProfileThunk());
     // eslint-disable-next-line no-console
-    console.log('profile useEffect', user.username);
+    // console.log('profile useEffect', user.username);
   }, [token]); // Dependencia vacía para que solo se ejecute al montar el componente
 
   return (

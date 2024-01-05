@@ -14,7 +14,7 @@ async function login(username, password) {
 
   if (response.status === 401) {
     // eslint-disable-next-line no-console
-    console.log('Usuario o contraseña incorrectos');
+    // console.log('Usuario o contraseña incorrectos');
     return { access_token: undefined };
   }
 
@@ -24,7 +24,7 @@ async function login(username, password) {
 
 async function registerUser(username, password) {
   // eslint-disable-next-line prettier/prettier, no-console
-  console.log('Llmando a la API');
+  // console.log('Llmando a la API');
 
   const response = await fetch(`${API_URL}/register`, {
     method: 'POST',
@@ -58,7 +58,7 @@ function getProfileThunk() {
   return async function fetchTodoByIdThunk(dispatch, getState) {
     const response = await getProfile();
     // eslint-disable-next-line no-console
-    console.log('RESPONSE ', response);
+    // console.log('RESPONSE ', response);
 
     if (response.username === undefined) {
       return;

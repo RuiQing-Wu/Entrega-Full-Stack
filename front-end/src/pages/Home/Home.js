@@ -12,14 +12,14 @@ export default function Home() {
 
   return (
     <div className="d-flex flex-column justify-content-center">
-      <Row className="bg-info-subtle">
+      <Row className="bg-info-subtle m-0 p-5">
         <Col className="p-5">
           <h1>SolidarianID</h1>
           <h6>Conectando con los más necesitados</h6>
         </Col>
       </Row>
-      <Row className="bg-dark-subtle p-5">
-        <Col>
+      <Row className="bg-dark-subtle m-0 p-5">
+        <Col className="p-5">
           <h4>Quienes somos</h4>
           <p>
             SolidarianID es una plataforma destinada a fomentar la participación
@@ -29,8 +29,8 @@ export default function Home() {
           </p>
         </Col>
       </Row>
-      <Row className="bg-light p-5">
-        <Col>
+      <Row className="bg-light m-0 p-5">
+        <Col className="p-5">
           <h5>Navega entre las comunidades de nuestra web</h5>
           <Button
             onClick={() => handleRedireccionAComunidades()}
