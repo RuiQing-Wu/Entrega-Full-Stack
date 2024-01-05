@@ -67,7 +67,7 @@ export default function BuscarComunidades() {
       (comunidad) => comunidad.nombre === nombre,
     );
     if (comunidadSeleccionada) {
-      navigate(`/comunidad/${nombre}`, {
+      navigate(`/comunidad/${comunidadSeleccionada.id}`, {
         state: {
           id: comunidadSeleccionada.id,
           nombre: comunidadSeleccionada.nombre,

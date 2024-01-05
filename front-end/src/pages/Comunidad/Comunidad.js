@@ -50,21 +50,14 @@ export default function Comunidad() {
       day: '2-digit',
     });
 
-    // TODO Llamar a la API para iniciar sesión
-    try {
-      const response = await saveComunidad(nombre, descripcion, formattedDate);
-    } catch (error) {
-      throw new Error('Error al crear la comunidad');
+    const response = await saveComunidad(nombre, descripcion, formattedDate);
+    if (response === undefined) {
+      navigate('/error');
+      return;
     }
 
     // Navegar a la página que contiene los detalles de la nueva comunidad
-    navigate(`/comunidad/${nombre}`, {
-      state: {
-        nombre,
-        descripcion,
-        fechaInicio: formattedDate,
-      },
-    });
+    navigate(`/comunidad/${response.id}`);
   }
 
   function onHomeClicked() {

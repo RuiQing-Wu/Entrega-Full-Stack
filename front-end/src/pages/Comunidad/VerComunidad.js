@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs, Button } from 'react-bootstrap';
 import { getCausasByComunityId } from '../../services/causas.service';
@@ -7,40 +7,24 @@ import StackCausaSolidaria from '../../component/StackCausaSolidaria';
 import CardExternalProfile from '../../component/CardExternalProfile';
 import Popup from '../../component/Popup';
 import { getToken } from '../../utils/utils';
+import { getComunidadById } from '../../services/comunidades.service';
 
 export default function MostrarComunidad() {
   const location = useLocation();
-  const comunidad = location.state;
+  // const comunidad = location.state;
+  const [comunidad, setComunidad] = useState();
   const param = useParams();
-  const [todasLasCausas, setTodasLasCausas] = React.useState([]);
+  const [todasLasCausas, setTodasLasCausas] = useState([]);
   const navigate = useNavigate();
-  const [popupMessage, setPopupMessage] = React.useState('');
-
-  // console.log('comunidad: ', comunidad);
-  // console.log('nombreComunidad: ', param);
-  if (comunidad === null) {
-    // console.log('No hay datos de la comunidad');
-    comunidad.id = param.nombreComunidad;
-  }
+  const [popupMessage, setPopupMessage] = useState('');
 
   const onApoyarCausaClicked = async () => {
     try {
-      const response = await getCausasByComunityId(comunidad.id);
+      const response = await getCausasByComunityId(param.idComunidad);
       const totalCausas = response;
       setTodasLasCausas(totalCausas);
 
-      navigate(
-        `/comunidad/${comunidad.nombre}`,
-        {
-          state: {
-            id: comunidad.id,
-            nombre: comunidad.nombre,
-            descripcion: comunidad.descripcion,
-            fechaInicio: comunidad.fechaInicio,
-          },
-        },
-        { replace: true },
-      );
+      navigate(`/comunidad/${param.idComunidad}`, { replace: true });
 
       setPopupMessage('¡Causa apoyada exitosamente!');
     } catch (error) {
@@ -50,20 +34,31 @@ export default function MostrarComunidad() {
     }
   };
 
+  const fetchComunidad = useCallback(async () => {
+    // eslint-disable-next-line no-console
+    console.log('UseCallback');
+    const response = await getComunidadById(param.idComunidad);
+    setComunidad(response);
+  }, [param.idComunidad]);
+
+  const fetchCausas = useCallback(async () => {
+    // eslint-disable-next-line no-console
+    console.log('UseCallback fetchCausa');
+    const response = await getCausasByComunityId(param.idComunidad);
+    setTodasLasCausas(response);
+  }, [param.idComunidad]);
+
   useEffect(() => {
-    async function causas() {
-      try {
-        const response = await getCausasByComunityId(comunidad.id);
-        const totalCausas = response;
-        setTodasLasCausas(totalCausas);
-      } catch (errorGet) {
-        throw new Error(
-          'Error al obtener las causas. Por favor, inténtalo de nuevo.',
-        );
-      }
-    }
-    causas();
-  }, [comunidad.id, setTodasLasCausas]);
+    // eslint-disable-next-line no-console
+    console.log('Fetch comunidad');
+    fetchComunidad();
+  }, [fetchComunidad]);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('Fetch causas');
+    fetchCausas();
+  }, [fetchCausas]);
 
   if (!comunidad) {
     return <div>No hay datos de la comunidad</div>;

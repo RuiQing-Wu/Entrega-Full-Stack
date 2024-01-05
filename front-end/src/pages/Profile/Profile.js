@@ -31,8 +31,6 @@ export default function Profile() {
       }
     });
 
-    console.log('Campos editados:', editedData);
-
     setEditedFields({
       username: false,
       telefono: false,

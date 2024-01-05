@@ -23,9 +23,6 @@ async function login(username, password) {
 }
 
 async function registerUser(username, password) {
-  // eslint-disable-next-line prettier/prettier, no-console
-  // console.log('Llmando a la API');
-
   const response = await fetch(`${API_URL}/register`, {
     method: 'POST',
     headers: {

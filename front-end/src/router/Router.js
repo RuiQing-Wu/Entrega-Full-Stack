@@ -56,7 +56,7 @@ const router = createBrowserRouter([
       },
       {
         name: 'VerComunidad',
-        path: '/comunidad/:nombreComunidad',
+        path: '/comunidad/:idComunidad',
         element: <MostrarComunidad />,
       },
       {
@@ -99,6 +99,11 @@ const router = createBrowserRouter([
       },
       { name: 'Error', path: '*', element: <Error /> },
     ],
+  },
+  {
+    name: 'ErrorOperacion',
+    path: '/error',
+    element: <Error />,
   },
   {
     name: 'Error',
