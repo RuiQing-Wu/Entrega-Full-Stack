@@ -2,7 +2,7 @@ import { Controller, Get, Inject, Post, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Public } from './decorators/public.decorator';
 
-@Controller('user')
+@Controller('')
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
@@ -12,10 +12,4 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Post('/login')
-  getPeticionLogin(@Res() response,): string {
-    return response.status(201).json({
-      message: 'Student has been created successfully'
-    });
-  }
 }

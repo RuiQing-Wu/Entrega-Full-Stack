@@ -11,7 +11,7 @@ export default function ErrorPage() {
       <h1>Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
       <p>
-        <i>{error.statusText || error.message}</i>
+        Please try again later or contact us at <a href="@um.es"> um.es </a>
       </p>
     </div>
   );

@@ -13,6 +13,15 @@ export class UserMongoModel {
     password: string;
 
     @Prop({ required: true })
+    telefono: string;
+
+    @Prop({ required: true })
+    ciudad: string;
+
+    @Prop({ required: true })
+    pais: string;
+
+    @Prop({ required: true })
     role: string;
 }
 

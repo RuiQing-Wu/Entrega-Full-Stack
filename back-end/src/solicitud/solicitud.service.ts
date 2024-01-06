@@ -16,11 +16,12 @@ export class SolicitudServiceImpl extends ISolicitudesService {
   }
 
   create(createSolicitudDto: CreateSolicitudDto): Promise<Solicitud> {
-    throw new Error('Method not implemented.');
+    const solicitud = new Solicitud(createSolicitudDto);
+    return this.solicitudesRepository.create(solicitud);
   }
   
   findAll(): Promise<Solicitud[]> {
-    throw new Error('Method not implemented.');
+    return this.solicitudesRepository.getAll();
   }
 
   findOne(id: string): Promise<Solicitud> {

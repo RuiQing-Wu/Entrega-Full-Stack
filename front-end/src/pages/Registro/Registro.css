@@ -5,9 +5,14 @@
   margin: auto;
   padding: 10px;
   margin-bottom: 150px;
+  text-align: left;
 }
   
   #PaginaRegistro form .form-label{
     font-weight: bold;
-    color: #333;
+    color: #212529;
+  }
+
+  #PaginaRegistro #LinkLogin{
+    text-align: center;  
   }

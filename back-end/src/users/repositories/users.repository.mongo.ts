@@ -15,16 +15,19 @@ export class UsersRepositoryMongo extends UsersRepository {
 
     private toUserDomain(userMongo: HydratedDocument<UserMongoModel>): User {
         if (userMongo) {
-          const user = new User({
-            id: userMongo._id.toString(),
-            username: userMongo.username,
-            password: userMongo.password,
-            role: userMongo.role,
-          });
+            const user = new User({
+                id: userMongo._id.toString(),
+                username: userMongo.username,
+                password: userMongo.password,
+                telefono: userMongo.telefono,
+                ciudad: userMongo.ciudad,
+                pais: userMongo.pais,
+                role: userMongo.role,
+            });
 
-          return user;
+            return user;
         }
-      }
+    }
 
     async create(item: User): Promise<User> {
         const createdUserMongo = await this.userModel.create(item); // modelo mongo
@@ -42,7 +45,7 @@ export class UsersRepositoryMongo extends UsersRepository {
         const userMongo = await this.userModel.findById(id).exec();
         return this.toUserDomain(userMongo);
     }
-    
+
     getAll(): Promise<any[]> {
         throw new Error("Method not implemented.");
     }

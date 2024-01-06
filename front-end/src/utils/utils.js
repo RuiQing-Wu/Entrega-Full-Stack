@@ -12,4 +12,15 @@ function removeToken() {
   localStorage.removeItem(TOKEN);
 }
 
-export { getToken, setToken, removeToken };
+function dateToString() {
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleDateString('en-EN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  return formattedDate;
+}
+
+export { getToken, setToken, removeToken, dateToString };

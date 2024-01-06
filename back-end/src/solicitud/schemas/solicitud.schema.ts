@@ -13,16 +13,16 @@ export class SolicitudMongoModel {
     descripcion: string;
 
     @Prop()
-    fecha_solicitud: Date;
+    fechaSolicitud: Date;
 
     @Prop()
     estado: boolean;
 
     @Prop({ type: mongoose.Types.ObjectId, ref: 'UserMongoModel' })
-    id_usuario: string;
+    idUsuario: string;
 
     @Prop({ type: mongoose.Types.ObjectId, ref: 'ComunidadMongoModel' })
-    id_comunidad: string;
+    idComunidad: string;
 }
 
 export const SolicitudSchema = SchemaFactory.createForClass(SolicitudMongoModel);

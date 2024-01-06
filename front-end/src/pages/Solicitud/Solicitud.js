@@ -1,19 +1,48 @@
 import './Solicitud.css';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { createSolicitud } from '../../services/solicitud.service';
+import { dateToString } from '../../utils/utils';
 
 export default function Solicitud(props) {
-  // const [modalShow, setModalShow] = useState(props.show);
-  // eslint-disable-next-line no-console
-  console.log('modalShow: ', props.show);
+  const user = useSelector((state) => {
+    // console.log('state.user.userInfo', state.user.userInfo);
+    return state.user.userInfo;
+  });
+
+  const [descripcion, setDescripcion] = useState('');
+
+  function handleDescripcion(event) {
+    setDescripcion(event.target.value);
+  }
+
   function enviar() {
     // eslint-disable-next-line no-console
     console.log(
       'enviar Solicutud nombre comunidad: ',
-      props.nombreUsuario,
+      user.username,
       props.nombreComunidad,
     );
 
-    // TODO ENVIAR SOLICITUD
+    const fechaSolicitud = dateToString();
+
+    const response = createSolicitud(
+      descripcion,
+      fechaSolicitud,
+      false,
+      user.id,
+      props.idComunidad,
+    );
+
+    if (response === undefined) {
+      // eslint-disable-next-line no-console
+      console.log('No se pudo enviar la solicitud');
+    } else {
+      // eslint-disable-next-line no-console
+      console.log('Solicitud enviada');
+    }
+
     props.onHide();
   }
 
@@ -41,12 +70,19 @@ export default function Solicitud(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Nombre Usuario: {props.nombreUsuario}</p>
+        <p>Id Usuario: {user.id}</p>
+        <p>Nombre Usuario: {user.username}</p>
+        <p>Id Comunidad: {props.idComunidad}</p>
         <p>Nombre Comunidad: {props.nombreComunidad}</p>
         <Form>
           <Form.Group controlId="exampleForm.ControlTextarea1">
             <Form.Label>Descripción</Form.Label>
-            <Form.Control as="textarea" rows={3} />
+            <Form.Control
+              as="textarea"
+              rows={3}
+              onChange={handleDescripcion}
+              value={descripcion}
+            />
           </Form.Group>
         </Form>
       </Modal.Body>

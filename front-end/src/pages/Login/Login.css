@@ -4,9 +4,14 @@
   border: 2px solid #ccc;
   margin: auto;
   padding: 10px;
+  text-align: left;
 }
   
   #PaginaLogin form .form-label{
     font-weight: bold;
     color: #333;
+  }
+
+  #PaginaRegistro #LinkRegistro{
+    text-align: center;  
   }

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { IUserService } from './interfaces/user.service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -19,13 +19,21 @@ export class UsersServiceImp extends IUserService {
     super();
   }
 
-  create(createUserDto: CreateUserDto) {
-    const user = new User({
-      role: Role.User,
+  async create(createUserDto: CreateUserDto) {
+    // Comprobar si existe el usuario
+    const user = await this.usersRepository.getByName(createUserDto.username);
+
+    console.log(user);
+    if (user) {
+      throw new ConflictException('User already exists!');
+    }
+
+    const newUser = new User({
       ...createUserDto,
+      role: Role.User,
     });
 
-    return this.usersRepository.create(user);
+    return this.usersRepository.create(newUser);
   }
 
   findAll(): Promise<any[]> {
