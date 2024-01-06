@@ -80,7 +80,7 @@ const router = createBrowserRouter([
       },
       {
         name: 'Accion',
-        path: '/crear-accion',
+        path: '/causa/:idCausa/crear-accion',
         element: (
           <AuthRoute>
             <Accion />
@@ -89,12 +89,12 @@ const router = createBrowserRouter([
       },
       {
         name: 'VerCausaSolidaria',
-        path: '/causa/:titulo',
+        path: '/causa/:idCausa',
         element: <MostrarCausa />,
       },
       {
         name: 'VerAccionSolidaria',
-        path: '/accion/:titulo',
+        path: '/accion/:idAccion',
         element: <MostrarAcciones />,
       },
       { name: 'Error', path: '*', element: <Error /> },

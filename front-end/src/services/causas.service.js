@@ -25,7 +25,6 @@ async function saveCausa(
   });
 
   const data = await response.json();
-  console.log('data', data);
   return data;
 }
 
@@ -35,7 +34,7 @@ async function getCausas() {
   return data;
 }
 
-async function getCausa(id) {
+async function getCausaById(id) {
   const response = await fetch(`${BASE_URL}/${id}`);
   const data = await response.json();
   return data;
@@ -56,7 +55,7 @@ async function getCausasByComunityId(idComunidad) {
 export {
   saveCausa,
   getCausas,
-  getCausa,
+  getCausaById,
   getCausasByName,
   getCausasByComunityId,
 };

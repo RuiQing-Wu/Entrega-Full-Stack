@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Breadcrumb, Tabs, Tab, Col, Button } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getAccionesByCausaId } from '../../services/acciones.service';
+import { getCausaById } from '../../services/causas.service';
+import { getComunidadById } from '../../services/comunidades.service';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import StackAccionSolidaria from '../../component/StackAccionSolidaria';
 import { getToken } from '../../utils/utils';
 
 export default function MostrarCausa() {
-  const location = useLocation();
-  const [todasLasAcciones, setTodasLasAcciones] = React.useState([]);
-  const causa = location.state;
+  const [acciones, setAcciones] = React.useState([]);
+  const [causa, setCausa] = React.useState([]);
+  const [comunidad, setComunidad] = React.useState([]);
+  const param = useParams();
   const navigate = useNavigate();
 
   function onHomeClicked() {
@@ -17,31 +20,39 @@ export default function MostrarCausa() {
   }
 
   function handleRedireccionarACrearAccion() {
-    navigate('/crear-accion', {
-      state: {
-        idCausa: causa.idCausa,
-      },
-    });
+    navigate(`/causa/${param.idCausa}/crear-accion`, { replace: true });
   }
 
   function onCausasClicked() {
-    navigate('/causas');
+    navigate('/comunidades');
   }
 
+  const fetchAcciones = useCallback(async () => {
+    const response = await getAccionesByCausaId(param.idCausa);
+    setAcciones(response);
+  }, [param.idCausa]);
+
+  const fetchCausas = useCallback(async () => {
+    const response = await getCausaById(param.idCausa);
+    setCausa(response);
+  }, [param.idCausa]);
+
+  const fetchComunidad = useCallback(async () => {
+    const response = await getComunidadById(causa.comunidad);
+    setComunidad(response);
+  }, [causa.comunidad]);
+
   useEffect(() => {
-    async function acciones() {
-      try {
-        const response = await getAccionesByCausaId(causa.id);
-        const totalAcciones = response;
-        setTodasLasAcciones(totalAcciones);
-      } catch (errorGet) {
-        throw new Error(
-          'Error al obtener las acciones. Por favor, inténtalo de nuevo.',
-        );
-      }
-    }
-    acciones();
-  }, [causa.id, setTodasLasAcciones]);
+    fetchAcciones();
+  }, [fetchAcciones]);
+
+  useEffect(() => {
+    fetchCausas();
+  }, [fetchCausas]);
+
+  useEffect(() => {
+    fetchComunidad();
+  }, [fetchComunidad]);
 
   if (!causa) {
     return <div>No hay datos de la causa</div>;
@@ -53,8 +64,9 @@ export default function MostrarCausa() {
     <div>
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
-        <Breadcrumb.Item onClick={onCausasClicked}>
-          Causas-solidarias
+        <Breadcrumb.Item onClick={onCausasClicked}>Comunidades</Breadcrumb.Item>
+        <Breadcrumb.Item href={`/comunidad/${causa.comunidad}`}>
+          {comunidad.nombre}
         </Breadcrumb.Item>
         <Breadcrumb.Item active>{causa.titulo}</Breadcrumb.Item>
       </Breadcrumb>
@@ -82,7 +94,7 @@ export default function MostrarCausa() {
         </div>
       </div>
 
-      <Col className="mx-auto">
+      <Col className="mx-auto mt-2">
         <Tabs
           defaultActiveKey="acciones"
           id="uncontrolled-tab-causas-acciones"
@@ -91,12 +103,12 @@ export default function MostrarCausa() {
           <Tab eventKey="causas" title="Causas solidarias">
             Tab content for Causas
           </Tab>
-          {todasLasAcciones.length > 0 && (
+          {acciones.length > 0 && (
             <Tab eventKey="acciones" title="Acciones solidarias">
-              {todasLasAcciones.isEmpty ? (
+              {acciones.isEmpty ? (
                 <p>No hay acciones en la causa</p>
               ) : (
-                todasLasAcciones.map((acc, index) => (
+                acciones.map((acc, index) => (
                   <StackAccionSolidaria
                     key={index}
                     idAccion={acc.id}
@@ -104,18 +116,11 @@ export default function MostrarCausa() {
                     descripcion={acc.descripcion}
                     fechaInicio={acc.fechaInicio}
                     fechaFin={acc.fechaFin}
-                    objetivos={acc.objetivos}
+                    objetivos={objetivosAccion}
                     progreso={acc.progreso}
                   />
                 ))
               )}
-              <StackAccionSolidaria
-                causa={causa}
-                titulo={'accion1'}
-                descripcion={'descripcion1'}
-                objetivos={objetivosAccion}
-                progreso={'20'}
-              />
             </Tab>
           )}
         </Tabs>

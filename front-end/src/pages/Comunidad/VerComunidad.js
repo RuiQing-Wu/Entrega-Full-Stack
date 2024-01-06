@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs, Button } from 'react-bootstrap';
 import { getCausasByComunityId } from '../../services/causas.service';
 import CardComunidad from '../../component/CardComunidad';
@@ -10,8 +10,6 @@ import { getToken } from '../../utils/utils';
 import { getComunidadById } from '../../services/comunidades.service';
 
 export default function MostrarComunidad() {
-  const location = useLocation();
-  // const comunidad = location.state;
   const [comunidad, setComunidad] = useState();
   const param = useParams();
   const [todasLasCausas, setTodasLasCausas] = useState([]);
@@ -65,7 +63,7 @@ export default function MostrarComunidad() {
   }
 
   function handleRedireccionarACrearCausa() {
-    navigate(`/comunidad/${param.idComunidad}/crear-causa`);
+    navigate(`/comunidad/${param.idComunidad}/crear-causa`, { replace: true });
   }
 
   return (

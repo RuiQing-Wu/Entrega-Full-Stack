@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { Breadcrumb, Form, Button, Row, Col, Container } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { getComunidadById } from '../../services/comunidades.service';
 import { saveCausa } from '../../services/causas.service';
 import './CausaSolidaria.css';
 import ErrorMessage from '../../component/MensajeError';
@@ -14,6 +15,7 @@ export default function Causa() {
   const [descripcionError, setDescripcionError] = useState('');
   const [fechaInicioError, setFechaInicioError] = useState('');
   const [fechaFinError, setFechaFinError] = useState('');
+  const [comunidad, setComunidad] = useState([]);
   const param = useParams();
   const navigate = useNavigate();
 
@@ -60,27 +62,25 @@ export default function Causa() {
       return;
     }
 
-    try {
-      const response = await saveCausa(
-        titulo,
-        descripcion,
-        fechaInicio,
-        fechaFin,
-        param.idComunidad,
-      );
-    } catch (error) {
-      throw new Error('Error al crear la causa');
-    }
+    const response = await saveCausa(
+      titulo,
+      descripcion,
+      fechaInicio,
+      fechaFin,
+      param.idComunidad,
+    );
 
-    navigate(`/causa/${titulo}`, {
-      state: {
-        titulo,
-        descripcion,
-        fechaInicio,
-        fechaFin,
-      },
-    });
+    navigate(`/causa/${response.id}`, { replace: true });
   }
+
+  const fetchComunidad = useCallback(async () => {
+    const response = await getComunidadById(param.idComunidad);
+    setComunidad(response);
+  }, [param.idComunidad]);
+
+  useEffect(() => {
+    fetchComunidad();
+  }, [fetchComunidad]);
 
   function onHomeClicked() {
     navigate('/');
@@ -91,6 +91,9 @@ export default function Causa() {
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
         <Breadcrumb.Item href="/comunidades">Comunidades</Breadcrumb.Item>
+        <Breadcrumb.Item href={`/comunidad/${param.idComunidad}`}>
+          {comunidad.nombre}
+        </Breadcrumb.Item>
         <Breadcrumb.Item active>Crear-causa-solidaria</Breadcrumb.Item>
       </Breadcrumb>
       <div id="PaginaCausaSolidaria">

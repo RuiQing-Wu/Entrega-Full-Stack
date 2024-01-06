@@ -16,17 +16,7 @@ export default function StackCausaSolidaria({
 
   function handleRedirecciónACausa() {
     if (titulo !== ' ') {
-      navigate(`/causa/${titulo}`, {
-        state: {
-          idCausa,
-          titulo,
-          descripcion,
-          fechaInicio,
-          fechaFin,
-          accionSolidaria,
-          idComunidad,
-        },
-      });
+      navigate(`/causa/${idCausa}`, { replace: true });
     }
   }
 

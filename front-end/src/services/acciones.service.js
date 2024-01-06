@@ -1,14 +1,26 @@
 const BASE_URL = 'http://localhost:3001/acciones';
 
-async function saveAccion(titulo, descripcion, listaObjetivos, progreso) {
+async function saveAccion(
+  titulo,
+  descripcion,
+  listaObjetivos,
+  progreso,
+  idCausa,
+) {
+  const causa = idCausa;
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ titulo, descripcion, listaObjetivos, progreso }),
+    body: JSON.stringify({
+      titulo,
+      descripcion,
+      listaObjetivos,
+      progreso,
+      causa,
+    }),
   });
-
   const data = await response.json();
   return data;
 }
