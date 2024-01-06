@@ -1,9 +1,10 @@
 import './Registro.css';
-import { useNavigate } from 'react-router-dom';
-import { Form, Button, Col } from 'react-bootstrap';
+import { useNavigate, Link } from 'react-router-dom';
+import { Form, Button, Col, Container, Label } from 'react-bootstrap';
 import { useState } from 'react';
 import ErrorMessage from '../../component/MensajeError';
 import { registerUser } from '../../services/auth.service';
+import Popup from '../../component/Popup';
 
 export default function Registro() {
   const navigate = useNavigate();
@@ -66,6 +67,11 @@ export default function Registro() {
       return;
     }
 
+    if (password === '') {
+      setPasswordError('La contraseña no puede estar vacía');
+      return;
+    }
+
     if (telefono === '') {
       setTelefonoError('El telefono no puede estar vacío');
       return;
@@ -81,13 +87,14 @@ export default function Registro() {
       return;
     }
 
-    if (password === '') {
-      setPasswordError('La contraseña no puede estar vacía');
-      return;
-    }
-
     // TODO Llamar a la API para iniciar sesión
-    const response = await registerUser(username, password);
+    const response = await registerUser(
+      username,
+      password,
+      telefono,
+      ciudad,
+      pais,
+    );
 
     // eslint-disable-next-line no-console
     console.log(response);
@@ -98,13 +105,14 @@ export default function Registro() {
       navigate('/login');
     } else {
       // eslint-disable-next-line no-alert
-      navigate('/registro');
+      alert('Error al registrar usuario existente');
+      navigate('/registrar');
     }
   }
 
   return (
-    <div id="PaginaRegistro">
-      <h1>Registrar</h1>
+    <Container id="PaginaRegistro">
+      <h1 className="text-center my-4">Registrar</h1>
       <Form onSubmit={registrarUser}>
         <Col sd={10} md={10} lg={8} className="mx-auto">
           <Form.Group className="mb-3">
@@ -120,6 +128,19 @@ export default function Registro() {
               isValid={username && !usernameError}
             />
             {usernameError && <ErrorMessage message={usernameError} />}
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="password">Password</Form.Label>
+            <Form.Control
+              type="password"
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={handlePasswordInput}
+              isInvalid={!!passwordError}
+              isValid={password && !passwordError}
+            />
+            {passwordError && <ErrorMessage message={passwordError} />}
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label htmlFor="telefono">Teléfono</Form.Label>
@@ -164,24 +185,17 @@ export default function Registro() {
             />
             {paisError && <ErrorMessage message={paisError} />}
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label htmlFor="password">Password</Form.Label>
-            <Form.Control
-              type="password"
-              id="password"
-              placeholder="Password"
-              value={password}
-              onChange={handlePasswordInput}
-              isInvalid={!!passwordError}
-              isValid={password && !passwordError}
-            />
-            {passwordError && <ErrorMessage message={passwordError} />}
-          </Form.Group>
-          <Button type="submit" variant="primary">
-            Submit
-          </Button>
+
+          <div className="d-grid my-4">
+            <Button type="submit" variant="primary">
+              Registrar
+            </Button>
+            <Form.Label id="LinkLogin" className="mt-3">
+              ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
+            </Form.Label>
+          </div>
         </Col>
       </Form>
-    </div>
+    </Container>
   );
 }

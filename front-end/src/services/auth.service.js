@@ -22,13 +22,13 @@ async function login(username, password) {
   return data;
 }
 
-async function registerUser(username, password) {
+async function registerUser(username, password, telefono, ciudad, pais) {
   const response = await fetch(`${API_URL}/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ username, password, telefono, ciudad, pais }),
   });
 
   return response;

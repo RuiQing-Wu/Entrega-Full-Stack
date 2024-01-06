@@ -2,7 +2,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Solicitud } from "../domain/solicitud.domain";
 import { SolicitudesRepository } from "./solicitudes.repository";
 import { SolicitudMongoModel } from "../schemas/solicitud.schema";
-import { Model } from "mongoose";
+import { HydratedDocument, Model } from "mongoose";
 
 export class SolicitudesRepositoryMongo extends SolicitudesRepository {
     constructor(
@@ -11,21 +11,39 @@ export class SolicitudesRepositoryMongo extends SolicitudesRepository {
     ) {
         super();
     }
-    
-    getByNombre(nombre: string): Promise<Solicitud> {
-        throw new Error("Method not implemented.");
+
+    private toSolicitudDomain(solicitudMongo: HydratedDocument<SolicitudMongoModel>): Solicitud {
+        if (solicitudMongo) {
+            const solicitud = new Solicitud({
+                descripcion: solicitudMongo.descripcion,
+                fechaSolicitud: solicitudMongo.fechaSolicitud,
+                estado: solicitudMongo.estado,
+                idUsuario: solicitudMongo.idUsuario,
+                idComunidad: solicitudMongo.idComunidad,
+                id: solicitudMongo._id.toString(),
+            });
+
+            return solicitud;
+        }
     }
 
-    create(item: Solicitud): Promise<Solicitud> {
-        throw new Error("Method not implemented.");
+    async create(item: Solicitud): Promise<Solicitud> {
+        const createSolicitudMongo = await this.solicitudModel.create(item);
+        const newSolicitud = new Solicitud({
+            ...item,
+            id: createSolicitudMongo._id.toString(),
+        });
+
+        return newSolicitud;
     }
 
     get(id: string): Promise<Solicitud> {
         throw new Error("Method not implemented.");
     }
 
-    getAll(): Promise<Solicitud[]> {
-        throw new Error("Method not implemented.");
+    async getAll(): Promise<Solicitud[]> {
+        const solicitudesMongo = await this.solicitudModel.find().exec();
+        return solicitudesMongo.map((solicitudMongo) => this.toSolicitudDomain(solicitudMongo));
     }
 
     update(id: string, item: Solicitud): Promise<Solicitud> {
@@ -33,6 +51,10 @@ export class SolicitudesRepositoryMongo extends SolicitudesRepository {
     }
 
     delete(id: string): Promise<Solicitud> {
+        throw new Error("Method not implemented.");
+    }
+
+    getByNombre(nombre: string): Promise<Solicitud> {
         throw new Error("Method not implemented.");
     }
 }

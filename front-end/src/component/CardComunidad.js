@@ -6,6 +6,7 @@ import Apoyo from '../pages/ApoyarCausa/Apoyo';
 
 export default function CardComunidad({
   imageUrl,
+  id,
   nombre,
   descripcion,
   fechaInicio,
@@ -55,8 +56,8 @@ export default function CardComunidad({
         <Solicitud
           show={modalShow}
           onHide={() => setModalShow(false)}
-          nombreUsuario="Cambiar Aqui por el nombre del usuario"
-          nombreComunidad="Cambiar Aqui por el nombre de la comunidad"
+          idComunidad={id}
+          nombreComunidad={nombre}
         />
         <Button
           type="button"

@@ -16,8 +16,6 @@ export default function Menu() {
   const dispatch = useDispatch();
 
   function logOut() {
-    // eslint-disable-next-line no-console
-    // console.log('LogOut');
     setToken('');
     dispatch(removeUserInfo());
     dispatch(removeToken());
@@ -28,8 +26,6 @@ export default function Menu() {
       return;
     }
     dispatch(getProfileThunk());
-    // eslint-disable-next-line no-console
-    // console.log('profile useEffect', user.username);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]); // Dependencia vacía para que solo se ejecute al montar el componente
 

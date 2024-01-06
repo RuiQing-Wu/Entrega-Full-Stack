@@ -1,35 +1,35 @@
 export class Solicitud {
     readonly id?: string;
-    readonly nombre: string;
+    readonly nombre?: string;
     readonly descripcion: string;
-    readonly fecha_solicitud: Date;
+    readonly fechaSolicitud: Date;
     readonly estado: boolean;
-    readonly id_usuario: string;
-    readonly id_comunidad: string;
+    readonly idUsuario: string;
+    readonly idComunidad: string;
 
     constructor({
         id,
         nombre,
         descripcion,
-        fecha_solicitud,
+        fechaSolicitud,
         estado,
-        id_usuario,
-        id_comunidad
+        idUsuario,
+        idComunidad
     }: {
         id?: string,
-        nombre: string,
+        nombre?: string,
         descripcion?: string,
-        fecha_solicitud: Date,
+        fechaSolicitud: Date,
         estado: boolean,
-        id_usuario: string,
-        id_comunidad: string
+        idUsuario: string,
+        idComunidad: string
     }) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.fecha_solicitud = fecha_solicitud;
+        this.fechaSolicitud = fechaSolicitud;
         this.estado = estado;
-        this.id_usuario = id_usuario;
-        this.id_comunidad = id_comunidad;
+        this.idUsuario = idUsuario;
+        this.idComunidad = idComunidad;
     }
 }

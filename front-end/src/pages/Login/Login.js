@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Form, Button, Col } from 'react-bootstrap';
+import { Form, Button, Col, Container } from 'react-bootstrap';
 import './Login.css';
 import ErrorMessage from '../../component/MensajeError';
 import { setTokenRedux } from '../../store/module/user';
@@ -66,8 +66,8 @@ export default function Login() {
   }
 
   return (
-    <div id="PaginaLogin">
-      <h1>Login</h1>
+    <Container id="PaginaLogin">
+      <h1 className="text-center my-4">Login</h1>
       <Form onSubmit={loginUser}>
         <Col sd={10} md={10} lg={8} className="mx-auto">
           <Form.Group className="mb-3">
@@ -104,11 +104,16 @@ export default function Login() {
               />
             )}
           </Form.Group>
-          <Button type="submit" variant="primary">
-            Submit
-          </Button>
+          <div className="d-grid my-4">
+            <Button type="submit" variant="primary">
+              Login
+            </Button>
+            <Form.Label id="LinkRegistro" className="mt-3">
+              ¿No tienes cuenta? <Link to="/registrar">Registrate</Link>
+            </Form.Label>
+          </div>
         </Col>
       </Form>
-    </div>
+    </Container>
   );
 }
