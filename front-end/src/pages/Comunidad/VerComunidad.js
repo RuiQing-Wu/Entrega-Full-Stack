@@ -130,11 +130,7 @@ export default function MostrarComunidad() {
             nombre={'nombre1'}
             telefono={'123456789'}
             email={'email1'}
-          />
-          <CardExternalProfile
-            nombre={'nombre2'}
-            telefono={'987654321'}
-            email={'email2'}
+            imageUrl={'../../../imagenes/usuario.png'}
           />
         </Tab>
       </Tabs>

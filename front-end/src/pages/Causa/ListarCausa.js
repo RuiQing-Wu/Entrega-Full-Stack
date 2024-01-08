@@ -10,14 +10,6 @@ export default function BuscarCausas() {
   const [causasFiltradas, setCausasFiltradas] = useState([]);
   const [error, setError] = useState('');
 
-  /* function filtrarCausas() {
-    setCausasFiltradas((causas) =>
-      causas.filter((causa) =>
-        causa.nombre.toLowerCase().includes(busqueda.toLowerCase()),
-      ),
-    );
-  } */
-
   function onHomeClicked() {
     navigate('/');
   }

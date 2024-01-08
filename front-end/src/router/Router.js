@@ -41,7 +41,7 @@ const router = createBrowserRouter([
         path: '/profile/:nombrePerfil',
         element: (
           <AuthRoute>
-            <MostrarInformacionPerfil />
+            <Profile />
           </AuthRoute>
         ),
       },

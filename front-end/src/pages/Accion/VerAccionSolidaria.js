@@ -7,14 +7,11 @@ import CardAccionSolidaria from '../../component/CardAccionSolidaria';
 
 export default function MostrarAcciones() {
   const param = useParams();
-  const [accion, setAccion] = React.useState([]);
-  const [causa, setCausa] = React.useState([]);
-
-  console.log('param', param);
+  const [accion, setAccion] = useState([]);
+  const [causa, setCausa] = useState([]);
 
   const fetchAccion = useCallback(async () => {
     const response = await getAccionById(param.idAccion);
-    console.log('response', response);
     setAccion(response);
   }, [param.idAccion]);
 
