@@ -1,17 +1,19 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { Breadcrumb, Tabs, Tab, Col, Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAccionesByCausaId } from '../../services/acciones.service';
 import { getCausaById } from '../../services/causas.service';
 import { getComunidadById } from '../../services/comunidades.service';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import StackAccionSolidaria from '../../component/StackAccionSolidaria';
-import { getToken } from '../../utils/utils';
+import { refactorDate } from '../../utils/utils';
 
 export default function MostrarCausa() {
   const [acciones, setAcciones] = React.useState([]);
   const [causa, setCausa] = React.useState([]);
   const [comunidad, setComunidad] = React.useState([]);
+  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
   const param = useParams();
   const navigate = useNavigate();
 
@@ -43,6 +45,10 @@ export default function MostrarCausa() {
   }, [causa.comunidad]);
 
   useEffect(() => {
+    fetchComunidad();
+  }, [fetchComunidad]);
+
+  useEffect(() => {
     fetchAcciones();
   }, [fetchAcciones]);
 
@@ -50,15 +56,9 @@ export default function MostrarCausa() {
     fetchCausas();
   }, [fetchCausas]);
 
-  useEffect(() => {
-    fetchComunidad();
-  }, [fetchComunidad]);
-
   if (!causa) {
     return <div>No hay datos de la causa</div>;
   }
-
-  const objetivosAccion = ['objetivo1', 'objetivo2', 'objetivo3', 'objetivo4'];
 
   return (
     <div>
@@ -72,8 +72,8 @@ export default function MostrarCausa() {
       </Breadcrumb>
 
       <div className="d-flex flex-column m-auto w-75">
-        <div className="ms-auto p-2">
-          {getToken() && (
+        {user && (
+          <div className="ms-auto p-2">
             <Button
               variant="outline-success"
               size="sm"
@@ -81,15 +81,15 @@ export default function MostrarCausa() {
             >
               Crear accion
             </Button>
-          )}
-        </div>
+          </div>
+        )}
         <div>
           <CardCausaSolidaria
             idCausa={causa.id}
             titulo={causa.titulo}
             descripcion={causa.descripcion}
-            fechaInicio={causa.fechaInicio}
-            fechaFin={causa.fechaFin}
+            fechaInicio={refactorDate(causa.fechaInicio)}
+            fechaFin={refactorDate(causa.fechaFin)}
           />
         </div>
       </div>
@@ -116,7 +116,7 @@ export default function MostrarCausa() {
                     descripcion={acc.descripcion}
                     fechaInicio={acc.fechaInicio}
                     fechaFin={acc.fechaFin}
-                    objetivos={objetivosAccion}
+                    objetivos={acc.listaObjetivos}
                     progreso={acc.progreso}
                   />
                 ))

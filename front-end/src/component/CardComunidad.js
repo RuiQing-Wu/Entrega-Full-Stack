@@ -76,11 +76,7 @@ export default function CardComunidad({
   );
 }
 
-export function CardListaComunidad({
-  imageUrl,
-  nombre,
-  handleRedireccionarComunidad,
-}) {
+export function CardListaComunidad({ imageUrl, nombre, handleRedireccionar }) {
   return (
     <Card id="cardComunidad" className="mb-3">
       <Card.Body>
@@ -101,11 +97,7 @@ export function CardListaComunidad({
       </Card.Body>
 
       <Card.Footer>
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={handleRedireccionarComunidad}
-        >
+        <Button variant="primary" size="sm" onClick={handleRedireccionar}>
           Ver detalles
         </Button>
       </Card.Footer>

@@ -32,7 +32,6 @@ export default function MostrarAcciones() {
     return <div>No hay datos de la acción</div>;
   }
 
-  console.log('accion', accion);
   return (
     <div>
       <Breadcrumb className="p-2">
@@ -43,12 +42,14 @@ export default function MostrarAcciones() {
         <Breadcrumb.Item active>{accion.titulo}</Breadcrumb.Item>
       </Breadcrumb>
 
-      <CardAccionSolidaria
-        titulo={accion.titulo}
-        descripcion={accion.descripcion}
-        listaObjetivos={accion.listaObjetivos}
-        progreso={accion.progreso}
-      />
+      {accion && (
+        <CardAccionSolidaria
+          titulo={accion.titulo}
+          descripcion={accion.descripcion}
+          listaObjetivos={accion.listaObjetivos || []}
+          progreso={accion.progreso}
+        />
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs, Button } from 'react-bootstrap';
 import { getCausasByComunityId } from '../../services/causas.service';
@@ -6,13 +7,14 @@ import CardComunidad from '../../component/CardComunidad';
 import StackCausaSolidaria from '../../component/StackCausaSolidaria';
 import CardExternalProfile from '../../component/CardExternalProfile';
 import Popup from '../../component/Popup';
-import { getToken } from '../../utils/utils';
 import { getComunidadById } from '../../services/comunidades.service';
+import { refactorDate } from '../../utils/utils';
 
 export default function MostrarComunidad() {
   const [comunidad, setComunidad] = useState();
   const param = useParams();
   const [todasLasCausas, setTodasLasCausas] = useState([]);
+  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
   const navigate = useNavigate();
   const [popupMessage, setPopupMessage] = useState('');
 
@@ -77,8 +79,8 @@ export default function MostrarComunidad() {
       </Breadcrumb>
 
       <div className="d-flex flex-column m-auto w-75">
-        <div className="ms-auto p-2">
-          {getToken() && (
+        {user && (
+          <div className="ms-auto p-2">
             <Button
               variant="outline-success"
               size="sm"
@@ -86,15 +88,15 @@ export default function MostrarComunidad() {
             >
               Crear causa
             </Button>
-          )}
-        </div>
+          </div>
+        )}
         <div>
           <CardComunidad
             imageUrl={'../../../imagenes/comunidad.jpeg'}
             id={comunidad.id}
             nombre={comunidad.nombre}
             descripcion={comunidad.descripcion}
-            fechaInicio={comunidad.fechaInicio}
+            fechaInicio={refactorDate(comunidad.fechaInicio)}
           />
         </div>
       </div>
@@ -115,8 +117,8 @@ export default function MostrarComunidad() {
                   idCausa={cau.id}
                   titulo={cau.titulo}
                   descripcion={cau.descripcion}
-                  fechaInicio={cau.fechaInicio}
-                  fechaFin={cau.fechaFin}
+                  fechaInicio={refactorDate(cau.fechaInicio)}
+                  fechaFin={refactorDate(cau.fechaFin)}
                   accionSolidaria={[]}
                   idComunidad={comunidad.id}
                   onApoyarCausaClicked={onApoyarCausaClicked}

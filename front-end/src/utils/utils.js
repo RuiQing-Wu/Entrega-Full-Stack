@@ -23,4 +23,15 @@ function dateToString() {
   return formattedDate;
 }
 
-export { getToken, setToken, removeToken, dateToString };
+function refactorDate(fecha) {
+  const currentDate = new Date(fecha);
+  const formattedDate = currentDate.toLocaleDateString('en-EN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  return formattedDate;
+}
+
+export { getToken, setToken, removeToken, dateToString, refactorDate };

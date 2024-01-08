@@ -7,11 +7,7 @@ const CardAccionSolidaria = ({
   listaObjetivos,
   progreso,
 }) => {
-  /* const objetivos = listaObjetivos.map((objetivo, index) => (
-    <p key={index} style={{ marginBottom: '5px' }}>
-      {index + 1}. {objetivo}
-    </p>
-  )); */
+  const objetivos = listaObjetivos.join(', ');
 
   return (
     <div className="container">
@@ -22,7 +18,7 @@ const CardAccionSolidaria = ({
           <h6>Descripción:</h6>
           <p className="card-text">{descripcion}</p>
           <h6>Objetivos:</h6>
-          <div id="lista-objetivos">{titulo}</div>
+          <div id="lista-objetivos">{objetivos}</div>
           <h6>Progreso:</h6> <p>{progreso}%</p>
         </div>
       </div>

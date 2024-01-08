@@ -22,15 +22,9 @@ export default function BuscarComunidades() {
   }
 
   async function fetchData() {
-    try {
-      const response = await getComunidades();
-      const todasLasComunidades = response;
-      setComunidadesFiltradas(todasLasComunidades);
-    } catch (errorGet) {
-      setError(
-        'Error al obtener las comunidades. Por favor, inténtalo de nuevo.',
-      );
-    }
+    const response = await getComunidades();
+    const todasLasComunidades = response;
+    setComunidadesFiltradas(todasLasComunidades);
   }
 
   async function fetchDataByName() {
@@ -56,7 +50,7 @@ export default function BuscarComunidades() {
 
     if (busqueda.trim() === '') {
       fetchData();
-      // filtrarComunidades();
+      // filtrarComunidades()
     } else if (busqueda.trim() !== '') {
       fetchDataByName();
       setError('');
@@ -64,18 +58,11 @@ export default function BuscarComunidades() {
   }
 
   function handleRedireccionarComunidad(nombre) {
-    const comunidadSeleccionada = comunidadesFiltradas.find(
-      (comunidad) => comunidad.nombre === nombre,
+    const comunidadSeleccionada = comunidadesFiltradas.find((comunidad) =>
+      comunidad.nombre.toLowerCase().includes(nombre.toLowerCase()),
     );
     if (comunidadSeleccionada) {
-      navigate(`/comunidad/${comunidadSeleccionada.id}`, {
-        state: {
-          id: comunidadSeleccionada.id,
-          nombre: comunidadSeleccionada.nombre,
-          descripcion: comunidadSeleccionada.descripcion,
-          fechaInicio: comunidadSeleccionada.fechaInicio,
-        },
-      });
+      navigate(`/comunidad/${comunidadSeleccionada.id}`, { replace: true });
     }
   }
 
@@ -109,7 +96,9 @@ export default function BuscarComunidades() {
             handleBuscar={handleBuscarComunidades}
             handleBusquedaInput={handleBusquedaInput}
             error={error}
-            handleRedireccionar={handleRedireccionarComunidad}
+            handleRedireccionar={(nombre) =>
+              handleRedireccionarComunidad(nombre)
+            }
             elementoFiltrado={comunidadesFiltradas}
           />
           {comunidadesFiltradas.length > 0 && (
@@ -118,9 +107,11 @@ export default function BuscarComunidades() {
               {comunidadesFiltradas?.map((elemento, index) => (
                 <CardListaComunidad
                   key={index}
-                  imageUrl={'../../../imagenes/comunidad.png'}
+                  imageUrl={'../../../imagenes/comunidad.jpeg'}
                   nombre={elemento.nombre}
-                  handleRedireccionarComunidad={handleRedireccionarComunidad}
+                  handleRedireccionar={(nombre) =>
+                    handleRedireccionarComunidad(elemento.nombre)
+                  }
                 />
               ))}
             </Stack>
