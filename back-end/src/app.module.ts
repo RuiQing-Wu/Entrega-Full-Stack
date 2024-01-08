@@ -13,6 +13,7 @@ import { SolicitudModule } from './solicitud/solicitud.module';
 import CacheConfigService from './data_base_service/cache.config.service';
 import MongooseConfigService from './data_base_service/mongo.config.service';
 import { Neo4jModule } from 'nest-neo4j/dist';
+import { ApoyoModule } from './apoyo/apoyo.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { Neo4jModule } from 'nest-neo4j/dist';
     CausasModule,
     AccionesModule,
     SolicitudModule,
+    ApoyoModule,
   ],
   
   controllers: [AppController],

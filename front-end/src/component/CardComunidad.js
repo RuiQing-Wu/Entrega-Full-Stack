@@ -75,3 +75,40 @@ export default function CardComunidad({
     </Card>
   );
 }
+
+export function CardListaComunidad({
+  imageUrl,
+  nombre,
+  handleRedireccionarComunidad,
+}) {
+  return (
+    <Card id="cardComunidad" className="mb-3">
+      <Card.Body>
+        <Row>
+          <Col xs={6} md={6}>
+            <Card.Img
+              variant="top"
+              src={imageUrl}
+              alt="comunidad"
+              className="img-fluid img-thumbnail"
+            />
+          </Col>
+
+          <Col xs={6} md={6}>
+            <Card.Title>{nombre}</Card.Title>
+          </Col>
+        </Row>
+      </Card.Body>
+
+      <Card.Footer>
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={handleRedireccionarComunidad}
+        >
+          Ver detalles
+        </Button>
+      </Card.Footer>
+    </Card>
+  );
+}

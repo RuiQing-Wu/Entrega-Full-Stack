@@ -7,6 +7,7 @@ import {
 } from '../../services/comunidades.service';
 import Busqueda from '../../component/Buscar';
 import { getToken } from '../../utils/utils';
+import { CardListaComunidad } from '../../component/CardComunidad';
 
 export default function BuscarComunidades() {
   const navigate = useNavigate();
@@ -115,17 +116,12 @@ export default function BuscarComunidades() {
             <Stack gap={1}>
               <h2>Comunidades encontradas:</h2>
               {comunidadesFiltradas?.map((elemento, index) => (
-                <div className="p-1 elemento-item" key={index}>
-                  {elemento.nombre}
-                  <button
-                    className="btn btn-secondary btn-sm ms-2"
-                    onClick={() =>
-                      handleRedireccionarComunidad(elemento.nombre)
-                    }
-                  >
-                    <i className="fas fa-eye"></i> Ver Detalles
-                  </button>
-                </div>
+                <CardListaComunidad
+                  key={index}
+                  imageUrl={'../../../imagenes/comunidad.png'}
+                  nombre={elemento.nombre}
+                  handleRedireccionarComunidad={handleRedireccionarComunidad}
+                />
               ))}
             </Stack>
           )}
