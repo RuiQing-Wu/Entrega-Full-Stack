@@ -20,7 +20,12 @@ const CardCausaSolidaria = ({
     setModalShowApoyo(true);
   }
 
-  const lista = objetivos.join(', ');
+  let lista = [];
+
+  if (objetivos !== undefined) {
+
+    lista = objetivos.join(', ');
+  }
 
   return (
     <Card id="cardCausa" className="mb-3">
@@ -41,7 +46,7 @@ const CardCausaSolidaria = ({
             <Card.Text>Fecha de inicio: {fechaInicio}</Card.Text>
             <Card.Text>Fecha de fin: {fechaFin}</Card.Text>
             <Card.Text>
-              Objetivos DS: {lista}
+              Objetivos DS: {lista || []}
             </Card.Text>
           </Col>
 

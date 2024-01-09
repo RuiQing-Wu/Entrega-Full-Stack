@@ -107,7 +107,10 @@ export default function Causa() {
       objetivos,
     );
 
-    navigate(`/causa/${response.id}`, { replace: true });
+    if (response) {
+      navigate(`/causa/${response.id}`, { replace: true });
+    }
+
   }
 
   const fetchComunidad = useCallback(async () => {

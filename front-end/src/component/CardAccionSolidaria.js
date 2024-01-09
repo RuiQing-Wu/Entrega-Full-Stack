@@ -9,7 +9,12 @@ const CardAccionSolidaria = ({
   listaObjetivos,
   progreso,
 }) => {
-  const objetivos = listaObjetivos.join(', ');
+
+  let objetivos = [];
+
+  if (listaObjetivos !== undefined) {
+    objetivos = listaObjetivos.join(', ');
+  }
 
   return (
     <Card id="cardAccion" className="mb-3">
@@ -28,7 +33,7 @@ const CardAccionSolidaria = ({
             <Card.Title>{titulo}</Card.Title>
             <Card.Text>Descripción: {descripcion}</Card.Text>
             <Card.Text>Progreso: {progreso}%</Card.Text>
-            <Card.Text>Objetivos: {objetivos}</Card.Text>
+            <Card.Text>Objetivos: {objetivos || []}</Card.Text>
           </Col>
 
           <Col

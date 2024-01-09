@@ -71,7 +71,7 @@ export default function MostrarAcciones() {
           imageUrl={'../../../imagenes/accion.png'}
           titulo={accion.titulo}
           descripcion={accion.descripcion}
-          listaObjetivos={accion.listaObjetivos || []}
+          listaObjetivos={accion.listaObjetivos}
           progreso={accion.progreso}
         />
       )}
