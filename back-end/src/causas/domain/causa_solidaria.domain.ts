@@ -9,7 +9,7 @@ export class CausaSolidaria {
     readonly fechaFin: Date;
     readonly acciones: AccionSolidaria[];
     readonly comunidad: string;
-    readonly categorias: string[];
+    readonly objetivos: string[];
   
     constructor({
       id,
@@ -19,7 +19,7 @@ export class CausaSolidaria {
       fechaFin,
       accionSolidaria,
       comunidad,
-      categorias,
+      objetivos,
     }: {
       id?: string,
       titulo: string,
@@ -28,7 +28,7 @@ export class CausaSolidaria {
       fechaFin: Date,
       accionSolidaria: AccionSolidaria[],
       comunidad: string,
-      categorias: string[],
+      objetivos: string[],
     }) {
       this.id = id;
       this.titulo = titulo;
@@ -37,7 +37,7 @@ export class CausaSolidaria {
       this.fechaFin = fechaFin;
       this.acciones = accionSolidaria;
       this.comunidad = comunidad;
-      this.categorias = categorias;
+      this.objetivos = objetivos;
     }
   }
   

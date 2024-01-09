@@ -23,7 +23,7 @@ export class CausasRepositoryMongo extends CausasRepository {
             fechaFin: causaMongoModel.fechaFin,
             accionSolidaria: causaMongoModel.acciones,
             comunidad: causaMongoModel.comunidad,
-            categorias: causaMongoModel.categorias,
+            objetivos: causaMongoModel.objetivos,
         });
         
         return causa;
@@ -44,7 +44,7 @@ export class CausasRepositoryMongo extends CausasRepository {
             fechaFin: causaCreated.fechaFin,
             accionSolidaria: [],
             comunidad: causaCreated.comunidad,
-            categorias: causaCreated.categorias,
+            objetivos: causaCreated.objetivos,
         });
 
         return causa;

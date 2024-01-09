@@ -1,20 +1,17 @@
-#cardAccionSolidaria {
-  width: 50%;
+#cardAccion {
+  width: 60%;
   margin: auto;
-  margin-top: 50px; /* Ajusta según sea necesario */
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
 }
 
-h3 {
-  text-align: center;
+#cardAccion img {
+  width: 150px;
 }
+
+#cardAccion button {
+  margin-top: 10px;
+  margin: auto;
+}
+
 
 lista-objetivos {
   padding-left: '20px';

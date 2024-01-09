@@ -38,13 +38,13 @@ export default function Apoyo(props) {
           className="text-center"
           style={{ textAlign: 'center' }}
         >
-          Apoyar Causa
+          Apoyar "{props.nombreCausa}"
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3" controlId="inputCorreo">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>Correo electrónico:</Form.Label>
             <Form.Control
               type="email"
               placeholder="name@example.com"
@@ -57,7 +57,7 @@ export default function Apoyo(props) {
       <Modal.Footer>
         <Button onClick={apoyar}>Apoyar</Button>
         <Button onClick={close} variant="danger">
-          Close
+          Cerrar
         </Button>
       </Modal.Footer>
     </Modal>

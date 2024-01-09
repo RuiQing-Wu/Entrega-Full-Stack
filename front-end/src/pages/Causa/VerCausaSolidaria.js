@@ -25,7 +25,7 @@ export default function MostrarCausa() {
     navigate(`/causa/${param.idCausa}/crear-accion`, { replace: true });
   }
 
-  function onCausasClicked() {
+  function onComunidadesClicked() {
     navigate('/comunidades');
   }
 
@@ -64,7 +64,7 @@ export default function MostrarCausa() {
     <div>
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
-        <Breadcrumb.Item onClick={onCausasClicked}>Comunidades</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onComunidadesClicked}>Comunidades</Breadcrumb.Item>
         <Breadcrumb.Item href={`/comunidad/${causa.comunidad}`}>
           {comunidad.nombre}
         </Breadcrumb.Item>
@@ -79,17 +79,19 @@ export default function MostrarCausa() {
               size="sm"
               onClick={handleRedireccionarACrearAccion}
             >
-              Crear accion
+              Crear acción solidaria
             </Button>
           </div>
         )}
         <div>
           <CardCausaSolidaria
+            imageUrl={'../../../imagenes/causa.png'}
             idCausa={causa.id}
             titulo={causa.titulo}
             descripcion={causa.descripcion}
             fechaInicio={refactorDate(causa.fechaInicio)}
             fechaFin={refactorDate(causa.fechaFin)}
+            objetivos={causa.objetivos}
           />
         </div>
       </div>
@@ -100,9 +102,6 @@ export default function MostrarCausa() {
           id="uncontrolled-tab-causas-acciones"
           className="mb-3"
         >
-          <Tab eventKey="causas" title="Causas solidarias">
-            Tab content for Causas
-          </Tab>
           {acciones.length > 0 && (
             <Tab eventKey="acciones" title="Acciones solidarias">
               {acciones.isEmpty ? (

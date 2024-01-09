@@ -1,10 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState, useCallback, useEffect } from 'react';
-import { Form, Button, Col, Breadcrumb } from 'react-bootstrap';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Form, Button, Col, Breadcrumb, ProgressBar } from 'react-bootstrap';
 import './AccionSolidaria.css';
 import ErrorMessage from '../../component/MensajeError';
 import { saveAccion } from '../../services/acciones.service';
 import { getCausaById } from '../../services/causas.service';
+import { getComunidadById } from '../../services/comunidades.service';
 
 export default function Accion() {
   const navigate = useNavigate();
@@ -18,10 +19,15 @@ export default function Accion() {
   const [objetivoError, setObjetivoError] = useState('');
   const [progresoError, setProgresoError] = useState('');
   const [causa, setCausa] = useState([]);
+  const [comunidad, setComunidad] = React.useState([]);
   const param = useParams();
 
   function onHomeClicked() {
     navigate('/');
+  }
+
+  function onComunidadesClicked() {
+    navigate('/comunidades');
   }
 
   function handleTituloInput(event) {
@@ -58,9 +64,18 @@ export default function Accion() {
     setCausa(response);
   }, [param.idCausa]);
 
+  const fetchComunidad = useCallback(async () => {
+    const response = await getComunidadById(causa.comunidad);
+    setComunidad(response);
+  }, [causa.comunidad]);
+
   useEffect(() => {
     fetchCausa();
   }, [fetchCausa]);
+
+  useEffect(() => {
+    fetchComunidad();
+  }, [fetchComunidad]);
 
   async function AccionSolidaria(event) {
     event.preventDefault();
@@ -98,13 +113,17 @@ export default function Accion() {
     <div>
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onComunidadesClicked}>Comunidades</Breadcrumb.Item>
+        <Breadcrumb.Item href={`/comunidad/${causa.comunidad}`}>
+          {comunidad.nombre}
+        </Breadcrumb.Item>
         <Breadcrumb.Item href={`/causa/${param.idCausa}`}>
           {causa.titulo}
         </Breadcrumb.Item>
-        <Breadcrumb.Item active>Crear-accion-solidaria</Breadcrumb.Item>
+        <Breadcrumb.Item active>Crear acción solidaria</Breadcrumb.Item>
       </Breadcrumb>
       <div id="PaginaAccionSolidaria">
-        <h1>Acción solidaria</h1>
+        <h1>Crear una nueva acción solidaria</h1>
         <Form
           className="needs-validation"
           noValidate
@@ -112,13 +131,12 @@ export default function Accion() {
         >
           <Col sd={10} md={10} lg={8} className="mx-auto">
             <Form.Group controlId="titulo" className="mb-3">
-              <Form.Label>Titulo</Form.Label>
+              <Form.Label>Título</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Titulo de la causa solidaria"
-                className={`form-control ${tituloError ? 'is-invalid' : ''} ${
-                  titulo && !tituloError ? 'is-valid' : ''
-                }`}
+                placeholder="Título de la causa solidaria"
+                className={`form-control ${tituloError ? 'is-invalid' : ''} ${titulo && !tituloError ? 'is-valid' : ''
+                  }`}
                 onChange={handleTituloInput}
                 value={titulo}
                 required
@@ -133,9 +151,8 @@ export default function Accion() {
               <Form.Control
                 as="textarea"
                 rows={3}
-                className={`form-control ${
-                  descripcionError ? 'is-invalid' : ''
-                } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+                className={`form-control ${descripcionError ? 'is-invalid' : ''
+                  } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
                 onChange={handleDescripcionInput}
                 value={descripcion}
                 required
@@ -150,9 +167,8 @@ export default function Accion() {
               <Form.Control
                 as="textarea"
                 rows={3}
-                className={`form-control ${objetivoError ? 'is-invalid' : ''} ${
-                  objetivo && !objetivoError ? 'is-valid' : ''
-                }`}
+                className={`form-control ${objetivoError ? 'is-invalid' : ''} ${objetivo && !objetivoError ? 'is-valid' : ''
+                  }`}
                 placeholder="Objetivo de la acción solidaria"
                 onChange={handleObjetivoInput}
                 value={objetivo}
@@ -163,21 +179,20 @@ export default function Accion() {
               </div>
             </Form.Group>
 
+
             <Form.Group controlId="progreso" className="mb-3">
               <Form.Label>Progreso de la acción solidaria</Form.Label>
-              <Form.Control
-                type="range"
-                className={`form-range ${progresoError ? 'is-invalid' : ''}`}
-                min="0"
-                max="100"
-                step="1"
-                onChange={handleProgresoInput}
-                value={progreso}
-                required
-              />
-              <Form.Text id="progresoHelpBlock" muted>
-                {progreso}%
-              </Form.Text>
+              <div>
+                <ProgressBar now={progreso} label={`${progreso}%`} striped animated />
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={progreso}
+                  onChange={handleProgresoInput}
+                  style={{ width: '100%' }}
+                />
+              </div>
               <div className="invalid-feedback">
                 <ErrorMessage message={progresoError} />
               </div>

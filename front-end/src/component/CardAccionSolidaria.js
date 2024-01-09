@@ -1,7 +1,9 @@
-import React from 'react';
 import './Style/CardAccionSolidaria.css';
+import { useState } from 'react';
+import { Card, Row, Col, Button } from 'react-bootstrap';
 
 const CardAccionSolidaria = ({
+  imageUrl,
   titulo,
   descripcion,
   listaObjetivos,
@@ -10,19 +12,33 @@ const CardAccionSolidaria = ({
   const objetivos = listaObjetivos.join(', ');
 
   return (
-    <div className="container">
-      <h3 className="mt-4">Detalles de la Acción Solidaria</h3>
-      <div id="CardAccionSolidaria" className="card mt-3">
-        <div className="card-body">
-          <h5 className="card-title">{titulo}</h5>
-          <h6>Descripción:</h6>
-          <p className="card-text">{descripcion}</p>
-          <h6>Objetivos:</h6>
-          <div id="lista-objetivos">{objetivos}</div>
-          <h6>Progreso:</h6> <p>{progreso}%</p>
-        </div>
-      </div>
-    </div>
+    <Card id="cardAccion" className="mb-3">
+      <Card.Body>
+        <Row>
+          <Col xs={12} md={4}>
+            <Card.Img
+              variant="top"
+              src={imageUrl}
+              alt="accion-solidaria"
+              className="img-fluid img-thumbnail"
+            />
+          </Col>
+
+          <Col xs={12} md={6}>
+            <Card.Title>{titulo}</Card.Title>
+            <Card.Text>Descripción: {descripcion}</Card.Text>
+            <Card.Text>Progreso: {progreso}%</Card.Text>
+            <Card.Text>Objetivos: {objetivos}</Card.Text>
+          </Col>
+
+          <Col
+            xs={12}
+            md={2}
+            className="d-flex align-items-center justify-content-md-end"
+          ></Col>
+        </Row>
+      </Card.Body>
+    </Card>
   );
 };
 

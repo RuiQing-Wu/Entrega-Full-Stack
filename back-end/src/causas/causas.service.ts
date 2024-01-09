@@ -24,7 +24,7 @@ export class CausasService extends ICausasService{
       fechaFin: createCausaDto.fechaFin,
       accionSolidaria: [],
       comunidad: createCausaDto.comunidad,
-      categorias: createCausaDto.categorias,
+      objetivos: createCausaDto.objetivos,
     });
 
     return this.causasRepository.create(causa);
@@ -58,7 +58,7 @@ export class CausasService extends ICausasService{
       fechaFin: updateCausaDto.fechaFin ?? causa.fechaFin,
       accionSolidaria: updateCausaDto.acciones ?? causa.acciones,
       comunidad: updateCausaDto.comunidad ?? causa.comunidad,
-      categorias: updateCausaDto.categorias ?? causa.categorias,
+      objetivos: updateCausaDto.objetivos ?? causa.objetivos,
     });
 
     return this.causasRepository.update(id, comunidadActualizada);

@@ -6,6 +6,7 @@ async function saveCausa(
   fechaInicio,
   fechaFin,
   idComunidad,
+  objetivos,
 ) {
   const comunidad = idComunidad;
   const response = await fetch(BASE_URL, {
@@ -20,7 +21,7 @@ async function saveCausa(
       fechaFin,
       accionSolidaria: [],
       comunidad,
-      categorias: [],
+      objetivos,
     }),
   });
 

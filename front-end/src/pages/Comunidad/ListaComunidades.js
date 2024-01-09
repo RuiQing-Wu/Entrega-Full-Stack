@@ -109,6 +109,7 @@ export default function BuscarComunidades() {
                   key={index}
                   imageUrl={'../../../imagenes/comunidad.jpeg'}
                   nombre={elemento.nombre}
+                  descripcion={elemento.descripcion}
                   handleRedireccionar={(nombre) =>
                     handleRedireccionarComunidad(elemento.nombre)
                   }

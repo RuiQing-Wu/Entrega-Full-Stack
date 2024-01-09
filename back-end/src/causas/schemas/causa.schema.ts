@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { HydratedDocument } from "mongoose";
-import { AccionMongoModel } from "src/acciones/schemas/accion.schema";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { AccionMongoModel } from 'src/acciones/schemas/accion.schema';
 
 export type UserDocument = HydratedDocument<CausaMongoModel>;
 
@@ -25,7 +25,7 @@ export class CausaMongoModel {
   comunidad: string;
 
   @Prop()
-  categorias: string[];
+  objetivos: string[];
 }
 
 export const CausaSchema = SchemaFactory.createForClass(CausaMongoModel);

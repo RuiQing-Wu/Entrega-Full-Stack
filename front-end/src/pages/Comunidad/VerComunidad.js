@@ -86,7 +86,7 @@ export default function MostrarComunidad() {
               size="sm"
               onClick={handleRedireccionarACrearCausa}
             >
-              Crear causa
+              Crear causa solidaria
             </Button>
           </div>
         )}

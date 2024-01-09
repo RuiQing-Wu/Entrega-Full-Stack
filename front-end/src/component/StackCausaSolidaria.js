@@ -44,7 +44,7 @@ export default function StackCausaSolidaria({
             variant="outline-primary"
             size="sm"
           >
-            Apoyar Causa
+            Apoyar causa
           </Button>
         </Stack>
       </Stack>

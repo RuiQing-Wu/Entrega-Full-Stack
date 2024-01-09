@@ -75,16 +75,16 @@ export default function Menu() {
             ) : (
               <>
                 <NavLink to={'/login'} className="nav-link">
-                  Login
+                  Iniciar sesión
                 </NavLink>
                 <NavLink to={'/registrar'} className="nav-link">
-                  Sign Up
+                  Registrarse
                 </NavLink>
               </>
             )}
             {user.username && (
               <NavLink to="/login" className="nav-link" onClick={logOut}>
-                LogOut
+                Cerrar sesión
               </NavLink>
             )}
           </Nav>
