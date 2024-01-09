@@ -45,6 +45,19 @@ async function getComunidades() {
   return data;
 }
 
+async function getComunidadesByNameInsensitive(nombre) {
+
+  const response = await fetch(`${BASE_URL}/nameInsensitivePartial/${nombre}`);
+  if (!response.ok) {
+    throw new Error(
+      'No se encontraron comunidades que coincidan con la búsqueda.',
+    );
+  }
+
+  const data = await response.json();
+  return data;
+}
+
 async function getComunidadByName(nombre) {
   const response = await fetch(`${BASE_URL}/name/${nombre}`);
   if (!response.ok) {
@@ -57,4 +70,4 @@ async function getComunidadByName(nombre) {
   return data;
 }
 
-export { saveComunidad, getComunidadById, getComunidades, getComunidadByName };
+export { saveComunidad, getComunidadById, getComunidades, getComunidadByName, getComunidadesByNameInsensitive };

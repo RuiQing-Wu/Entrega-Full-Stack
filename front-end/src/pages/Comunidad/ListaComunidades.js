@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Breadcrumb, Stack, Button } from 'react-bootstrap';
+import { Breadcrumb, Stack, Button, Row, Col } from 'react-bootstrap';
 import {
   getComunidades,
-  getComunidadByName,
+  getComunidadesByNameInsensitive
 } from '../../services/comunidades.service';
 import Busqueda from '../../component/Buscar';
 import { getToken } from '../../utils/utils';
@@ -21,24 +21,24 @@ export default function BuscarComunidades() {
     };
   }
 
-  async function fetchData() {
+  async function getAllComunidades() {
     const response = await getComunidades();
-    const todasLasComunidades = response;
-    setComunidadesFiltradas(todasLasComunidades);
+    setComunidadesFiltradas(response);
   }
 
-  async function fetchDataByName() {
-    try {
-      const response = await getComunidadByName(busqueda);
-      const comunidad = response ? [response] : [];
-      setComunidadesFiltradas(comunidad);
-    } catch (errorGet) {
+  async function getComunidadesFiltradas() {
+
+    setComunidadesFiltradas([]);
+    const response = await getComunidadesByNameInsensitive(busqueda);
+    setComunidadesFiltradas(response);
+
+    if (response.length === 0)
       setError('No se encontraron comunidades que coincidan con la búsqueda.');
-    }
+
   }
 
   useEffect(() => {
-    fetchData();
+    getAllComunidades();
   }, []);
 
   function handleBusquedaInput(event) {
@@ -49,10 +49,9 @@ export default function BuscarComunidades() {
     event.preventDefault();
 
     if (busqueda.trim() === '') {
-      fetchData();
-      // filtrarComunidades()
+      getAllComunidades();
     } else if (busqueda.trim() !== '') {
-      fetchDataByName();
+      getComunidadesFiltradas();
       setError('');
     }
   }
@@ -102,20 +101,23 @@ export default function BuscarComunidades() {
             elementoFiltrado={comunidadesFiltradas}
           />
           {comunidadesFiltradas.length > 0 && (
-            <Stack gap={1}>
+            <div>
               <h2>Comunidades encontradas:</h2>
-              {comunidadesFiltradas?.map((elemento, index) => (
-                <CardListaComunidad
-                  key={index}
-                  imageUrl={'../../../imagenes/comunidad.jpeg'}
-                  nombre={elemento.nombre}
-                  descripcion={elemento.descripcion}
-                  handleRedireccionar={(nombre) =>
-                    handleRedireccionarComunidad(elemento.nombre)
-                  }
-                />
-              ))}
-            </Stack>
+              <Row xs={1} md={2} lg={2} className="g-4">
+                {comunidadesFiltradas.map((elemento, index) => (
+                  <Col key={index}>
+                    <CardListaComunidad
+                      imageUrl={'../../../imagenes/comunidad.jpeg'}
+                      nombre={elemento.nombre}
+                      descripcion={elemento.descripcion}
+                      handleRedireccionar={(nombre) =>
+                        handleRedireccionarComunidad(elemento.nombre)
+                      }
+                    />
+                  </Col>
+                ))}
+              </Row>
+            </div>
           )}
         </div>
       </div>

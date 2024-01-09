@@ -30,6 +30,12 @@ export class ComunidadesServiceImpl extends IComunidadesService {
     return comunidad;
   }
 
+  async getByNameInsensitivePartial(nombre: string): Promise<Comunidad[]> {
+    const comunidades =
+      await this.comunidadesRepository.getByNameInsensitivePartial(nombre);
+    return comunidades;
+  }
+
   findAll() {
     return this.comunidadesRepository.getAll();
   }

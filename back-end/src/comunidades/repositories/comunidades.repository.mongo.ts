@@ -55,6 +55,15 @@ export class ComunidadesRepositoryMongo extends ComunidadesRepository {
     return this.transform(comunidad);
   }
 
+  async getByNameInsensitivePartial(nombre: string): Promise<Comunidad[]> {
+    const comunidades = await this.comunidadModel.find({
+      nombre: { $regex: nombre, $options: 'i' },
+    });
+    return comunidades.map((comunidad) => {
+      return this.transform(comunidad);
+    });
+  }
+
   async getAll(): Promise<any[]> {
     const comunidadesModel = await this.comunidadModel.find().exec();
 

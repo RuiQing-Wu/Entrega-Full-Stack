@@ -16,7 +16,7 @@ import { Public } from 'src/decorators/public.decorator';
 
 @Controller('comunidades')
 export class ComunidadesController {
-  constructor(private readonly comunidadesService: IComunidadesService) { }
+  constructor(private readonly comunidadesService: IComunidadesService) {}
 
   @Public()
   @HttpCode(HttpStatus.CREATED)
@@ -34,7 +34,7 @@ export class ComunidadesController {
   @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
-    console.log("Get comunidad by id: " +id);
+    console.log('Get comunidad by id: ' + id);
     return this.comunidadesService.findOne(id);
   }
 
@@ -44,8 +44,17 @@ export class ComunidadesController {
     return this.comunidadesService.getByName(nombre);
   }
 
+  @Public()
+  @Get('/nameInsensitivePartial/:nombre')
+  getByNameInsensitivePartial(@Param('nombre') nombre: string) {
+    return this.comunidadesService.getByNameInsensitivePartial(nombre);
+  }
+
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateReunioneDto: UpdateComunidadDto,) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateReunioneDto: UpdateComunidadDto,
+  ) {
     return this.comunidadesService.update(id, updateReunioneDto);
   }
 
