@@ -1,26 +1,39 @@
-import { Injectable } from '@nestjs/common';
-import { CreateApoyoDto } from './dto/create-apoyo.dto';
-import { UpdateApoyoDto } from './dto/update-apoyo.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { CreateApoyoRegistroDto } from './dto/create-apoyo.dto';
+import { UpdateApoyoRegistroDto } from './dto/update-apoyo.dto';
+import { IApoyoRegistroService } from './interfaces/apoyo.service.interface';
+import { ApoyoRegistro } from './domain/apoyo.damain';
+import { ApoyoRegistroRepository } from './repositories/apoyos.reposiroty';
 
 @Injectable()
-export class ApoyoService {
-  create(createApoyoDto: CreateApoyoDto) {
-    return 'This action adds a new apoyo';
+export class RegistroApoyoServiceImpl extends IApoyoRegistroService {
+
+  constructor(
+    @Inject(ApoyoRegistroRepository)
+    private apoyoRegistroRepository: ApoyoRegistroRepository,
+  ) {
+    super();
   }
 
-  findAll() {
-    return `This action returns all apoyo`;
+  create(CreateApoyoDto: CreateApoyoRegistroDto): Promise<ApoyoRegistro> {
+    const apoyoRegistro = new ApoyoRegistro(CreateApoyoDto);
+    return this.apoyoRegistroRepository.create(apoyoRegistro);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} apoyo`;
+  findAll(): Promise<ApoyoRegistro[]> {
+    throw new Error('Method not implemented.');
   }
 
-  update(id: number, updateApoyoDto: UpdateApoyoDto) {
-    return `This action updates a #${id} apoyo`;
+  findOne(id: string): Promise<ApoyoRegistro> {
+    throw new Error('Method not implemented.');
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} apoyo`;
+  update(id: string, updateCausaDto: UpdateApoyoRegistroDto) {
+    throw new Error('Method not implemented.');
   }
+
+  remove(id: string): Promise<ApoyoRegistro> {
+    throw new Error('Method not implemented.');
+  }
+
 }

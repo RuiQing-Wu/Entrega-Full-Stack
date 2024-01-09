@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { Breadcrumb, Tabs, Tab, Col, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -45,6 +45,7 @@ export default function MostrarCausa() {
   }, [param.idCausa]);
 
   const fetchComunidad = useCallback(async () => {
+    if (causa.comunidad === undefined) return;
     const response = await getComunidadById(causa.comunidad);
     setComunidad(response);
   }, [causa.comunidad]);

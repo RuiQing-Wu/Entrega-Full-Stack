@@ -95,7 +95,7 @@ const CardCausaSolidaria = ({
         <Apoyo
           show={modalShowApoyo}
           onHide={() => setModalShowApoyo(false)}
-          nombreCausa={titulo}
+          idCausa={idCausa}
         />
       </Card.Footer>
     </Card>

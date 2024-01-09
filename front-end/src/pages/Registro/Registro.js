@@ -10,19 +10,31 @@ export default function Registro() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [nombre, setNombre] = useState('');
   const [telefono, setTelefono] = useState('');
   const [ciudad, setCiudad] = useState('');
   const [pais, setPais] = useState('');
 
   const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [nombreError, setNombreError] = useState('');
   const [telefonoError, setTelefonoError] = useState('');
   const [ciudadError, setCiudadError] = useState('');
   const [paisError, setPaisError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
 
   function handleUsernameInput(event) {
     setUsername(event.target.value);
     setUsernameError('');
+  }
+
+  function handlePasswordInput(event) {
+    setPassword(event.target.value);
+    setPasswordError('');
+  }
+
+  function handleNombreInput(event) {
+    setNombre(event.target.value);
+    setNombreError('');
   }
 
   function handleTelefonoInput(event) {
@@ -42,11 +54,6 @@ export default function Registro() {
   function handlePaisInput(event) {
     setPais(event.target.value);
     setPaisError('');
-  }
-
-  function handlePasswordInput(event) {
-    setPassword(event.target.value);
-    setPasswordError('');
   }
 
   async function registrarUser(event) {
@@ -72,6 +79,11 @@ export default function Registro() {
       return;
     }
 
+    if (nombre === '') {
+      setNombreError('El nombre no puede estar vacío');
+      return;
+    }
+
     if (telefono === '') {
       setTelefonoError('El telefono no puede estar vacío');
       return;
@@ -91,6 +103,7 @@ export default function Registro() {
     const response = await registerUser(
       username,
       password,
+      nombre,
       telefono,
       ciudad,
       pais,
@@ -141,6 +154,19 @@ export default function Registro() {
               isValid={password && !passwordError}
             />
             {passwordError && <ErrorMessage message={passwordError} />}
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="name">Nombre</Form.Label>
+            <Form.Control
+              type="text"
+              id="name"
+              placeholder="Nombre"
+              value={nombre}
+              onChange={handleNombreInput}
+              isInvalid={!!nombreError}
+              isValid={nombre && !nombreError}
+            />
+            {nombreError && <ErrorMessage message={nombreError} />}
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label htmlFor="telefono">Teléfono</Form.Label>

@@ -6,6 +6,7 @@ export class User {
 
     @Exclude()
     password: string;
+    readonly nombre: string;
     readonly telefono: string;
     readonly ciudad: string;
     readonly pais: string;

@@ -46,7 +46,6 @@ async function getComunidades() {
 }
 
 async function getComunidadesByNameInsensitive(nombre) {
-
   const response = await fetch(`${BASE_URL}/nameInsensitivePartial/${nombre}`);
   if (!response.ok) {
     throw new Error(
@@ -70,4 +69,10 @@ async function getComunidadByName(nombre) {
   return data;
 }
 
-export { saveComunidad, getComunidadById, getComunidades, getComunidadByName, getComunidadesByNameInsensitive };
+export {
+  saveComunidad,
+  getComunidadById,
+  getComunidades,
+  getComunidadByName,
+  getComunidadesByNameInsensitive,
+};

@@ -1,20 +1,35 @@
 import './Apoyo.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
+import { createApoyoRegistro } from '../../services/apoyo_registro.service';
 
 export default function Apoyo(props) {
+  const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
   // eslint-disable-next-line no-console
   console.log('modalShow: ', props.show);
+  function handleNombreInput(event) {
+    setNombre(event.target.value);
+  }
+
   function handleCorreoInput(event) {
     setCorreo(event.target.value);
   }
 
   function apoyar() {
     // eslint-disable-next-line no-console
-    console.log('Apoyar: ', props.nombreCausa, correo);
+    console.log('Apoyar: ', props.idCausa, nombre, correo);
 
     // TODO ENVIAR SOLICITUD
+    const response = createApoyoRegistro(props.idCausa, nombre, correo);
+    if (response === undefined) {
+      // eslint-disable-next-line no-console
+      console.log('No se pudo enviar el apoyo');
+    } else {
+      // eslint-disable-next-line no-console
+      console.log('Apoyp enviado');
+    }
+
     props.onHide();
   }
 
@@ -43,6 +58,15 @@ export default function Apoyo(props) {
       </Modal.Header>
       <Modal.Body>
         <Form>
+          <Form.Group className="mb-3" controlId="inputNombre">
+            <Form.Label>Nombre:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="nombre"
+              autoFocus={false}
+              onChange={handleNombreInput}
+            />
+          </Form.Group>
           <Form.Group className="mb-3" controlId="inputCorreo">
             <Form.Label>Correo electrónico:</Form.Label>
             <Form.Control
