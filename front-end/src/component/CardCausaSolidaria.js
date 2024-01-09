@@ -23,7 +23,6 @@ const CardCausaSolidaria = ({
   let lista = [];
 
   if (objetivos !== undefined) {
-
     lista = objetivos.join(', ');
   }
 
@@ -45,9 +44,7 @@ const CardCausaSolidaria = ({
             <Card.Text>Descripción: {descripcion}</Card.Text>
             <Card.Text>Fecha de inicio: {fechaInicio}</Card.Text>
             <Card.Text>Fecha de fin: {fechaFin}</Card.Text>
-            <Card.Text>
-              Objetivos DS: {lista || []}
-            </Card.Text>
+            <Card.Text>Objetivos DS: {lista || []}</Card.Text>
           </Col>
 
           <Col
@@ -69,7 +66,7 @@ const CardCausaSolidaria = ({
         <Apoyo
           show={modalShowApoyo}
           onHide={() => setModalShowApoyo(false)}
-          nombreCausa={titulo}
+          idCausa={idCausa}
         />
       </Card.Footer>
     </Card>

@@ -70,9 +70,7 @@ export default function Solicitud(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Id Usuario: {user.id}</p>
         <p>Nombre Usuario: {user.username}</p>
-        <p>Id Comunidad: {props.idComunidad}</p>
         <p>Nombre Comunidad: {props.nombreComunidad}</p>
         <Form>
           <Form.Group controlId="exampleForm.ControlTextarea1">

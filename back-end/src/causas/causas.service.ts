@@ -8,7 +8,6 @@ import { CausasRepository } from './repositories/causas.repository';
 @Injectable()
 export class CausasService extends ICausasService{
   
-
   constructor(
     @Inject(CausasRepository)
     private causasRepository: CausasRepository,

@@ -1,1 +1,5 @@
-export class CreateApoyoDto {}
+export class CreateApoyoRegistroDto {
+    idCausa: string;
+    nombre: string;
+    correo: string;
+}

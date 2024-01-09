@@ -9,7 +9,6 @@ const CardAccionSolidaria = ({
   listaObjetivos,
   progreso,
 }) => {
-
   let objetivos = [];
 
   if (listaObjetivos !== undefined) {

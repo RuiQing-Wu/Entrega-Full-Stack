@@ -19,6 +19,7 @@ export class UsersRepositoryMongo extends UsersRepository {
                 id: userMongo._id.toString(),
                 username: userMongo.username,
                 password: userMongo.password,
+                nombre: userMongo.nombre,
                 telefono: userMongo.telefono,
                 ciudad: userMongo.ciudad,
                 pais: userMongo.pais,

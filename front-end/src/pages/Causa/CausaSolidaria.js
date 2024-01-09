@@ -18,25 +18,75 @@ export default function Causa() {
   const [fechaFinError, setFechaFinError] = useState('');
 
   const opciones = [
-    { nombre: 'Fin de la pobreza', imagen: `../../../imagenes/S_SDG_Icons-01-01.jpg` },
-    { nombre: 'Hambre cero', imagen: `../../../imagenes/S_SDG_Icons-01-02.jpg` },
-    { nombre: 'Salud y bienestar', imagen: `../../../imagenes/S_SDG_Icons-01-03.jpg` },
-    { nombre: 'Educación de calidad', imagen: `../../../imagenes/S_SDG_Icons-01-04.jpg` },
-    { nombre: 'Igualdad de género', imagen: `../../../imagenes/S_SDG_Icons-01-05.jpg` },
-    { nombre: 'Agua limpia y saneamiento', imagen: `../../../imagenes/S_SDG_Icons-01-06.jpg` },
-    { nombre: 'Energía asequible y no contaminante', imagen: `../../../imagenes/S_SDG_Icons-01-07.jpg` },
-    { nombre: 'Trabajo decente y crecimiento económico', imagen: `../../../imagenes/S_SDG_Icons-01-08.jpg` },
-    { nombre: 'Industria, innovación e infraestructura', imagen: `../../../imagenes/S_SDG_Icons-01-09.jpg` },
-    { nombre: 'Reducción de las desigualdades', imagen: `../../../imagenes/S_SDG_Icons-01-10.jpg` },
-    { nombre: 'Ciudades y comunidades sostenibles', imagen: `../../../imagenes/S_SDG_Icons-01-11.jpg` },
-    { nombre: 'Producción y consumo responsables', imagen: `../../../imagenes/S_SDG_Icons-01-12.jpg` },
-    { nombre: 'Acción por el clima', imagen: `../../../imagenes/S_SDG_Icons-01-13.jpg` },
-    { nombre: 'Vida submarina', imagen: `../../../imagenes/S_SDG_Icons-01-14.jpg` },
-    { nombre: 'Vida de ecosistemas terrestres', imagen: `../../../imagenes/S_SDG_Icons-01-15.jpg` },
-    { nombre: 'Paz, justicia e instituciones sólidas', imagen: `../../../imagenes/S_SDG_Icons-01-16.jpg` },
-    { nombre: 'Alianzas para lograr los objetivos', imagen: `../../../imagenes/S_SDG_Icons-01-17.jpg` },
+    {
+      nombre: 'Fin de la pobreza',
+      imagen: `../../../imagenes/S_SDG_Icons-01-01.jpg`,
+    },
+    {
+      nombre: 'Hambre cero',
+      imagen: `../../../imagenes/S_SDG_Icons-01-02.jpg`,
+    },
+    {
+      nombre: 'Salud y bienestar',
+      imagen: `../../../imagenes/S_SDG_Icons-01-03.jpg`,
+    },
+    {
+      nombre: 'Educación de calidad',
+      imagen: `../../../imagenes/S_SDG_Icons-01-04.jpg`,
+    },
+    {
+      nombre: 'Igualdad de género',
+      imagen: `../../../imagenes/S_SDG_Icons-01-05.jpg`,
+    },
+    {
+      nombre: 'Agua limpia y saneamiento',
+      imagen: `../../../imagenes/S_SDG_Icons-01-06.jpg`,
+    },
+    {
+      nombre: 'Energía asequible y no contaminante',
+      imagen: `../../../imagenes/S_SDG_Icons-01-07.jpg`,
+    },
+    {
+      nombre: 'Trabajo decente y crecimiento económico',
+      imagen: `../../../imagenes/S_SDG_Icons-01-08.jpg`,
+    },
+    {
+      nombre: 'Industria, innovación e infraestructura',
+      imagen: `../../../imagenes/S_SDG_Icons-01-09.jpg`,
+    },
+    {
+      nombre: 'Reducción de las desigualdades',
+      imagen: `../../../imagenes/S_SDG_Icons-01-10.jpg`,
+    },
+    {
+      nombre: 'Ciudades y comunidades sostenibles',
+      imagen: `../../../imagenes/S_SDG_Icons-01-11.jpg`,
+    },
+    {
+      nombre: 'Producción y consumo responsables',
+      imagen: `../../../imagenes/S_SDG_Icons-01-12.jpg`,
+    },
+    {
+      nombre: 'Acción por el clima',
+      imagen: `../../../imagenes/S_SDG_Icons-01-13.jpg`,
+    },
+    {
+      nombre: 'Vida submarina',
+      imagen: `../../../imagenes/S_SDG_Icons-01-14.jpg`,
+    },
+    {
+      nombre: 'Vida de ecosistemas terrestres',
+      imagen: `../../../imagenes/S_SDG_Icons-01-15.jpg`,
+    },
+    {
+      nombre: 'Paz, justicia e instituciones sólidas',
+      imagen: `../../../imagenes/S_SDG_Icons-01-16.jpg`,
+    },
+    {
+      nombre: 'Alianzas para lograr los objetivos',
+      imagen: `../../../imagenes/S_SDG_Icons-01-17.jpg`,
+    },
   ];
-
 
   const [objetivos, setObjetivos] = useState([]);
 
@@ -49,7 +99,7 @@ export default function Causa() {
       newSelected.splice(selectedIndex, 1);
       setObjetivos(newSelected);
     }
-  }
+  };
 
   const [comunidad, setComunidad] = useState([]);
   const param = useParams();
@@ -110,7 +160,6 @@ export default function Causa() {
     if (response) {
       navigate(`/causa/${response.id}`, { replace: true });
     }
-
   }
 
   const fetchComunidad = useCallback(async () => {
@@ -145,8 +194,9 @@ export default function Causa() {
               <Form.Control
                 type="text"
                 placeholder="Título de la causa solidaria"
-                className={`form-control ${tituloError ? 'is-invalid' : ''} ${titulo && !tituloError ? 'is-valid' : ''
-                  }`}
+                className={`form-control ${tituloError ? 'is-invalid' : ''} ${
+                  titulo && !tituloError ? 'is-valid' : ''
+                }`}
                 onChange={handleTituloInput}
                 value={titulo}
                 required
@@ -161,8 +211,9 @@ export default function Causa() {
               <Form.Control
                 as="textarea"
                 rows={3}
-                className={`form-control ${descripcionError ? 'is-invalid' : ''
-                  } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+                className={`form-control ${
+                  descripcionError ? 'is-invalid' : ''
+                } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
                 onChange={handleDescripcionInput}
                 value={descripcion}
                 required
@@ -176,8 +227,9 @@ export default function Causa() {
               <Form.Label>Fecha de inicio</Form.Label>
               <Form.Control
                 type="date"
-                className={`form-control ${fechaInicioError ? 'is-invalid' : ''
-                  } ${fechaInicio && !fechaInicioError ? 'is-valid' : ''}`}
+                className={`form-control ${
+                  fechaInicioError ? 'is-invalid' : ''
+                } ${fechaInicio && !fechaInicioError ? 'is-valid' : ''}`}
                 onChange={handleFechaInicioInput}
               />
               <div className="invalid-feedback">
@@ -189,8 +241,9 @@ export default function Causa() {
               <Form.Label>Fecha de fin</Form.Label>
               <Form.Control
                 type="date"
-                className={`form-control ${fechaFinError ? 'is-invalid' : ''} ${fechaFin && !fechaFinError ? 'is-valid' : ''
-                  }`}
+                className={`form-control ${fechaFinError ? 'is-invalid' : ''} ${
+                  fechaFin && !fechaFinError ? 'is-valid' : ''
+                }`}
                 onChange={handleFechaFinInput}
               />
               <div className="invalid-feedback">
@@ -199,7 +252,9 @@ export default function Causa() {
             </Form.Group>
 
             <Form.Group controlId="objetivos" className="mb-3">
-              <Form.Label>Objetivos de desarrollo sostenible relacionados</Form.Label>
+              <Form.Label>
+                Objetivos de desarrollo sostenible relacionados
+              </Form.Label>
               <Row xs={1} md={3} className="g-4">
                 {opciones.map((opcion, index) => (
                   <Col key={index}>

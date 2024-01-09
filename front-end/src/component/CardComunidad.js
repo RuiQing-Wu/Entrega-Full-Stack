@@ -45,11 +45,7 @@ export default function CardComunidad({
       </Card.Body>
 
       <Card.Footer>
-        <Button
-          type="button"
-          className="btn btn-primary"
-          onClick={showModal}
-        >
+        <Button type="button" className="btn btn-primary" onClick={showModal}>
           Solicitar
         </Button>
         <Solicitud
@@ -63,7 +59,12 @@ export default function CardComunidad({
   );
 }
 
-export function CardListaComunidad({ imageUrl, nombre, descripcion, handleRedireccionar }) {
+export function CardListaComunidad({
+  imageUrl,
+  nombre,
+  descripcion,
+  handleRedireccionar,
+}) {
   return (
     <Card id="cardComunidad" className="mb-3">
       <Card.Body>

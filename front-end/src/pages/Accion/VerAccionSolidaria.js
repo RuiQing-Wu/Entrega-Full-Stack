@@ -56,7 +56,9 @@ export default function MostrarAcciones() {
     <div>
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
-        <Breadcrumb.Item onClick={onComunidadesClicked}>Comunidades</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onComunidadesClicked}>
+          Comunidades
+        </Breadcrumb.Item>
         <Breadcrumb.Item href={`/comunidad/${causa.comunidad}`}>
           {comunidad.nombre}
         </Breadcrumb.Item>

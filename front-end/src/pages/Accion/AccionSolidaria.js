@@ -113,7 +113,9 @@ export default function Accion() {
     <div>
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
-        <Breadcrumb.Item onClick={onComunidadesClicked}>Comunidades</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onComunidadesClicked}>
+          Comunidades
+        </Breadcrumb.Item>
         <Breadcrumb.Item href={`/comunidad/${causa.comunidad}`}>
           {comunidad.nombre}
         </Breadcrumb.Item>
@@ -135,8 +137,9 @@ export default function Accion() {
               <Form.Control
                 type="text"
                 placeholder="Título de la causa solidaria"
-                className={`form-control ${tituloError ? 'is-invalid' : ''} ${titulo && !tituloError ? 'is-valid' : ''
-                  }`}
+                className={`form-control ${tituloError ? 'is-invalid' : ''} ${
+                  titulo && !tituloError ? 'is-valid' : ''
+                }`}
                 onChange={handleTituloInput}
                 value={titulo}
                 required
@@ -151,8 +154,9 @@ export default function Accion() {
               <Form.Control
                 as="textarea"
                 rows={3}
-                className={`form-control ${descripcionError ? 'is-invalid' : ''
-                  } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+                className={`form-control ${
+                  descripcionError ? 'is-invalid' : ''
+                } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
                 onChange={handleDescripcionInput}
                 value={descripcion}
                 required
@@ -167,8 +171,9 @@ export default function Accion() {
               <Form.Control
                 as="textarea"
                 rows={3}
-                className={`form-control ${objetivoError ? 'is-invalid' : ''} ${objetivo && !objetivoError ? 'is-valid' : ''
-                  }`}
+                className={`form-control ${objetivoError ? 'is-invalid' : ''} ${
+                  objetivo && !objetivoError ? 'is-valid' : ''
+                }`}
                 placeholder="Objetivo de la acción solidaria"
                 onChange={handleObjetivoInput}
                 value={objetivo}
@@ -179,11 +184,15 @@ export default function Accion() {
               </div>
             </Form.Group>
 
-
             <Form.Group controlId="progreso" className="mb-3">
               <Form.Label>Progreso de la acción solidaria</Form.Label>
               <div>
-                <ProgressBar now={progreso} label={`${progreso}%`} striped animated />
+                <ProgressBar
+                  now={progreso}
+                  label={`${progreso}%`}
+                  striped
+                  animated
+                />
                 <input
                   type="range"
                   min="0"

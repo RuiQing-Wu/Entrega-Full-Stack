@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { Breadcrumb, Tabs, Tab, Col, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -10,9 +10,9 @@ import StackAccionSolidaria from '../../component/StackAccionSolidaria';
 import { refactorDate } from '../../utils/utils';
 
 export default function MostrarCausa() {
-  const [acciones, setAcciones] = React.useState([]);
-  const [causa, setCausa] = React.useState([]);
-  const [comunidad, setComunidad] = React.useState([]);
+  const [acciones, setAcciones] = useState([]);
+  const [causa, setCausa] = useState([]);
+  const [comunidad, setComunidad] = useState([]);
   const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
   const param = useParams();
   const navigate = useNavigate();
@@ -40,6 +40,7 @@ export default function MostrarCausa() {
   }, [param.idCausa]);
 
   const fetchComunidad = useCallback(async () => {
+    if (causa.comunidad === undefined) return;
     const response = await getComunidadById(causa.comunidad);
     setComunidad(response);
   }, [causa.comunidad]);
@@ -64,7 +65,9 @@ export default function MostrarCausa() {
     <div>
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
-        <Breadcrumb.Item onClick={onComunidadesClicked}>Comunidades</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onComunidadesClicked}>
+          Comunidades
+        </Breadcrumb.Item>
         <Breadcrumb.Item href={`/comunidad/${causa.comunidad}`}>
           {comunidad.nombre}
         </Breadcrumb.Item>

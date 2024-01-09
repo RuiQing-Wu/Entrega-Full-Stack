@@ -13,6 +13,9 @@ export class UserMongoModel {
     password: string;
 
     @Prop({ required: true })
+    nombre: string;
+
+    @Prop({ required: true })
     telefono: string;
 
     @Prop({ required: true })

@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ApoyoController } from './apoyo.controller';
+import { ApoyoRegistroController } from './apoyo.controller';
 import { ApoyoService } from './apoyo.service';
 
 describe('ApoyoController', () => {
-  let controller: ApoyoController;
+  let controller: ApoyoRegistroController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
