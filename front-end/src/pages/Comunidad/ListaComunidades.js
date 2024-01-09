@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Breadcrumb, Stack, Button, Row, Col } from 'react-bootstrap';
 import {
   getComunidades,
-  getComunidadesByNameInsensitive
+  getComunidadesByNameInsensitive,
 } from '../../services/comunidades.service';
 import Busqueda from '../../component/Buscar';
 import { getToken } from '../../utils/utils';
@@ -14,6 +15,7 @@ export default function BuscarComunidades() {
   const [busqueda, setBusqueda] = useState('');
   const [comunidadesFiltradas, setComunidadesFiltradas] = useState([]);
   const [error, setError] = useState('');
+  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
 
   function handleRedireccionarACrearComunidad() {
     return () => {
@@ -27,14 +29,12 @@ export default function BuscarComunidades() {
   }
 
   async function getComunidadesFiltradas() {
-
     setComunidadesFiltradas([]);
     const response = await getComunidadesByNameInsensitive(busqueda);
     setComunidadesFiltradas(response);
 
     if (response.length === 0)
       setError('No se encontraron comunidades que coincidan con la búsqueda.');
-
   }
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export default function BuscarComunidades() {
       </div>
       <div className="d-flex flex-column m-auto w-75">
         <div className="ms-auto p-2">
-          {getToken() && (
+          {user && (
             <Button
               variant="outline-success"
               size="sm"

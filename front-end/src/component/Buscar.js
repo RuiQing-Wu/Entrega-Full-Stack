@@ -9,8 +9,7 @@ export default function Busqueda({
   busqueda,
 }) {
   return (
-    <div className="mb-4">
-      <h5>Buscar {titulo}</h5>
+    <div className="container mb-4">
       <Form onSubmit={handleBuscar}>
         <Row className="d-flex flex-wrap">
           <Col xs={12} md={8} lg={9} className="p-1">

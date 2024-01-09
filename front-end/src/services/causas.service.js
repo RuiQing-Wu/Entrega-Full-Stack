@@ -53,10 +53,21 @@ async function getCausasByComunityId(idComunidad) {
   return data;
 }
 
+async function getCausasByNameInsensitive(titulo) {
+  const response = await fetch(`${BASE_URL}/nameInsensitivePartial/${titulo}`);
+  if (!response.ok) {
+    throw new Error('No se encontraron causas que coincidan con la búsqueda.');
+  }
+
+  const data = await response.json();
+  return data;
+}
+
 export {
   saveCausa,
   getCausas,
   getCausaById,
   getCausasByName,
   getCausasByComunityId,
+  getCausasByNameInsensitive,
 };

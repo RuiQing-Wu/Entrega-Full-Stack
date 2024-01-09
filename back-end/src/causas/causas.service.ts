@@ -6,9 +6,7 @@ import { CausaSolidaria } from './domain/causa_solidaria.domain';
 import { CausasRepository } from './repositories/causas.repository';
 
 @Injectable()
-export class CausasService extends ICausasService{
-  
-
+export class CausasService extends ICausasService {
   constructor(
     @Inject(CausasRepository)
     private causasRepository: CausasRepository,
@@ -62,6 +60,12 @@ export class CausasService extends ICausasService{
     });
 
     return this.causasRepository.update(id, comunidadActualizada);
+  }
+
+  async getByNameInsensitivePartial(titulo: string): Promise<CausaSolidaria[]> {
+    const causas =
+      await this.causasRepository.getByNameInsensitivePartial(titulo);
+    return causas;
   }
 
   remove(id: string): Promise<CausaSolidaria> {

@@ -21,6 +21,14 @@ export default function MostrarAcciones() {
     navigate('/comunidades');
   }
 
+  function onComunidadClicked() {
+    navigate(`/comunidad/${causa.comunidad}`, { replace: true });
+  }
+
+  function onCausaClicked() {
+    navigate(`/causa/${causa.id}`, { replace: true });
+  }
+
   const fetchAccion = useCallback(async () => {
     const response = await getAccionById(param.idAccion);
     setAccion(response);
@@ -56,11 +64,13 @@ export default function MostrarAcciones() {
     <div>
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
-        <Breadcrumb.Item onClick={onComunidadesClicked}>Comunidades</Breadcrumb.Item>
-        <Breadcrumb.Item href={`/comunidad/${causa.comunidad}`}>
+        <Breadcrumb.Item onClick={onComunidadesClicked}>
+          Comunidades
+        </Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onComunidadClicked}>
           {comunidad.nombre}
         </Breadcrumb.Item>
-        <Breadcrumb.Item href={`/causa/${causa.id}`}>
+        <Breadcrumb.Item onClick={onCausaClicked}>
           {causa.titulo}
         </Breadcrumb.Item>
         <Breadcrumb.Item active>{accion.titulo}</Breadcrumb.Item>
@@ -73,6 +83,7 @@ export default function MostrarAcciones() {
           descripcion={accion.descripcion}
           listaObjetivos={accion.listaObjetivos}
           progreso={accion.progreso}
+          detalles={false}
         />
       )}
     </div>

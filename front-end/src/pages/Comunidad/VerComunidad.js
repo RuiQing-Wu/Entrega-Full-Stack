@@ -1,37 +1,34 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Breadcrumb, Tab, Tabs, Button } from 'react-bootstrap';
-import { getCausasByComunityId } from '../../services/causas.service';
+import { Breadcrumb, Tab, Tabs, Button, Row, Col } from 'react-bootstrap';
+import {
+  getCausasByComunityId,
+  getCausasByNameInsensitive,
+} from '../../services/causas.service';
 import CardComunidad from '../../component/CardComunidad';
-import StackCausaSolidaria from '../../component/StackCausaSolidaria';
 import CardExternalProfile from '../../component/CardExternalProfile';
+import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import Popup from '../../component/Popup';
+import Busqueda from '../../component/Buscar';
 import { getComunidadById } from '../../services/comunidades.service';
 import { refactorDate } from '../../utils/utils';
 
 export default function MostrarComunidad() {
   const [comunidad, setComunidad] = useState();
   const param = useParams();
-  const [todasLasCausas, setTodasLasCausas] = useState([]);
   const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
   const navigate = useNavigate();
   const [popupMessage, setPopupMessage] = useState('');
+  const [error, setError] = useState('');
+  const [busqueda, setBusqueda] = useState('');
+  const [causasFiltradas, setCausasFiltradas] = useState([]);
 
   const onApoyarCausaClicked = async () => {
-    try {
-      const response = await getCausasByComunityId(param.idComunidad);
-      const totalCausas = response;
-      setTodasLasCausas(totalCausas);
-
-      navigate(`/comunidad/${param.idComunidad}`, { replace: true });
-
-      setPopupMessage('¡Causa apoyada exitosamente!');
-    } catch (error) {
-      setPopupMessage(
-        'Error al apoyar la causa. Por favor, inténtalo de nuevo.',
-      );
-    }
+    const response = await getCausasByComunityId(param.idComunidad);
+    setCausasFiltradas(response);
+    navigate(`/comunidad/${param.idComunidad}`, { replace: true });
+    setPopupMessage('¡Causa apoyada exitosamente!');
   };
 
   const fetchComunidad = useCallback(async () => {
@@ -41,7 +38,7 @@ export default function MostrarComunidad() {
 
   const fetchCausas = useCallback(async () => {
     const response = await getCausasByComunityId(param.idComunidad);
-    setTodasLasCausas(response);
+    setCausasFiltradas(response);
   }, [param.idComunidad]);
 
   useEffect(() => {
@@ -56,6 +53,26 @@ export default function MostrarComunidad() {
     return <div>No hay datos de la comunidad</div>;
   }
 
+  async function getCausasFiltradas() {
+    setCausasFiltradas([]);
+    const response = await getCausasByNameInsensitive(busqueda);
+    setCausasFiltradas(response);
+
+    if (response.length === 0)
+      setError('No se encontraron causas que coincidan con la búsqueda.');
+  }
+
+  function handleBuscarCausas(event) {
+    event.preventDefault();
+
+    if (busqueda.trim() === '') {
+      fetchCausas();
+    } else if (busqueda.trim() !== '') {
+      getCausasFiltradas();
+      setError('');
+    }
+  }
+
   function onHomeClicked() {
     navigate('/');
   }
@@ -65,7 +82,24 @@ export default function MostrarComunidad() {
   }
 
   function handleRedireccionarACrearCausa() {
-    navigate(`/comunidad/${param.idComunidad}/crear-causa`, { replace: true });
+    navigate(`/comunidad/${param.idComunidad}/crear-causa`, {
+      replace: true,
+    });
+  }
+
+  function handleBusquedaInput(event) {
+    setBusqueda(event.target.value);
+  }
+
+  function handleRedireccionarCausa(titulo) {
+    console.log('titulo', titulo);
+    const causaSeleccionada = causasFiltradas.find((causa) =>
+      causa.titulo.toLowerCase().includes(titulo.toLowerCase()),
+    );
+    if (causaSeleccionada) {
+      console.log('causaSeleccionada', causaSeleccionada);
+      navigate(`/comunidad/${causaSeleccionada.id}`, { replace: true });
+    }
   }
 
   return (
@@ -106,27 +140,37 @@ export default function MostrarComunidad() {
         id="uncontrolled-tab-example"
         className="mb-3"
       >
-        {todasLasCausas.length > 0 && (
-          <Tab eventKey="causasSolidarias" title="Causas solidarias">
-            {todasLasCausas.isEmpty ? (
-              <p>No hay causas en la comunidad</p>
-            ) : (
-              todasLasCausas.map((cau, index) => (
-                <StackCausaSolidaria
-                  key={index}
-                  idCausa={cau.id}
-                  titulo={cau.titulo}
-                  descripcion={cau.descripcion}
-                  fechaInicio={refactorDate(cau.fechaInicio)}
-                  fechaFin={refactorDate(cau.fechaFin)}
-                  accionSolidaria={[]}
-                  idComunidad={comunidad.id}
-                  onApoyarCausaClicked={onApoyarCausaClicked}
-                />
-              ))
-            )}
-          </Tab>
-        )}
+        <Tab eventKey="causasSolidarias" title="Causas solidarias">
+          <Busqueda
+            titulo={'causas'}
+            handleBuscar={handleBuscarCausas}
+            handleBusquedaInput={handleBusquedaInput}
+            error={error}
+            handleRedireccionar={(titulo) => handleRedireccionarCausa(titulo)}
+            elementoFiltrado={causasFiltradas}
+          />
+          {causasFiltradas.length > 0 && (
+            <div>
+              <h2 className="mb-5">Causas encontradas:</h2>
+              <Row xs={1} md={2} lg={2} className="g-4">
+                {causasFiltradas.map((cau, index) => (
+                  <Col key={index}>
+                    <CardCausaSolidaria
+                      key={index}
+                      idCausa={cau.id}
+                      titulo={cau.titulo}
+                      imageUrl={'../../../imagenes/causa.png'}
+                      onApoyarCausaClicked={onApoyarCausaClicked}
+                      detalles={true}
+                      apoyar={false}
+                    />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          )}
+        </Tab>
+
         <Tab eventKey="seguidores" title="Seguidores">
           <CardExternalProfile
             nombre={'nombre1'}

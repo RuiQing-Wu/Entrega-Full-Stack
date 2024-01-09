@@ -1,7 +1,8 @@
-import './Style/CardCausaSolidaria.css';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import Apoyo from '../pages/ApoyarCausa/Apoyo';
+import './Style/CardCausaSolidaria.css';
 
 const CardCausaSolidaria = ({
   imageUrl,
@@ -11,10 +12,17 @@ const CardCausaSolidaria = ({
   fechaInicio,
   fechaFin,
   objetivos,
-  accionSolidaria,
-  idComunidad,
+  detalles,
+  apoyar,
 }) => {
+  const navigate = useNavigate();
   const [modalShowApoyo, setModalShowApoyo] = useState(false);
+
+  function handleRedirecciónACausa() {
+    if (titulo !== ' ') {
+      navigate(`/causa/${idCausa}`, { replace: true });
+    }
+  }
 
   function showModalApoyo() {
     setModalShowApoyo(true);
@@ -23,7 +31,6 @@ const CardCausaSolidaria = ({
   let lista = [];
 
   if (objetivos !== undefined) {
-
     lista = objetivos.join(', ');
   }
 
@@ -40,14 +47,14 @@ const CardCausaSolidaria = ({
             />
           </Col>
 
-          <Col xs={12} md={6}>
+          <Col xs={12} md={6} className="m-auto">
             <Card.Title>{titulo}</Card.Title>
-            <Card.Text>Descripción: {descripcion}</Card.Text>
-            <Card.Text>Fecha de inicio: {fechaInicio}</Card.Text>
-            <Card.Text>Fecha de fin: {fechaFin}</Card.Text>
-            <Card.Text>
-              Objetivos DS: {lista || []}
-            </Card.Text>
+            {descripcion && <Card.Text>Descripción: {descripcion}</Card.Text>}
+            {fechaInicio && (
+              <Card.Text>Fecha de inicio: {fechaInicio}</Card.Text>
+            )}
+            {fechaFin && <Card.Text>Fecha de fin: {fechaFin}</Card.Text>}
+            {objetivos && <Card.Text>Objetivos DS: {lista || []}</Card.Text>}
           </Col>
 
           <Col
@@ -59,13 +66,32 @@ const CardCausaSolidaria = ({
       </Card.Body>
 
       <Card.Footer>
-        <Button
-          type="button"
-          className="btn btn-primary"
-          onClick={showModalApoyo}
-        >
-          Apoyar
-        </Button>
+        <Row>
+          {apoyar && (
+            <Col xs={12} md={2} className="m-auto">
+              <Button
+                type="button"
+                variant="outline-primary"
+                size="sm"
+                onClick={showModalApoyo}
+              >
+                Apoyar
+              </Button>
+            </Col>
+          )}
+          {detalles && (
+            <Col xs={12} md={2} className="m-auto">
+              <Button
+                onClick={handleRedirecciónACausa}
+                variant="outline-secondary"
+                size="sm"
+                className="text-nowrap"
+              >
+                Ver más detalles
+              </Button>
+            </Col>
+          )}
+        </Row>
         <Apoyo
           show={modalShowApoyo}
           onHide={() => setModalShowApoyo(false)}

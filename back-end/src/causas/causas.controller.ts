@@ -1,10 +1,10 @@
-import { 
-  Controller, 
-  Get, 
-  Post, 
-  Body, 
-  Patch, 
-  Param, 
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
   Delete,
 } from '@nestjs/common';
 import { CreateCausaDto } from './dto/create-causa.dto';
@@ -44,6 +44,12 @@ export class CausasController {
   @Get('/comunidad/:comunidad')
   findByComunidad(@Param('comunidad') comunidad: string) {
     return this.causasService.getByComunidadId(comunidad);
+  }
+
+  @Public()
+  @Get('/nameInsensitivePartial/:titulo')
+  getByNameInsensitivePartial(@Param('titulo') titulo: string) {
+    return this.causasService.getByNameInsensitivePartial(titulo);
   }
 
   @Patch(':id')

@@ -8,11 +8,12 @@ import { getComunidadById } from '../../services/comunidades.service';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import StackAccionSolidaria from '../../component/StackAccionSolidaria';
 import { refactorDate } from '../../utils/utils';
+import CardAccionSolidaria from '../../component/CardAccionSolidaria';
 
 export default function MostrarCausa() {
-  const [acciones, setAcciones] = React.useState([]);
-  const [causa, setCausa] = React.useState([]);
-  const [comunidad, setComunidad] = React.useState([]);
+  const [acciones, setAcciones] = useState([]);
+  const [causa, setCausa] = useState([]);
+  const [comunidad, setComunidad] = useState([]);
   const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
   const param = useParams();
   const navigate = useNavigate();
@@ -27,6 +28,10 @@ export default function MostrarCausa() {
 
   function onComunidadesClicked() {
     navigate('/comunidades');
+  }
+
+  function onComunidadClicked() {
+    navigate(`/comunidad/${causa.comunidad}`, { replace: true });
   }
 
   const fetchAcciones = useCallback(async () => {
@@ -64,8 +69,10 @@ export default function MostrarCausa() {
     <div>
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
-        <Breadcrumb.Item onClick={onComunidadesClicked}>Comunidades</Breadcrumb.Item>
-        <Breadcrumb.Item href={`/comunidad/${causa.comunidad}`}>
+        <Breadcrumb.Item onClick={onComunidadesClicked}>
+          Comunidades
+        </Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onComunidadClicked}>
           {comunidad.nombre}
         </Breadcrumb.Item>
         <Breadcrumb.Item active>{causa.titulo}</Breadcrumb.Item>
@@ -92,6 +99,8 @@ export default function MostrarCausa() {
             fechaInicio={refactorDate(causa.fechaInicio)}
             fechaFin={refactorDate(causa.fechaFin)}
             objetivos={causa.objetivos}
+            detalles={false}
+            apoyar={true}
           />
         </div>
       </div>
@@ -108,15 +117,12 @@ export default function MostrarCausa() {
                 <p>No hay acciones en la causa</p>
               ) : (
                 acciones.map((acc, index) => (
-                  <StackAccionSolidaria
+                  <CardAccionSolidaria
                     key={index}
                     idAccion={acc.id}
+                    imageUrl={'../../../imagenes/accion.png'}
                     titulo={acc.titulo}
-                    descripcion={acc.descripcion}
-                    fechaInicio={acc.fechaInicio}
-                    fechaFin={acc.fechaFin}
-                    objetivos={acc.listaObjetivos}
-                    progreso={acc.progreso}
+                    detalles={true}
                   />
                 ))
               )}
