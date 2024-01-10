@@ -13,8 +13,9 @@ import { SolicitudModule } from './solicitud/solicitud.module';
 import CacheConfigService from './data_base_service/cache.config.service';
 import MongooseConfigService from './data_base_service/mongo.config.service';
 import { Neo4jModule } from 'nest-neo4j/dist';
-import { ApoyoRegistroModule } from './apoyo/apoyo.module';
-import { ApoyoModule } from './apoyoCausa/apoyoCausa.module';
+import { ApoyoRegistroModule } from './apoyo-registro/apoyo-registro.module';
+import { ApoyoCausaModule } from './apoyo-causa/apoyo-causa.module';
+import { SeguidorModule } from './seguidor/seguidor.module';
 
 @Module({
   imports: [
@@ -49,7 +50,8 @@ import { ApoyoModule } from './apoyoCausa/apoyoCausa.module';
     AccionesModule,
     SolicitudModule,
     ApoyoRegistroModule,
-    ApoyoModule,
+    ApoyoCausaModule,
+    SeguidorModule
   ],
 
   controllers: [AppController],

@@ -28,3 +28,13 @@ services:
    - 6379:6379 
   volumes:
    - ./data/redis_data:/data/db/redis
+ neo4j:
+  container_name: neo4j_container
+  image: neo4j:latest
+  ports:
+   - 7474:7474
+   - 7687:7687
+  volumes:
+   - ./data/neo4j_data:/data/db/neo4j
+  environment:
+   - NEO4J_AUTH=neo4j/mypassword
