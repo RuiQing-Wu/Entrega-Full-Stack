@@ -48,7 +48,7 @@ import { ApoyoRegistroModule } from './apoyo/apoyo.module';
     AccionesModule,
     SolicitudModule,
     ApoyoRegistroModule,
-  ],
+      ],
 
   controllers: [AppController],
   providers: [AppService],
