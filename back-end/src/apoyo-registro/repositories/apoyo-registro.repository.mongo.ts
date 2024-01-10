@@ -1,7 +1,7 @@
 import { HydratedDocument, Model } from "mongoose";
-import { ApoyoRegistro } from "../domain/apoyo.damain";
-import { ApoyoRegistroMongoModel } from "../schemas/apoyo.schema";
-import { ApoyoRegistroRepository } from "./apoyos.reposiroty";
+import { ApoyoRegistro } from "../domain/apoyo-registro.damain";
+import { ApoyoRegistroMongoModel } from "../schemas/apoyo-registro.schema";
+import { ApoyoRegistroRepository } from "./apoyo-registro.reposiroty";
 import { InjectModel } from "@nestjs/mongoose";
 
 export class ApoyoRegistroRepositoryMongo extends ApoyoRegistroRepository {

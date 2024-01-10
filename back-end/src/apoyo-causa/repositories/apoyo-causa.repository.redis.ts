@@ -2,21 +2,20 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { RedisStore } from 'cache-manager-redis-yet';
-import { Neo4jService } from 'nest-neo4j';
-import { ApoyoRepository } from './apoyoCausa.repository';
-import { ApoyoCausa } from '../domain/apoyoCausa.domain';
+import { ApoyoCausaRepository } from './apoyo-causa.repository';
+import { ApoyoCausa } from '../domain/apoyo-causa.domain';
 
 @Injectable()
-export class ApoyoRepositoryRedis extends ApoyoRepository{
+export class ApoyoCausaRepositoryRedis extends ApoyoCausaRepository{
     private redisStore: RedisStore;
     constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, 
-        //private readonly neo4jService: Neo4jService
     ) {
         super();
         this.redisStore = this.cacheManager.store as RedisStore;
     }
 
     async create(item: ApoyoCausa): Promise<ApoyoCausa> {
+        return null;
         throw new Error('Method not implemented.');
         /*const redisClient = this.redisStore.client;
         let entradas = [];

@@ -1,6 +1,6 @@
-import { ApoyoRegistro } from "../domain/apoyo.damain";
-import { CreateApoyoRegistroDto } from "../dto/create-apoyo.dto";
-import { UpdateApoyoRegistroDto } from "../dto/update-apoyo.dto";
+import { ApoyoRegistro } from "../domain/apoyo-registro.damain";
+import { CreateApoyoRegistroDto } from "../dto/create-apoyo-registro.dto";
+import { UpdateApoyoRegistroDto } from "../dto/update-apoyo-registro.dto";
 
 
 export abstract class IApoyoRegistroService {
