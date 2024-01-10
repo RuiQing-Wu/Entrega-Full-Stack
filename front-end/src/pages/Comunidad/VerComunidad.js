@@ -6,6 +6,7 @@ import {
   getCausasByComunityId,
   getCausasByNameInsensitive,
 } from '../../services/causas.service';
+import { getUserById } from '../../services/users.service';
 import CardComunidad from '../../component/CardComunidad';
 import CardExternalProfile from '../../component/CardExternalProfile';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
@@ -23,6 +24,7 @@ export default function MostrarComunidad() {
   const [error, setError] = useState('');
   const [busqueda, setBusqueda] = useState('');
   const [causasFiltradas, setCausasFiltradas] = useState([]);
+  const [usersData, setUsersData] = useState([]);
 
   const onApoyarCausaClicked = async () => {
     const response = await getCausasByComunityId(param.idComunidad);
@@ -41,6 +43,18 @@ export default function MostrarComunidad() {
     setCausasFiltradas(response);
   }, [param.idComunidad]);
 
+  const fetchUser = useCallback(async () => {
+    const usersDataResponse = await Promise.all(
+      comunidad.usuarios.map(async (userId) => {
+        const userData = await getUserById(userId);
+        return userData;
+      }),
+    );
+
+    const filteredUsersData = usersDataResponse.filter((us) => us !== null);
+    setUsersData(filteredUsersData);
+  }, [comunidad]);
+
   useEffect(() => {
     fetchComunidad();
   }, [fetchComunidad]);
@@ -48,6 +62,12 @@ export default function MostrarComunidad() {
   useEffect(() => {
     fetchCausas();
   }, [fetchCausas]);
+
+  useEffect(() => {
+    if (comunidad) {
+      fetchUser();
+    }
+  }, [fetchUser, comunidad]);
 
   if (!comunidad) {
     return <div>No hay datos de la comunidad</div>;
@@ -163,12 +183,14 @@ export default function MostrarComunidad() {
         </Tab>
 
         <Tab eventKey="seguidores" title="Seguidores">
-          <CardExternalProfile
-            nombre={'nombre1'}
-            telefono={'123456789'}
-            email={'email1'}
-            imageUrl={'../../../imagenes/usuario.png'}
-          />
+          {usersData.length > 0 &&
+            usersData.map((userData, index) => (
+              <CardExternalProfile
+                key={index}
+                nombre={userData.nombre}
+                imageUrl={'../../../imagenes/usuario.png'}
+              />
+            ))}
         </Tab>
       </Tabs>
       {popupMessage && (

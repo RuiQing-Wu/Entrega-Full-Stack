@@ -1,13 +1,6 @@
 const BASE_URL = 'http://localhost:3001/users';
 
-async function updateUser(
-  username,
-  nombre,
-  telefono,
-  ciudad,
-  pais,
-  idUser,
-) {
+async function updateUser(username, nombre, telefono, ciudad, pais, idUser) {
   const response = await fetch(`${BASE_URL}/${idUser}`, {
     method: 'PATCH',
     headers: {
@@ -26,4 +19,10 @@ async function updateUser(
   return data;
 }
 
-export default updateUser;
+async function getUserById(idUser) {
+  const response = await fetch(`${BASE_URL}/${idUser}`);
+  const data = await response.json();
+  return data;
+}
+
+export { getUserById, updateUser };
