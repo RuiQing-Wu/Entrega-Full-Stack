@@ -14,6 +14,7 @@ import CacheConfigService from './data_base_service/cache.config.service';
 import MongooseConfigService from './data_base_service/mongo.config.service';
 import { Neo4jModule } from 'nest-neo4j/dist';
 import { ApoyoRegistroModule } from './apoyo/apoyo.module';
+import { ApoyoModule } from './apoyoCausa/apoyoCausa.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { ApoyoRegistroModule } from './apoyo/apoyo.module';
     AccionesModule,
     SolicitudModule,
     ApoyoRegistroModule,
+    ApoyoModule,
   ],
 
   controllers: [AppController],
