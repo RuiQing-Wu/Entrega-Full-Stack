@@ -53,6 +53,12 @@ export class AccionesController {
     return this.accionesService.update(id, updateAccioneDto);
   }
 
+  @Public()
+  @Get('/nameInsensitivePartial/:titulo')
+  getByNameInsensitivePartial(@Param('titulo') titulo: string) {
+    return this.accionesService.getByNameInsensitivePartial(titulo);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.accionesService.remove(id);

@@ -8,16 +8,21 @@ export default function Busqueda({
   error,
   busqueda,
 }) {
+  const onSubmit = (event) => {
+    event.preventDefault();
+    handleBuscar(event);
+  };
+
   return (
     <div className="container mb-4">
-      <Form onSubmit={handleBuscar}>
+      <Form onSubmit={onSubmit}>
         <Row className="d-flex flex-wrap">
           <Col xs={12} md={8} lg={9} className="p-1">
             <input
               type="text"
               className="form-control"
               id="busqueda"
-              placeholder="Filtrar por nombre..."
+              placeholder={`Buscar ${titulo}...`}
               value={busqueda}
               onChange={handleBusquedaInput}
             />

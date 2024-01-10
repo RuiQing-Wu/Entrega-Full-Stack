@@ -14,7 +14,7 @@ export default function CardExternalProfile({
     <div className="m-5">
       <Card className="w-50 m-auto">
         <Card.Body>
-          <Row>
+          <Row xs={1} md={2} lg={2} className="g-4">
             <Col>
               <Card.Img className="w-50 m-auto" src={imageUrl} alt="Perfil" />
             </Col>

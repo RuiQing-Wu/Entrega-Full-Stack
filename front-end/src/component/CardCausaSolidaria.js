@@ -18,7 +18,7 @@ const CardCausaSolidaria = ({
   const navigate = useNavigate();
   const [modalShowApoyo, setModalShowApoyo] = useState(false);
 
-  function handleRedirecciónACausa() {
+  function handleRedireccionarACausa() {
     if (titulo !== ' ') {
       navigate(`/causa/${idCausa}`, { replace: true });
     }
@@ -82,7 +82,7 @@ const CardCausaSolidaria = ({
           {detalles && (
             <Col xs={12} md={2} className="m-auto">
               <Button
-                onClick={handleRedirecciónACausa}
+                onClick={handleRedireccionarACausa}
                 variant="outline-secondary"
                 size="sm"
                 className="text-nowrap"

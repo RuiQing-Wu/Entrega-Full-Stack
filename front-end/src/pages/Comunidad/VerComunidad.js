@@ -91,17 +91,6 @@ export default function MostrarComunidad() {
     setBusqueda(event.target.value);
   }
 
-  function handleRedireccionarCausa(titulo) {
-    console.log('titulo', titulo);
-    const causaSeleccionada = causasFiltradas.find((causa) =>
-      causa.titulo.toLowerCase().includes(titulo.toLowerCase()),
-    );
-    if (causaSeleccionada) {
-      console.log('causaSeleccionada', causaSeleccionada);
-      navigate(`/comunidad/${causaSeleccionada.id}`, { replace: true });
-    }
-  }
-
   return (
     <div>
       <Breadcrumb className="p-2">
@@ -146,7 +135,6 @@ export default function MostrarComunidad() {
             handleBuscar={handleBuscarCausas}
             handleBusquedaInput={handleBusquedaInput}
             error={error}
-            handleRedireccionar={(titulo) => handleRedireccionarCausa(titulo)}
             elementoFiltrado={causasFiltradas}
           />
           {causasFiltradas.length > 0 && (
