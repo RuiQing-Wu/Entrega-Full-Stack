@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IApoyoService } from './interfaces/apoyoCausa.interface';
 import { ApoyoRepository } from './repositories/apoyoCausa.repository';
-import { ApoyoCausa } from './domain/apoyoCausa.domain';
 
 @Injectable()
 export class ApoyoService implements IApoyoService {

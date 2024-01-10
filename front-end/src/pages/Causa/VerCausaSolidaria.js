@@ -124,6 +124,7 @@ export default function MostrarCausa() {
           <CardCausaSolidaria
             imageUrl={'../../../imagenes/causa.png'}
             idCausa={causa.id}
+            idComunidad={causa.comunidad}
             titulo={causa.titulo}
             descripcion={causa.descripcion}
             fechaInicio={refactorDate(causa.fechaInicio)}

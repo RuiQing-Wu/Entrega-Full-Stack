@@ -2,6 +2,7 @@ import './Apoyo.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import { createApoyoRegistro } from '../../services/apoyo_registro.service';
+import { apoyarCausa } from '../../services/apoyo_causa.service';
 
 export default function Apoyo(props) {
   const [nombre, setNombre] = useState('');
@@ -27,7 +28,7 @@ export default function Apoyo(props) {
       console.log('No se pudo enviar el apoyo');
     } else {
       // eslint-disable-next-line no-console
-      console.log('Apoyp enviado');
+      apoyarCausa(props.idComunidad, props.idCausa);
     }
 
     props.onHide();
