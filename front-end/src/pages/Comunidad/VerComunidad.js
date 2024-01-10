@@ -55,7 +55,10 @@ export default function MostrarComunidad() {
 
   async function getCausasFiltradas() {
     setCausasFiltradas([]);
-    const response = await getCausasByNameInsensitive(busqueda);
+    const response = await getCausasByNameInsensitive(
+      busqueda,
+      param.idComunidad,
+    );
     setCausasFiltradas(response);
 
     if (response.length === 0)

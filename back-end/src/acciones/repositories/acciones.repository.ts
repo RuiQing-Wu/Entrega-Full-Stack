@@ -6,4 +6,6 @@ export abstract class AccionesRepository extends IGenericRepository<AccionSolida
   abstract getByCausaId(causa: string): Promise<AccionSolidaria[]>;
   abstract getByNameInsensitivePartial(
     titulo: string,
-  ): Promise<AccionSolidaria[]>;}
+    idCausa: string,
+  ): Promise<AccionSolidaria[]>;
+}

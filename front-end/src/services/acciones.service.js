@@ -61,8 +61,10 @@ async function getAccionesByCausaId(idCausa) {
   return data;
 }
 
-async function getAccionesByNameInsensitive(titulo) {
-  const response = await fetch(`${BASE_URL}/nameInsensitivePartial/${titulo}`);
+async function getAccionesByNameInsensitive(titulo, idCausa) {
+  const response = await fetch(
+    `${BASE_URL}/nameInsensitivePartial/${titulo}/${idCausa}`,
+  );
   if (!response.ok) {
     throw new Error(
       'No se encontraron acciones que coincidan con la búsqueda.',

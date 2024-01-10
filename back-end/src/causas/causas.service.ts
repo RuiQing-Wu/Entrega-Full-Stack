@@ -62,9 +62,14 @@ export class CausasService extends ICausasService {
     return this.causasRepository.update(id, comunidadActualizada);
   }
 
-  async getByNameInsensitivePartial(titulo: string): Promise<CausaSolidaria[]> {
-    const causas =
-      await this.causasRepository.getByNameInsensitivePartial(titulo);
+  async getByNameInsensitivePartial(
+    titulo: string,
+    idComunidad: string,
+  ): Promise<CausaSolidaria[]> {
+    const causas = await this.causasRepository.getByNameInsensitivePartial(
+      titulo,
+      idComunidad,
+    );
     return causas;
   }
 

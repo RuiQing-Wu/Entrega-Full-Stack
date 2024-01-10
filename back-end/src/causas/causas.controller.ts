@@ -47,9 +47,12 @@ export class CausasController {
   }
 
   @Public()
-  @Get('/nameInsensitivePartial/:titulo')
-  getByNameInsensitivePartial(@Param('titulo') titulo: string) {
-    return this.causasService.getByNameInsensitivePartial(titulo);
+  @Get('/nameInsensitivePartial/:titulo/:idComunidad')
+  getByNameInsensitivePartial(
+    @Param('titulo') titulo: string,
+    @Param('idComunidad') idComunidad: string,
+  ) {
+    return this.causasService.getByNameInsensitivePartial(titulo, idComunidad);
   }
 
   @Patch(':id')

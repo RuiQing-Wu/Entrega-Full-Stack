@@ -73,7 +73,10 @@ export default function MostrarCausa() {
 
   async function getAccionesFiltradas() {
     setAccionesFiltradas([]);
-    const response = await getAccionesByNameInsensitive(busqueda);
+    const response = await getAccionesByNameInsensitive(
+      busqueda,
+      param.idCausa,
+    );
     setAccionesFiltradas(response);
 
     if (response.length === 0)
@@ -141,35 +144,33 @@ export default function MostrarCausa() {
           id="uncontrolled-tab-causas-acciones"
           className="mb-3"
         >
-          {accionesFiltradas.length > 0 && (
-            <Tab eventKey="acciones" title="Acciones solidarias">
-              <Busqueda
-                titulo={'acciones'}
-                handleBuscar={handleBuscarAcciones}
-                handleBusquedaInput={handleBusquedaInput}
-                error={error}
-                elementoFiltrado={accionesFiltradas}
-              />
-              {accionesFiltradas.length > 0 && (
-                <div>
-                  <h2 className="mb-5">Acciones encontradas: </h2>
-                  <Row xs={1} md={2} lg={2} className="g-4">
-                    {accionesFiltradas.map((acc, index) => (
-                      <Col key={index}>
-                        <CardAccionSolidaria
-                          key={index}
-                          idAccion={acc.id}
-                          imageUrl={'../../../imagenes/accion.png'}
-                          titulo={acc.titulo}
-                          detalles={true}
-                        />
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
-              )}
-            </Tab>
-          )}
+          <Tab eventKey="acciones" title="Acciones solidarias">
+            <Busqueda
+              titulo={'acciones'}
+              handleBuscar={handleBuscarAcciones}
+              handleBusquedaInput={handleBusquedaInput}
+              error={error}
+              elementoFiltrado={accionesFiltradas}
+            />
+            {accionesFiltradas.length > 0 && (
+              <div>
+                <h2 className="mb-5">Acciones encontradas: </h2>
+                <Row xs={1} md={2} lg={2} className="g-4">
+                  {accionesFiltradas.map((acc, index) => (
+                    <Col key={index}>
+                      <CardAccionSolidaria
+                        key={index}
+                        idAccion={acc.id}
+                        imageUrl={'../../../imagenes/accion.png'}
+                        titulo={acc.titulo}
+                        detalles={true}
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              </div>
+            )}
+          </Tab>
         </Tabs>
       </Col>
     </div>

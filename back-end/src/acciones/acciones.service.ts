@@ -60,9 +60,12 @@ export class AccionesServiceImpl extends IAccionService {
 
   async getByNameInsensitivePartial(
     titulo: string,
+    idCausa: string,
   ): Promise<AccionSolidaria[]> {
-    const causas =
-      await this.accionesRepository.getByNameInsensitivePartial(titulo);
+    const causas = await this.accionesRepository.getByNameInsensitivePartial(
+      titulo,
+      idCausa,
+    );
     return causas;
   }
 

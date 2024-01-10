@@ -12,5 +12,6 @@ export abstract class ICausasService {
   abstract remove(id: string): Promise<CausaSolidaria>;
   abstract getByNameInsensitivePartial(
     titulo: string,
+    idComunidad: string,
   ): Promise<CausaSolidaria[]>;
 }

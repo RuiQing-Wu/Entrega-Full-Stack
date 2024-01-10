@@ -66,12 +66,18 @@ export class AccionesRepositoryMongo extends AccionesRepository {
 
   async getByNameInsensitivePartial(
     titulo: string,
+    idCausa: string,
   ): Promise<AccionSolidaria[]> {
-    const acciones = await this.accionModel
-      .find({ titulo: { $regex: titulo, $options: 'i' } })
+    const acciones = await this.getByCausaId(idCausa);
+
+    const accionesFiltradasPorComunidad = await this.accionModel
+      .find({
+        causa: { $in: acciones.map((accion) => accion.causa) },
+        titulo: { $regex: titulo, $options: 'i' },
+      })
       .exec();
 
-    return acciones.map((accion) => {
+    return accionesFiltradasPorComunidad.map((accion) => {
       return this.transform(accion);
     });
   }

@@ -54,9 +54,12 @@ export class AccionesController {
   }
 
   @Public()
-  @Get('/nameInsensitivePartial/:titulo')
-  getByNameInsensitivePartial(@Param('titulo') titulo: string) {
-    return this.accionesService.getByNameInsensitivePartial(titulo);
+  @Get('/nameInsensitivePartial/:titulo/:idCausa')
+  getByNameInsensitivePartial(
+    @Param('titulo') titulo: string,
+    @Param('idCausa') idCausa: string,
+  ) {
+    return this.accionesService.getByNameInsensitivePartial(titulo, idCausa);
   }
 
   @Delete(':id')

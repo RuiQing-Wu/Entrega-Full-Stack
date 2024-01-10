@@ -85,12 +85,20 @@ export class CausasRepositoryMongo extends CausasRepository {
     return causas;
   }
 
-  async getByNameInsensitivePartial(titulo: string): Promise<CausaSolidaria[]> {
-    const causas = await this.causaModel
-      .find({ titulo: { $regex: titulo, $options: 'i' } })
+  async getByNameInsensitivePartial(
+    titulo: string,
+    idComunidad: string,
+  ): Promise<CausaSolidaria[]> {
+    const causas = await this.getByComunidadId(idComunidad);
+
+    const causasFiltradasPorComunidad = await this.causaModel
+      .find({
+        comunidad: { $in: causas.map((causa) => causa.comunidad) },
+        titulo: { $regex: titulo, $options: 'i' },
+      })
       .exec();
 
-    return causas.map((causa) => {
+    return causasFiltradasPorComunidad.map((causa) => {
       return this.transform(causa);
     });
   }
