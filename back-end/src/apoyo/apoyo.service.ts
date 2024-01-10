@@ -1,21 +1,39 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IApoyoService } from './interfaces/apoyo.interface';
-import { ApoyoRepository } from './repositories/apoyo.repository';
-import { ApoyoCausa } from './domain/apoyoCausa.domain';
+import { CreateApoyoRegistroDto } from './dto/create-apoyo.dto';
+import { UpdateApoyoRegistroDto } from './dto/update-apoyo.dto';
+import { IApoyoRegistroService } from './interfaces/apoyo.service.interface';
+import { ApoyoRegistro } from './domain/apoyo.damain';
+import { ApoyoRegistroRepository } from './repositories/apoyos.reposiroty';
 
 @Injectable()
-export class ApoyoService implements IApoyoService {
-    constructor(@Inject(ApoyoRepository) private readonly apoyoRepository: ApoyoRepository) {}
+export class RegistroApoyoServiceImpl extends IApoyoRegistroService {
 
-    async get(comunidadId: string, causaId: string): Promise<number | 0> {
-        return await this.apoyoRepository.getApoyo(comunidadId, causaId);
-    }
+  constructor(
+    @Inject(ApoyoRegistroRepository)
+    private apoyoRegistroRepository: ApoyoRegistroRepository,
+  ) {
+    super();
+  }
 
-    async incr(comunidadId: string, causaId: string) {
-        return await this.apoyoRepository.increaseApoyo(comunidadId, causaId);
-    }
+  create(CreateApoyoDto: CreateApoyoRegistroDto): Promise<ApoyoRegistro> {
+    const apoyoRegistro = new ApoyoRegistro(CreateApoyoDto);
+    return this.apoyoRegistroRepository.create(apoyoRegistro);
+  }
 
-    async delete(comunidadId: string, causaId: string) {
-        return await this.apoyoRepository.deleteCausa(comunidadId, causaId);
-    }
+  findAll(): Promise<ApoyoRegistro[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  findOne(id: string): Promise<ApoyoRegistro> {
+    throw new Error('Method not implemented.');
+  }
+
+  update(id: string, updateCausaDto: UpdateApoyoRegistroDto) {
+    throw new Error('Method not implemented.');
+  }
+
+  remove(id: string): Promise<ApoyoRegistro> {
+    throw new Error('Method not implemented.');
+  }
+
 }

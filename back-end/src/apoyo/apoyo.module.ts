@@ -1,29 +1,31 @@
 import { Module } from '@nestjs/common';
-import { ApoyoService } from './apoyo.service';
-import { ApoyoController } from './apoyo.controller';
-import { IApoyoService } from './interfaces/apoyo.interface';
-import { ApoyoRepository } from './repositories/apoyo.repository';
-import { ApoyoRepositoryRedis } from './repositories/apoyo.repository.redis';
-import { CacheModule } from '@nestjs/cache-manager';
-import CacheConfigService from 'src/data_base_service/cache.config.service';
+import { ApoyoRegistroController } from './apoyo.controller';
+import { ApoyoRegistro } from './domain/apoyo.damain';
+import { ApoyoRegistroSchema } from './schemas/apoyo.schema';
+import { MongooseModule } from '@nestjs/mongoose';
+import { IApoyoRegistroService } from './interfaces/apoyo.service.interface';
+import { ApoyoRegistroRepositoryMongo } from './repositories/apoyos.repository.mongo';
+import { ApoyoRegistroRepository } from './repositories/apoyos.reposiroty';
+import { RegistroApoyoServiceImpl } from './apoyo.service';
 
 @Module({
   imports: [
-    CacheModule.registerAsync({  
-      useClass: CacheConfigService,   
-    }),
+    MongooseModule.forFeature([{ name: ApoyoRegistro.name, schema: ApoyoRegistroSchema }]),
   ],
-  controllers: [ApoyoController],
+
+  controllers: [ApoyoRegistroController],
+
   providers: [
     {
-      provide: IApoyoService,
-      useClass: ApoyoService,
+      provide: IApoyoRegistroService,
+      useClass: RegistroApoyoServiceImpl
     },
     {
-      provide: ApoyoRepository,
-      useClass: ApoyoRepositoryRedis,
-    },
+      provide: ApoyoRegistroRepository,
+      useClass: ApoyoRegistroRepositoryMongo
+    }
   ],
-  exports: [IApoyoService, ApoyoRepository],
+
+  exports: [IApoyoRegistroService, ApoyoRegistroRepository]
 })
 export class ApoyoRegistroModule { }

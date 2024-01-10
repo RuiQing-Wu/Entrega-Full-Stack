@@ -1,26 +1,36 @@
-import { Controller, Get, Post, Param, Delete } from '@nestjs/common';
-import { IApoyoService } from './interfaces/apoyo.interface';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { CreateApoyoRegistroDto } from './dto/create-apoyo.dto';
+import { UpdateApoyoRegistroDto } from './dto/update-apoyo.dto';
+import { IApoyoRegistroService } from './interfaces/apoyo.service.interface';
 import { Public } from 'src/decorators/public.decorator';
 
-@Controller('apoyo')
-export class ApoyoController {
-  constructor(private readonly apoyoService: IApoyoService) {}
-
+@Controller('apoyoregistro')
+export class ApoyoRegistroController {
+  constructor(private readonly apoyoRegistroService: IApoyoRegistroService) {}
+  
   @Public()
-  @Post(':idComunidad/:idCausa')
-  incrementar(@Param('idComunidad') idComunidad: string, @Param('idCausa') idCausa: string) {
-    return this.apoyoService.incr(idComunidad, idCausa);
+  @Post()
+  create(@Body() createApoyoRegistroDto: CreateApoyoRegistroDto) {
+    return this.apoyoRegistroService.create(createApoyoRegistroDto);
   }
 
-  @Public()
-  @Get(':idComunidad/:idCausa')
-  find(@Param('idComunidad') idComunidad: string, @Param('idCausa') idCausa: string) {
-    return this.apoyoService.get(idComunidad, idCausa);
+  @Get()
+  findAll() {
+    return this.apoyoRegistroService.findAll();
   }
 
-  @Public()
-  @Delete(':idComunidad/:idCausa')
-  remove(@Param('idComunidad') idComunidad: string, @Param('idCausa') idCausa: string) {
-    return this.apoyoService.delete(idComunidad, idCausa);
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.apoyoRegistroService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateApoyoRegistroDto: UpdateApoyoRegistroDto) {
+    return this.apoyoRegistroService.update(id, updateApoyoRegistroDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.apoyoRegistroService.remove(id);
   }
 }
