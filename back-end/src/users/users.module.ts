@@ -5,26 +5,26 @@ import { UsersRepository } from './repositories/users.repository';
 import { UsersRepositoryMongo } from './repositories/users.repository.mongo';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './schemas/user.schema';
+import { UserController } from './users.controller';
 import { User } from './domain/user.domain';
 
 @Module({
-  
   imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), 
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
 
   providers: [
     {
       provide: IUserService,
-      useClass: UsersServiceImp
+      useClass: UsersServiceImp,
     },
     {
       provide: UsersRepository,
-      useClass: UsersRepositoryMongo
-    }
+      useClass: UsersRepositoryMongo,
+    },
   ],
 
-  exports: [IUserService, UsersRepository]
+  controllers: [UserController],
+  exports: [IUserService, UsersRepository],
 })
-
-export class UsersModule { }
+export class UsersModule {}

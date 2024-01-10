@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable } from '@nestjs/common';
+import { Body, ConflictException, Inject, Injectable } from '@nestjs/common';
 import { IUserService } from './interfaces/user.service.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,7 +11,6 @@ export enum Role {
 }
 @Injectable()
 export class UsersServiceImp extends IUserService {
-  
   constructor(
     @Inject(UsersRepository)
     private usersRepository: UsersRepository,
@@ -45,7 +44,19 @@ export class UsersServiceImp extends IUserService {
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
-    throw new Error('Method not implemented.');
+
+    //Comprobar si existe el usuario
+    const user = this.usersRepository.get(id);
+
+    if (!user) {
+      throw new ConflictException('User does not exists!');
+    }
+    
+    const updateUser = new User({
+      ...updateUserDto,
+    });
+
+    return this.usersRepository.update(id, updateUser);
   }
 
   remove(id: string): Promise<any> {
