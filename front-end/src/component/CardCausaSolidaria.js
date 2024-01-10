@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import Apoyo from '../pages/ApoyarCausa/Apoyo';
 import './Style/CardCausaSolidaria.css';
+import { getApoyoCausa } from '../services/apoyo_causa.service';
 
 const CardCausaSolidaria = ({
   imageUrl,
   idCausa,
+  idComunidad,
   titulo,
   descripcion,
   fechaInicio,
@@ -17,8 +19,9 @@ const CardCausaSolidaria = ({
 }) => {
   const navigate = useNavigate();
   const [modalShowApoyo, setModalShowApoyo] = useState(false);
+  const [apoyoActual, setApoyoActual] = useState(0);
 
-  function handleRedirecciónACausa() {
+  function handleRedireccionarACausa() {
     if (titulo !== ' ') {
       navigate(`/causa/${idCausa}`, { replace: true });
     }
@@ -27,6 +30,15 @@ const CardCausaSolidaria = ({
   function showModalApoyo() {
     setModalShowApoyo(true);
   }
+
+  async function refreshApoyo() {
+    const apoyo = await getApoyoCausa(idComunidad, idCausa);
+    setApoyoActual(apoyo);
+  }
+
+  useEffect(() => {
+    refreshApoyo();
+  });
 
   let lista = [];
 
@@ -55,6 +67,11 @@ const CardCausaSolidaria = ({
             )}
             {fechaFin && <Card.Text>Fecha de fin: {fechaFin}</Card.Text>}
             {objetivos && <Card.Text>Objetivos DS: {lista || []}</Card.Text>}
+            {apoyar && (
+              <Card.Text>
+                Apoyos actuales: {apoyoActual === undefined ? 0 : apoyoActual}
+              </Card.Text>
+            )}
           </Col>
 
           <Col
@@ -82,7 +99,7 @@ const CardCausaSolidaria = ({
           {detalles && (
             <Col xs={12} md={2} className="m-auto">
               <Button
-                onClick={handleRedirecciónACausa}
+                onClick={handleRedireccionarACausa}
                 variant="outline-secondary"
                 size="sm"
                 className="text-nowrap"
@@ -94,8 +111,12 @@ const CardCausaSolidaria = ({
         </Row>
         <Apoyo
           show={modalShowApoyo}
-          onHide={() => setModalShowApoyo(false)}
+          onHide={() => {
+            setModalShowApoyo(false);
+            refreshApoyo();
+          }}
           idCausa={idCausa}
+          idComunidad={idComunidad}
         />
       </Card.Footer>
     </Card>

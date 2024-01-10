@@ -59,6 +59,7 @@ const CardAccionSolidaria = ({
           <Row>
             <Col xs={12} md={2} className="m-auto">
               <Button
+                className="text-nowrap"
                 onClick={() => handleRedireccionAAccion()}
                 variant="outline-secondary"
                 size="sm"

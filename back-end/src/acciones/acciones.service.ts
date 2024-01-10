@@ -58,6 +58,17 @@ export class AccionesServiceImpl extends IAccionService {
     return this.accionesRepository.update(id, accionActualizada);
   }
 
+  async getByNameInsensitivePartial(
+    titulo: string,
+    idCausa: string,
+  ): Promise<AccionSolidaria[]> {
+    const causas = await this.accionesRepository.getByNameInsensitivePartial(
+      titulo,
+      idCausa,
+    );
+    return causas;
+  }
+
   remove(id: string): Promise<AccionSolidaria> {
     return this.accionesRepository.delete(id);
   }

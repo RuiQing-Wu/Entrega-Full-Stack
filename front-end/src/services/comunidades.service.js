@@ -45,8 +45,10 @@ async function getComunidades() {
   return data;
 }
 
-async function getComunidadesByNameInsensitive(nombre) {
-  const response = await fetch(`${BASE_URL}/nameInsensitivePartial/${nombre}`);
+async function getComunidadesByNameInsensitive(busqueda, filtro) {
+  const response = await fetch(
+    `${BASE_URL}/nameInsensitivePartial/${busqueda}?filtro=${filtro}`,
+  );
   if (!response.ok) {
     throw new Error(
       'No se encontraron comunidades que coincidan con la búsqueda.',

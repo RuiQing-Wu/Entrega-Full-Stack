@@ -16,6 +16,11 @@ export default function BuscarComunidades() {
   const [comunidadesFiltradas, setComunidadesFiltradas] = useState([]);
   const [error, setError] = useState('');
   const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+  const [filtro, setFiltro] = useState('nombre');
+
+  function onFiltroChange(event) {
+    setFiltro(event.target.value);
+  }
 
   function handleRedireccionarACrearComunidad() {
     return () => {
@@ -30,7 +35,7 @@ export default function BuscarComunidades() {
 
   async function getComunidadesFiltradas() {
     setComunidadesFiltradas([]);
-    const response = await getComunidadesByNameInsensitive(busqueda);
+    const response = await getComunidadesByNameInsensitive(busqueda, filtro);
     setComunidadesFiltradas(response);
 
     if (response.length === 0)
@@ -51,7 +56,7 @@ export default function BuscarComunidades() {
     if (busqueda.trim() === '') {
       getAllComunidades();
     } else if (busqueda.trim() !== '') {
-      getComunidadesFiltradas();
+      getComunidadesFiltradas(filtro);
       setError('');
     }
   }
@@ -98,6 +103,8 @@ export default function BuscarComunidades() {
             handleRedireccionar={(nombre) =>
               handleRedireccionarComunidad(nombre)
             }
+            onFiltroChange={onFiltroChange}
+            filtro={filtro}
             elementoFiltrado={comunidadesFiltradas}
           />
           {comunidadesFiltradas.length > 0 && (

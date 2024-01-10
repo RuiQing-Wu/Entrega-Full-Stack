@@ -55,7 +55,10 @@ export default function MostrarComunidad() {
 
   async function getCausasFiltradas() {
     setCausasFiltradas([]);
-    const response = await getCausasByNameInsensitive(busqueda);
+    const response = await getCausasByNameInsensitive(
+      busqueda,
+      param.idComunidad,
+    );
     setCausasFiltradas(response);
 
     if (response.length === 0)
@@ -89,17 +92,6 @@ export default function MostrarComunidad() {
 
   function handleBusquedaInput(event) {
     setBusqueda(event.target.value);
-  }
-
-  function handleRedireccionarCausa(titulo) {
-    console.log('titulo', titulo);
-    const causaSeleccionada = causasFiltradas.find((causa) =>
-      causa.titulo.toLowerCase().includes(titulo.toLowerCase()),
-    );
-    if (causaSeleccionada) {
-      console.log('causaSeleccionada', causaSeleccionada);
-      navigate(`/comunidad/${causaSeleccionada.id}`, { replace: true });
-    }
   }
 
   return (
@@ -146,7 +138,6 @@ export default function MostrarComunidad() {
             handleBuscar={handleBuscarCausas}
             handleBusquedaInput={handleBusquedaInput}
             error={error}
-            handleRedireccionar={(titulo) => handleRedireccionarCausa(titulo)}
             elementoFiltrado={causasFiltradas}
           />
           {causasFiltradas.length > 0 && (
