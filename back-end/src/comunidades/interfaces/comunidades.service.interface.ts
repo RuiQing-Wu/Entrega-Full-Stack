@@ -10,4 +10,9 @@ export abstract class IComunidadesService {
   abstract remove(id: string): Promise<Comunidad>;
   abstract getByName(nombre: string): Promise<Comunidad>;
   abstract getByNameInsensitivePartial(nombre: string): Promise<Comunidad[]>;
+  abstract addMember(
+    idComunidad: string,
+    idUsuario: string,
+    updateComunidadDto: UpdateComunidadDto,
+  ): Promise<Comunidad>;
 }

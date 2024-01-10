@@ -1,8 +1,9 @@
-import { CausaSolidaria } from "src/causas/domain/causa_solidaria.domain";
+import { User } from 'src/users/domain/user.domain';
 
 export class CreateComunidadDto {
   nombre: string;
   descripcion: string;
   fechaInicio: Date;
-  causas: CausaSolidaria[];
+  idAdministrador: string;
+  usuarios: string[];
 }

@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Breadcrumb, Col, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
@@ -12,6 +13,7 @@ export default function Comunidad() {
   const [descripcion, setDescripcion] = useState('');
   const [nombreError, setNombreError] = useState('');
   const [descripcionError, setDescripcionError] = useState('');
+  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
 
   function handleNombreInput(event) {
     setNombre(event.target.value);
@@ -50,7 +52,12 @@ export default function Comunidad() {
       day: '2-digit',
     });
 
-    const response = await saveComunidad(nombre, descripcion, formattedDate);
+    const response = await saveComunidad(
+      nombre,
+      descripcion,
+      formattedDate,
+      user.id,
+    );
     if (response === undefined) {
       navigate('/error');
       return;

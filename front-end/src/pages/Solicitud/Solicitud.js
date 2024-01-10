@@ -3,6 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { createSolicitud } from '../../services/solicitud.service';
+import { addMember } from '../../services/comunidades.service';
 import { dateToString } from '../../utils/utils';
 
 export default function Solicitud(props) {
@@ -41,6 +42,8 @@ export default function Solicitud(props) {
     } else {
       // eslint-disable-next-line no-console
       console.log('Solicitud enviada');
+
+      const responseUsuarioComunidad = addMember(user.id, props.idComunidad);
     }
 
     props.onHide();

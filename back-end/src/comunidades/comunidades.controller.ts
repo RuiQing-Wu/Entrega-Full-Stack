@@ -58,6 +58,20 @@ export class ComunidadesController {
     return this.comunidadesService.update(id, updateReunioneDto);
   }
 
+  @Public()
+  @Patch(':idComunidad/:idUsuario')
+  async addMember(
+    @Param('idComunidad') idComunidad: string,
+    @Param('idUsuario') idUsuario: string,
+    @Body() UpdateComunidadDto: UpdateComunidadDto,
+  ) {
+    return this.comunidadesService.addMember(
+      idComunidad,
+      idUsuario,
+      UpdateComunidadDto,
+    );
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.comunidadesService.remove(id);

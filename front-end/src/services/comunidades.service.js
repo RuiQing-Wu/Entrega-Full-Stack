@@ -2,16 +2,38 @@ import { getToken } from '../utils/utils';
 
 const BASE_URL = 'http://localhost:3001/comunidades';
 
-async function saveComunidad(nombre, descripcion, fechaInicio) {
+async function saveComunidad(
+  nombre,
+  descripcion,
+  fechaInicio,
+  idAdministrador,
+) {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ nombre, descripcion, fechaInicio }),
+    body: JSON.stringify({ nombre, descripcion, fechaInicio, idAdministrador }),
   });
 
   if (response.status !== 201) {
+    return undefined;
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+async function addMember(idUsuario, idComunidad) {
+  const response = await fetch(`${BASE_URL}/${idComunidad}/${idUsuario}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ idUsuario }),
+  });
+
+  if (response.status !== 200) {
     return undefined;
   }
 
@@ -77,4 +99,5 @@ export {
   getComunidades,
   getComunidadByName,
   getComunidadesByNameInsensitive,
+  addMember,
 };

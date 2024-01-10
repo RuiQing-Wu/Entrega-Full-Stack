@@ -22,7 +22,8 @@ export class ComunidadesRepositoryMongo extends ComunidadesRepository {
       nombre: comunidadModel.nombre,
       descripcion: comunidadModel.descripcion,
       fechaInicio: comunidadModel.fechaInicio,
-      causas: comunidadModel.causas,
+      idAdministrador: comunidadModel.idAdministrador,
+      usuarios: comunidadModel.usuarios,
     });
     return comunidad;
   }
@@ -38,7 +39,8 @@ export class ComunidadesRepositoryMongo extends ComunidadesRepository {
       nombre: comunidadCreated.nombre,
       descripcion: comunidadCreated.descripcion,
       fechaInicio: comunidadCreated.fechaInicio,
-      causas: [],
+      idAdministrador: comunidadCreated.idAdministrador,
+      usuarios: comunidadCreated.usuarios,
     });
 
     return comunidad;
@@ -72,6 +74,13 @@ export class ComunidadesRepositoryMongo extends ComunidadesRepository {
     });
 
     return comunidades;
+  }
+
+  async addMember(idComunidad: string, idUsuario: string): Promise<Comunidad> {
+    const comunidad = await this.comunidadModel.findById(idComunidad).exec();
+    comunidad.usuarios.push(idUsuario);
+    await comunidad.save();
+    return this.transform(comunidad);
   }
 
   update(id: string, item: any): Promise<any> {

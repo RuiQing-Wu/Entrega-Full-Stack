@@ -19,7 +19,8 @@ export class ComunidadesServiceImpl extends IComunidadesService {
       nombre: createComunidadDto.nombre,
       descripcion: createComunidadDto.descripcion,
       fechaInicio: createComunidadDto.fechaInicio,
-      causas: [],
+      idAdministrador: createComunidadDto.idAdministrador,
+      usuarios: createComunidadDto.usuarios,
     });
 
     return this.comunidadesRepository.create(comunidad);
@@ -54,10 +55,30 @@ export class ComunidadesServiceImpl extends IComunidadesService {
       nombre: updateComunidadDto.nombre ?? comunidad.nombre,
       descripcion: updateComunidadDto.descripcion ?? comunidad.descripcion,
       fechaInicio: updateComunidadDto.fechaInicio ?? comunidad.fechaInicio,
-      causas: updateComunidadDto.causas ?? comunidad.causas,
+      idAdministrador:
+        updateComunidadDto.idAdministrador ?? comunidad.idAdministrador,
+      usuarios: updateComunidadDto.usuarios ?? comunidad.usuarios,
     });
 
     return this.comunidadesRepository.update(id, comunidadActualizada);
+  }
+
+  async addMember(
+    idComunidad: string,
+    idUsuario: string,
+    updateComunidadDto: UpdateComunidadDto,
+  ) {
+    const comunidad = await this.comunidadesRepository.get(idComunidad);
+
+    const comunidadActualizada = {
+      ...comunidad,
+      descripcion: updateComunidadDto.descripcion,
+      fechaInicio: updateComunidadDto.fechaInicio,
+      idAdministrador: updateComunidadDto.idAdministrador,
+      usuarios: [...comunidad.usuarios, idUsuario],
+    };
+
+    return this.comunidadesRepository.addMember(idComunidad, idUsuario);
   }
 
   remove(id: string) {
