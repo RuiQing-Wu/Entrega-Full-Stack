@@ -4,8 +4,8 @@ import { redisStore } from 'cache-manager-redis-yet';
 @Injectable()
 class CacheConfigService implements CacheOptionsFactory {
     createCacheOptions(): CacheModuleOptions {
+        console.log("CacheConfigService.createCacheOptions");
         return {
-            isGlobal: true,
             store: redisStore,
             host: process.env.REDIS_HOST,
             port: process.env.REDIS_PORT,

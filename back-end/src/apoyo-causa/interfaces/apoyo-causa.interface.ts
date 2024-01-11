@@ -8,9 +8,6 @@ export abstract class IApoyoCausaService {
     abstract findOne(id: string): Promise<ApoyoCausa>;
     abstract update(id: string, updateApoyoCausaDto: UpdateApoyoCausaDto);
     abstract remove(id: string): Promise<ApoyoCausa>;
-
-    abstract get(prefix: string, key: string): Promise<number | 0>;
-    abstract incr(prefix: string, key: string): Promise<number | -1>;
-    abstract delete(prefix: string, key: string): Promise<void>;
+    abstract apoyar(id: string): Promise<ApoyoCausa>;
   }
   

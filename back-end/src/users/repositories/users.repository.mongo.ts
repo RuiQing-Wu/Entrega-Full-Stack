@@ -4,12 +4,12 @@ import { UsersRepository } from './users.repository';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../domain/user.domain';
 
-export class UsersRepositoryMongo extends UsersRepository {
+export class UsersRepositoryMongo implements UsersRepository {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserMongoModel>,
   ) {
-    super();
+
   }
 
   private toUserDomain(userMongo: HydratedDocument<UserMongoModel>): User {

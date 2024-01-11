@@ -5,12 +5,12 @@ import { CausaSolidaria } from '../domain/causa_solidaria.domain';
 import { AccionSolidaria } from '../../acciones/domain/accion_solidaria.domain';
 import { CausaMongoModel } from '../schemas/causa.schema';
 
-export class CausasRepositoryMongo extends CausasRepository {
+export class CausasRepositoryMongo implements CausasRepository {
   constructor(
     @InjectModel(CausaSolidaria.name)
     private readonly causaModel: Model<CausaMongoModel>,
   ) {
-    super();
+
   }
 
   private transform(

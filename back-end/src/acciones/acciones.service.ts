@@ -6,12 +6,11 @@ import { UpdateAccionDto } from './dto/update-accion.dto';
 import { AccionesRepository } from './repositories/acciones.repository';
 
 @Injectable()
-export class AccionesServiceImpl extends IAccionService {
+export class AccionesServiceImpl implements IAccionService {
   constructor(
     @Inject(AccionesRepository)
     private accionesRepository: AccionesRepository,
   ) {
-    super();
   }
 
   create(createAccionDto: CreateAccionDto): Promise<AccionSolidaria> {

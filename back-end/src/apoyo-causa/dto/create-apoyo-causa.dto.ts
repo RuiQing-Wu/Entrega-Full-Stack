@@ -1,5 +1,12 @@
+import { IsNotEmpty } from "class-validator";
+
 export class CreateApoyoCausaDto {
-    idComunidad: string;
+   /*  @IsNotEmpty()
+    idComunidad: string; */
+
+    @IsNotEmpty()
     idCausa: string;
-    apoyo: number;
+
+    @IsNotEmpty()
+    numApoyo: number;
 }

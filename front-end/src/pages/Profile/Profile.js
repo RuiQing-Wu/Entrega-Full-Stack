@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tab, Tabs, TabContent, Button, Form, Image, Col, Row } from 'react-bootstrap';
+import {
+  Tab,
+  Tabs,
+  TabContent,
+  Button,
+  Form,
+  Image,
+  Col,
+  Row,
+} from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import updateUser from '../../services/users.service';
+import { updateUser } from '../../services/users.service';
 import CardExternalProfile from '../../component/CardExternalProfile';
 import { CardListaComunidad } from '../../component/CardComunidad';
 import { getComunidades } from '../../services/comunidades.service';
@@ -55,7 +64,7 @@ export default function Profile() {
       user.telefono,
       user.ciudad,
       user.pais,
-      user.id
+      user.id,
     );
 
     if (!response) {
@@ -91,7 +100,9 @@ export default function Profile() {
     // setComunidadesUser(response);
 
     if (comunidadesUser.length === 0)
-      setErrorComunidades('No se encontraron comunidades a las que el usuario pertenezca.');
+      setErrorComunidades(
+        'No se encontraron comunidades a las que el usuario pertenezca.',
+      );
   }
 
   function handleRedireccionarComunidad(nombre) {
@@ -127,7 +138,6 @@ export default function Profile() {
             style={{ maxHeight: '150px' }} // ajusta el tamaño máximo de la imagen
           />
         </div>
-
 
         <div className="col-md-9">
           <h2>Perfil de usuario</h2>
@@ -219,24 +229,26 @@ export default function Profile() {
               />
             </Tab>
             <Tab eventKey="comunidades" title="Comunidades">
-              <TabContent>{comunidadesUser.length > 0 && (
-                <div>
-                  <Row xs={1} md={2} lg={2} className="g-4">
-                    {comunidadesUser.map((elemento, index) => (
-                      <Col key={index}>
-                        <CardListaComunidad
-                          imageUrl={'../../../imagenes/comunidad.jpeg'}
-                          nombre={elemento.nombre}
-                          descripcion={elemento.descripcion}
-                          handleRedireccionar={(nombre) =>
-                            handleRedireccionarComunidad(elemento.nombre)
-                          }
-                        />
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
-              )}</TabContent>
+              <TabContent>
+                {comunidadesUser.length > 0 && (
+                  <div>
+                    <Row xs={1} md={2} lg={2} className="g-4">
+                      {comunidadesUser.map((elemento, index) => (
+                        <Col key={index}>
+                          <CardListaComunidad
+                            imageUrl={'../../../imagenes/comunidad.jpeg'}
+                            nombre={elemento.nombre}
+                            descripcion={elemento.descripcion}
+                            handleRedireccionar={(nombre) =>
+                              handleRedireccionarComunidad(elemento.nombre)
+                            }
+                          />
+                        </Col>
+                      ))}
+                    </Row>
+                  </div>
+                )}
+              </TabContent>
             </Tab>
           </Tabs>
         </div>

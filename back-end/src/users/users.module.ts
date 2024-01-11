@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UsersServiceImp } from './users.service';
+import { UsersServiceImpl } from './users.service';
 import { IUserService } from './interfaces/user.service.interface';
 import { UsersRepository } from './repositories/users.repository';
 import { UsersRepositoryMongo } from './repositories/users.repository.mongo';
@@ -16,7 +16,7 @@ import { User } from './domain/user.domain';
   providers: [
     {
       provide: IUserService,
-      useClass: UsersServiceImp,
+      useClass: UsersServiceImpl,
     },
     {
       provide: UsersRepository,

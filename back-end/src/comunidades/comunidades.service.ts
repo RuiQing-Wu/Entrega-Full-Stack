@@ -5,12 +5,12 @@ import { Comunidad } from '../comunidades/domain/comunidades.domain';
 import { IComunidadesService } from './interfaces/comunidades.service.interface';
 import { ComunidadesRepository } from './repositories/comunidades.repository';
 @Injectable()
-export class ComunidadesServiceImpl extends IComunidadesService {
+export class ComunidadesServiceImpl implements IComunidadesService {
   constructor(
     @Inject(ComunidadesRepository)
     private comunidadesRepository: ComunidadesRepository,
   ) {
-    super();
+
   }
 
   create(createComunidadDto: CreateComunidadDto) {

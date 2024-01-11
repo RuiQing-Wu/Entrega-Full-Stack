@@ -4,6 +4,7 @@ import { UpdateApoyoCausaDto } from './dto/update-apoyo-causa.dto';
 import { IApoyoCausaService } from './interfaces/apoyo-causa.interface';
 import { ApoyoCausaRepository } from './repositories/apoyo-causa.repository';
 import { ApoyoCausa } from './domain/apoyo-causa.domain';
+import { NODATA } from 'dns';
 
 @Injectable()
 export class ApoyoCausaServiceImpl implements IApoyoCausaService {
@@ -13,35 +14,44 @@ export class ApoyoCausaServiceImpl implements IApoyoCausaService {
   ) { }
   
   create(createApoyoCausaDto: CreateApoyoCausaDto) : Promise<ApoyoCausa>{
-    // this.apoyoCausaRepository.create(createApoyoCausaDto);
-    return null;
+    const apoyoCausa = new ApoyoCausa(createApoyoCausaDto);
+    return this.apoyoCausaRepository.create(apoyoCausa);
   }
 
-  findAll() {
-    return null;
+  findAll(): Promise<ApoyoCausa[]> {
+    return this.apoyoCausaRepository.getAll();
   }
 
-  findOne(id: string) {
-    return null;
+  findOne(id: string): Promise<ApoyoCausa> {
+    return this.apoyoCausaRepository.get(id);
   }
 
-  update(id: string, updateApoyoCausaDto: UpdateApoyoCausaDto) {
-    throw new Error('Method not implemented.');
+  async update(id: string, updateApoyoCausaDto: UpdateApoyoCausaDto) {
+    const apoyoCausa = await this.apoyoCausaRepository.get(id);
+    
+    if (apoyoCausa) {
+      const newApoyoCausa = new ApoyoCausa({
+        ...apoyoCausa,
+        ...updateApoyoCausaDto,
+      });
+
+      await this.apoyoCausaRepository.update(id, newApoyoCausa);
+      return newApoyoCausa;
+    }
   }
 
   remove(id: string): Promise<ApoyoCausa> {
-    throw new Error('Method not implemented.');
+    return this.apoyoCausaRepository.delete(id);
   }
 
-  get(prefix: string, key: string): Promise<number> {
-    throw new Error('Method not implemented.');
-  }
+  async apoyar(id: string): Promise<ApoyoCausa> {
+    const apoyoCausa = await this.apoyoCausaRepository.get(id);
+    
+    if (!Number.isNaN(apoyoCausa.numApoyo)) {
+      console.log("Apoyar ", apoyoCausa);
+      return this.apoyoCausaRepository.apoyar(id);
+    }
 
-  incr(prefix: string, key: string): Promise<number> {
-    throw new Error('Method not implemented.');
-  }
-
-  delete(prefix: string, key: string): Promise<void> {
-    throw new Error('Method not implemented.');
+    return null;
   }
 }

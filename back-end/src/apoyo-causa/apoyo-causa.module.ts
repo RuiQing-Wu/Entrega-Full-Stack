@@ -8,12 +8,6 @@ import { CacheModule } from '@nestjs/cache-manager';
 import CacheConfigService from 'src/data_base_service/cache.config.service';
 
 @Module({
-  imports: [
-    CacheModule.registerAsync({
-      useClass: CacheConfigService,
-    }),
-  ],
-  
   controllers: [ApoyoCausaController],
   providers: [{
     provide: IApoyoCausaService,

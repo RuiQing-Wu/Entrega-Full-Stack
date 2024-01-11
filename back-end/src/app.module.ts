@@ -31,17 +31,18 @@ import { SeguidorModule } from './seguidor/seguidor.module';
     }),
 
     CacheModule.registerAsync({
+      isGlobal: true,
       useClass: CacheConfigService,
     }),
 
-    /* Neo4jModule.forRoot({  
+    Neo4jModule.forRoot({  
         scheme: 'neo4j',
         host: 'localhost',
         port: '7687',
         database: 'neo4j',
         username: 'neo4j',
         password: 'testtest',
-    }), */
+    }),
 
     AuthModule,
     UsersModule,
@@ -57,4 +58,5 @@ import { SeguidorModule } from './seguidor/seguidor.module';
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule { }

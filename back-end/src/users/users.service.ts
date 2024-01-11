@@ -10,12 +10,12 @@ export enum Role {
   Admin = 'admin',
 }
 @Injectable()
-export class UsersServiceImp extends IUserService {
+export class UsersServiceImpl implements IUserService {
   constructor(
     @Inject(UsersRepository)
     private usersRepository: UsersRepository,
   ) {
-    super();
+
   }
 
   async create(createUserDto: CreateUserDto) {

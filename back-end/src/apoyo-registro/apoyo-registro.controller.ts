@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CreateApoyoRegistroDto } from './dto/create-apoyo-registro.dto';
 import { UpdateApoyoRegistroDto } from './dto/update-apoyo-registro.dto';
 import { IApoyoRegistroService } from './interfaces/apoyo-registro.service.interface';
+import { Public } from 'src/decorators/public.decorator';
 
+@Public()
 @Controller('apoyo-registro')
 export class ApoyoRegistroController {
   constructor(private readonly apoyoRegistroService: IApoyoRegistroService) {}

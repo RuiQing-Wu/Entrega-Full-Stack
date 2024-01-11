@@ -6,78 +6,87 @@ import { ApoyoCausaRepository } from './apoyo-causa.repository';
 import { ApoyoCausa } from '../domain/apoyo-causa.domain';
 
 @Injectable()
-export class ApoyoCausaRepositoryRedis extends ApoyoCausaRepository{
+export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
     private redisStore: RedisStore;
-    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, 
+    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache,
     ) {
-        super();
         this.redisStore = this.cacheManager.store as RedisStore;
     }
 
-    async create(item: ApoyoCausa): Promise<ApoyoCausa> {
-        return null;
-        throw new Error('Method not implemented.');
-        /*const redisClient = this.redisStore.client;
-        let entradas = [];
-        item.idCausa.forEach(element => {
-            entradas.push(element);
-            entradas.push(item.apoyo[item.idCausa.indexOf(element)]);
-        });
-        let check = await redisClient.ZADD(item.idComunidad, entradas);
-        if (check == 0){
-            throw new Error('Error al crear apoyo');
-        }
-        return new ApoyoCausa({idComunidad: item.idComunidad, idCausa: item.idCausa, apoyo: item.apoyo});*/
+    private toApoyoCausadDomain(idCausa: string, numApoyo: number): ApoyoCausa {
+        let apoyoCausa = new ApoyoCausa({idCausa, numApoyo});
+        return apoyoCausa;
     }
+
+    async create(item: ApoyoCausa): Promise<ApoyoCausa> {
+        console.log("Create ", item);
+        const redisClient = this.redisStore.client;
+        const key = process.env.REDIS_CAUSA_KEY_PREFIX + item.idCausa;
+        const resultado = await redisClient.SET(key, 0);
+        console.log("Create ", resultado);
+
+        const newApoyoCausa = new ApoyoCausa({
+            ...item,
+            numApoyo: 0,
+        });
+
+        return newApoyoCausa;
+    }
+
     async get(id: string): Promise<ApoyoCausa> {
         const redisClient = this.redisStore.client;
-        let res = await redisClient.ZRANGE(id, 0, -1);
-        let puntuacion = [];
-        res.forEach(element => async () => {
-            puntuacion.push(await redisClient.ZMSCORE(id, element));
-        }); 
-        return new ApoyoCausa({idComunidad: id, idCausa: res, apoyo: puntuacion});
+        const key = process.env.REDIS_CAUSA_KEY_PREFIX + id;
+        const resultado = await redisClient.GET(key);
+        console.log("Get ", resultado);
+        // await redisClient.quit();
+
+        return this.toApoyoCausadDomain(id, parseInt(resultado));
     }
+
     async getAll(): Promise<ApoyoCausa[]> {
         const redisClient = this.redisStore.client;
-        let total = await redisClient.KEYS('*');
-        let ret = [];
-        total.forEach(element => async () =>{
-            ret.push(await this.get(element));
-        });
-        return ret;
+        const keys = await redisClient.KEYS(process.env.REDIS_CAUSA_KEY_PATTERN);
+        console.log("GetAll ", keys);
+        const lista = [];
+
+        await Promise.all(keys.map(async (element) => {
+            let resultado = await redisClient.GET(element);
+            let idCausa = element.replace(process.env.REDIS_CAUSA_KEY_PREFIX, "");
+            console.log("GetAll ", idCausa, resultado);
+            lista.push(this.toApoyoCausadDomain(idCausa, parseInt(resultado)));
+        }));
+    
+        return lista;
     }
-    update(id: string, item: ApoyoCausa): Promise<ApoyoCausa> {
-        throw new Error('Method not implemented.');
+
+    async update(id: string, item: ApoyoCausa): Promise<ApoyoCausa> {
+    
+        const redisClient = this.redisStore.client;
+        const key = process.env.REDIS_CAUSA_KEY_PREFIX + id;
+        const resultado = await redisClient.SET(key, item.numApoyo);
+        console.log("Update ", resultado);
+        // await redisClient.quit();
+
+        return this.toApoyoCausadDomain(id, item.numApoyo);
     }
+
     async delete(id: string): Promise<ApoyoCausa> {
         const redisClient = this.redisStore.client;
-        await redisClient.DEL(id);
-        return null;
+        const resultado = await this.get(id);
+        await redisClient.DEL(process.env.REDIS_CAUSA_KEY_PREFIX + id);
+        console.log("Delete ", resultado);
+        // await redisClient.quit();
+
+        return resultado
     }
-    async getApoyo(comunidadId: string, causaId: string): Promise<number> {
-        try {
-            const redisClient = this.redisStore.client;
-            let res = await redisClient.ZSCORE(comunidadId, causaId);
-            if (res === null) {
-                return 0;
-            }
-            return res;
-        } catch (error) {
-            throw new Error('Error al obtener apoyo');
-        }
-    }
-    async increaseApoyo(comunidadId: string, causaId: string): Promise<number> {
-        try {
-            const redisClient = this.redisStore.client;
-            return await redisClient.ZINCRBY(comunidadId, 1, causaId);
-        }
-        catch (error) {
-            return -1;
-        }
-    }
-    async deleteCausa(comunidadId: string, causaId: string): Promise<void> {
+
+    async apoyar(id: string): Promise<ApoyoCausa> {
         const redisClient = this.redisStore.client;
-        await redisClient.ZREM(comunidadId, causaId);
+        const key = process.env.REDIS_CAUSA_KEY_PREFIX + id;
+        const resultado = await redisClient.INCR(key);
+        
+        console.log("Apoyar ", resultado);
+        // await redisClient.quit();
+        return this.toApoyoCausadDomain(id, resultado);
     }
 }

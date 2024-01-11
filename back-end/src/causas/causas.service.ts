@@ -6,12 +6,12 @@ import { CausaSolidaria } from './domain/causa_solidaria.domain';
 import { CausasRepository } from './repositories/causas.repository';
 
 @Injectable()
-export class CausasService extends ICausasService {
+export class CausasServiceImpl implements ICausasService {
   constructor(
     @Inject(CausasRepository)
     private causasRepository: CausasRepository,
   ) {
-    super();
+
   }
 
   create(createCausaDto: CreateCausaDto): Promise<CausaSolidaria> {

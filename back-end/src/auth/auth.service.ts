@@ -28,8 +28,8 @@ export class AuthService {
     return user;
   }
 
-  async getProfile(id) {
-    const user = await this.usersService.getByName(id);
+  async getProfile(username: string) {
+    const user = await this.usersService.getByName(username);
     return user;
 }
 }

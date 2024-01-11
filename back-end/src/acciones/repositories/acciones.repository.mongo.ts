@@ -5,12 +5,12 @@ import { AccionesRepository } from './acciones.repository';
 import { AccionSolidaria } from '../domain/accion_solidaria.domain';
 import { AccionMongoModel } from '../schemas/accion.schema';
 
-export class AccionesRepositoryMongo extends AccionesRepository {
+export class AccionesRepositoryMongo implements AccionesRepository {
   constructor(
     @InjectModel(AccionSolidaria.name)
     private readonly accionModel: Model<AccionMongoModel>,
   ) {
-    super();
+    
   }
 
   transform(accionModel: HydratedDocument<AccionSolidaria>): AccionSolidaria {

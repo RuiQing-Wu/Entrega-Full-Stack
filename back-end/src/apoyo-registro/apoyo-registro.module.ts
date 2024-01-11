@@ -5,7 +5,7 @@ import { ApoyoRegistroSchema } from './schemas/apoyo-registro.schema';
 import { ApoyoRegistro } from './domain/apoyo-registro.damain';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ApoyoRegistroServiceImpl } from './apoyo-registro.service';
-import { ApoyoRegistroRepository } from './repositories/apoyo-registro.reposiroty';
+import { ApoyoRegistroRepository } from './repositories/apoyo-registro.repository';
 import { ApoyoRegistroRepositoryMongo } from './repositories/apoyo-registro.repository.mongo';
 
 @Module({

@@ -1,26 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateSeguidorDto } from './dto/create-seguidor.dto';
 import { UpdateSeguidorDto } from './dto/update-seguidor.dto';
+import { ISeguidorService } from './interfaces/seguidor.service.interface';
+import { UsuarioSeguimiento } from './domain/usuario_seguimiento';
+import { SeguidorRepository } from './repositories/seguidor.repository';
 
 @Injectable()
-export class SeguidorService {
-  create(createSeguidorDto: CreateSeguidorDto) {
-    return 'This action adds a new seguidor';
+export class SeguidorServiceImpl implements ISeguidorService {
+  constructor(
+    @Inject(SeguidorRepository)
+    private seguidorRepository: SeguidorRepository,
+  ) {
   }
 
-  findAll() {
-    return `This action returns all seguidor`;
+  create(createSeguidorDto: CreateSeguidorDto): Promise<UsuarioSeguimiento> {
+    throw new Error('Method not implemented.');
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} seguidor`;
+  findAll(): Promise<UsuarioSeguimiento[]> {
+    throw new Error('Method not implemented.');
   }
 
-  update(id: number, updateSeguidorDto: UpdateSeguidorDto) {
-    return `This action updates a #${id} seguidor`;
+  findOne(id: string): Promise<UsuarioSeguimiento> {
+    throw new Error('Method not implemented.');
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} seguidor`;
+  update(id: string, updateSeguidorDto: UpdateSeguidorDto) {
+    throw new Error('Method not implemented.');
+  }
+
+  remove(id: string): Promise<UsuarioSeguimiento> {
+    throw new Error('Method not implemented.');
   }
 }

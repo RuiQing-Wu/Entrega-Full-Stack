@@ -1,5 +1,4 @@
-export class ApoyoRegistro 
-{
+export class ApoyoRegistro {
     readonly id?: string;
     readonly idCausa: string;
     readonly nombre: string;

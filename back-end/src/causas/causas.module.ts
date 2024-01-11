@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CausasService } from './causas.service';
+import { CausasServiceImpl } from './causas.service';
 import { CausasController } from './causas.controller';
 import { CausaSolidaria } from './domain/causa_solidaria.domain';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -16,7 +16,7 @@ import { CausasRepositoryMongo } from './repositories/causas.repository.mongo';
   providers: [
     {
       provide: ICausasService,
-      useClass: CausasService
+      useClass: CausasServiceImpl
     },
     {
       provide: CausasRepository,

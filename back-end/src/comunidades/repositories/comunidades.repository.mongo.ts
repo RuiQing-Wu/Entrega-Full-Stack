@@ -5,12 +5,12 @@ import { HydratedDocument } from 'mongoose';
 import { Comunidad } from '../domain/comunidades.domain';
 import { ComunidadMongoModel } from '../schemas/comunidad.schema';
 
-export class ComunidadesRepositoryMongo extends ComunidadesRepository {
+export class ComunidadesRepositoryMongo implements ComunidadesRepository {
   constructor(
     @InjectModel(Comunidad.name)
     private readonly comunidadModel: Model<ComunidadMongoModel>,
   ) {
-    super();
+
   }
 
   //Transforma un objeto del modelo de persistencia en un objeto de dominio

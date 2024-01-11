@@ -20,7 +20,7 @@ export class AppService {
     // SET KEY VALUE PAIR AND EXPIRE TIME
     await redisClient.set('foo', 'bar', { EX: 10 });
 
-    await redisClient.quit();
+    // await redisClient.quit();
 
     /* this.neo4jService.read('MATCH (movie:Movie) RETURN movie LIMIT 1').then((result) => {
       console.log(result.records[0].get('movie').properties);
