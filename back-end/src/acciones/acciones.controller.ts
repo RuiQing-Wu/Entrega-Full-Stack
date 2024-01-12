@@ -17,31 +17,26 @@ import { Public } from 'src/decorators/public.decorator';
 export class AccionesController {
   constructor(private readonly accionesService: IAccionService) {}
 
-  @Public()
   @Post()
   create(@Body() createAccionDto: CreateAccionDto) {
     return this.accionesService.create(createAccionDto);
   }
 
-  @Public()
   @Get()
   findAll() {
     return this.accionesService.findAll();
   }
 
-  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.accionesService.findOne(id);
   }
 
-  @Public()
   @Get('/name/:nombre')
   findByName(@Param('nombre') titulo: string) {
     return this.accionesService.getByName(titulo);
   }
 
-  @Public()
   @Get('/causa/:causa')
   findByCausa(@Param('causa') causa: string) {
     return this.accionesService.getByCausaId(causa);
@@ -53,7 +48,6 @@ export class AccionesController {
     return this.accionesService.update(id, updateAccioneDto);
   }
 
-  @Public()
   @Get('/nameInsensitivePartial/:titulo/:idCausa')
   getByNameInsensitivePartial(
     @Param('titulo') titulo: string,

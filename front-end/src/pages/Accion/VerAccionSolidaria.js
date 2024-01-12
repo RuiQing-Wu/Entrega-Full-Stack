@@ -45,16 +45,20 @@ export default function MostrarAcciones() {
   }, [causa.comunidad]);
 
   useEffect(() => {
-    fetchComunidad();
-  }, [fetchComunidad]);
+    if (causa && causa.comunidad) {
+      fetchComunidad();
+    }
+  }, [causa, fetchComunidad]);
 
   useEffect(() => {
     fetchAccion();
   }, [fetchAccion]);
 
   useEffect(() => {
-    fetchCausa();
-  }, [fetchCausa]);
+    if (accion && accion.causa) {
+      fetchCausa();
+    }
+  }, [accion, fetchCausa]);
 
   if (!accion) {
     return <div>No hay datos de la acción</div>;

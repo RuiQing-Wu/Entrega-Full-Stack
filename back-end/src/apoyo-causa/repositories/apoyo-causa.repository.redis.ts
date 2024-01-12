@@ -18,11 +18,9 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
   }
 
   async create(item: ApoyoCausa): Promise<ApoyoCausa> {
-    console.log('Create ', item);
     const redisClient = this.redisStore.client;
     const key = process.env.REDIS_CAUSA_KEY_PREFIX + item.idCausa;
     const resultado = await redisClient.SET(key, 0);
-    console.log('Create ', resultado);
 
     const newApoyoCausa = new ApoyoCausa({
       ...item,
@@ -34,10 +32,10 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
 
   async get(id: string): Promise<ApoyoCausa> {
     const redisClient = this.redisStore.client;
-    console.log('ID APOYO', id);
+
     const key = process.env.REDIS_CAUSA_KEY_PREFIX + id;
     const resultado = await redisClient.GET(key);
-    console.log('Get apoyo', resultado);
+
     // await redisClient.quit();
 
     return this.toApoyoCausadDomain(id, parseInt(resultado));
@@ -46,14 +44,14 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
   async getAll(): Promise<ApoyoCausa[]> {
     const redisClient = this.redisStore.client;
     const keys = await redisClient.KEYS(process.env.REDIS_CAUSA_KEY_PATTERN);
-    console.log('GetAll ', keys);
+
     const lista = [];
 
     await Promise.all(
       keys.map(async (element) => {
         let resultado = await redisClient.GET(element);
         let idCausa = element.replace(process.env.REDIS_CAUSA_KEY_PREFIX, '');
-        console.log('GetAll ', idCausa, resultado);
+
         lista.push(this.toApoyoCausadDomain(idCausa, parseInt(resultado)));
       }),
     );
@@ -65,7 +63,7 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
     const redisClient = this.redisStore.client;
     const key = process.env.REDIS_CAUSA_KEY_PREFIX + id;
     const resultado = await redisClient.SET(key, item.numApoyo);
-    console.log('Update ', resultado);
+
     // await redisClient.quit();
 
     return this.toApoyoCausadDomain(id, item.numApoyo);
@@ -75,7 +73,7 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
     const redisClient = this.redisStore.client;
     const resultado = await this.get(id);
     await redisClient.DEL(process.env.REDIS_CAUSA_KEY_PREFIX + id);
-    console.log('Delete ', resultado);
+
     // await redisClient.quit();
 
     return resultado;

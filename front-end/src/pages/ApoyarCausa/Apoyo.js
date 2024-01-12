@@ -26,9 +26,8 @@ export default function Apoyo(props) {
       console.log('No se pudo enviar el apoyo');
     } else {
       apoyarCausa(props.idCausa);
+      props.onHide();
     }
-
-    props.onHide();
   }
 
   function close() {
