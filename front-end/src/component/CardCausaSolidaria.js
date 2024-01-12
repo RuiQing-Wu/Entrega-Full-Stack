@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import Apoyo from '../pages/ApoyarCausa/Apoyo';
@@ -32,8 +32,8 @@ const CardCausaSolidaria = ({
   }
 
   async function refreshApoyo() {
-    const apoyo = await getApoyoCausa(idComunidad, idCausa);
-    setApoyoActual(apoyo);
+    const apoyo = await getApoyoCausa(idCausa);
+    setApoyoActual(apoyo.numApoyo);
   }
 
   useEffect(() => {

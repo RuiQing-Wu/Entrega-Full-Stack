@@ -1,14 +1,16 @@
 import './Apoyo.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import ErrorMessage from '../../component/MensajeError';
 import { createApoyoRegistro } from '../../services/apoyo_registro.service';
 import { apoyarCausa } from '../../services/apoyo_causa.service';
 
 export default function Apoyo(props) {
+  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
-  // eslint-disable-next-line no-console
-  console.log('modalShow: ', props.show);
+
   function handleNombreInput(event) {
     setNombre(event.target.value);
   }
@@ -18,25 +20,18 @@ export default function Apoyo(props) {
   }
 
   function apoyar() {
-    // eslint-disable-next-line no-console
-    console.log('Apoyar: ', props.idCausa, nombre, correo);
-
-    // TODO ENVIAR SOLICITUD
     const response = createApoyoRegistro(props.idCausa, nombre, correo);
     if (response === undefined) {
       // eslint-disable-next-line no-console
       console.log('No se pudo enviar el apoyo');
     } else {
-      // eslint-disable-next-line no-console
-      apoyarCausa(props.idComunidad, props.idCausa);
+      apoyarCausa(props.idCausa);
     }
 
     props.onHide();
   }
 
   function close() {
-    // eslint-disable-next-line no-console
-    console.log('No enviar Correo');
     props.onHide();
   }
 
@@ -54,7 +49,7 @@ export default function Apoyo(props) {
           className="text-center"
           style={{ textAlign: 'center' }}
         >
-          Apoyar "{props.nombreCausa}"
+          Apoyar Causa Solidaria
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -65,6 +60,7 @@ export default function Apoyo(props) {
               type="text"
               placeholder="nombre"
               autoFocus={false}
+              value={user && user.nombre ? user.nombre : ''}
               onChange={handleNombreInput}
             />
           </Form.Group>
@@ -75,6 +71,7 @@ export default function Apoyo(props) {
               placeholder="name@example.com"
               autoFocus={false}
               onChange={handleCorreoInput}
+              required
             />
           </Form.Group>
         </Form>

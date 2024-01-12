@@ -112,7 +112,7 @@ export default function MostrarCausa() {
       </Breadcrumb>
 
       <div className="d-flex flex-column m-auto w-75">
-        {user && (
+        {user && user.id === comunidad.idAdministrador && (
           <div className="ms-auto p-2">
             <Button
               variant="outline-success"

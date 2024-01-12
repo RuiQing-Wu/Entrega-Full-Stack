@@ -1,9 +1,10 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap';
 
-const ErrorMessage = ({ message }) => {
+const ErrorMessage = ({ message, gravedad }) => {
+  const variant = gravedad || 'danger';
   return (
-    <Alert key="danger" variant="danger">
+    <Alert key={variant} variant={variant}>
       {message}
     </Alert>
   );

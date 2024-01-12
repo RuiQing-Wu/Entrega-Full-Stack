@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { CreateApoyoCausaDto } from './dto/create-apoyo-causa.dto';
 import { UpdateApoyoCausaDto } from './dto/update-apoyo-causa.dto';
 import { IApoyoCausaService } from './interfaces/apoyo-causa.interface';
@@ -26,7 +36,10 @@ export class ApoyoCausaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateApoyoCausaDto: UpdateApoyoCausaDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateApoyoCausaDto: UpdateApoyoCausaDto,
+  ) {
     return this.apoyoCausaService.update(id, updateApoyoCausaDto);
   }
 
@@ -36,13 +49,12 @@ export class ApoyoCausaController {
   }
 
   @Patch('apoyar/:id')
-  @HttpCode(HttpStatus.NOT_FOUND)
+  //@HttpCode(HttpStatus.NOT_FOUND)
   apoyar(@Param('id') id: string) {
     const respuesta = this.apoyoCausaService.apoyar(id);
-    if(respuesta === null) {
+    if (respuesta === null) {
       return NOTFOUND;
     }
-
     return respuesta;
   }
 }
