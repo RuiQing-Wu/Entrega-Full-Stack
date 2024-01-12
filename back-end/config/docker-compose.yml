@@ -38,3 +38,4 @@ services:
    - ./data/neo4j_data:/data/db/neo4j
   environment:
    - NEO4J_AUTH=neo4j/mypassword
+   - NEO4J_dbms_default__database=neo4j-solidarian

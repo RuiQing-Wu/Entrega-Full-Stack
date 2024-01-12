@@ -12,24 +12,40 @@ export class SeguidorServiceImpl implements ISeguidorService {
     private seguidorRepository: SeguidorRepository,
   ) {
   }
-
+  
   create(createSeguidorDto: CreateSeguidorDto): Promise<UsuarioSeguimiento> {
-    throw new Error('Method not implemented.');
+    const seguidor = new UsuarioSeguimiento(createSeguidorDto);
+    return this.seguidorRepository.create(seguidor);
   }
 
   findAll(): Promise<UsuarioSeguimiento[]> {
-    throw new Error('Method not implemented.');
+    return this.seguidorRepository.getAll();
   }
 
   findOne(id: string): Promise<UsuarioSeguimiento> {
-    throw new Error('Method not implemented.');
+    return this.seguidorRepository.get(id);
   }
 
-  update(id: string, updateSeguidorDto: UpdateSeguidorDto) {
-    throw new Error('Method not implemented.');
+  async update(id: string, updateSeguidorDto: UpdateSeguidorDto) {
+    const seguidor = await this.seguidorRepository.get(id);
+    
+    if (seguidor) {
+      const newSeguidor = new UsuarioSeguimiento({
+        ...seguidor,
+        ...updateSeguidorDto,
+      });
+
+      return this.seguidorRepository.update(id, newSeguidor);
+    }
   }
 
   remove(id: string): Promise<UsuarioSeguimiento> {
-    throw new Error('Method not implemented.');
+    return this.seguidorRepository.delete(id);
+  }
+
+  seguir(createSeguidorDto: CreateSeguidorDto[]): Promise<UsuarioSeguimiento> {
+    const seguidorOrigen = new UsuarioSeguimiento(createSeguidorDto[0]);
+    const seguidorDestino = new UsuarioSeguimiento(createSeguidorDto[1]);
+    return this.seguidorRepository.seguir(seguidorOrigen, seguidorDestino);
   }
 }

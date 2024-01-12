@@ -1,28 +1,16 @@
 
-export class UsuarioSeguimiento{
-    idUserOrigen: string;
-    idUserDestino: string;
-    nombreUserOrigen: string;
-    nombreUserDestino: string;
-    fechaSeguimiento: Date;
+export class UsuarioSeguimiento {
+    readonly idUsuario: string;
+    readonly username: string;
 
     constructor({
-        idUserOrigen,
-        idUserDestino,
-        nombreUserOrigen,
-        nombreUserDestino,
-        fechaSeguimiento,
+        idUsuario,
+        username,
     }: {
-        idUserOrigen: string,
-        idUserDestino: string,
-        nombreUserOrigen: string,
-        nombreUserDestino: string,
-        fechaSeguimiento: Date,
+        idUsuario: string,
+        username: string,
     }) {
-        this.idUserOrigen = idUserOrigen;
-        this.idUserDestino = idUserDestino;
-        this.nombreUserOrigen = nombreUserOrigen;
-        this.nombreUserDestino = nombreUserDestino;
-        this.fechaSeguimiento = fechaSeguimiento;
-    }
+        this.idUsuario = idUsuario;
+        this.username = username;
+    };
 }

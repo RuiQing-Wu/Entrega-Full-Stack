@@ -12,7 +12,7 @@ export class ApoyoRegistroRepositoryMongo implements ApoyoRegistroRepository {
     ) {
     }
 
-    private toApoyoRegistrodDomain(apoyoRegistroMongo: HydratedDocument<ApoyoRegistroMongoModel>): ApoyoRegistro {
+    private toApoyoRegistroDomain(apoyoRegistroMongo: HydratedDocument<ApoyoRegistroMongoModel>): ApoyoRegistro {
         if (apoyoRegistroMongo) {
             const apoyoRegistro = new ApoyoRegistro({
                 idCausa: apoyoRegistroMongo.idCausa,
@@ -37,12 +37,12 @@ export class ApoyoRegistroRepositoryMongo implements ApoyoRegistroRepository {
 
     async get(id: string): Promise<ApoyoRegistro> {
         const  apoyoRegistroMongo = await this.apoyoRegistroModel.findById(id).exec();
-        return this.toApoyoRegistrodDomain(apoyoRegistroMongo);
+        return this.toApoyoRegistroDomain(apoyoRegistroMongo);
     }
 
     async getAll(): Promise<ApoyoRegistro[]> {
         const apoyoRegistrosMongo = await this.apoyoRegistroModel.find().exec();
-        return apoyoRegistrosMongo.map((apoyoRegistroMongo) => this.toApoyoRegistrodDomain(apoyoRegistroMongo));
+        return apoyoRegistrosMongo.map((apoyoRegistroMongo) => this.toApoyoRegistroDomain(apoyoRegistroMongo));
     }
 
     async update(id: string, item: ApoyoRegistro): Promise<ApoyoRegistro> {

@@ -1,7 +1,9 @@
+import { IsNotEmpty } from "class-validator";
+
 export class CreateSeguidorDto {
-    idUserOrigen: string;
-    idUserDestino: string;
-    nombreUserOrigen: string;
-    nombreUserDestino: string;
-    fechaSeguimiento: Date;
+    @IsNotEmpty()
+    idUsuario: string;
+
+    @IsNotEmpty()
+    username: string;
 }

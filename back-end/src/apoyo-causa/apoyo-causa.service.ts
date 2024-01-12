@@ -4,7 +4,6 @@ import { UpdateApoyoCausaDto } from './dto/update-apoyo-causa.dto';
 import { IApoyoCausaService } from './interfaces/apoyo-causa.interface';
 import { ApoyoCausaRepository } from './repositories/apoyo-causa.repository';
 import { ApoyoCausa } from './domain/apoyo-causa.domain';
-import { NODATA } from 'dns';
 
 @Injectable()
 export class ApoyoCausaServiceImpl implements IApoyoCausaService {

@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CreateSeguidorDto } from './dto/create-seguidor.dto';
 import { UpdateSeguidorDto } from './dto/update-seguidor.dto';
 import { ISeguidorService } from './interfaces/seguidor.service.interface';
+import { Public } from 'src/decorators/public.decorator';
 
+@Public()
 @Controller('seguidor')
 export class SeguidorController {
   constructor(private readonly seguidorService: ISeguidorService) {}
@@ -30,5 +32,12 @@ export class SeguidorController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.seguidorService.remove(id);
+  }
+
+  @Post('seguir/')
+  seguir(@Body() createSeguidorOrigenDto: CreateSeguidorDto[]) {
+    console.log('seguir');
+    console.log(createSeguidorOrigenDto);
+    return this.seguidorService.seguir(createSeguidorOrigenDto);
   }
 }

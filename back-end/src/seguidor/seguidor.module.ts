@@ -20,4 +20,4 @@ import { SeguidorRepositoryNeo4j } from './repositories/seguidor.repository.neo4
   exports: [ISeguidorService, SeguidorRepository]
 })
 
-export class SeguidorModule {}
+export class SeguidorModule { }
