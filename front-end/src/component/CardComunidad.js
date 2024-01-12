@@ -1,5 +1,5 @@
 import './Style/CardComunidad.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import Solicitud from '../pages/Solicitud/Solicitud';
 import Apoyo from '../pages/ApoyarCausa/Apoyo';
@@ -10,11 +10,20 @@ export default function CardComunidad({
   nombre,
   descripcion,
   fechaInicio,
+  usersData,
+  handleRedireccionar,
+  detalles,
+  btnSolicitar,
+  solicitud,
 }) {
   const [modalShow, setModalShow] = useState(false);
 
   function showModal() {
     setModalShow(true);
+  }
+
+  async function refreshOnCloseModal() {
+    setModalShow(false);
   }
 
   return (
@@ -45,15 +54,25 @@ export default function CardComunidad({
       </Card.Body>
 
       <Card.Footer>
-        <Button type="button" className="btn btn-primary" onClick={showModal}>
-          Solicitar
-        </Button>
-        <Solicitud
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-          idComunidad={id}
-          nombreComunidad={nombre}
-        />
+        {btnSolicitar && (
+          <Button type="button" className="btn btn-primary" onClick={showModal}>
+            Solicitar
+          </Button>
+        )}
+        {detalles && (
+          <Button variant="primary" size="sm" onClick={handleRedireccionar}>
+            Ver detalles
+          </Button>
+        )}
+        {solicitud && (
+          <Solicitud
+            show={modalShow}
+            onHide={() => refreshOnCloseModal()}
+            idComunidad={id}
+            nombreComunidad={nombre}
+            usersData={usersData}
+          />
+        )}
       </Card.Footer>
     </Card>
   );

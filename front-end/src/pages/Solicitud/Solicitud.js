@@ -57,12 +57,9 @@ export default function Solicitud(props) {
           );
 
           if (responseUsuarioComunidad !== undefined) {
+            props.usersData.push(user);
             props.onHide();
-            await props.fetchUser();
-            navigate(`/comunidad/${props.idComunidad}`, { replace: true });
-            console.log(
-              'Solicitud: fetchUser llamado después de la navegación',
-            );
+            navigate(`/comunidad/${props.idComunidad}`);
           }
         }
       }

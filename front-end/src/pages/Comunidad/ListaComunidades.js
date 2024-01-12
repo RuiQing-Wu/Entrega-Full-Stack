@@ -7,8 +7,7 @@ import {
   getComunidadesByNameInsensitive,
 } from '../../services/comunidades.service';
 import Busqueda from '../../component/Buscar';
-import { getToken } from '../../utils/utils';
-import { CardListaComunidad } from '../../component/CardComunidad';
+import CardComunidad from '../../component/CardComunidad';
 
 export default function BuscarComunidades() {
   const navigate = useNavigate();
@@ -113,13 +112,16 @@ export default function BuscarComunidades() {
               <Row xs={1} md={2} lg={2} className="g-4">
                 {comunidadesFiltradas.map((elemento, index) => (
                   <Col key={index}>
-                    <CardListaComunidad
+                    <CardComunidad
                       imageUrl={'../../../imagenes/comunidad.jpeg'}
                       nombre={elemento.nombre}
                       descripcion={elemento.descripcion}
                       handleRedireccionar={(nombre) =>
                         handleRedireccionarComunidad(elemento.nombre)
                       }
+                      detalles={true}
+                      solicitar={false}
+                      btnSolicitar={false}
                     />
                   </Col>
                 ))}
