@@ -7,7 +7,6 @@ import { Solicitud } from './domain/solicitud.domain';
 
 @Injectable()
 export class SolicitudServiceImpl extends ISolicitudesService {
-
   constructor(
     @Inject(SolicitudesRepository)
     private solicitudesRepository: SolicitudesRepository,
@@ -19,13 +18,13 @@ export class SolicitudServiceImpl extends ISolicitudesService {
     const solicitud = new Solicitud(createSolicitudDto);
     return this.solicitudesRepository.create(solicitud);
   }
-  
+
   findAll(): Promise<Solicitud[]> {
     return this.solicitudesRepository.getAll();
   }
 
   findOne(id: string): Promise<Solicitud> {
-    throw new Error('Method not implemented.');
+    return this.solicitudesRepository.get(id);
   }
 
   update(id: string, updateSolicitudDto: UpdateSolicitudDto) {

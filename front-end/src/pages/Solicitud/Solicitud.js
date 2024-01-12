@@ -2,11 +2,18 @@ import './Solicitud.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { createSolicitud } from '../../services/solicitud.service';
+import { useNavigate } from 'react-router-dom';
+import {
+  createSolicitud,
+  getSolicitud,
+} from '../../services/solicitud.service';
+import ErrorMessage from '../../component/MensajeError';
 import { addMember } from '../../services/comunidades.service';
 import { dateToString } from '../../utils/utils';
 
 export default function Solicitud(props) {
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
   const user = useSelector((state) => {
     // console.log('state.user.userInfo', state.user.userInfo);
     return state.user.userInfo;
@@ -18,40 +25,51 @@ export default function Solicitud(props) {
     setDescripcion(event.target.value);
   }
 
-  function enviar() {
-    // eslint-disable-next-line no-console
-    console.log(
-      'enviar Solicutud nombre comunidad: ',
-      user.username,
-      props.nombreComunidad,
-    );
+  async function enviar(event) {
+    event.preventDefault();
 
-    const fechaSolicitud = dateToString();
+    if (user) {
+      const userSols = await getSolicitud();
+      if (
+        userSols.some(
+          (solicitud) =>
+            solicitud.idUsuario === user.id &&
+            solicitud.idComunidad === props.idComunidad,
+        )
+      ) {
+        setError(
+          'Ya existe una solicitud con este usuario para esta comunidad',
+        );
+      } else {
+        const fechaSolicitud = dateToString();
+        const response = await createSolicitud(
+          descripcion,
+          fechaSolicitud,
+          false,
+          user.id,
+          props.idComunidad,
+        );
 
-    const response = createSolicitud(
-      descripcion,
-      fechaSolicitud,
-      false,
-      user.id,
-      props.idComunidad,
-    );
+        if (response !== undefined) {
+          const responseUsuarioComunidad = await addMember(
+            user.id,
+            props.idComunidad,
+          );
 
-    if (response === undefined) {
-      // eslint-disable-next-line no-console
-      console.log('No se pudo enviar la solicitud');
+          if (responseUsuarioComunidad !== undefined) {
+            props.usersData.push(user);
+            props.onHide();
+            navigate(`/comunidad/${props.idComunidad}`);
+          }
+        }
+      }
     } else {
-      // eslint-disable-next-line no-console
-      console.log('Solicitud enviada');
-
-      const responseUsuarioComunidad = addMember(user.id, props.idComunidad);
+      setError('Debes tener un usuario para unirte a la comunidad');
     }
-
-    props.onHide();
   }
 
   function close() {
-    // eslint-disable-next-line no-console
-    console.log('No enviar Solicutud');
+    setError('');
     props.onHide();
   }
 
@@ -72,11 +90,12 @@ export default function Solicitud(props) {
           Solicitud de ingreso a comunidad
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <p>Nombre Usuario: {user.username}</p>
-        <p>Nombre Comunidad: {props.nombreComunidad}</p>
-        <Form>
-          <Form.Group controlId="exampleForm.ControlTextarea1">
+      <Form onSubmit={enviar}>
+        <Modal.Body>
+          <p>Nombre Usuario: {user.username}</p>
+          <p>Nombre Comunidad: {props.nombreComunidad}</p>
+
+          <Form.Group controlId="exampleForm.ControlTextarea1" className="mb-2">
             <Form.Label>Descripción</Form.Label>
             <Form.Control
               as="textarea"
@@ -85,14 +104,15 @@ export default function Solicitud(props) {
               value={descripcion}
             />
           </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={enviar}>Enviar solicitud</Button>
-        <Button onClick={close} variant="danger">
-          Close
-        </Button>
-      </Modal.Footer>
+          {error && <ErrorMessage message={error} gravedad="warning" />}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={enviar}>Enviar solicitud</Button>
+          <Button onClick={close} variant="danger">
+            Close
+          </Button>
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 }

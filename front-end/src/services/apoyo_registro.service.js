@@ -1,10 +1,14 @@
-const BASE_URL = 'http://localhost:3001/apoyoregistro';
+import { getToken } from '../utils/utils';
+
+const BASE_URL = 'http://localhost:3001/apoyo-registro';
 
 async function createApoyoRegistro(idCausa, nombre, correo) {
+  const accessToken = getToken();
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
     },
 
     body: JSON.stringify({

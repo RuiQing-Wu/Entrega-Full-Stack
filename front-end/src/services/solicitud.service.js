@@ -34,8 +34,21 @@ async function createSolicitud(
   return data;
 }
 
-async function getSolicitudById(id) {
-  /* const accessToken = getToken();
+async function getSolicitud() {
+  const accessToken = getToken();
+  const response = await fetch(BASE_URL, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
+/* async function getSolicitudById(id) {
+  const accessToken = getToken();
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'GET',
     headers: {
@@ -51,7 +64,7 @@ async function getSolicitudById(id) {
   }
 
   const data = await response.json();
-  return data; */
-}
+  return data;
+} */
 
-export { createSolicitud, getSolicitudById };
+export { createSolicitud, getSolicitud };

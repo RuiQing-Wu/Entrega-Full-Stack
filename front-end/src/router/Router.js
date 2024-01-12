@@ -13,7 +13,6 @@ import {
   Error,
   MostrarCausa,
   MostrarAcciones,
-  BuscarCausas,
 } from '../pages/index';
 import App from '../App';
 import AuthRoute from '../component/AuthRoute';
@@ -64,11 +63,11 @@ const router = createBrowserRouter([
         path: '/comunidades',
         element: <BuscarComunidades />,
       },
-      {
+      /* {
         name: 'ListaCausas',
         path: '/causas',
         element: <BuscarCausas />,
-      },
+      }, */
       {
         name: 'Causa',
         path: '/comunidad/:idComunidad/crear-causa',
