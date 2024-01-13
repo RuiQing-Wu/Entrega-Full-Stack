@@ -36,7 +36,7 @@ export class UsersServiceImpl implements IUserService {
   }
 
   findAll(): Promise<any[]> {
-    throw new Error('Method not implemented.');
+    return this.usersRepository.getAll();
   }
 
   findOne(id: string) {

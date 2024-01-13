@@ -20,9 +20,6 @@ export class ComunidadMongoModel {
 
   @Prop()
   usuarios: string[];
-
-  @Prop({ type: [{ type: mongoose.Types.ObjectId, ref: 'CausaMongoModel' }] })
-  causas: CausaMongoModel[];
 }
 
 export const ComunidadSchema =
