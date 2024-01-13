@@ -147,6 +147,7 @@ export default function MostrarComunidad() {
             nombre={comunidad.nombre}
             descripcion={comunidad.descripcion}
             fechaInicio={refactorDate(comunidad.fechaInicio)}
+            usersData={usersData}
             detalles={false}
             solicitud={true}
             btnSolicitar={true}
@@ -196,7 +197,9 @@ export default function MostrarComunidad() {
                 key={index}
                 nombre={userData.nombre}
                 imageUrl={'../../../imagenes/usuario.png'}
-                handleRedireccionar={() => handleRedireccionarPerfil(userData.username)}
+                handleRedireccionar={() =>
+                  handleRedireccionarPerfil(userData.username)
+                }
               />
             ))}
         </Tab>

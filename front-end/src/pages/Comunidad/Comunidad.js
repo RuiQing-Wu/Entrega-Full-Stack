@@ -58,6 +58,7 @@ export default function Comunidad() {
       formattedDate,
       user.id,
     );
+
     if (response === undefined) {
       navigate('/error');
       return;

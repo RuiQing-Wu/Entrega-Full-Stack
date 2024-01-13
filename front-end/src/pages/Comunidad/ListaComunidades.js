@@ -61,9 +61,10 @@ export default function BuscarComunidades() {
   }
 
   function handleRedireccionarComunidad(nombre) {
-    const comunidadSeleccionada = comunidadesFiltradas.find((comunidad) =>
-      comunidad.nombre.toLowerCase().includes(nombre.toLowerCase()),
+    const comunidadSeleccionada = comunidadesFiltradas.find(
+      (comunidad) => comunidad.nombre.toLowerCase() === nombre.toLowerCase(),
     );
+
     if (comunidadSeleccionada) {
       navigate(`/comunidad/${comunidadSeleccionada.id}`, { replace: true });
     }
