@@ -19,7 +19,7 @@ export class AccionMongoModel {
   progreso: number;
 
   @Prop({ type: mongoose.Types.ObjectId, ref: 'CausaMongoModel' })
-  causa: CausaMongoModel;
+  causa: string;
 }
 
 export const AccionSchema = SchemaFactory.createForClass(AccionMongoModel);

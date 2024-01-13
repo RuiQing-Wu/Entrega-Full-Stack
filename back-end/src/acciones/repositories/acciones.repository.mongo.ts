@@ -26,9 +26,7 @@ export class AccionesRepositoryMongo implements AccionesRepository {
   }
 
   async create(item: AccionSolidaria): Promise<AccionSolidaria> {
-    const accionModel: AccionMongoModel = await this.accionModel.create(item);
-
-    const accionCreated = await this.accionModel.create(accionModel);
+    const accionCreated = await this.accionModel.create(item);
 
     const accion = new AccionSolidaria({
       id: accionCreated._id.toString(),

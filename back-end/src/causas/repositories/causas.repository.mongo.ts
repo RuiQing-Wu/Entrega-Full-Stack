@@ -30,9 +30,7 @@ export class CausasRepositoryMongo implements CausasRepository {
   }
 
   async create(item: CausaSolidaria): Promise<CausaSolidaria> {
-    const causaModel: CausaMongoModel = await this.causaModel.create(item);
-
-    const causaCreated = await this.causaModel.create(causaModel);
+    const causaCreated = await this.causaModel.create(item);
 
     const causa = new CausaSolidaria({
       id: causaCreated._id.toString(),

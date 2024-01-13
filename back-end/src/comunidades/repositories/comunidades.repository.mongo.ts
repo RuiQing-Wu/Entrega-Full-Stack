@@ -75,6 +75,15 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
     return comunidades;
   }
 
+  async getComunidadesByUser(idUsuario: string): Promise<Comunidad[]> {
+    const comunidades = await this.comunidadModel.find({
+      usuarios: { $in: [idUsuario] },
+    });
+    return comunidades.map((comunidad) => {
+      return this.transform(comunidad);
+    });
+  }
+
   /* async addMember(idComunidad: string, idUsuario: string): Promise<Comunidad> {
     const comunidad = await this.comunidadModel.findById(idComunidad).exec();
     comunidad.usuarios.push(idUsuario);

@@ -9,7 +9,7 @@ export class ComunidadesServiceImpl implements IComunidadesService {
   constructor(
     @Inject(ComunidadesRepository)
     private comunidadesRepository: ComunidadesRepository,
-  ) {}
+  ) { }
 
   async create(createComunidadDto: CreateComunidadDto) {
     // comprobamos que no exista una comunidad con el mismo nombre
@@ -81,13 +81,9 @@ export class ComunidadesServiceImpl implements IComunidadesService {
     return this.comunidadesRepository.update(id, comunidadActualizada);
   }
 
-  async addMember(
-    idComunidad: string,
-    idUsuario: string,
-    updateComunidadDto: UpdateComunidadDto,
-  ) {
+  async addMember(idComunidad: string, idUsuario: string) {
     const comunidad = await this.comunidadesRepository.get(idComunidad);
-    
+
     if (comunidad.usuarios.includes(idUsuario)) {
       throw new Error('El usuario ya es miembro de la comunidad');
     }
