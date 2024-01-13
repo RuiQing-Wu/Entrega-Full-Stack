@@ -6,7 +6,7 @@ export abstract class IComunidadesService {
   abstract create(createComunidadDto: CreateComunidadDto): Promise<Comunidad>;
   abstract findAll(): Promise<Comunidad[]>;
   abstract findOne(id: string): Promise<Comunidad>;
-  abstract update(id: string, updateComunidadDto: UpdateComunidadDto);
+  abstract update(id: string, updateComunidadDto: UpdateComunidadDto): Promise<Comunidad>;
   abstract remove(id: string): Promise<Comunidad>;
   abstract getByName(nombre: string): Promise<Comunidad>;
   abstract getByNameInsensitivePartial(nombre: string): Promise<Comunidad[]>;
@@ -15,4 +15,5 @@ export abstract class IComunidadesService {
     idUsuario: string,
     updateComunidadDto: UpdateComunidadDto,
   ): Promise<Comunidad>;
+  abstract getComunidadesByUser(idUsuario: string): Promise<Comunidad[]>;
 }

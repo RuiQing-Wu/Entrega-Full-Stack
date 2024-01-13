@@ -1,9 +1,17 @@
-import { User } from 'src/users/domain/user.domain';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateComunidadDto {
+  @IsNotEmpty()
   nombre: string;
+
+  @IsNotEmpty()
   descripcion: string;
+
+  @IsNotEmpty()
   fechaInicio: Date;
+
+  @IsNotEmpty()
   idAdministrador: string;
+
   usuarios: string[];
 }

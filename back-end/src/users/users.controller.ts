@@ -50,4 +50,11 @@ export class UserController {
   async remove(@Param('id') id: string) {
     return await this.userService.remove(id);
   }
+
+  @Public()
+  @Get('username/:username')
+  @HttpCode(HttpStatus.OK)
+  async getByName(@Param('username') username: string) {
+    return await this.userService.getByName(username);
+  }
 }

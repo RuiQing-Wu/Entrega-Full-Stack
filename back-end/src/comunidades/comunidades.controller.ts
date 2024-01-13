@@ -21,8 +21,8 @@ export class ComunidadesController {
   @Public()
   @HttpCode(HttpStatus.CREATED)
   @Post('')
-  create(@Body() createComunidadDto: CreateComunidadDto) {
-    return this.comunidadesService.create(createComunidadDto);
+  async create(@Body() createComunidadDto: CreateComunidadDto) {
+    return await this.comunidadesService.create(createComunidadDto);
   }
 
   @Public()
@@ -70,6 +70,12 @@ export class ComunidadesController {
       idUsuario,
       UpdateComunidadDto,
     );
+  }
+
+  @Public()
+  @Get('/user/:idUsuario')
+  async getComunidadesByUser(@Param('idUsuario') idUsuario: string) {
+    return this.comunidadesService.getComunidadesByUser(idUsuario);
   }
 
   @Delete(':id')
