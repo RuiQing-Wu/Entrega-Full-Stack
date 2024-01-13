@@ -18,9 +18,6 @@ export class CausaMongoModel {
   @Prop()
   fechaFin: Date;
 
-  @Prop({ type: [{ type: mongoose.Types.ObjectId, ref: 'AccionMongoModel' }] })
-  acciones: AccionMongoModel[];
-
   @Prop({ type: mongoose.Types.ObjectId, ref: 'ComunidadMongoModel' })
   comunidad: string;
 

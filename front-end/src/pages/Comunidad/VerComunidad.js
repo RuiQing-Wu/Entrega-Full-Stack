@@ -105,7 +105,7 @@ export default function MostrarComunidad() {
   }
 
   function handleRedireccionarACrearCausa() {
-    navigate(`/comunidad/${param.idComunidad}/crear-causa`, {
+    navigate(`/comunidades/${param.idComunidad}/crear-causa`, {
       replace: true,
     });
   }

@@ -9,13 +9,13 @@ import {
   Causa,
   Accion,
   Profile,
-  MostrarInformacionPerfil,
   Error,
   MostrarCausa,
   MostrarAcciones,
 } from '../pages/index';
 import App from '../App';
 import AuthRoute from '../component/AuthRoute';
+import ComunidadOutlet from '../pages/Comunidad/Comunidad.outlet';
 
 const router = createBrowserRouter([
   {
@@ -26,75 +26,86 @@ const router = createBrowserRouter([
       { index: true, name: 'Home', element: <Home /> },
       { name: 'Login', path: '/login', element: <Login /> },
       { name: 'Registrar', path: '/registrar', element: <Registro /> },
+      // TODO PDTE REVISAR
       {
         name: 'Profile',
-        path: '/perfil',
+        path: '/perfil/',
         element: (
           <AuthRoute>
             <Profile />
           </AuthRoute>
         ),
-      },
-      {
-        name: 'ExternalProfile',
-        path: '/perfil/:nombrePerfil',
-        element: (
-          <AuthRoute>
-            <Profile />
-          </AuthRoute>
-        ),
-      },
-      {
-        name: 'Comunidad',
-        path: '/crear-comunidad',
-        element: (
-          <AuthRoute>
-            <Comunidad />
-          </AuthRoute>
-        ),
-      },
-      {
-        name: 'VerComunidad',
-        path: '/comunidad/:idComunidad',
-        element: <MostrarComunidad />,
+        children: [
+          {
+            name: 'ExternalProfile',
+            path: '/perfil/:nombrePerfil',
+            element: (
+              <AuthRoute>
+                <Profile />
+              </AuthRoute>
+            ),
+          },
+        ],
       },
       {
         name: 'ListaComunidades',
         path: '/comunidades',
-        element: <BuscarComunidades />,
-      },
-      /* {
-        name: 'ListaCausas',
-        path: '/causas',
-        element: <BuscarCausas />,
-      }, */
-      {
-        name: 'Causa',
-        path: '/comunidad/:idComunidad/crear-causa',
-        element: (
-          <AuthRoute>
-            <Causa />
-          </AuthRoute>
-        ),
-      },
-      {
-        name: 'Accion',
-        path: '/causa/:idCausa/crear-accion',
-        element: (
-          <AuthRoute>
-            <Accion />
-          </AuthRoute>
-        ),
+        element: <ComunidadOutlet />,
+        children: [
+          {
+            index: true,
+            name: 'ListaComunidades',
+            element: <BuscarComunidades />,
+          },
+          {
+            name: 'crearComunidad',
+            path: '/comunidades/crear-comunidad',
+            element: (
+              <AuthRoute>
+                <Comunidad />
+              </AuthRoute>
+            ),
+          },
+          {
+            name: 'VerComunidad',
+            path: '/comunidades/:idComunidad',
+            element: <MostrarComunidad />,
+          },
+          {
+            name: 'crearCausa',
+            path: '/comunidades/:idComunidad/crear-causa',
+            element: (
+              <AuthRoute>
+                <Causa />
+              </AuthRoute>
+            ),
+          },
+        ],
       },
       {
         name: 'VerCausaSolidaria',
         path: '/causa/:idCausa',
         element: <MostrarCausa />,
+        children: [
+          {
+            name: 'Accion',
+            path: '/causa/:idCausa/crear-accion',
+            element: (
+              <AuthRoute>
+                <Accion />
+              </AuthRoute>
+            ),
+          },
+        ],
       },
       {
         name: 'VerAccionSolidaria',
         path: '/accion/:idAccion',
-        element: <MostrarAcciones />,
+        element: (
+          <AuthRoute>
+            <MostrarAcciones />
+          </AuthRoute>
+        ),
       },
       { name: 'Error', path: '*', element: <Error /> },
     ],

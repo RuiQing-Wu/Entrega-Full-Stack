@@ -7,7 +7,7 @@ export type ApoyoRegistroDocument = HydratedDocument<ApoyoRegistroMongoModel>;
 @Schema()
 export class ApoyoRegistroMongoModel {
 
-    @Prop({ type: mongoose.Types.ObjectId, ref: 'CausaMongoModel' })
+    @Prop({ type: mongoose.Types.ObjectId, ref: 'CausaMongoModel'})
     idCausa: string;
     
     @Prop()

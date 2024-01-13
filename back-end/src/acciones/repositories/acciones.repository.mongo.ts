@@ -13,7 +13,7 @@ export class AccionesRepositoryMongo implements AccionesRepository {
     
   }
 
-  transform(accionModel: HydratedDocument<AccionSolidaria>): AccionSolidaria {
+  private toAccionSolidariaDomain(accionModel: HydratedDocument<AccionSolidaria>): AccionSolidaria {
     const accion = new AccionSolidaria({
       id: accionModel._id.toString(),
       titulo: accionModel.titulo,
@@ -22,19 +22,17 @@ export class AccionesRepositoryMongo implements AccionesRepository {
       progreso: accionModel.progreso,
       causa: accionModel.causa,
     });
+    
     return accion;
   }
 
   async create(item: AccionSolidaria): Promise<AccionSolidaria> {
     const accionCreated = await this.accionModel.create(item);
 
+    // TODO: asignar con el objeto
     const accion = new AccionSolidaria({
+      ...item,
       id: accionCreated._id.toString(),
-      titulo: accionCreated.titulo,
-      descripcion: accionCreated.descripcion,
-      listaObjetivos: accionCreated.listaObjetivos,
-      progreso: accionCreated.progreso,
-      causa: accionCreated.causa,
     });
 
     return accion;
@@ -43,20 +41,20 @@ export class AccionesRepositoryMongo implements AccionesRepository {
   async get(id: string): Promise<AccionSolidaria> {
     const accion = await this.accionModel.findById(id).exec();
 
-    return this.transform(accion);
+    return this.toAccionSolidariaDomain(accion);
   }
 
   async getByName(titulo: string): Promise<AccionSolidaria> {
     const accion = await this.accionModel.findOne({ titulo }).exec();
 
-    return this.transform(accion);
+    return this.toAccionSolidariaDomain(accion);
   }
 
   async getByCausaId(causa: string): Promise<AccionSolidaria[]> {
     const accionesModel = await this.accionModel.find({ causa }).exec();
 
     const acciones = accionesModel.map((accionModel) => {
-      return this.transform(accionModel);
+      return this.toAccionSolidariaDomain(accionModel);
     });
 
     return acciones;
@@ -76,7 +74,7 @@ export class AccionesRepositoryMongo implements AccionesRepository {
       .exec();
 
     return accionesFiltradasPorComunidad.map((accion) => {
-      return this.transform(accion);
+      return this.toAccionSolidariaDomain(accion);
     });
   }
 
@@ -84,7 +82,7 @@ export class AccionesRepositoryMongo implements AccionesRepository {
     const accionesModel = await this.accionModel.find().exec();
 
     const acciones = accionesModel.map((accionModel) => {
-      return this.transform(accionModel);
+      return this.toAccionSolidariaDomain(accionModel);
     });
 
     return acciones;

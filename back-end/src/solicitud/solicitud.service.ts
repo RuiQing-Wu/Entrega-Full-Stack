@@ -15,6 +15,7 @@ export class SolicitudServiceImpl extends ISolicitudesService {
   }
 
   create(createSolicitudDto: CreateSolicitudDto): Promise<Solicitud> {
+    console.log("dto", createSolicitudDto);
     const solicitud = new Solicitud(createSolicitudDto);
     return this.solicitudesRepository.create(solicitud);
   }

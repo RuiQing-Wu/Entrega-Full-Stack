@@ -19,7 +19,7 @@ export default function Accion() {
   const [objetivoError, setObjetivoError] = useState('');
   const [progresoError, setProgresoError] = useState('');
   const [causa, setCausa] = useState([]);
-  const [comunidad, setComunidad] = React.useState([]);
+  const [comunidad, setComunidad] = useState([]);
   const param = useParams();
 
   function onHomeClicked() {

@@ -23,7 +23,7 @@ export default function BuscarComunidades() {
 
   function handleRedireccionarACrearComunidad() {
     return () => {
-      navigate('/crear-comunidad');
+      navigate('/comunidades/crear-comunidad');
     };
   }
 
@@ -66,7 +66,7 @@ export default function BuscarComunidades() {
     );
 
     if (comunidadSeleccionada) {
-      navigate(`/comunidad/${comunidadSeleccionada.id}`, { replace: true });
+      navigate(`/comunidades/${comunidadSeleccionada.id}`, { replace: true });
     }
   }
 
