@@ -6,7 +6,7 @@ export default function CardExternalProfile({
   index,
   imageUrl,
   nombre,
-  onSeguirUsuarioClicked,
+  handleRedireccionar,
 }) {
   return (
     <div className="m-5">
@@ -19,8 +19,8 @@ export default function CardExternalProfile({
             <Col>
               <h5 className="card-title">Perfil del usuario</h5>
               <Card.Text>Nombre: {nombre}</Card.Text>
-              <Button variant="primary" size="sm">
-                Seguir al usuario
+              <Button variant="primary" size="sm" onClick={handleRedireccionar}>
+                Ver perfil público
               </Button>
             </Col>
           </Row>

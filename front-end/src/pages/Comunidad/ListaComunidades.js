@@ -120,7 +120,7 @@ export default function BuscarComunidades() {
                         handleRedireccionarComunidad(elemento.nombre)
                       }
                       detalles={true}
-                      solicitar={false}
+                      solicitud={false}
                       btnSolicitar={false}
                     />
                   </Col>

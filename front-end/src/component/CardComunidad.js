@@ -83,6 +83,7 @@ export function CardListaComunidad({
   nombre,
   descripcion,
   handleRedireccionar,
+  miembros
 }) {
   return (
     <Card id="cardComunidad" className="mb-3">
@@ -100,7 +101,7 @@ export function CardListaComunidad({
           <Col xs={12} md={6}>
             <Card.Title>{nombre}</Card.Title>
             <Card.Text>Descripción: {descripcion}</Card.Text>
-            <Card.Text>Seguidores de la comunidad: X</Card.Text>
+            <Card.Text>Miembros de la comunidad: {miembros}</Card.Text>
           </Col>
 
           <Col

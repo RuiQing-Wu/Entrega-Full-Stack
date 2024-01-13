@@ -109,7 +109,7 @@ export default function Solicitud(props) {
         <Modal.Footer>
           <Button onClick={enviar}>Enviar solicitud</Button>
           <Button onClick={close} variant="danger">
-            Close
+            Cerrar
           </Button>
         </Modal.Footer>
       </Form>

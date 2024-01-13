@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       { name: 'Registrar', path: '/registrar', element: <Registro /> },
       {
         name: 'Profile',
-        path: '/profile',
+        path: '/perfil',
         element: (
           <AuthRoute>
             <Profile />
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         name: 'ExternalProfile',
-        path: '/profile/:nombrePerfil',
+        path: '/perfil/:nombrePerfil',
         element: (
           <AuthRoute>
             <Profile />
