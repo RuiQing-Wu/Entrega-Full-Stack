@@ -15,16 +15,7 @@ export class CausasServiceImpl implements ICausasService {
   }
 
   create(createCausaDto: CreateCausaDto): Promise<CausaSolidaria> {
-    const causa = new CausaSolidaria({
-      titulo: createCausaDto.titulo,
-      descripcion: createCausaDto.descripcion,
-      fechaInicio: createCausaDto.fechaInicio,
-      fechaFin: createCausaDto.fechaFin,
-      accionSolidaria: [],
-      comunidad: createCausaDto.comunidad,
-      objetivos: createCausaDto.objetivos,
-    });
-
+    const causa = new CausaSolidaria(createCausaDto);
     return this.causasRepository.create(causa);
   }
 
@@ -49,15 +40,10 @@ export class CausasServiceImpl implements ICausasService {
 
     // creamos un objeto del dominio combinado con el DTO
     const comunidadActualizada = new CausaSolidaria({
-      id: causa.id,
-      titulo: updateCausaDto.titulo ?? causa.titulo,
-      descripcion: updateCausaDto.descripcion ?? causa.descripcion,
-      fechaInicio: updateCausaDto.fechaInicio ?? causa.fechaInicio,
-      fechaFin: updateCausaDto.fechaFin ?? causa.fechaFin,
-      accionSolidaria: updateCausaDto.acciones ?? causa.acciones,
-      comunidad: updateCausaDto.comunidad ?? causa.comunidad,
-      objetivos: updateCausaDto.objetivos ?? causa.objetivos,
-    });
+        ...causa,
+        ...updateCausaDto,
+      }
+    );
 
     return this.causasRepository.update(id, comunidadActualizada);
   }
@@ -74,6 +60,6 @@ export class CausasServiceImpl implements ICausasService {
   }
 
   remove(id: string): Promise<CausaSolidaria> {
-    throw new Error('Method not implemented.');
+    return this.causasRepository.delete(id);
   }
 }

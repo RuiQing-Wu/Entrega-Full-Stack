@@ -68,8 +68,13 @@ export class UsersRepositoryMongo implements UsersRepository {
     return updateUser;
   }
 
-  delete(id: string): Promise<any> {
-    throw new Error('Method not implemented.');
+  async delete(id: string): Promise<any> {
+    const user = await this.get(id);
+
+    if (user) {
+      await this.userModel.findByIdAndDelete(id).exec();
+      return user;
+    }
   }
 
   async getByName(name: string): Promise<User> {

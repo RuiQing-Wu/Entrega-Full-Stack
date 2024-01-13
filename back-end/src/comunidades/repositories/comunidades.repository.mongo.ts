@@ -76,17 +76,29 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
     return comunidades;
   }
 
-  async addMember(idComunidad: string, idUsuario: string): Promise<Comunidad> {
+  /* async addMember(idComunidad: string, idUsuario: string): Promise<Comunidad> {
     const comunidad = await this.comunidadModel.findById(idComunidad).exec();
     comunidad.usuarios.push(idUsuario);
-    await comunidad.save();
-    return this.transform(comunidad);
+    const resultado = await comunidad.save();
+    return this.transform(resultado);
+  } */
+
+  async update(id: string, item: Comunidad): Promise<Comunidad> {
+    const comunidad = await this.comunidadModel.findByIdAndUpdate(id, item).exec();
+    const comunidadUpdated = new Comunidad({
+      ...item,
+      id: comunidad._id.toString(),
+    });
+
+    return comunidadUpdated;
   }
 
-  update(id: string, item: any): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  delete(id: string): Promise<any> {
-    throw new Error('Method not implemented.');
+  async delete(id: string): Promise<Comunidad> {
+    const comunidad = await this.get(id);
+    
+    if (comunidad) {
+      await this.comunidadModel.findByIdAndDelete(id).exec();
+      return comunidad;
+    }
   }
 }

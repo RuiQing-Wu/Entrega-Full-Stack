@@ -55,11 +55,11 @@ export class ApoyoRegistroRepositoryMongo implements ApoyoRegistroRepository {
         return newApoyoRegistro;
     }
 
-    delete(id: string): Promise<ApoyoRegistro> {
-        const apoyoRegistro = this.get(id);
+    async delete(id: string): Promise<ApoyoRegistro> {
+        const apoyoRegistro = await this.get(id);
         
         if (apoyoRegistro) {
-            this.apoyoRegistroModel.findByIdAndDelete(id).exec();
+            await this.apoyoRegistroModel.findByIdAndDelete(id).exec();
             return apoyoRegistro;
         }
     }

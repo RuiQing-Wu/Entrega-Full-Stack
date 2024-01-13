@@ -63,12 +63,10 @@ export class ComunidadesController {
   async addMember(
     @Param('idComunidad') idComunidad: string,
     @Param('idUsuario') idUsuario: string,
-    @Body() UpdateComunidadDto: UpdateComunidadDto,
   ) {
     return this.comunidadesService.addMember(
       idComunidad,
-      idUsuario,
-      UpdateComunidadDto,
+      idUsuario
     );
   }
 

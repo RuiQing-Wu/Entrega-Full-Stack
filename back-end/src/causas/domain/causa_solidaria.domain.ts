@@ -7,7 +7,6 @@ export class CausaSolidaria {
     readonly descripcion: string;
     readonly fechaInicio: Date;
     readonly fechaFin: Date;
-    readonly acciones: AccionSolidaria[];
     readonly comunidad: string;
     readonly objetivos: string[];
   
@@ -17,7 +16,6 @@ export class CausaSolidaria {
       descripcion,
       fechaInicio,
       fechaFin,
-      accionSolidaria,
       comunidad,
       objetivos,
     }: {
@@ -26,7 +24,6 @@ export class CausaSolidaria {
       descripcion: string,
       fechaInicio: Date,
       fechaFin: Date,
-      accionSolidaria: AccionSolidaria[],
       comunidad: string,
       objetivos: string[],
     }) {
@@ -35,7 +32,6 @@ export class CausaSolidaria {
       this.descripcion = descripcion;
       this.fechaInicio = fechaInicio;
       this.fechaFin = fechaFin;
-      this.acciones = accionSolidaria;
       this.comunidad = comunidad;
       this.objetivos = objetivos;
     }

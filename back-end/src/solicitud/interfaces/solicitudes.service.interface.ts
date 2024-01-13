@@ -8,5 +8,4 @@ export abstract class ISolicitudesService {
     abstract findOne(id: string): Promise<Solicitud>;
     abstract update(id: string, updateSolicitudDto: UpdateSolicitudDto);
     abstract remove(id: string): Promise<Solicitud>;
-    abstract getByNombre(nombre: string): Promise<Solicitud>;
 }

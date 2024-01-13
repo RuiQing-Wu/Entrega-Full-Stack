@@ -92,10 +92,21 @@ export class AccionesRepositoryMongo implements AccionesRepository {
     return acciones;
   }
 
-  update(id: string, item: any): Promise<any> {
-    throw new Error('Method not implemented.');
+  async update(id: string, item: AccionSolidaria): Promise<AccionSolidaria> {
+    const accion = await this.accionModel.findByIdAndUpdate(id, item).exec();
+    const accionUpdated = new AccionSolidaria({
+      ...item,
+      id: accion._id.toString(),
+    });
+
+    return accionUpdated;
   }
-  delete(id: string): Promise<any> {
-    throw new Error('Method not implemented.');
+
+  async delete(id: string): Promise<AccionSolidaria> {
+    const accion = await this.get(id);
+    if (accion) {
+      await this.accionModel.findByIdAndDelete(id).exec();
+      return accion;
+    }
   }
 }

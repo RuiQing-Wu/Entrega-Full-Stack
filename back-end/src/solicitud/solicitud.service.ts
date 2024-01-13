@@ -27,15 +27,22 @@ export class SolicitudServiceImpl extends ISolicitudesService {
     return this.solicitudesRepository.get(id);
   }
 
-  update(id: string, updateSolicitudDto: UpdateSolicitudDto) {
-    throw new Error('Method not implemented.');
+  async update(id: string, updateSolicitudDto: UpdateSolicitudDto) {
+    const solicitud = await this.solicitudesRepository.get(id);
+
+    if (solicitud) {
+      const newSolicitud = new Solicitud({
+        ...solicitud,
+        ...updateSolicitudDto,
+      });
+
+      await this.solicitudesRepository.update(id, newSolicitud);
+      return newSolicitud;
+    }
   }
 
   remove(id: string): Promise<Solicitud> {
-    throw new Error('Method not implemented.');
+    return this.solicitudesRepository.delete(id);
   }
 
-  getByNombre(nombre: string): Promise<Solicitud> {
-    throw new Error('Method not implemented.');
-  }
 }

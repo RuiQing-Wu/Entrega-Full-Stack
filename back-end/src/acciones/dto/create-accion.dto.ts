@@ -1,9 +1,18 @@
-import { CausaSolidaria } from 'src/causas/domain/causa_solidaria.domain';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateAccionDto {
+
+  @IsNotEmpty()
   titulo: string;
+
+  @IsNotEmpty()
   descripcion: string;
+
   listaObjetivos: string[];
+  
+  @IsNotEmpty()
   progreso: number;
-  causa: CausaSolidaria;
+  
+  @IsNotEmpty()
+  causa: string;
 }

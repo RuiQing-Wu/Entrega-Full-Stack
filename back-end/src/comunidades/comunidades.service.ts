@@ -69,16 +69,17 @@ export class ComunidadesServiceImpl implements IComunidadesService {
     updateComunidadDto: UpdateComunidadDto,
   ) {
     const comunidad = await this.comunidadesRepository.get(idComunidad);
+    
+    if (comunidad.usuarios.includes(idUsuario)) {
+      throw new Error('El usuario ya es miembro de la comunidad');
+    }
 
     const comunidadActualizada = {
       ...comunidad,
-      descripcion: updateComunidadDto.descripcion,
-      fechaInicio: updateComunidadDto.fechaInicio,
-      idAdministrador: updateComunidadDto.idAdministrador,
       usuarios: [...comunidad.usuarios, idUsuario],
     };
 
-    return this.comunidadesRepository.addMember(idComunidad, idUsuario);
+    return this.comunidadesRepository.update(idComunidad, comunidadActualizada);
   }
 
   remove(id: string) {

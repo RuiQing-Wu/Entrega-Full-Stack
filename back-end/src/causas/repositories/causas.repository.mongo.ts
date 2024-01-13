@@ -22,7 +22,6 @@ export class CausasRepositoryMongo implements CausasRepository {
       descripcion: causaMongoModel.descripcion,
       fechaInicio: causaMongoModel.fechaInicio,
       fechaFin: causaMongoModel.fechaFin,
-      accionSolidaria: causaMongoModel.acciones,
       comunidad: causaMongoModel.comunidad,
       objetivos: causaMongoModel.objetivos,
     });
@@ -41,7 +40,6 @@ export class CausasRepositoryMongo implements CausasRepository {
       descripcion: causaCreated.descripcion,
       fechaInicio: causaCreated.fechaInicio,
       fechaFin: causaCreated.fechaFin,
-      accionSolidaria: [],
       comunidad: causaCreated.comunidad,
       objetivos: causaCreated.objetivos,
     });
@@ -103,11 +101,22 @@ export class CausasRepositoryMongo implements CausasRepository {
     });
   }
 
-  update(id: string, item: any): Promise<any> {
-    throw new Error('Method not implemented.');
+  async update(id: string, item: CausaSolidaria): Promise<CausaSolidaria> {
+    const causa = await this.causaModel.findByIdAndUpdate(id, item).exec();
+    const causaUpdated = new CausaSolidaria({
+      ...item,
+      id: causa._id.toString(),
+    });
+
+    return causaUpdated;
   }
 
-  delete(id: string): Promise<any> {
-    throw new Error('Method not implemented.');
+  async delete(id: string): Promise<CausaSolidaria> {
+    const causa = await this.get(id);
+
+    if (causa) {
+      await this.causaModel.findByIdAndDelete(id).exec();
+      return causa;
+    }
   }
 }

@@ -4,12 +4,12 @@ import { SolicitudesRepository } from './solicitudes.repository';
 import { SolicitudMongoModel } from '../schemas/solicitud.schema';
 import { HydratedDocument, Model } from 'mongoose';
 
-export class SolicitudesRepositoryMongo extends SolicitudesRepository {
+export class SolicitudesRepositoryMongo implements SolicitudesRepository {
   constructor(
     @InjectModel(Solicitud.name)
     private readonly solicitudModel: Model<SolicitudMongoModel>,
   ) {
-    super();
+
   }
 
   private toSolicitudDomain(
@@ -52,15 +52,22 @@ export class SolicitudesRepositoryMongo extends SolicitudesRepository {
     );
   }
 
-  update(id: string, item: Solicitud): Promise<Solicitud> {
-    throw new Error('Method not implemented.');
+  async update(id: string, item: Solicitud): Promise<Solicitud> {
+    const solicitud = await this.solicitudModel.findByIdAndUpdate(id, item).exec();
+    const newSolicitud = new Solicitud({
+      ...item,
+      id: solicitud._id.toString(),
+    });
+
+    return newSolicitud;
   }
 
-  delete(id: string): Promise<Solicitud> {
-    throw new Error('Method not implemented.');
-  }
-
-  getByNombre(nombre: string): Promise<Solicitud> {
-    throw new Error('Method not implemented.');
+  async delete(id: string): Promise<Solicitud> {
+    const solicitud = await this.get(id);
+    
+    if (solicitud) {
+      await this.solicitudModel.findByIdAndDelete(id).exec();
+      return solicitud;
+    }
   }
 }

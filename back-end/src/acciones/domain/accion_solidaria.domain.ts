@@ -1,4 +1,4 @@
-import { CausaSolidaria } from 'src/causas/domain/causa_solidaria.domain';
+import { CausaSolidaria as string } from 'src/causas/domain/causa_solidaria.domain';
 
 export class AccionSolidaria {
   readonly id?: string;
@@ -6,7 +6,7 @@ export class AccionSolidaria {
   readonly descripcion: string;
   readonly listaObjetivos: string[];
   readonly progreso: number;
-  readonly causa: CausaSolidaria;
+  readonly causa: string;
 
   constructor({
     id,
@@ -21,7 +21,7 @@ export class AccionSolidaria {
     descripcion: string;
     listaObjetivos: string[];
     progreso: number;
-    causa: CausaSolidaria;
+    causa: string;
   }) {
     this.id = id;
     this.titulo = titulo;

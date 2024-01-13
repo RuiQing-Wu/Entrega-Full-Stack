@@ -36,8 +36,6 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
     const key = process.env.REDIS_CAUSA_KEY_PREFIX + id;
     const resultado = await redisClient.GET(key);
 
-    // await redisClient.quit();
-
     return this.toApoyoCausadDomain(id, parseInt(resultado));
   }
 
@@ -64,8 +62,6 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
     const key = process.env.REDIS_CAUSA_KEY_PREFIX + id;
     const resultado = await redisClient.SET(key, item.numApoyo);
 
-    // await redisClient.quit();
-
     return this.toApoyoCausadDomain(id, item.numApoyo);
   }
 
@@ -73,8 +69,6 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
     const redisClient = this.redisStore.client;
     const resultado = await this.get(id);
     await redisClient.DEL(process.env.REDIS_CAUSA_KEY_PREFIX + id);
-
-    // await redisClient.quit();
 
     return resultado;
   }
@@ -84,7 +78,6 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
     const key = process.env.REDIS_CAUSA_KEY_PREFIX + id;
     const resultado = await redisClient.INCR(key);
 
-    //await redisClient.quit();
     return this.toApoyoCausadDomain(id, resultado);
   }
 }

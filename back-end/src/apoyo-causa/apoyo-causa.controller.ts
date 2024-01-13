@@ -49,7 +49,6 @@ export class ApoyoCausaController {
   }
 
   @Patch('apoyar/:id')
-  //@HttpCode(HttpStatus.NOT_FOUND)
   apoyar(@Param('id') id: string) {
     const respuesta = this.apoyoCausaService.apoyar(id);
     if (respuesta === null) {

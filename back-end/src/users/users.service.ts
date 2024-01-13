@@ -60,7 +60,7 @@ export class UsersServiceImpl implements IUserService {
   }
 
   remove(id: string): Promise<any> {
-    throw new Error('Method not implemented.');
+    return this.usersRepository.delete(id);
   }
 
   async getByName(name: string): Promise<User> {

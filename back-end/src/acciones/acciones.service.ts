@@ -14,13 +14,7 @@ export class AccionesServiceImpl implements IAccionService {
   }
 
   create(createAccionDto: CreateAccionDto): Promise<AccionSolidaria> {
-    const accion = new AccionSolidaria({
-      titulo: createAccionDto.titulo,
-      descripcion: createAccionDto.descripcion,
-      listaObjetivos: createAccionDto.listaObjetivos,
-      progreso: createAccionDto.progreso,
-      causa: createAccionDto.causa,
-    });
+    const accion = new AccionSolidaria(createAccionDto);
 
     return this.accionesRepository.create(accion);
   }
@@ -46,12 +40,8 @@ export class AccionesServiceImpl implements IAccionService {
 
     // creamos un objeto del dominio combinado con el DTO
     const accionActualizada = new AccionSolidaria({
-      id: accion.id,
-      titulo: updateAccionDto.titulo ?? accion.titulo,
-      descripcion: updateAccionDto.descripcion ?? accion.descripcion,
-      listaObjetivos: updateAccionDto.listaObjetivos ?? accion.listaObjetivos,
-      progreso: updateAccionDto.progreso ?? accion.progreso,
-      causa: updateAccionDto.causa ?? accion.causa,
+      ...accion,
+      ...updateAccionDto,
     });
 
     return this.accionesRepository.update(id, accionActualizada);

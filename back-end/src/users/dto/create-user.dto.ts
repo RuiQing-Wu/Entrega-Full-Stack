@@ -1,5 +1,5 @@
 import { Exclude } from "class-transformer";
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreateUserDto {
 
@@ -18,6 +18,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   pais: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   role: string;
 }
