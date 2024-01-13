@@ -1,12 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getToken, setToken, removeToken } from '../../utils/utils';
+import {
+  getToken,
+  setToken,
+  removeToken,
+  getUserInfo,
+  setUserInfo,
+  removeUserInfo,
+} from '../../utils/utils';
 
 const userStore = createSlice({
   name: 'user',
   initialState: {
     // Datos compartidos entre todos los componentes
     token: getToken() || '',
-    userInfo: '',
+    userInfo: getUserInfo() || '',
   },
   reducers: {
     // Funciones que modifican el estado
@@ -26,24 +33,37 @@ const userStore = createSlice({
       removeToken();
     },
 
-    setUserInfo(state, action) {
+    setUserInfoRedux(state, action) {
       // eslint-disable-next-line no-console
       // console.log('setUserInfo ', action.payload);
       state.userInfo = action.payload;
+
+      setUserInfo(action.payload);
     },
 
-    removeUserInfo(state) {
+    removeUserInfoRedux(state) {
       state.userInfo = '';
+
+      removeUserInfo();
     },
   },
 });
 
 // Cada case reducer funtion have his own Action creators
-const { setTokenRedux, removeTokenRedux, setUserInfo, removeUserInfo } =
-  userStore.actions;
+const {
+  setTokenRedux,
+  removeTokenRedux,
+  setUserInfoRedux,
+  removeUserInfoRedux,
+} = userStore.actions;
 
 const userReducer = userStore.reducer;
 
-export { setTokenRedux, removeTokenRedux, setUserInfo, removeUserInfo };
+export {
+  setTokenRedux,
+  removeTokenRedux,
+  setUserInfoRedux,
+  removeUserInfoRedux,
+};
 
 export default userReducer;

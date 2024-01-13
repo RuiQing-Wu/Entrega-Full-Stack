@@ -18,7 +18,7 @@ export default function CardExternalProfile({
             </Col>
             <Col>
               <h5 className="card-title">Perfil del usuario</h5>
-              <Card.Text>Nombre: {nombre}</Card.Text>
+              <Card.Text>Nombre de usuario: {nombre}</Card.Text>
               <Button variant="primary" size="sm" onClick={handleRedireccionar}>
                 Ver perfil público
               </Button>

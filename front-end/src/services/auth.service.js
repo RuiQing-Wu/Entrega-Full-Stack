@@ -1,4 +1,4 @@
-import { setUserInfo } from '../store/module/user';
+import { setUserInfoRedux } from '../store/module/user';
 import { getToken } from '../utils/utils';
 
 const API_URL = 'http://localhost:3001/auth';
@@ -75,7 +75,7 @@ function getProfileThunk() {
       return;
     }
 
-    dispatch(setUserInfo(response));
+    dispatch(setUserInfoRedux(response));
   };
 }
 

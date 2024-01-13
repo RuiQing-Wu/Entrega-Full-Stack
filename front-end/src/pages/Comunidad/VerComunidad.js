@@ -195,7 +195,7 @@ export default function MostrarComunidad() {
             usersData.map((userData, index) => (
               <CardExternalProfile
                 key={index}
-                nombre={userData.nombre}
+                nombre={userData.username}
                 imageUrl={'../../../imagenes/usuario.png'}
                 handleRedireccionar={() =>
                   handleRedireccionarPerfil(userData.username)

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeUserInfo } from '../../store/module/user';
+import { removeUserInfoRedux } from '../../store/module/user';
 import { getProfileThunk } from '../../services/auth.service';
 import { getToken, removeToken } from '../../utils/utils';
 
@@ -17,7 +17,7 @@ export default function Menu() {
 
   function logOut() {
     setToken('');
-    dispatch(removeUserInfo());
+    dispatch(removeUserInfoRedux());
     dispatch(removeToken());
   }
 
