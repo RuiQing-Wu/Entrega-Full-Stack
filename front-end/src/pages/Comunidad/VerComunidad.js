@@ -114,6 +114,10 @@ export default function MostrarComunidad() {
     setBusqueda(event.target.value);
   }
 
+  function handleRedireccionarPerfil(nombreUser) {
+    navigate(`/perfil/${nombreUser}`);
+  }
+
   return (
     <div>
       <Breadcrumb className="p-2">
@@ -143,6 +147,9 @@ export default function MostrarComunidad() {
             nombre={comunidad.nombre}
             descripcion={comunidad.descripcion}
             fechaInicio={refactorDate(comunidad.fechaInicio)}
+            detalles={false}
+            solicitud={true}
+            btnSolicitar={true}
           />
         </div>
       </div>
@@ -189,6 +196,7 @@ export default function MostrarComunidad() {
                 key={index}
                 nombre={userData.nombre}
                 imageUrl={'../../../imagenes/usuario.png'}
+                handleRedireccionar={() => handleRedireccionarPerfil(userData.username)}
               />
             ))}
         </Tab>

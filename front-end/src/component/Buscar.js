@@ -7,12 +7,20 @@ export default function Busqueda({
   handleBusquedaInput,
   error,
   busqueda,
-  onFiltroChange,
-  filtro,
+  // onFiltroChange,
+  // filtro,
 }) {
+
+  const [filtro, setFiltro] = useState('nombre');
+
   const onSubmit = (event) => {
     event.preventDefault();
     handleBuscar(event);
+  };
+
+  const onFiltroChange = (event) => {
+    const nuevoFiltro = event.target.value;
+    setFiltro(nuevoFiltro);
   };
 
   return (
@@ -23,8 +31,8 @@ export default function Busqueda({
             <Form.Group controlId="filtroSelect">
               <Form.Select value={filtro} onChange={onFiltroChange}>
                 <option value="nombre">Filtrar por nombre</option>
-                <option value="ubicacion">Filtrar por ubicación</option>
-                <option value="voluntarios">
+                <option value="ubicación">Filtrar por ubicación</option>
+                <option value="número de voluntarios">
                   Filtrar por nº voluntarios que apoyan la causa
                 </option>
               </Form.Select>

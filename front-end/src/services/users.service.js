@@ -25,4 +25,10 @@ async function getUserById(idUser) {
   return data;
 }
 
-export { getUserById, updateUser };
+async function getUserByName(username) {
+  const response = await fetch(`${BASE_URL}/username/${username}`);
+  const data = await response.json();
+  return data;
+}
+
+export { getUserById, updateUser, getUserByName };

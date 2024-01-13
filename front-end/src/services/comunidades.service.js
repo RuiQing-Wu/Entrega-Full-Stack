@@ -93,6 +93,18 @@ async function getComunidadByName(nombre) {
   return data;
 }
 
+async function getComunidadesByUser(idUsuario) {
+  const response = await fetch(`${BASE_URL}/user/${idUsuario}`);
+  if (!response.ok) {
+    throw new Error(
+      'No se encontraron comunidades que coincidan con la búsqueda.',
+    );
+  }
+
+  const data = await response.json();
+  return data;
+}
+
 export {
   saveComunidad,
   getComunidadById,
@@ -100,4 +112,5 @@ export {
   getComunidadByName,
   getComunidadesByNameInsensitive,
   addMember,
+  getComunidadesByUser,
 };

@@ -1,7 +1,6 @@
-import { Model } from 'mongoose';
+import { HydratedDocument, Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ComunidadesRepository } from './comunidades.repository';
-import { HydratedDocument } from 'mongoose';
 import { Comunidad } from '../domain/comunidades.domain';
 import { ComunidadMongoModel } from '../schemas/comunidad.schema';
 
@@ -9,23 +8,23 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
   constructor(
     @InjectModel(Comunidad.name)
     private readonly comunidadModel: Model<ComunidadMongoModel>,
-  ) {
-
-  }
+  ) {}
 
   //Transforma un objeto del modelo de persistencia en un objeto de dominio
   private transform(
     comunidadModel: HydratedDocument<ComunidadMongoModel>,
   ): Comunidad {
-    const comunidad = new Comunidad({
-      id: comunidadModel._id.toString(),
-      nombre: comunidadModel.nombre,
-      descripcion: comunidadModel.descripcion,
-      fechaInicio: comunidadModel.fechaInicio,
-      idAdministrador: comunidadModel.idAdministrador,
-      usuarios: comunidadModel.usuarios,
-    });
-    return comunidad;
+    if (comunidadModel) {
+      const comunidad = new Comunidad({
+        id: comunidadModel._id.toString(),
+        nombre: comunidadModel.nombre,
+        descripcion: comunidadModel.descripcion,
+        fechaInicio: comunidadModel.fechaInicio,
+        idAdministrador: comunidadModel.idAdministrador,
+        usuarios: comunidadModel.usuarios,
+      });
+      return comunidad;
+    }
   }
 
   async create(item: Comunidad): Promise<Comunidad> {

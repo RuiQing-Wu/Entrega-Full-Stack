@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { CreateComunidadDto } from './dto/create-comunidad.dto';
 import { UpdateComunidadDto } from './dto/update-comunidad.dto';
 import { Comunidad } from '../comunidades/domain/comunidades.domain';
@@ -9,11 +9,29 @@ export class ComunidadesServiceImpl implements IComunidadesService {
   constructor(
     @Inject(ComunidadesRepository)
     private comunidadesRepository: ComunidadesRepository,
-  ) {
+  ) {}
 
-  }
+  async create(createComunidadDto: CreateComunidadDto) {
+    // comprobamos que no exista una comunidad con el mismo nombre
+    const comunidadExistente = await this.comunidadesRepository.getByName(
+      createComunidadDto.nombre,
+    );
 
-  create(createComunidadDto: CreateComunidadDto) {
+    console.log(comunidadExistente);
+
+    if (comunidadExistente) {
+      throw new ConflictException('¡Existe una comunidad con ese nombre!');
+    }
+
+    const usuariosArray = Array.isArray(createComunidadDto.usuarios)
+      ? createComunidadDto.usuarios
+      : [];
+
+    createComunidadDto.usuarios = [
+      createComunidadDto.idAdministrador,
+      ...usuariosArray,
+    ];
+
     // creamos un objeto del dominio a partir del DTO
     const comunidad = new Comunidad({
       nombre: createComunidadDto.nombre,
@@ -80,6 +98,10 @@ export class ComunidadesServiceImpl implements IComunidadesService {
     };
 
     return this.comunidadesRepository.update(idComunidad, comunidadActualizada);
+  }
+
+  async getComunidadesByUser(idUsuario: string) {
+    return this.comunidadesRepository.getComunidadesByUser(idUsuario);
   }
 
   remove(id: string) {
