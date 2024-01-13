@@ -8,6 +8,6 @@ export abstract class ComunidadesRepository extends IGenericRepository<Comunidad
     idComunidad: string,
     idUsuario: string,
   ): Promise<Comunidad>; */
-  ): Promise<Comunidad>;
+
   abstract getComunidadesByUser(idUsuario: string): Promise<Comunidad[]>;
 }

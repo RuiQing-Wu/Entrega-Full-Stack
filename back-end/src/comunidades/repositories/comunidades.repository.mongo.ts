@@ -80,7 +80,7 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
     comunidad.usuarios.push(idUsuario);
     await comunidad.save();
     return this.transform(comunidad);
-  }
+  } */
 
   async update(id: string, item: Comunidad): Promise<Comunidad> {
     const comunidad = await this.comunidadModel.findByIdAndUpdate(id, item).exec();
