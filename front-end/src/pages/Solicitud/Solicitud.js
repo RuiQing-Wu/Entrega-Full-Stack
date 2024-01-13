@@ -29,14 +29,15 @@ export default function Solicitud(props) {
     event.preventDefault();
 
     if (user) {
-      const userSols = await getSolicitud();
+      /* const userSols = await getSolicitud();
       if (
         userSols.some(
           (solicitud) =>
             solicitud.idUsuario === user.id &&
             solicitud.idComunidad === props.idComunidad,
         )
-      ) {
+      ) */
+      if (props.usersData.some((usuario) => usuario.id === user.id)) {
         setError(
           'Ya existe una solicitud con este usuario para esta comunidad',
         );
@@ -45,7 +46,7 @@ export default function Solicitud(props) {
         const response = await createSolicitud(
           descripcion,
           fechaSolicitud,
-          false,
+          true,
           user.id,
           props.idComunidad,
         );
@@ -55,7 +56,6 @@ export default function Solicitud(props) {
             user.id,
             props.idComunidad,
           );
-
           if (responseUsuarioComunidad !== undefined) {
             props.usersData.push(user);
             props.onHide();

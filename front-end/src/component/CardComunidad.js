@@ -83,7 +83,7 @@ export function CardListaComunidad({
   nombre,
   descripcion,
   handleRedireccionar,
-  miembros
+  miembros,
 }) {
   return (
     <Card id="cardComunidad" className="mb-3">
