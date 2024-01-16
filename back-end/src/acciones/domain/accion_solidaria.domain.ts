@@ -1,5 +1,3 @@
-import { CausaSolidaria as string } from 'src/causas/domain/causa_solidaria.domain';
-
 export class AccionSolidaria {
   readonly id?: string;
   readonly titulo: string;
