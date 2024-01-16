@@ -22,6 +22,7 @@ export class CreateAccionDto {
       'Proporcionar abrigos y prendas de vestir a personas sin hogar.',
       'Alcanzar comunidades marginadas que enfrentan dificultades durante el invierno.',
       'Promover la conciencia sobre la importancia de la ayuda en las estaciones frías.',
+      '',
     ],
     description: 'Lista de objetivos de la accion',
   })
