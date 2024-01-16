@@ -13,8 +13,18 @@ import { CreateComunidadDto } from './dto/create-comunidad.dto';
 import { UpdateComunidadDto } from './dto/update-comunidad.dto';
 import { IComunidadesService } from './interfaces/comunidades.service.interface';
 import { Public } from 'src/decorators/public.decorator';
-import { ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiOperation,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
+@ApiTags('comunidades')
 @Controller('comunidades')
 export class ComunidadesController {
   constructor(private readonly comunidadesService: IComunidadesService) {}
@@ -60,7 +70,10 @@ export class ComunidadesController {
     return this.comunidadesService.getByName(nombre);
   }
 
-  @ApiOperation({ summary: 'Obtener una comunidad si contiene en el nombre el valor dado, independientemente de las mayúsculas o minúsculas' })
+  @ApiOperation({
+    summary:
+      'Obtener una comunidad si contiene en el nombre el valor dado, independientemente de las mayúsculas o minúsculas',
+  })
   @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
   @ApiNotFoundResponse({ description: 'Comunidad no encontrada' })
   @ApiOkResponse({ description: 'Comunidad encontrada' })
@@ -84,7 +97,9 @@ export class ComunidadesController {
     return this.comunidadesService.update(id, updateReunioneDto);
   }
 
-  @ApiOperation({ summary: 'Añade un miembro a una comunidad dados sus respectivos ids' })
+  @ApiOperation({
+    summary: 'Añade un miembro a una comunidad dados sus respectivos ids',
+  })
   @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
   @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
   @ApiNotFoundResponse({ description: 'Comunidad o usuario no encontrados' })
@@ -96,13 +111,13 @@ export class ComunidadesController {
     @Param('idComunidad') idComunidad: string,
     @Param('idUsuario') idUsuario: string,
   ) {
-    return this.comunidadesService.addMember(
-      idComunidad,
-      idUsuario
-    );
+    return this.comunidadesService.addMember(idComunidad, idUsuario);
   }
 
-  @ApiOperation({ summary: 'Obtiene todas las comunidades a las que está unida un usuario, dado su id' })
+  @ApiOperation({
+    summary:
+      'Obtiene todas las comunidades a las que está unida un usuario, dado su id',
+  })
   @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
   @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
   @ApiNotFoundResponse({ description: 'Usuario no encontrado' })
