@@ -11,9 +11,7 @@ export default function MostrarInformacionPerfil() {
   );
 
   function handleRedireccionarPerfil(nombreUser) {
-
     navigate(`/perfil/${nombreUser}`);
-
   }
 
   if (!username) {

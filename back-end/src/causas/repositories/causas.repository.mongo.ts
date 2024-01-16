@@ -13,9 +13,7 @@ export class CausasRepositoryMongo implements CausasRepository {
 
   }
 
-  private transform(
-    causaMongoModel: HydratedDocument<CausaMongoModel>,
-  ): CausaSolidaria {
+  private toCausaSolidariaDomain(causaMongoModel: HydratedDocument<CausaMongoModel>): CausaSolidaria {
     const causa = new CausaSolidaria({
       id: causaMongoModel._id.toString(),
       titulo: causaMongoModel.titulo,
@@ -32,14 +30,10 @@ export class CausasRepositoryMongo implements CausasRepository {
   async create(item: CausaSolidaria): Promise<CausaSolidaria> {
     const causaCreated = await this.causaModel.create(item);
 
+    // TODO asignar con el objeto
     const causa = new CausaSolidaria({
+      ...item,
       id: causaCreated._id.toString(),
-      titulo: causaCreated.titulo,
-      descripcion: causaCreated.descripcion,
-      fechaInicio: causaCreated.fechaInicio,
-      fechaFin: causaCreated.fechaFin,
-      comunidad: causaCreated.comunidad,
-      objetivos: causaCreated.objetivos,
     });
 
     return causa;
@@ -48,14 +42,14 @@ export class CausasRepositoryMongo implements CausasRepository {
   async get(id: string): Promise<CausaSolidaria> {
     const causa = await this.causaModel.findById(id).exec();
 
-    return this.transform(causa);
+    return this.toCausaSolidariaDomain(causa);
   }
 
   async getByName(titulo: string): Promise<CausaSolidaria[]> {
     const causasModel = await this.causaModel.find({ titulo }).exec();
 
     const causas = causasModel.map((causaModel) => {
-      return this.transform(causaModel);
+      return this.toCausaSolidariaDomain(causaModel);
     });
 
     return causas;
@@ -65,7 +59,7 @@ export class CausasRepositoryMongo implements CausasRepository {
     const causasModel = await this.causaModel.find({ comunidad }).exec();
 
     const causas = causasModel.map((causaModel) => {
-      return this.transform(causaModel);
+      return this.toCausaSolidariaDomain(causaModel);
     });
 
     return causas;
@@ -75,7 +69,7 @@ export class CausasRepositoryMongo implements CausasRepository {
     const causasModel = await this.causaModel.find().exec();
 
     const causas = causasModel.map((causaModel) => {
-      return this.transform(causaModel);
+      return this.toCausaSolidariaDomain(causaModel);
     });
 
     return causas;
@@ -95,7 +89,7 @@ export class CausasRepositoryMongo implements CausasRepository {
       .exec();
 
     return causasFiltradasPorComunidad.map((causa) => {
-      return this.transform(causa);
+      return this.toCausaSolidariaDomain(causa);
     });
   }
 

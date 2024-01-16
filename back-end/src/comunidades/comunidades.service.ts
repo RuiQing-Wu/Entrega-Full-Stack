@@ -34,10 +34,7 @@ export class ComunidadesServiceImpl implements IComunidadesService {
 
     // creamos un objeto del dominio a partir del DTO
     const comunidad = new Comunidad({
-      nombre: createComunidadDto.nombre,
-      descripcion: createComunidadDto.descripcion,
-      fechaInicio: createComunidadDto.fechaInicio,
-      idAdministrador: createComunidadDto.idAdministrador,
+      ...createComunidadDto,
       usuarios: createComunidadDto.usuarios,
     });
 
@@ -68,14 +65,10 @@ export class ComunidadesServiceImpl implements IComunidadesService {
     const comunidad = await this.comunidadesRepository.get(id);
 
     // creamos un objeto del dominio combinado con el DTO
+    // TODO ESTE DTO PORQUE ES ASI?
     const comunidadActualizada = new Comunidad({
-      id: comunidad.id,
-      nombre: updateComunidadDto.nombre ?? comunidad.nombre,
-      descripcion: updateComunidadDto.descripcion ?? comunidad.descripcion,
-      fechaInicio: updateComunidadDto.fechaInicio ?? comunidad.fechaInicio,
-      idAdministrador:
-        updateComunidadDto.idAdministrador ?? comunidad.idAdministrador,
-      usuarios: updateComunidadDto.usuarios ?? comunidad.usuarios,
+      ...comunidad,
+      ...updateComunidadDto
     });
 
     return this.comunidadesRepository.update(id, comunidadActualizada);

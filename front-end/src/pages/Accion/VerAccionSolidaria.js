@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Breadcrumb } from 'react-bootstrap';
 import { getAccionById } from '../../services/acciones.service';
@@ -10,7 +10,7 @@ export default function MostrarAcciones() {
   const param = useParams();
   const [accion, setAccion] = useState([]);
   const [causa, setCausa] = useState([]);
-  const [comunidad, setComunidad] = React.useState([]);
+  const [comunidad, setComunidad] = useState([]);
   const navigate = useNavigate();
 
   function onHomeClicked() {
@@ -22,7 +22,7 @@ export default function MostrarAcciones() {
   }
 
   function onComunidadClicked() {
-    navigate(`/comunidad/${causa.comunidad}`, { replace: true });
+    navigate(`/comunidades/${causa.comunidad}`, { replace: true });
   }
 
   function onCausaClicked() {

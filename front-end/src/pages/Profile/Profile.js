@@ -1,51 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
-  Tab,
-  Tabs,
-  TabContent,
+  Image,
   Button,
   Form,
-  Image,
   Col,
   Row,
+  Tab,
+  TabContent,
+  Tabs,
 } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { updateUser } from '../../services/users.service';
-import CardExternalProfile from '../../component/CardExternalProfile';
+import { useNavigate, useParams } from 'react-router-dom';
+import { updateUser, getUserByName } from '../../services/users.service';
+import { getComunidadesByUser } from '../../services/comunidades.service';
 import { CardListaComunidad } from '../../component/CardComunidad';
-import { getComunidades } from '../../services/comunidades.service';
+import {
+  seguirUsuario,
+  getSeguidosByUser,
+  getSeguidoresByUser,
+} from '../../services/seguidor.service';
+import CardExternalProfile from '../../component/CardExternalProfile';
 
 export default function Profile() {
   const navigate = useNavigate();
+  const params = useParams();
 
-  const initialUser = {
-    username: 'johndoe',
-    password: '123456',
-    nombre: 'John Doe',
-    telefono: '123456789',
-    ciudad: 'Ciudad Ejemplo',
-    pais: 'País Ejemplo',
-    esAdministrador: true,
-    role: 'ROLE_ADMIN',
-  };
+  const [user, setUser] = useState({
+    username: '',
+    nombre: '',
+    telefono: '',
+    ciudad: '',
+    pais: '',
+  });
 
-  const [user, setUser] = useState({ ...initialUser });
+  const usernameActual = useSelector((state) => state.user.userInfo.username);
+  const idActual = useSelector((state) => state.user.userInfo.id);
+
   const [isEditing, setIsEditing] = useState(false);
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
+  const [comunidadesUser, setComunidadesUser] = useState([]);
+  const [errorComunidades, setErrorComunidades] = useState('');
   const [seguidos, setSeguidos] = useState([]);
   const [errorSeguidos, setErrorSeguidos] = useState('');
   const [seguidores, setSeguidores] = useState([]);
   const [errorSeguidores, setErrorSeguidores] = useState('');
-  const [comunidadesUser, setComunidadesUser] = useState([]);
-  const [errorComunidades, setErrorComunidades] = useState('');
-
-  const userSelected = useSelector((state) => state.user.userInfo);
-
-  useEffect(() => {
-    if (userSelected) {
-      setUser({ ...userSelected });
-    }
-  }, [userSelected]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -72,38 +70,10 @@ export default function Profile() {
     }
   };
 
-  async function getSeguidos() {
-    setSeguidos([]);
-    // const response = await getSeguidosByUser(user.id);
-    // setSeguidos(response);
-
-    if (seguidos.length === 0)
-      setErrorSeguidos('No se encontraron usuarios seguidos.');
-  }
-
-  async function getSeguidores() {
-    setSeguidores([]);
-    // const response = await getSeguidoresByUser(user.id);
-    // setSeguidores(response);
-
-    if (seguidores.length === 0)
-      setErrorSeguidores('No se encontraron usuarios seguidores.');
-  }
-
-  async function getComunidadesUser() {
-    setComunidadesUser([]);
-    // const response = await getComunidades();
-    // setComunidadesUser(response);
-
-    // console.log("HEY", comunidadesUser);
-    // const response = await getComunidadesByUser(user.id);
-    // setComunidadesUser(response);
-
-    if (comunidadesUser.length === 0)
-      setErrorComunidades(
-        'No se encontraron comunidades a las que el usuario pertenezca.',
-      );
-  }
+  const fetchUser = async () => {
+    const response = await getUserByName(params.nombrePerfil);
+    setUser(response);
+  };
 
   function handleRedireccionarComunidad(nombre) {
     const comunidadSeleccionada = comunidadesUser.find((comunidad) =>
@@ -114,17 +84,73 @@ export default function Profile() {
     }
   }
 
-  useEffect(() => {
-    getSeguidos();
-  }, []);
+  function handleRedireccionarPerfil(nombreUser) {
+    navigate(`/perfil/${nombreUser}`);
+  }
+
+  function seguir() {
+    seguirUsuario(idActual, usernameActual, user.id, user.username);
+  }
 
   useEffect(() => {
-    getSeguidores();
-  }, []);
+    fetchUser(); 
+  }, [fetchUser, params.nombrePerfil]);
 
   useEffect(() => {
-    getComunidadesUser();
-  }, []);
+    if (usernameActual === user.username) {
+      setIsOwnProfile(true);
+    }
+  }, [usernameActual, user.username]);
+
+
+  function getComunidadesUser() {
+    setComunidadesUser([]);
+
+    return getComunidadesByUser(user.id).then(response => {
+      console.log(response);
+      setComunidadesUser(response);
+
+      if (response.length === 0) {
+        setErrorComunidades('No se encontraron comunidades a las que el usuario pertenezca.');
+      }
+    });
+  }
+
+  function getSeguidos() {
+    setSeguidos([]);
+
+    return getSeguidosByUser(user.id).then(response => {
+      console.log('seguidos', response);
+      setSeguidos(response);
+
+      if (response.length === 0) {
+        setErrorSeguidos('No se encontraron usuarios seguidores por el usuario.');
+      }
+    });
+  }
+
+  function getSeguidores() {
+    setSeguidores([]);
+
+    return getSeguidoresByUser(user.id).then(response => {
+      console.log(response);
+      setSeguidores(response);
+
+      if (response.length === 0) {
+        setErrorSeguidores('No se encontraron usuarios que sigan al usuario.');
+      }
+    });
+  }
+
+  useEffect(() => {
+    Promise.all([getComunidadesUser(), getSeguidos(), getSeguidores()])
+      .then(() => {
+        console.log("Todas las solicitudes han sido completadas");
+      })
+      .catch(error => {
+        console.error("Error al realizar las solicitudes", error);
+      });
+  }, [user.id]); 
 
   return (
     <div className="container mt-5">
@@ -138,8 +164,14 @@ export default function Profile() {
             style={{ maxHeight: '150px' }} // ajusta el tamaño máximo de la imagen
           />
         </div>
-
         <div className="col-md-9">
+          {!isOwnProfile && (
+            <div className="ms-auto p-2">
+              <Button variant="outline-success" size="sm" onClick={seguir}>
+                Seguir al usuario
+              </Button>
+            </div>
+          )}
           <h2>Perfil de usuario</h2>
           <Form>
             <Col sd={10} md={10} lg={8} className="mx-auto">
@@ -194,43 +226,83 @@ export default function Profile() {
                   disabled={!isEditing}
                 />
               </Form.Group>
-              {!isEditing ? (
-                <Button variant="primary" onClick={handleEditClick}>
-                  Editar
-                </Button>
-              ) : (
-                <Button variant="primary" onClick={handleSaveClick}>
-                  Guardar
-                </Button>
+              {isOwnProfile && (
+                <Form.Group controlId="editar">
+                  {!isEditing ? (
+                    <Button variant="primary" onClick={handleEditClick}>
+                      Editar
+                    </Button>
+                  ) : (
+                    <Button variant="primary" onClick={handleSaveClick}>
+                      Guardar
+                    </Button>
+                  )}
+                </Form.Group>
               )}
             </Col>
           </Form>
         </div>
       </div>
+
       <div className="row mt-5">
         <div className="col-md-12">
           <Tabs defaultActiveKey="seguidos">
             <Tab eventKey="seguidos" title="Seguidos">
               <TabContent>
-                <CardExternalProfile
-                  nombre={'nombre1'}
-                  telefono={'123456789'}
-                  email={'email1'}
-                  imageUrl={'../../../imagenes/usuario.png'}
-                />
+                {seguidos.length > 0 ? (
+                  <div>
+                    <Row xs={1} md={2} lg={2} className="g-4">
+                      {seguidos.map((elemento, index) => (
+                        <Col key={index}>
+                          <CardExternalProfile
+                            key={index}
+                            nombre={elemento.username}
+                            imageUrl={'../../../imagenes/usuario.png'}
+                            handleRedireccionar={() =>
+                              handleRedireccionarPerfil(elemento.username)
+                            }
+                          />
+                        </Col>
+                      ))}
+                    </Row>
+                  </div>
+                ) : (
+                  <p>
+                    {errorSeguidos || 'No se encontraron usuarios seguidos.'}
+                  </p>
+                )}
               </TabContent>
             </Tab>
             <Tab eventKey="seguidores" title="Seguidores">
-              <CardExternalProfile
-                nombre={'nombre1'}
-                telefono={'123456789'}
-                email={'email1'}
-                imageUrl={'../../../imagenes/usuario.png'}
-              />
+              <TabContent>
+                {seguidores.length > 0 ? (
+                  <div>
+                    <Row xs={1} md={2} lg={2} className="g-4">
+                      {seguidores.map((elemento, index) => (
+                        <Col key={index}>
+                          <CardExternalProfile
+                            key={index}
+                            nombre={elemento.username}
+                            imageUrl={'../../../imagenes/usuario.png'}
+                            handleRedireccionar={() =>
+                              handleRedireccionarPerfil(elemento.username)
+                            }
+                          />
+                        </Col>
+                      ))}
+                    </Row>
+                  </div>
+                ) : (
+                  <p>
+                    {errorSeguidores ||
+                      'No se encontraron usuarios seguidores.'}
+                  </p>
+                )}
+              </TabContent>
             </Tab>
             <Tab eventKey="comunidades" title="Comunidades">
               <TabContent>
-                {comunidadesUser.length > 0 && (
+                {comunidadesUser.length > 0 ? (
                   <div>
                     <Row xs={1} md={2} lg={2} className="g-4">
                       {comunidadesUser.map((elemento, index) => (
@@ -242,11 +314,14 @@ export default function Profile() {
                             handleRedireccionar={(nombre) =>
                               handleRedireccionarComunidad(elemento.nombre)
                             }
+                            miembros={elemento.usuarios.length}
                           />
                         </Col>
                       ))}
                     </Row>
                   </div>
+                ) : (
+                  <p>{errorComunidades || 'No se encontraron comunidades.'}</p>
                 )}
               </TabContent>
             </Tab>

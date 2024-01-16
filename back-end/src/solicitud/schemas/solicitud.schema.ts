@@ -7,9 +7,6 @@ export type UserDocument = HydratedDocument<SolicitudMongoModel>;
 export class SolicitudMongoModel {
 
     @Prop()
-    nombre: string;
-
-    @Prop()
     descripcion: string;
 
     @Prop()

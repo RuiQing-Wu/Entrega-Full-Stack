@@ -40,4 +40,14 @@ export class SeguidorController {
     console.log(createSeguidorOrigenDto);
     return this.seguidorService.seguir(createSeguidorOrigenDto);
   }
+
+  @Get('seguidos/:id')
+  getUsuariosSeguidos(@Param('id') id: string) {
+    return this.seguidorService.getUsuariosSeguidos(id);
+  }
+
+  @Get('seguidores/:id')
+  getUsuariosSeguidores(@Param('id') id: string) {
+    return this.seguidorService.getUsuariosSeguidores(id);
+  }
 }

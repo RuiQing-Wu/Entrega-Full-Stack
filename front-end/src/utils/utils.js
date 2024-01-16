@@ -1,4 +1,5 @@
 export const TOKEN = 'token';
+export const USER_INFO = 'userInfo';
 
 function getToken() {
   return localStorage.getItem(TOKEN);
@@ -10,6 +11,19 @@ function setToken(token) {
 
 function removeToken() {
   localStorage.removeItem(TOKEN);
+}
+
+
+function getUserInfo() {
+  return localStorage.getItem(USER_INFO);
+}
+
+function setUserInfo(userInfo) {
+  localStorage.setItem(USER_INFO, userInfo);
+}
+
+function removeUserInfo() {
+  localStorage.removeItem(USER_INFO);
 }
 
 function dateToString() {
@@ -34,4 +48,4 @@ function refactorDate(fecha) {
   return formattedDate;
 }
 
-export { getToken, setToken, removeToken, dateToString, refactorDate };
+export { getToken, setToken, removeToken, getUserInfo, setUserInfo, removeUserInfo, dateToString, refactorDate };

@@ -181,4 +181,54 @@ export class SeguidorRepositoryNeo4j implements SeguidorRepository {
 
         return null;
     }
+
+    async getUsuariosSeguidos(id: string): Promise<UsuarioSeguimiento[]> {
+        const session = this.driver.session();
+        const txc = session.beginTransaction();
+        try {
+            const result = await txc.run(
+                'MATCH (p1:UsuarioSeguimiento {idUsuario: $idUser})-[:SEGUIR_TO]->(p2:UsuarioSeguimiento) RETURN p2',
+                {
+                    idUser: id,
+                }
+            );
+
+            const seguidores = result.records.map((record) => record.get('p2'));
+            await txc.commit();
+            return seguidores.map((seguidor) => this.toUsuarioSeguimientoDomain(seguidor));
+        } catch (error) {
+            console.log(error);
+            txc.rollback();
+            console.log('rolled back');
+        } finally {
+            session.close();
+        }
+
+        return [];
+    }
+
+    async getUsuariosSeguidores(id: string): Promise<UsuarioSeguimiento[]> {
+        const session = this.driver.session();
+        const txc = session.beginTransaction();
+        try {
+            const result = await txc.run(
+                'MATCH (p1:UsuarioSeguimiento)-[:SEGUIR_TO]->(p2:UsuarioSeguimiento {idUsuario: $idUser}) RETURN p1',
+                {
+                    idUser: id,
+                }
+            );
+
+            const seguidores = result.records.map((record) => record.get('p1'));
+            await txc.commit();
+            return seguidores.map((seguidor) => this.toUsuarioSeguimientoDomain(seguidor));
+        } catch (error) {
+            console.log(error);
+            txc.rollback();
+            console.log('rolled back');
+        } finally {
+            session.close();
+        }
+
+        return [];
+    }
 }

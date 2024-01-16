@@ -5,7 +5,6 @@ export class CreateCausaDto {
   descripcion: string;
   fechaInicio: Date;
   fechaFin: Date;
-  acciones: AccionSolidaria[];
   comunidad: string;
   objetivos: string[];
 }

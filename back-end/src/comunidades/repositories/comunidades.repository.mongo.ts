@@ -11,9 +11,7 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
   ) {}
 
   //Transforma un objeto del modelo de persistencia en un objeto de dominio
-  private transform(
-    comunidadModel: HydratedDocument<ComunidadMongoModel>,
-  ): Comunidad {
+  private toComunidadDomain(comunidadModel: HydratedDocument<ComunidadMongoModel>): Comunidad {
     if (comunidadModel) {
       const comunidad = new Comunidad({
         id: comunidadModel._id.toString(),
@@ -23,16 +21,15 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
         idAdministrador: comunidadModel.idAdministrador,
         usuarios: comunidadModel.usuarios,
       });
+      
       return comunidad;
     }
   }
 
   async create(item: Comunidad): Promise<Comunidad> {
-    const comunidadModel: ComunidadMongoModel =
-      await this.comunidadModel.create(item);
+    const comunidadCreated = await this.comunidadModel.create(item);
 
-    const comunidadCreated = await this.comunidadModel.create(comunidadModel);
-
+    // TODO: asignar con el objeto
     const comunidad = new Comunidad({
       id: comunidadCreated._id.toString(),
       nombre: comunidadCreated.nombre,
@@ -48,12 +45,12 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
   async get(id: string): Promise<Comunidad> {
     const comunidad = await this.comunidadModel.findById(id).exec();
 
-    return this.transform(comunidad);
+    return this.toComunidadDomain(comunidad);
   }
 
   async getByName(name: string): Promise<Comunidad> {
     const comunidad = await this.comunidadModel.findOne({ nombre: name });
-    return this.transform(comunidad);
+    return this.toComunidadDomain(comunidad);
   }
 
   async getByNameInsensitivePartial(nombre: string): Promise<Comunidad[]> {
@@ -61,7 +58,7 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
       nombre: { $regex: nombre, $options: 'i' },
     });
     return comunidades.map((comunidad) => {
-      return this.transform(comunidad);
+      return this.toComunidadDomain(comunidad);
     });
   }
 
@@ -69,7 +66,7 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
     const comunidadesModel = await this.comunidadModel.find().exec();
 
     const comunidades = comunidadesModel.map((comunidadModel) => {
-      return this.transform(comunidadModel);
+      return this.toComunidadDomain(comunidadModel);
     });
 
     return comunidades;
@@ -80,7 +77,7 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
       usuarios: { $in: [idUsuario] },
     });
     return comunidades.map((comunidad) => {
-      return this.transform(comunidad);
+      return this.toComunidadDomain(comunidad);
     });
   }
 
