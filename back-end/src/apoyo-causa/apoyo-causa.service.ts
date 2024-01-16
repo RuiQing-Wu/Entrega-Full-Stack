@@ -10,9 +10,9 @@ export class ApoyoCausaServiceImpl implements IApoyoCausaService {
   constructor(
     @Inject(ApoyoCausaRepository)
     private apoyoCausaRepository: ApoyoCausaRepository,
-  ) { }
-  
-  create(createApoyoCausaDto: CreateApoyoCausaDto) : Promise<ApoyoCausa>{
+  ) {}
+
+  create(createApoyoCausaDto: CreateApoyoCausaDto): Promise<ApoyoCausa> {
     const apoyoCausa = new ApoyoCausa(createApoyoCausaDto);
     return this.apoyoCausaRepository.create(apoyoCausa);
   }
@@ -27,7 +27,7 @@ export class ApoyoCausaServiceImpl implements IApoyoCausaService {
 
   async update(id: string, updateApoyoCausaDto: UpdateApoyoCausaDto) {
     const apoyoCausa = await this.apoyoCausaRepository.get(id);
-    
+
     if (apoyoCausa) {
       const newApoyoCausa = new ApoyoCausa({
         ...apoyoCausa,
@@ -45,9 +45,8 @@ export class ApoyoCausaServiceImpl implements IApoyoCausaService {
 
   async apoyar(id: string): Promise<ApoyoCausa> {
     const apoyoCausa = await this.apoyoCausaRepository.get(id);
-    
+
     if (!Number.isNaN(apoyoCausa.numApoyo)) {
-      console.log("Apoyar ", apoyoCausa);
       return this.apoyoCausaRepository.apoyar(id);
     }
 
