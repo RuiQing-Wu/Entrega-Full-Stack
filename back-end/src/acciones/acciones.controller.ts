@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -25,18 +27,31 @@ export class AccionesController {
 
   @ApiOperation({ summary: 'Crear una accion solidaria' })
   @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 201, description: 'Accion solidaria creada' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Post()
   create(@Body() createAccionDto: CreateAccionDto) {
-    return this.accionesService.create(createAccionDto);
+    try
+    {
+      return this.accionesService.create(createAccionDto);  
+    }
+    catch(error)
+    {
+      console.log(error);
+      throw new InternalServerErrorException('Error al crear la accion solidaria');
+    }
   }
 
   @Public()
   @ApiOperation({ summary: 'Obtener todas las acciones solidarias' })
   @Get()
   findAll() {
-    return this.accionesService.findAll();
+    try{
+      return this.accionesService.findAll();
+    }catch(error){
+      console.log(error);
+      throw new NotFoundException('Error al obtener las acciones solidarias');
+    }
   }
 
   @Public()
@@ -47,7 +62,12 @@ export class AccionesController {
   })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.accionesService.findOne(id);
+    try{
+      return this.accionesService.findOne(id);
+    }catch(error){
+      console.log(error);
+      throw new NotFoundException('Error al obtener la accion solidaria');
+    }
   }
 
   @Public()
@@ -58,7 +78,12 @@ export class AccionesController {
   })
   @Get('/name/:nombre')
   findByName(@Param('nombre') titulo: string) {
-    return this.accionesService.getByName(titulo);
+    try{
+      return this.accionesService.getByName(titulo);
+    }catch(error){
+      console.log(error);
+      throw new NotFoundException('Error al obtener la accion solidaria');
+    }
   }
 
   @Public()
@@ -69,7 +94,12 @@ export class AccionesController {
   })
   @Get('/causa/:causa')
   findByCausa(@Param('causa') causa: string) {
-    return this.accionesService.getByCausaId(causa);
+    try{
+      return this.accionesService.getByCausaId(causa);
+    }catch(error){
+      console.log(error);
+      throw new NotFoundException('Error al obtener la accion solidaria');
+    }
   }
 
   @Public()
@@ -83,7 +113,12 @@ export class AccionesController {
     @Param('titulo') titulo: string,
     @Param('idCausa') idCausa: string,
   ) {
-    return this.accionesService.getByNameInsensitivePartial(titulo, idCausa);
+    try{
+      return this.accionesService.getByNameInsensitivePartial(titulo, idCausa);
+    }catch(error){
+      console.log(error);
+      throw new NotFoundException('Error al obtener la accion solidaria');
+    }
   }
 
   @ApiOperation({ summary: 'Actualizar una accion solidaria' })
@@ -92,7 +127,15 @@ export class AccionesController {
   @ApiResponse({ status: 200, description: 'Accion solidaria actualizada' })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAccioneDto: UpdateAccionDto) {
-    return this.accionesService.update(id, updateAccioneDto);
+    try
+    {
+      return this.accionesService.update(id, updateAccioneDto);
+    }
+    catch(error)
+    {
+      console.log(error);
+      throw new InternalServerErrorException('Error al actualizar la accion solidaria');
+    }
   }
 
   @ApiOperation({ summary: 'Eliminar una accion solidaria' })
@@ -101,6 +144,11 @@ export class AccionesController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.accionesService.remove(id);
+    try {
+      return this.accionesService.remove(id);
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Error al eliminar la accion solidaria');
+    }
   }
 }

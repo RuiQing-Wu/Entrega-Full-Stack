@@ -22,6 +22,7 @@ export default function Accion() {
   const [comunidad, setComunidad] = useState([]);
   const param = useParams();
 
+  // TODO ESTO SE PUEDE HACER COMO GLOBAL NO CON DISPATCH
   function onHomeClicked() {
     navigate('/');
   }

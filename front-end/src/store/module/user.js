@@ -18,8 +18,6 @@ const userStore = createSlice({
   reducers: {
     // Funciones que modifican el estado
     setTokenRedux(state, action) {
-      // eslint-disable-next-line no-console
-      // console.log(`setToken de Login: ${action.payload}`);
       state.token = action.payload;
 
       // Guardar el token en localStorage
@@ -34,8 +32,6 @@ const userStore = createSlice({
     },
 
     setUserInfoRedux(state, action) {
-      // eslint-disable-next-line no-console
-      // console.log('setUserInfo ', action.payload);
       state.userInfo = action.payload;
 
       setUserInfo(action.payload);

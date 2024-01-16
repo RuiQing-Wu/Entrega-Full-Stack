@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 
 export default function Busqueda({
@@ -10,7 +10,6 @@ export default function Busqueda({
   // onFiltroChange,
   // filtro,
 }) {
-
   const [filtro, setFiltro] = useState('nombre');
 
   const onSubmit = (event) => {
@@ -23,6 +22,7 @@ export default function Busqueda({
     setFiltro(nuevoFiltro);
   };
 
+  // TODO PORQUE EXISTE FILTRO DE BUSQUEDA Y EL LABEL ULTIMO SE PUEDE CAMBIAR POR EL COMPONENTE DE ERROR?
   return (
     <div className="container mb-4">
       <Form onSubmit={onSubmit}>

@@ -180,7 +180,7 @@ export default function Causa() {
   }
 
   function onComunidadClicked() {
-    navigate(`/comunidad/${param.idComunidad}`, { replace: true });
+    navigate(`/comunidades/${param.idComunidad}`, { replace: true });
   }
 
   return (

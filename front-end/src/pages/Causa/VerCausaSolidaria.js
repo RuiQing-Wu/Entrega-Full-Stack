@@ -36,7 +36,7 @@ export default function MostrarCausa() {
   }
 
   function onComunidadClicked() {
-    navigate(`/comunidad/${causa.comunidad}`, { replace: true });
+    navigate(`/comunidades/${causa.comunidad}`, { replace: true });
   }
 
   const fetchAcciones = useCallback(async () => {

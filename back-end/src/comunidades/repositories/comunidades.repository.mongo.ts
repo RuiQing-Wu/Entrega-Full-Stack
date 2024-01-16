@@ -57,6 +57,7 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
     const comunidades = await this.comunidadModel.find({
       nombre: { $regex: nombre, $options: 'i' },
     });
+    
     return comunidades.map((comunidad) => {
       return this.toComunidadDomain(comunidad);
     });

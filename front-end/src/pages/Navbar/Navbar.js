@@ -9,7 +9,6 @@ import { getToken, removeToken } from '../../utils/utils';
 export default function Menu() {
   const navigate = useNavigate();
   const user = useSelector((state) => {
-    // console.log('state.user.userInfo', state.user.userInfo);
     return state.user.userInfo;
   });
   const [token, setToken] = useState(getToken());

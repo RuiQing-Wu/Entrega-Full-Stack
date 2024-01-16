@@ -10,7 +10,7 @@ export class AccionesRepositoryMongo implements AccionesRepository {
     @InjectModel(AccionSolidaria.name)
     private readonly accionModel: Model<AccionMongoModel>,
   ) {
-    
+
   }
 
   private toAccionSolidariaDomain(accionModel: HydratedDocument<AccionSolidaria>): AccionSolidaria {
@@ -22,87 +22,130 @@ export class AccionesRepositoryMongo implements AccionesRepository {
       progreso: accionModel.progreso,
       causa: accionModel.causa,
     });
-    
+
     return accion;
   }
 
   async create(item: AccionSolidaria): Promise<AccionSolidaria> {
-    const accionCreated = await this.accionModel.create(item);
+    try {
+      const accionCreated = await this.accionModel.create(item);
+      const accion = new AccionSolidaria({
+        ...item,
+        id: accionCreated._id.toString(),
+      });
 
-    // TODO: asignar con el objeto
-    const accion = new AccionSolidaria({
-      ...item,
-      id: accionCreated._id.toString(),
-    });
-
-    return accion;
+      return accion;
+    }
+    catch (error) {
+      console.log(error);
+      throw new Error('Error al crear la accion solidaria');
+      // throw new RepositoryError('Error al crear la accion solidaria');
+    }
   }
 
   async get(id: string): Promise<AccionSolidaria> {
-    const accion = await this.accionModel.findById(id).exec();
-
-    return this.toAccionSolidariaDomain(accion);
+    try {
+      const accion = await this.accionModel.findById(id).exec();
+      return this.toAccionSolidariaDomain(accion);
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al obtener la accion solidaria con id ' + id);
+    }
   }
 
   async getByName(titulo: string): Promise<AccionSolidaria> {
-    const accion = await this.accionModel.findOne({ titulo }).exec();
+    try {
+      const accion = await this.accionModel.findOne({ titulo }).exec();
+      return this.toAccionSolidariaDomain(accion);
+    }
+    catch (error) {
+      console.log(error);
+      throw new Error('Error al obtener la accion solidaria con titulo' + titulo);
+    }
 
-    return this.toAccionSolidariaDomain(accion);
   }
 
   async getByCausaId(causa: string): Promise<AccionSolidaria[]> {
-    const accionesModel = await this.accionModel.find({ causa }).exec();
+    try {
+      const accionesModel = await this.accionModel.find({ causa }).exec();
 
-    const acciones = accionesModel.map((accionModel) => {
-      return this.toAccionSolidariaDomain(accionModel);
-    });
+      const acciones = accionesModel.map((accionModel) => {
+        return this.toAccionSolidariaDomain(accionModel);
+      });
 
-    return acciones;
+      return acciones;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al obtener la accion solidaria con causa' + causa);
+    }
+
   }
 
   async getByNameInsensitivePartial(
     titulo: string,
     idCausa: string,
   ): Promise<AccionSolidaria[]> {
-    const acciones = await this.getByCausaId(idCausa);
+    try {
+      const acciones = await this.getByCausaId(idCausa);
 
-    const accionesFiltradasPorComunidad = await this.accionModel
-      .find({
-        causa: { $in: acciones.map((accion) => accion.causa) },
-        titulo: { $regex: titulo, $options: 'i' },
-      })
-      .exec();
+      const accionesFiltradasPorComunidad = await this.accionModel
+        .find({
+          causa: { $in: acciones.map((accion) => accion.causa) },
+          titulo: { $regex: titulo, $options: 'i' },
+        })
+        .exec();
 
-    return accionesFiltradasPorComunidad.map((accion) => {
-      return this.toAccionSolidariaDomain(accion);
-    });
+      return accionesFiltradasPorComunidad.map((accion) => {
+        return this.toAccionSolidariaDomain(accion);
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al obtener la accion solidaria con titulo' + titulo);
+    }
   }
 
   async getAll(): Promise<AccionSolidaria[]> {
-    const accionesModel = await this.accionModel.find().exec();
+    try {
+      const accionesModel = await this.accionModel.find().exec();
 
-    const acciones = accionesModel.map((accionModel) => {
-      return this.toAccionSolidariaDomain(accionModel);
-    });
+      const acciones = accionesModel.map((accionModel) => {
+        return this.toAccionSolidariaDomain(accionModel);
+      });
 
-    return acciones;
+      return acciones;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al obtener las acciones solidarias');
+    }
   }
 
   async update(id: string, item: AccionSolidaria): Promise<AccionSolidaria> {
-    const accion = await this.accionModel.findByIdAndUpdate(id, item).exec();
-    const accionUpdated = new AccionSolidaria({
-      ...item,
-      id: accion._id.toString(),
-    });
+    try {
+      const accion = await this.accionModel.findByIdAndUpdate(id, item).exec();
+      const accionUpdated = new AccionSolidaria({
+        ...item,
+        id: accion._id.toString(),
+      });
 
-    return accionUpdated;
+      return accionUpdated;
+    }
+    catch (error) {
+      console.log(error);
+      throw new Error('Error al actualizar la accion solidaria');
+    }
   }
 
   async delete(id: string): Promise<AccionSolidaria> {
-    const accion = await this.get(id);
-    if (accion) {
-      await this.accionModel.findByIdAndDelete(id).exec();
-      return accion;
+    try {
+      const accion = await this.get(id);
+      if (accion) {
+        await this.accionModel.findByIdAndDelete(id).exec();
+        return accion;
+      }
+    }
+    catch (error) {
+      console.log(error);
+      throw new Error('Error al eliminar la accion solidaria');
     }
   }
 }

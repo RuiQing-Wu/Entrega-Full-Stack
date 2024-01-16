@@ -32,14 +32,17 @@ const CardCausaSolidaria = ({
   }
 
   async function refreshApoyo() {
+    // TODO: ESTO NO DEBERIA NECESITAR AUTHORIZATION
     const apoyo = await getApoyoCausa(idCausa);
     setApoyoActual(apoyo.numApoyo);
   }
 
+  // ESTO DEBERIA DEPENDER DEL VOTO ACTUAL NO?
   useEffect(() => {
     refreshApoyo();
   });
 
+  // ESTO NO DEBERIA SER UN USESTATE?
   let lista = [];
 
   if (objetivos !== undefined) {

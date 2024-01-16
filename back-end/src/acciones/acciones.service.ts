@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { IAccionService } from './interfaces/accion.service.interface';
 import { AccionSolidaria } from './domain/accion_solidaria.domain';
 import { CreateAccionDto } from './dto/create-accion.dto';
@@ -14,51 +14,95 @@ export class AccionesServiceImpl implements IAccionService {
   }
 
   create(createAccionDto: CreateAccionDto): Promise<AccionSolidaria> {
-    const accion = new AccionSolidaria(createAccionDto);
+    try {
+      const accion = new AccionSolidaria(createAccionDto);
 
-    return this.accionesRepository.create(accion);
+      return this.accionesRepository.create(accion);
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al crear la accion solidaria');
+    }
+
   }
 
   getByName(nombre: string): Promise<AccionSolidaria> {
-    return this.accionesRepository.getByName(nombre);
+    try{
+      return this.accionesRepository.getByName(nombre);
+    }
+    catch(error){
+      console.log(error);
+      throw new Error('Error al obtener la accion solidaria');
+    }
   }
 
   getByCausaId(causa: string): Promise<AccionSolidaria[]> {
-    return this.accionesRepository.getByCausaId(causa);
+    try{
+      return this.accionesRepository.getByCausaId(causa);
+    }
+    catch(error){
+      console.log(error);
+      throw new Error('Error al obtener la accion solidaria');
+    }
   }
 
   findAll(): Promise<AccionSolidaria[]> {
-    return this.accionesRepository.getAll();
+    try {
+      return this.accionesRepository.getAll();
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al obtener las acciones solidarias');
+    }
   }
 
   findOne(id: string): Promise<AccionSolidaria> {
-    return this.accionesRepository.get(id);
+    try {
+      return this.accionesRepository.get(id);
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al obtener la accion solidaria');
+    }
   }
 
   async update(id: string, updateAccionDto: UpdateAccionDto) {
-    const accion = await this.accionesRepository.get(id);
+    try {
+      const accion = await this.accionesRepository.get(id);
 
-    // creamos un objeto del dominio combinado con el DTO
-    const accionActualizada = new AccionSolidaria({
-      ...accion,
-      ...updateAccionDto,
-    });
+      // creamos un objeto del dominio combinado con el DTO
+      const accionActualizada = new AccionSolidaria({
+        ...accion,
+        ...updateAccionDto,
+      });
 
-    return this.accionesRepository.update(id, accionActualizada);
+      return this.accionesRepository.update(id, accionActualizada);
+    }
+    catch (error) {
+      console.log(error);
+      throw new Error('Error al actualizar la accion solidaria');
+    }
   }
 
   async getByNameInsensitivePartial(
     titulo: string,
     idCausa: string,
   ): Promise<AccionSolidaria[]> {
-    const causas = await this.accionesRepository.getByNameInsensitivePartial(
-      titulo,
-      idCausa,
-    );
-    return causas;
+    try{
+      const causas = await this.accionesRepository.getByNameInsensitivePartial(
+        titulo,
+        idCausa,
+      );
+      return causas;
+    }catch(error){
+      console.log(error);
+      throw new Error('Error al obtener la accion solidaria');
+    }
   }
 
   remove(id: string): Promise<AccionSolidaria> {
-    return this.accionesRepository.delete(id);
+    try {
+      return this.accionesRepository.delete(id);
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error al eliminar la accion solidaria');
+    }
   }
 }

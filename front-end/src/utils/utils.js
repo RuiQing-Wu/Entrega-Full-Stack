@@ -13,7 +13,6 @@ function removeToken() {
   localStorage.removeItem(TOKEN);
 }
 
-
 function getUserInfo() {
   return localStorage.getItem(USER_INFO);
 }
@@ -48,4 +47,13 @@ function refactorDate(fecha) {
   return formattedDate;
 }
 
-export { getToken, setToken, removeToken, getUserInfo, setUserInfo, removeUserInfo, dateToString, refactorDate };
+export {
+  getToken,
+  setToken,
+  removeToken,
+  getUserInfo,
+  setUserInfo,
+  removeUserInfo,
+  dateToString,
+  refactorDate,
+};

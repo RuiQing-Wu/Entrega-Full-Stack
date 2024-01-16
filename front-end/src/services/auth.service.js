@@ -68,8 +68,6 @@ async function getProfile() {
 function getProfileThunk() {
   return async function fetchTodoByIdThunk(dispatch, getState) {
     const response = await getProfile();
-    // eslint-disable-next-line no-console
-    // console.log('RESPONSE ', response);
 
     if (response.username === undefined) {
       return;

@@ -65,7 +65,7 @@ export default function Comunidad() {
     }
 
     // Navegar a la página que contiene los detalles de la nueva comunidad
-    navigate(`/comunidad/${response.id}`);
+    navigate(`/comunidades/${response.id}`);
   }
 
   function onHomeClicked() {
