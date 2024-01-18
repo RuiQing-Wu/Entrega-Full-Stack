@@ -19,6 +19,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
   ApiOkResponse,
+  ApiBody,
 } from '@nestjs/swagger';
 import { AuthGuard } from '../guards/auth.guard';
 import { AuthService } from './auth.service';
@@ -32,9 +33,25 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Public()
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['username', 'password'],
+      properties: {
+        username: {
+          type: 'string',
+          example: 'user1',
+        },
+        password: {
+          type: 'string',
+          example: '123456',
+        }
+      },  
+    },
+  })
   @ApiOperation({ summary: 'Iniciar sesión' })
   @ApiOkResponse({ description: 'OK' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })

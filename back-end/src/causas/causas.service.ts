@@ -4,6 +4,7 @@ import { UpdateCausaDto } from './dto/update-causa.dto';
 import { ICausasService } from './interfaces/causas.service.interface';
 import { CausaSolidaria } from './domain/causa_solidaria.domain';
 import { CausasRepository } from './repositories/causas.repository';
+import { IllegalArgumentError } from 'src/base/argumentError';
 
 @Injectable()
 export class CausasServiceImpl implements ICausasService {
@@ -14,44 +15,67 @@ export class CausasServiceImpl implements ICausasService {
 
   }
 
-  create(createCausaDto: CreateCausaDto): Promise<CausaSolidaria> {
+  async create(createCausaDto: CreateCausaDto): Promise<CausaSolidaria> {
     const causa = new CausaSolidaria(createCausaDto);
-    return this.causasRepository.create(causa);
+    return await this.causasRepository.create(causa);
   }
 
-  findAll(): Promise<CausaSolidaria[]> {
-    return this.causasRepository.getAll();
+  async findAll(): Promise<CausaSolidaria[]> {
+    return await this.causasRepository.getAll();
   }
 
-  findOne(id: string): Promise<CausaSolidaria> {
-    return this.causasRepository.get(id);
+  async findOne(id: string): Promise<CausaSolidaria> {
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id de la causa no puede ser vacio');
+    }
+
+    return await this.causasRepository.get(id);
   }
 
-  getByName(titulo: string): Promise<CausaSolidaria[]> {
-    return this.causasRepository.getByName(titulo);
+  async getByName(titulo: string): Promise<CausaSolidaria[]> {
+    if (titulo === null || titulo.trim() === '') {
+      throw new IllegalArgumentError('El titulo de la causa no puede ser vacio');
+    }
+
+    return await this.causasRepository.getByName(titulo);
   }
 
-  getByComunidadId(comunidad: string): Promise<CausaSolidaria[]> {
-    return this.causasRepository.getByComunidadId(comunidad);
+  async getByComunidadId(comunidad: string): Promise<CausaSolidaria[]> {
+    if (comunidad === null || comunidad.trim() === '') {
+      throw new IllegalArgumentError('El id de la comunidad no puede ser vacio');
+    }
+
+    return await this.causasRepository.getByComunidadId(comunidad);
   }
 
   async update(id: string, updateCausaDto: UpdateCausaDto) {
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id de la causa no puede ser vacio');
+    }
+
     const causa = await this.causasRepository.get(id);
 
     // creamos un objeto del dominio combinado con el DTO
     const comunidadActualizada = new CausaSolidaria({
-        ...causa,
-        ...updateCausaDto,
-      }
+      ...causa,
+      ...updateCausaDto,
+    }
     );
 
-    return this.causasRepository.update(id, comunidadActualizada);
+    return await this.causasRepository.update(id, comunidadActualizada);
   }
 
   async getByNameInsensitivePartial(
     titulo: string,
     idComunidad: string,
   ): Promise<CausaSolidaria[]> {
+    if (titulo === null || titulo.trim() === '') {
+      throw new IllegalArgumentError('El titulo de la causa no puede ser vacio');
+    }
+    if (idComunidad === null || idComunidad.trim() === '') {
+      throw new IllegalArgumentError('El id de la comunidad no puede ser vacio');
+    }
+
     const causas = await this.causasRepository.getByNameInsensitivePartial(
       titulo,
       idComunidad,
@@ -59,7 +83,11 @@ export class CausasServiceImpl implements ICausasService {
     return causas;
   }
 
-  remove(id: string): Promise<CausaSolidaria> {
-    return this.causasRepository.delete(id);
+  async remove(id: string): Promise<CausaSolidaria> {
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id de la causa no puede ser vacio');
+    }
+    
+    return await this.causasRepository.delete(id);
   }
 }

@@ -1,64 +1,121 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, InternalServerErrorException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { CreateSolicitudDto } from './dto/create-solicitud.dto';
 import { UpdateSolicitudDto } from './dto/update-solicitud.dto';
 import { ISolicitudesService } from './interfaces/solicitudes.service.interface';
 import { Public } from 'src/decorators/public.decorator';
-import { ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { RepositoryError } from 'src/base/repositoryError';
+import { IllegalArgumentError } from 'src/base/argumentError';
+import { EntityNotFoundError } from 'src/base/entityNotFounError';
 
 @ApiTags('solicitudes')
 @Controller('solicitud')
 export class SolicitudController {
   constructor(private readonly solicitudService: ISolicitudesService) { }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear una solicitud' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
-  @ApiCreatedResponse({ description: 'Petición creada' })
-  @ApiBearerAuth()
+  @ApiBody({ type: CreateSolicitudDto, description: 'Datos a crear', required: true })
+  @ApiCreatedResponse({ description: 'Solicitud creada' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
-  create(@Body() createSolicitudDto: CreateSolicitudDto) {
+  async create(@Body() createSolicitudDto: CreateSolicitudDto) {
     console.log(createSolicitudDto);
-    return this.solicitudService.create(createSolicitudDto);
+    try {
+      return await this.solicitudService.create(createSolicitudDto);
+    } catch (error) {
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
-  @ApiOperation({ summary: 'Obtiene todas las peticiones registradas' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiOkResponse({ description: 'Peticiones obtenidas' })
+  @Public()
+  @ApiOperation({ summary: 'Obtiene todas las solicitudes registradas' })
+  @ApiOkResponse({ description: 'Solicitudes obtenidas' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
-  @Public()
-  findAll() {
-    return this.solicitudService.findAll();
+  async findAll() {
+    try {
+      return await this.solicitudService.findAll();
+    } catch (error) {
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
-  
-  @ApiOperation({ summary: 'Obtener una petición mediante id' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiNotFoundResponse({ description: 'Petición no encontrada' })
-  @ApiOkResponse({ description: 'Petición encontrada' })
+
   @Public()
+  @ApiOperation({ summary: 'Obtener una solicitud mediante id' })
+  @ApiParam({ name: 'id', type: 'string', description: 'Id de la solicitud', required: true })
+  @ApiOkResponse({ description: 'Solicitud obtenida' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.solicitudService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.solicitudService.findOne(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError) {
+        throw new BadRequestException(error.message);
+      }
+
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      if (error instanceof RepositoryError) {
+        throw new InternalServerErrorException(error.message);
+      }
+    }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar una solicitud mediante id' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
-  @ApiNotFoundResponse({ description: 'Petición no encontrada' })
-  @ApiOkResponse({ description: 'Petición actualizada' })
-  @ApiBearerAuth()
+  @ApiParam({ name: 'id', type: 'string', description: 'Id de la solicitud', required: true })
+  @ApiBody({ type: UpdateSolicitudDto, description: 'Datos a actualizar', required: true })
+  @ApiOkResponse({ description: 'Solicitud actualizada' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSolicitudDto: UpdateSolicitudDto) {
-    return this.solicitudService.update(id, updateSolicitudDto);
+  async update(@Param('id') id: string, @Body() updateSolicitudDto: UpdateSolicitudDto) {
+    try {
+      return await this.solicitudService.update(id, updateSolicitudDto);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
-  @ApiOperation({ summary: 'Eliminar una solicitud mediante id' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
-  @ApiNotFoundResponse({ description: 'Peticion no encontrada' })
-  @ApiOkResponse({ description: 'Petición eliminada' })
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Eliminar una solicitud mediante id' })
+  @ApiParam({ name: 'id', type: 'string', description: 'Id de la solicitud', required: true })
+  @ApiOkResponse({ description: 'Solicitud eliminada' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.solicitudService.remove(id);
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.solicitudService.remove(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 }

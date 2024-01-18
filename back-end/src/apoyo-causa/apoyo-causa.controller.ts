@@ -6,6 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  InternalServerErrorException,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -16,79 +19,151 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
   ApiOkResponse,
+  ApiBody,
+  ApiParam,
+  ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { CreateApoyoCausaDto } from './dto/create-apoyo-causa.dto';
 import { UpdateApoyoCausaDto } from './dto/update-apoyo-causa.dto';
 import { IApoyoCausaService } from './interfaces/apoyo-causa.interface';
 import { Public } from 'src/decorators/public.decorator';
-import { NOTFOUND } from 'dns';
+import { RepositoryError } from 'src/base/repositoryError';
+import { IllegalArgumentError } from 'src/base/argumentError';
+import { EntityNotFoundError } from 'src/base/entityNotFounError';
 
 @ApiTags('apoyo-causa')
 @Controller('apoyo-causa')
 export class ApoyoCausaController {
-  constructor(private readonly apoyoCausaService: IApoyoCausaService) {}
+  constructor(private readonly apoyoCausaService: IApoyoCausaService) { }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un apoyo a una causa solidaria' })
+  @ApiBody({ type: CreateApoyoCausaDto })
   @ApiCreatedResponse({ description: 'Accion solidaria creada' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
-  create(@Body() createApoyoCausaDto: CreateApoyoCausaDto) {
-    return this.apoyoCausaService.create(createApoyoCausaDto);
+  async create(@Body() createApoyoCausaDto: CreateApoyoCausaDto) {
+    try {
+      return await this.apoyoCausaService.create(createApoyoCausaDto);
+    } catch (error) {
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
   @Public()
   @ApiOperation({ summary: 'Obtener todas los apoyos a causa' })
   @ApiOkResponse({ description: 'OK' })
-  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
-  findAll() {
-    return this.apoyoCausaService.findAll();
+  async findAll() {
+    try {
+      return await this.apoyoCausaService.findAll();
+    } catch (error) {
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
   @Public()
   @ApiOperation({ summary: 'Obtener el apoyo de una causa' })
+  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del apoyo a la causa' })
   @ApiOkResponse({ description: 'OK' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.apoyoCausaService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.apoyoCausaService.findOne(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError) {
+        throw new BadRequestException(error.message);
+      }
+
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      if (error instanceof RepositoryError) {
+        throw new InternalServerErrorException(error.message);
+      }
+    }
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un apoyo a una causa solidaria' })
-  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del apoyo a la causa' })
+  @ApiBody({ type: UpdateApoyoCausaDto, description: 'Datos a actualizar', required: true })
   @ApiOkResponse({ description: 'Apoyo a la causa actualizada' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateApoyoCausaDto: UpdateApoyoCausaDto,
   ) {
-    return this.apoyoCausaService.update(id, updateApoyoCausaDto);
+    try {
+      return await this.apoyoCausaService.update(id, updateApoyoCausaDto);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un apoyo a una causa solidaria' })
+  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del apoyo a la causa' })
+  @ApiOkResponse({ description: 'Apoyo a la causa eliminada' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({ description: 'Not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  @ApiOkResponse({ description: 'Apoyo a la causa eliminada' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.apoyoCausaService.remove(id);
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.apoyoCausaService.remove(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
   @Public()
   @ApiOperation({ summary: 'Apoyar una causa solidaria' })
+  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del apoyo a la causa' })
   @ApiOkResponse({ description: 'OK' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Patch('apoyar/:id')
-  apoyar(@Param('id') id: string) {
-    const respuesta = this.apoyoCausaService.apoyar(id);
-    if (respuesta === null) {
-      return NOTFOUND;
+  async apoyar(@Param('id') id: string) {
+    try {
+      return await this.apoyoCausaService.apoyar(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
     }
-    return respuesta;
   }
 }

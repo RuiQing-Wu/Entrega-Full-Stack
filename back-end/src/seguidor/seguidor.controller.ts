@@ -1,99 +1,187 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { CreateSeguidorDto } from './dto/create-seguidor.dto';
 import { UpdateSeguidorDto } from './dto/update-seguidor.dto';
 import { ISeguidorService } from './interfaces/seguidor.service.interface';
 import { Public } from 'src/decorators/public.decorator';
-import { ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { RepositoryError } from 'src/base/repositoryError';
+import { IllegalArgumentError } from 'src/base/argumentError';
+import { EntityNotFoundError } from 'src/base/entityNotFounError';
 
 @ApiTags('seguidores')
 @Public()
 @Controller('seguidor')
 export class SeguidorController {
-  constructor(private readonly seguidorService: ISeguidorService) {}
+  constructor(private readonly seguidorService: ISeguidorService) { }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear una relación de seguimiento' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
+  @ApiBody({ type: CreateSeguidorDto, description: 'Datos a crear', required: true })
   @ApiCreatedResponse({ description: 'Seguimiento creado' })
-  @Public()
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
-  create(@Body() createSeguidorDto: CreateSeguidorDto) {
-    return this.seguidorService.create(createSeguidorDto);
+  async create(@Body() createSeguidorDto: CreateSeguidorDto) {
+    try {
+      return await this.seguidorService.create(createSeguidorDto);
+    } catch (error) {
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtiene todas las relaciones de seguimiento entre usuarios' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
   @ApiOkResponse({ description: 'Relaciones obtenidas' })
-  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
-  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
-  findAll() {
-    return this.seguidorService.findAll();
+  async findAll() {
+    try {
+      return await this.seguidorService.findAll();
+    } catch (error) {
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener una relación de seguimiento mediante id' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiNotFoundResponse({ description: 'Relación no encontrada' })
-  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
-  @ApiOkResponse({ description: 'Relación encontrada' })
-  @ApiBearerAuth()
+  @ApiParam({ name: 'id', type: String, description: 'Id de la relación de seguimiento' })
+  @ApiOkResponse({ description: 'Relación obtenida' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.seguidorService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.seguidorService.findOne(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError) {
+        throw new BadRequestException(error.message);
+      }
+
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      if (error instanceof RepositoryError) {
+        throw new InternalServerErrorException(error.message);
+      }
+    }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar una relación de seguimiento mediante id' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
-  @ApiNotFoundResponse({ description: 'Relación no encontrada' })
+  @ApiParam({ name: 'id', type: String, description: 'Id de la relación de seguimiento' })
+  @ApiBody({ type: UpdateSeguidorDto, description: 'Datos a actualizar', required: true })
   @ApiOkResponse({ description: 'Relación actualizada' })
-  @ApiBearerAuth()
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSeguidorDto: UpdateSeguidorDto) {
-    return this.seguidorService.update(id, updateSeguidorDto);
+  async update(@Param('id') id: string, @Body() updateSeguidorDto: UpdateSeguidorDto) {
+    try {
+      return await this.seguidorService.update(id, updateSeguidorDto);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Elimina una relación de seguimiento mediante id' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
-  @ApiNotFoundResponse({ description: 'Ralación no encontrada' })
+  @ApiParam({ name: 'id', type: String, description: 'Id de la relación de seguimiento' })
   @ApiOkResponse({ description: 'Relación eliminada' })
-  @ApiBearerAuth()
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.seguidorService.remove(id);
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.seguidorService.remove(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Establece una relación de seguimiento entre usuarios' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
+  @ApiBody({ type: [CreateSeguidorDto], description: 'Datos a crear', required: true })
   @ApiCreatedResponse({ description: 'Relación creada' })
-  @ApiBearerAuth()
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post('seguir/')
-  seguir(@Body() createSeguidorOrigenDto: CreateSeguidorDto[]) {
-    console.log('seguir');
-    console.log(createSeguidorOrigenDto);
-    return this.seguidorService.seguir(createSeguidorOrigenDto);
+  async seguir(@Body() createSeguidorOrigenDto: CreateSeguidorDto[]) {
+    try {
+      return await this.seguidorService.seguir(createSeguidorOrigenDto);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Devuelve las relaciones de seguimiento de un usuario dado su id' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
-  @ApiNotFoundResponse({ description: 'Usuario no encontrado' })
+  @ApiParam({ name: 'id', type: 'string', required: true, description: 'Id del usuario' })
   @ApiOkResponse({ description: 'Relaciones obtenidas' })
-  @ApiBearerAuth()
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
+  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
   @Get('seguidos/:id')
-  getUsuariosSeguidos(@Param('id') id: string) {
-    return this.seguidorService.getUsuariosSeguidos(id);
+  async getUsuariosSeguidos(@Param('id') id: string) {
+    try {
+      return await this.seguidorService.getUsuariosSeguidos(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError) {
+        throw new BadRequestException(error.message);
+      }
+
+      if (error instanceof RepositoryError) {
+        throw new InternalServerErrorException(error.message);
+      }
+    }
   }
 
-  @ApiOperation({ summary: 'Devuelve las relaciones de seguimiento con un usuario dado su id' })
-  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
-  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
-  @ApiNotFoundResponse({ description: 'Usuario no encontrado' })
-  @ApiOkResponse({ description: 'Relaciones obtenidas' })
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Devuelve las relaciones que te siguen con un usuario dado su id' })
+  @ApiParam({ name: 'id', type: 'string', required: true, description: 'Id del usuario' })
+  @ApiOkResponse({ description: 'Relaciones obtenidas' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
+  @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
   @Get('seguidores/:id')
-  getUsuariosSeguidores(@Param('id') id: string) {
-    return this.seguidorService.getUsuariosSeguidores(id);
+  async getUsuariosSeguidores(@Param('id') id: string) {
+    try {
+      return await this.seguidorService.getUsuariosSeguidores(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError) {
+        throw new BadRequestException(error.message);
+      }
+
+      if (error instanceof RepositoryError) {
+        throw new InternalServerErrorException(error.message);
+      }
+    }
   }
 }

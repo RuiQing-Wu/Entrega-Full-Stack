@@ -8,147 +8,204 @@ import {
   Delete,
   InternalServerErrorException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { Public } from 'src/decorators/public.decorator';
+import { Public } from '../decorators/public.decorator';
 import { IAccionService } from './interfaces/accion.service.interface';
 import { CreateAccionDto } from './dto/create-accion.dto';
 import { UpdateAccionDto } from './dto/update-accion.dto';
+import { RepositoryError } from '../base/repositoryError';
+import { IllegalArgumentError } from '../base/argumentError';
+import { EntityNotFoundError } from '../base/entityNotFounError';
 
 @ApiTags('acciones')
 @Controller('acciones')
 export class AccionesController {
-  constructor(private readonly accionesService: IAccionService) {}
+  constructor(private readonly accionesService: IAccionService) { }
 
-  @ApiOperation({ summary: 'Crear una accion solidaria' })
   @ApiBearerAuth()
-  @ApiResponse({ status: 201, description: 'Accion solidaria creada' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiOperation({ summary: 'Crear una accion solidaria' })
+  @ApiBody({ type: CreateAccionDto, description: 'Datos a crear', required: true })
+  @ApiCreatedResponse({ status: 201, description: 'Accion solidaria creada' })
+  @ApiUnauthorizedResponse({ status: 401, description: 'Unauthorized' })
+  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
   @Post()
-  create(@Body() createAccionDto: CreateAccionDto) {
-    try
-    {
-      return this.accionesService.create(createAccionDto);  
+  async create(@Body() createAccionDto: CreateAccionDto) {
+    try {
+      return await this.accionesService.create(createAccionDto);
     }
-    catch(error)
-    {
-      console.log(error);
-      throw new InternalServerErrorException('Error al crear la accion solidaria');
+    catch (error) {
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
     }
   }
 
   @Public()
   @ApiOperation({ summary: 'Obtener todas las acciones solidarias' })
+  @ApiOkResponse({ status: 200, description: 'Devolver la lista de acciones solidarias' })
+  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
   @Get()
-  findAll() {
-    try{
-      return this.accionesService.findAll();
-    }catch(error){
-      console.log(error);
-      throw new NotFoundException('Error al obtener las acciones solidarias');
+  async findAll() {
+    try {
+      return await this.accionesService.findAll();
+    } catch (error) {
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
     }
   }
 
   @Public()
   @ApiOperation({ summary: 'Obtener una accion solidaria' })
-  @ApiResponse({
-    status: 200,
-    description: 'Accion solidaria obtenida',
-  })
+  @ApiParam({ name: 'id', type: 'string', required: true, description: 'Id de la accion solidaria' })
+  @ApiOkResponse({ status: 200, description: 'OK' })
+  @ApiBadRequestResponse({ status: 400, description: 'Bad request' })
+  @ApiNotFoundResponse({ status: 404, description: 'Not found' })
+  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    try{
-      return this.accionesService.findOne(id);
-    }catch(error){
-      console.log(error);
-      throw new NotFoundException('Error al obtener la accion solidaria');
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.accionesService.findOne(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError) {
+        throw new BadRequestException(error.message);
+      }
+
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      if (error instanceof RepositoryError) {
+        throw new InternalServerErrorException(error.message);
+      }
     }
   }
 
   @Public()
   @ApiOperation({ summary: 'Obtener una accion solidaria por nombre' })
-  @ApiResponse({
-    status: 200,
-    description: 'Accion solidaria obtenida',
-  })
+  @ApiParam({ name: 'nombre', type: 'string', required: true, description: 'Título de la accion solidaria' })
+  @ApiOkResponse({ status: 200, description: 'OK' })
+  @ApiBadRequestResponse({ status: 400, description: 'Bad request' })
+  @ApiNotFoundResponse({ status: 404, description: 'Not found' })
+  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
   @Get('/name/:nombre')
-  findByName(@Param('nombre') titulo: string) {
-    try{
-      return this.accionesService.getByName(titulo);
-    }catch(error){
-      console.log(error);
-      throw new NotFoundException('Error al obtener la accion solidaria');
+  async findByName(@Param('nombre') titulo: string) {
+    try {
+      return await this.accionesService.getByName(titulo);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
     }
   }
 
   @Public()
-  @ApiOperation({ summary: 'Obtener una accion solidaria por causa' })
-  @ApiResponse({
-    status: 200,
-    description: 'Accion solidaria obtenida',
-  })
+  @ApiOperation({ summary: 'Obtener acciones solidaria por causa' })
+  @ApiParam({ name: 'causa', type: 'string', required: true, description: 'Id de la causa' })
+  @ApiOkResponse({ status: 200, description: 'OK' })
+  @ApiBadRequestResponse({ status: 400, description: 'Bad request' })
+  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
   @Get('/causa/:causa')
-  findByCausa(@Param('causa') causa: string) {
-    try{
-      return this.accionesService.getByCausaId(causa);
-    }catch(error){
-      console.log(error);
-      throw new NotFoundException('Error al obtener la accion solidaria');
+  async findByCausa(@Param('causa') causa: string) {
+    try {
+      return await this.accionesService.getByCausaId(causa);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
     }
   }
 
   @Public()
-  @ApiOperation({ summary: 'Obtener una accion solidaria por titulo' })
-  @ApiResponse({
-    status: 200,
-    description: 'Accion solidaria obtenida por titulo',
-  })
+  @ApiOperation({ summary: 'Obtener acciones solidaria por titulo' })
+  @ApiParam({ name: 'titulo', type: 'string', required: true, description: 'Título de la accion solidaria' })
+  @ApiParam({ name: 'idCausa', type: 'string', required: true, description: 'Id de la causa' })
+  @ApiOkResponse({ status: 200, description: 'OK' })
+  @ApiBadRequestResponse({ status: 400, description: 'Bad request' })
+  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
   @Get('/nameInsensitivePartial/:titulo/:idCausa')
-  getByNameInsensitivePartial(
+  async getByNameInsensitivePartial(
     @Param('titulo') titulo: string,
     @Param('idCausa') idCausa: string,
   ) {
-    try{
-      return this.accionesService.getByNameInsensitivePartial(titulo, idCausa);
-    }catch(error){
-      console.log(error);
-      throw new NotFoundException('Error al obtener la accion solidaria');
-    }
-  }
-
-  @ApiOperation({ summary: 'Actualizar una accion solidaria' })
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 200, description: 'Accion solidaria actualizada' })
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAccioneDto: UpdateAccionDto) {
-    try
-    {
-      return this.accionesService.update(id, updateAccioneDto);
-    }
-    catch(error)
-    {
-      console.log(error);
-      throw new InternalServerErrorException('Error al actualizar la accion solidaria');
-    }
-  }
-
-  @ApiOperation({ summary: 'Eliminar una accion solidaria' })
-  @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Accion solidaria eliminada' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
     try {
-      return this.accionesService.remove(id);
+      return await this.accionesService.getByNameInsensitivePartial(titulo, idCausa);
     } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Error al eliminar la accion solidaria');
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Actualizar una accion solidaria' })
+  @ApiParam({ name: 'id', type: 'string', required: true, description: 'Id de la accion solidaria' })
+  @ApiBody({ type: UpdateAccionDto, description: 'Datos a actualizar', required: true })
+  @ApiOkResponse({ status: 200, description: 'Accion solidaria actualizada' })
+  @ApiBadRequestResponse({ status: 400, description: 'Bad request' })
+  @ApiUnauthorizedResponse({ status: 401, description: 'Unauthorized' })
+  @ApiNotFoundResponse({ status: 404, description: 'Not found' })
+  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() updateAccioneDto: UpdateAccionDto) {
+    try {
+      return await this.accionesService.update(id, updateAccioneDto);
+    }
+    catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Eliminar una accion solidaria' })
+  @ApiParam({ name: 'id', type: 'string', required: true, description: 'Id de la accion solidaria' })
+  @ApiOkResponse({ status: 200, description: 'Accion solidaria eliminada' })
+  @ApiBadRequestResponse({ status: 400, description: 'Bad request' })
+  @ApiUnauthorizedResponse({ status: 401, description: 'Unauthorized' })
+  @ApiNotFoundResponse({ status: 404, description: 'Not found' })
+  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.accionesService.remove(id);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
     }
   }
 }

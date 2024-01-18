@@ -3,12 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ComunidadesRepository } from './comunidades.repository';
 import { Comunidad } from '../domain/comunidades.domain';
 import { ComunidadMongoModel } from '../schemas/comunidad.schema';
+import { RepositoryError } from 'src/base/repositoryError';
+import { EntityNotFoundError } from 'src/base/entityNotFounError';
 
 export class ComunidadesRepositoryMongo implements ComunidadesRepository {
   constructor(
     @InjectModel(Comunidad.name)
     private readonly comunidadModel: Model<ComunidadMongoModel>,
-  ) {}
+  ) { }
 
   //Transforma un objeto del modelo de persistencia en un objeto de dominio
   private toComunidadDomain(comunidadModel: HydratedDocument<ComunidadMongoModel>): Comunidad {
@@ -21,65 +23,102 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
         idAdministrador: comunidadModel.idAdministrador,
         usuarios: comunidadModel.usuarios,
       });
-      
+
       return comunidad;
     }
   }
 
   async create(item: Comunidad): Promise<Comunidad> {
-    const comunidadCreated = await this.comunidadModel.create(item);
+    try {
+      const comunidadCreated = await this.comunidadModel.create(item);
 
-    // TODO: asignar con el objeto
-    const comunidad = new Comunidad({
-      id: comunidadCreated._id.toString(),
-      nombre: comunidadCreated.nombre,
-      descripcion: comunidadCreated.descripcion,
-      fechaInicio: comunidadCreated.fechaInicio,
-      idAdministrador: comunidadCreated.idAdministrador,
-      usuarios: comunidadCreated.usuarios,
-    });
+      const comunidad = new Comunidad({
+        ...item,
+        id: comunidadCreated._id.toString(),
+      });
 
-    return comunidad;
+      return comunidad;
+    } catch (error) {
+      throw new RepositoryError('Error al crear la comunidad');
+    }
   }
 
   async get(id: string): Promise<Comunidad> {
-    const comunidad = await this.comunidadModel.findById(id).exec();
+    try {
+      const comunidad = await this.comunidadModel.findById(id).exec();
 
-    return this.toComunidadDomain(comunidad);
+      if (comunidad === null) {
+        throw new EntityNotFoundError('Comunidad no encontrada con id ' + id);
+      }
+
+      return this.toComunidadDomain(comunidad);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw error;
+      }
+
+      throw new RepositoryError('Error al obtener la comunidad con id ' + id);
+    }
   }
 
   async getByName(name: string): Promise<Comunidad> {
-    const comunidad = await this.comunidadModel.findOne({ nombre: name });
-    return this.toComunidadDomain(comunidad);
+    try {
+      const comunidad = await this.comunidadModel.findOne({ nombre: name });
+      if (comunidad === null) {
+        throw new EntityNotFoundError('Comunidad no encontrada con nombre ' + name);
+      }
+
+      return this.toComunidadDomain(comunidad);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw error;
+      }
+
+      throw new RepositoryError('Error al obtener la comunidad con nombre ' + name);
+    }
   }
 
   async getByNameInsensitivePartial(nombre: string): Promise<Comunidad[]> {
-    const comunidades = await this.comunidadModel.find({
-      nombre: { $regex: nombre, $options: 'i' },
-    });
-    
-    return comunidades.map((comunidad) => {
-      return this.toComunidadDomain(comunidad);
-    });
+    try {
+      const comunidades = await this.comunidadModel.find({
+        nombre: { $regex: nombre, $options: 'i' },
+      });
+
+      return comunidades.map((comunidad) => {
+        return this.toComunidadDomain(comunidad);
+      });
+    } catch (error) {
+      throw new RepositoryError('Error al obtener las comunidades con nombre ' + nombre);
+    }
   }
 
-  async getAll(): Promise<any[]> {
-    const comunidadesModel = await this.comunidadModel.find().exec();
+  async getAll(): Promise<Comunidad[]> {
+    try {
+      const comunidadesModel = await this.comunidadModel.find().exec();
 
-    const comunidades = comunidadesModel.map((comunidadModel) => {
-      return this.toComunidadDomain(comunidadModel);
-    });
+      const comunidades = comunidadesModel.map((comunidadModel) => {
+        return this.toComunidadDomain(comunidadModel);
+      });
 
-    return comunidades;
+      return comunidades;
+    } catch (error) {
+      throw new RepositoryError('Error al obtener las comunidades');
+    }
   }
 
   async getComunidadesByUser(idUsuario: string): Promise<Comunidad[]> {
-    const comunidades = await this.comunidadModel.find({
-      usuarios: { $in: [idUsuario] },
-    });
-    return comunidades.map((comunidad) => {
-      return this.toComunidadDomain(comunidad);
-    });
+    try {
+      const comunidades = await this.comunidadModel.find({
+        usuarios: { $in: [idUsuario] },
+      });
+
+      return comunidades.map((comunidad) => {
+        return this.toComunidadDomain(comunidad);
+      });
+
+    } catch (error) {
+      throw new RepositoryError('Error al obtener las comunidades del usuario con id ' + idUsuario);
+    }
   }
 
   /* async addMember(idComunidad: string, idUsuario: string): Promise<Comunidad> {
@@ -90,21 +129,29 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
   } */
 
   async update(id: string, item: Comunidad): Promise<Comunidad> {
-    const comunidad = await this.comunidadModel.findByIdAndUpdate(id, item).exec();
-    const comunidadUpdated = new Comunidad({
-      ...item,
-      id: comunidad._id.toString(),
-    });
+    try {
+      const comunidad = await this.comunidadModel.findByIdAndUpdate(id, item).exec();
+      const comunidadUpdated = new Comunidad({
+        ...item,
+        id: comunidad._id.toString(),
+      });
 
-    return comunidadUpdated;
+      return comunidadUpdated;
+    } catch (error) {
+      throw new RepositoryError('Error al actualizar la comunidad con id ' + id);
+    }
   }
 
   async delete(id: string): Promise<Comunidad> {
     const comunidad = await this.get(id);
-    
-    if (comunidad) {
-      await this.comunidadModel.findByIdAndDelete(id).exec();
-      return comunidad;
+
+    try {
+      if (comunidad) {
+        await this.comunidadModel.findByIdAndDelete(id).exec();
+        return comunidad;
+      }
+    } catch (error) {
+      throw new RepositoryError('Error al eliminar la comunidad con id ' + id);
     }
   }
 }

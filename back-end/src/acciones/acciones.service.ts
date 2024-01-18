@@ -1,9 +1,12 @@
-import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { IAccionService } from './interfaces/accion.service.interface';
 import { AccionSolidaria } from './domain/accion_solidaria.domain';
 import { CreateAccionDto } from './dto/create-accion.dto';
 import { UpdateAccionDto } from './dto/update-accion.dto';
 import { AccionesRepository } from './repositories/acciones.repository';
+import { EntityNotFoundError } from 'src/base/entityNotFounError';
+import { IllegalArgumentError } from 'src/base/argumentError';
+import { RepositoryError } from 'src/base/repositoryError';
 
 @Injectable()
 export class AccionesServiceImpl implements IAccionService {
@@ -13,96 +16,84 @@ export class AccionesServiceImpl implements IAccionService {
   ) {
   }
 
-  create(createAccionDto: CreateAccionDto): Promise<AccionSolidaria> {
-    try {
-      const accion = new AccionSolidaria(createAccionDto);
-
-      return this.accionesRepository.create(accion);
-    } catch (error) {
-      console.log(error);
-      throw new Error('Error al crear la accion solidaria');
-    }
-
+  async create(createAccionDto: CreateAccionDto): Promise<AccionSolidaria> {
+    const accion = new AccionSolidaria(createAccionDto);
+    return await this.accionesRepository.create(accion);
   }
 
-  getByName(nombre: string): Promise<AccionSolidaria> {
-    try{
-      return this.accionesRepository.getByName(nombre);
+  async getByName(nombre: string): Promise<AccionSolidaria> {
+    if (nombre == null || nombre.trim() === '') {
+      throw new IllegalArgumentError('El nombre de la accion solidaria no puede ser vacio');
     }
-    catch(error){
-      console.log(error);
-      throw new Error('Error al obtener la accion solidaria');
-    }
+
+    const accionSolidaria = await this.accionesRepository.getByName(nombre);
+    return accionSolidaria;
   }
 
-  getByCausaId(causa: string): Promise<AccionSolidaria[]> {
-    try{
-      return this.accionesRepository.getByCausaId(causa);
+  async getByCausaId(causa: string): Promise<AccionSolidaria[]> {
+    if (causa === null || causa.trim() === '') {
+      throw new IllegalArgumentError('El id de la causa no puede ser vacio');
     }
-    catch(error){
-      console.log(error);
-      throw new Error('Error al obtener la accion solidaria');
-    }
+
+    return await this.accionesRepository.getByCausaId(causa);
   }
 
-  findAll(): Promise<AccionSolidaria[]> {
-    try {
-      return this.accionesRepository.getAll();
-    } catch (error) {
-      console.log(error);
-      throw new Error('Error al obtener las acciones solidarias');
-    }
+  async findAll(): Promise<AccionSolidaria[]> {
+    return await this.accionesRepository.getAll();
   }
 
-  findOne(id: string): Promise<AccionSolidaria> {
-    try {
-      return this.accionesRepository.get(id);
-    } catch (error) {
-      console.log(error);
-      throw new Error('Error al obtener la accion solidaria');
+  async findOne(id: string): Promise<AccionSolidaria> {
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id de la accion solidaria no puede ser vacio');
     }
+
+    const accion = await this.accionesRepository.get(id);
+    return accion;
   }
 
   async update(id: string, updateAccionDto: UpdateAccionDto) {
-    try {
-      const accion = await this.accionesRepository.get(id);
-
-      // creamos un objeto del dominio combinado con el DTO
-      const accionActualizada = new AccionSolidaria({
-        ...accion,
-        ...updateAccionDto,
-      });
-
-      return this.accionesRepository.update(id, accionActualizada);
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id de la accion solidaria no puede ser vacio');
     }
-    catch (error) {
-      console.log(error);
-      throw new Error('Error al actualizar la accion solidaria');
-    }
+
+    const accion = await this.accionesRepository.get(id);
+
+    // creamos un objeto del dominio combinado con el DTO
+    const accionActualizada = new AccionSolidaria({
+      ...accion,
+      ...updateAccionDto,
+    });
+
+    return await this.accionesRepository.update(id, accionActualizada);
   }
 
   async getByNameInsensitivePartial(
     titulo: string,
     idCausa: string,
   ): Promise<AccionSolidaria[]> {
-    try{
-      const causas = await this.accionesRepository.getByNameInsensitivePartial(
-        titulo,
-        idCausa,
-      );
-      return causas;
-    }catch(error){
-      console.log(error);
-      throw new Error('Error al obtener la accion solidaria');
+
+    if (titulo === null || titulo.trim() === '') {
+      throw new IllegalArgumentError('El titulo de la accion solidaria no puede ser vacio');
     }
+
+    if (idCausa === null || idCausa.trim() === '') {
+      throw new IllegalArgumentError('El id de la causa no puede ser vacio');
+    }
+
+    const acciones = await this.accionesRepository.getByNameInsensitivePartial(
+      titulo,
+      idCausa,
+    );
+
+    return acciones;
   }
 
-  remove(id: string): Promise<AccionSolidaria> {
-    try {
-      return this.accionesRepository.delete(id);
-    } catch (error) {
-      console.log(error);
-      throw new Error('Error al eliminar la accion solidaria');
+  async remove(id: string): Promise<AccionSolidaria> {
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id de la accion solidaria no puede ser vacio');
     }
+
+    const accion = await this.accionesRepository.delete(id);
+    return accion;
   }
 }

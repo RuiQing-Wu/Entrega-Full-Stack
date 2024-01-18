@@ -4,6 +4,8 @@ import { HydratedDocument } from 'mongoose';
 import { AccionesRepository } from './acciones.repository';
 import { AccionSolidaria } from '../domain/accion_solidaria.domain';
 import { AccionMongoModel } from '../schemas/accion.schema';
+import { RepositoryError } from 'src/base/repositoryError';
+import { EntityNotFoundError } from 'src/base/entityNotFounError';
 
 export class AccionesRepositoryMongo implements AccionesRepository {
   constructor(
@@ -37,32 +39,46 @@ export class AccionesRepositoryMongo implements AccionesRepository {
       return accion;
     }
     catch (error) {
-      console.log(error);
-      throw new Error('Error al crear la accion solidaria');
-      // throw new RepositoryError('Error al crear la accion solidaria');
+      throw new RepositoryError('Error al crear la accion solidaria');
     }
   }
 
   async get(id: string): Promise<AccionSolidaria> {
     try {
       const accion = await this.accionModel.findById(id).exec();
+
+      if (accion === null) {
+        throw new EntityNotFoundError('Accion solidaria no encontrada con id ' + id);
+      }
+
       return this.toAccionSolidariaDomain(accion);
     } catch (error) {
-      console.log(error);
-      throw new Error('Error al obtener la accion solidaria con id ' + id);
+
+      if (error instanceof EntityNotFoundError) {
+        throw error;
+      }
+
+      throw new RepositoryError('Error al obtener la accion solidaria con id ' + id);
     }
   }
 
   async getByName(titulo: string): Promise<AccionSolidaria> {
     try {
       const accion = await this.accionModel.findOne({ titulo }).exec();
+
+      if (accion === null) {
+        throw new EntityNotFoundError('Accion solidaria no encontrada con titulo ' + titulo);
+      }
+
       return this.toAccionSolidariaDomain(accion);
     }
     catch (error) {
-      console.log(error);
-      throw new Error('Error al obtener la accion solidaria con titulo' + titulo);
-    }
+      if (error instanceof EntityNotFoundError) {
+        throw error;
+      }
 
+      throw new RepositoryError('Error al obtener la accion solidaria con titulo ' + titulo);
+    }
   }
 
   async getByCausaId(causa: string): Promise<AccionSolidaria[]> {
@@ -75,10 +91,8 @@ export class AccionesRepositoryMongo implements AccionesRepository {
 
       return acciones;
     } catch (error) {
-      console.log(error);
-      throw new Error('Error al obtener la accion solidaria con causa' + causa);
+      throw new RepositoryError('Error al obtener la accion solidaria con id causa ' + causa);
     }
-
   }
 
   async getByNameInsensitivePartial(
@@ -99,8 +113,7 @@ export class AccionesRepositoryMongo implements AccionesRepository {
         return this.toAccionSolidariaDomain(accion);
       });
     } catch (error) {
-      console.log(error);
-      throw new Error('Error al obtener la accion solidaria con titulo' + titulo);
+      throw new RepositoryError('Error al obtener la accion solidaria con titulo ' + titulo + ' y causa ' + idCausa);
     }
   }
 
@@ -114,8 +127,7 @@ export class AccionesRepositoryMongo implements AccionesRepository {
 
       return acciones;
     } catch (error) {
-      console.log(error);
-      throw new Error('Error al obtener las acciones solidarias');
+      throw new RepositoryError('Error al obtener las acciones solidarias');
     }
   }
 
@@ -130,22 +142,22 @@ export class AccionesRepositoryMongo implements AccionesRepository {
       return accionUpdated;
     }
     catch (error) {
-      console.log(error);
-      throw new Error('Error al actualizar la accion solidaria');
+      throw new RepositoryError('Error al actualizar la accion solidaria con id ' + id);
     }
   }
 
   async delete(id: string): Promise<AccionSolidaria> {
+    
+    const accion = await this.get(id);
+
     try {
-      const accion = await this.get(id);
       if (accion) {
         await this.accionModel.findByIdAndDelete(id).exec();
         return accion;
       }
     }
     catch (error) {
-      console.log(error);
-      throw new Error('Error al eliminar la accion solidaria');
+      throw new RepositoryError('Error al eliminar la accion solidaria con id ' + id);
     }
   }
 }

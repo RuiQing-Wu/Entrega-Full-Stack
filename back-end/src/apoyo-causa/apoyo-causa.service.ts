@@ -4,28 +4,37 @@ import { UpdateApoyoCausaDto } from './dto/update-apoyo-causa.dto';
 import { IApoyoCausaService } from './interfaces/apoyo-causa.interface';
 import { ApoyoCausaRepository } from './repositories/apoyo-causa.repository';
 import { ApoyoCausa } from './domain/apoyo-causa.domain';
+import { IllegalArgumentError } from 'src/base/argumentError';
 
 @Injectable()
 export class ApoyoCausaServiceImpl implements IApoyoCausaService {
   constructor(
     @Inject(ApoyoCausaRepository)
     private apoyoCausaRepository: ApoyoCausaRepository,
-  ) {}
+  ) { }
 
-  create(createApoyoCausaDto: CreateApoyoCausaDto): Promise<ApoyoCausa> {
+  async create(createApoyoCausaDto: CreateApoyoCausaDto): Promise<ApoyoCausa> {
     const apoyoCausa = new ApoyoCausa(createApoyoCausaDto);
-    return this.apoyoCausaRepository.create(apoyoCausa);
+    return await this.apoyoCausaRepository.create(apoyoCausa);
   }
 
-  findAll(): Promise<ApoyoCausa[]> {
-    return this.apoyoCausaRepository.getAll();
+  async findAll(): Promise<ApoyoCausa[]> {
+    return await this.apoyoCausaRepository.getAll();
   }
 
-  findOne(id: string): Promise<ApoyoCausa> {
-    return this.apoyoCausaRepository.get(id);
+  async findOne(id: string): Promise<ApoyoCausa> {
+      if (id === null || id.trim() === '') {
+        throw new IllegalArgumentError('El id del apoyo no puede ser vacio');
+      }
+
+      return await this.apoyoCausaRepository.get(id);
   }
 
   async update(id: string, updateApoyoCausaDto: UpdateApoyoCausaDto) {
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id del apoyo no puede ser vacio');
+    }
+
     const apoyoCausa = await this.apoyoCausaRepository.get(id);
 
     if (apoyoCausa) {
@@ -39,17 +48,20 @@ export class ApoyoCausaServiceImpl implements IApoyoCausaService {
     }
   }
 
-  remove(id: string): Promise<ApoyoCausa> {
-    return this.apoyoCausaRepository.delete(id);
+  async remove(id: string): Promise<ApoyoCausa> {
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id del apoyo no puede ser vacio');
+    }
+
+    return await this.apoyoCausaRepository.delete(id);
   }
 
   async apoyar(id: string): Promise<ApoyoCausa> {
-    const apoyoCausa = await this.apoyoCausaRepository.get(id);
-
-    if (!Number.isNaN(apoyoCausa.numApoyo)) {
-      return this.apoyoCausaRepository.apoyar(id);
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id del apoyo no puede ser vacio');
     }
 
-    return null;
+    const apoyoCausa = await this.apoyoCausaRepository.get(id);
+    return await this.apoyoCausaRepository.apoyar(id);
   }
 }

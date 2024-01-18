@@ -1,6 +1,9 @@
+import { RepositoryError } from "src/base/repositoryError";
 import { UsuarioSeguimiento } from "../domain/usuario_seguimiento";
 import { SeguidorRepository } from "./seguidor.repository";
-import neo4j, { Driver, QueryResult, RecordShape } from 'neo4j-driver';
+import neo4j, { Driver, RecordShape } from 'neo4j-driver';
+import { EntityNotFoundError } from "src/base/entityNotFounError";
+
 export class SeguidorRepositoryNeo4j implements SeguidorRepository {
 
     private readonly driver: Driver;
@@ -25,8 +28,8 @@ export class SeguidorRepositoryNeo4j implements SeguidorRepository {
     }
 
     async create(item: UsuarioSeguimiento): Promise<UsuarioSeguimiento> {
-        const session = this.driver.session()
-        const txc = session.beginTransaction()
+        const session = await this.driver.session()
+        const txc = await session.beginTransaction()
         try {
             const result = await txc.run(
                 'MERGE (seguidor:UsuarioSeguimiento {idUsuario: $idUser, username: $username}) RETURN seguidor',
@@ -37,22 +40,20 @@ export class SeguidorRepositoryNeo4j implements SeguidorRepository {
             )
 
             const userNode = result.records[0].get('seguidor');
-            await txc.commit()
+            await txc.commit();
+
             return this.toUsuarioSeguimientoDomain(userNode);
         } catch (error) {
-            console.log(error)
             await txc.rollback()
-            console.log('rolled back')
+            throw new RepositoryError('Error al crear el usuario de seguimiento');
         } finally {
             await session.close()
         }
-
-        return null;
     }
 
     async get(id: string): Promise<UsuarioSeguimiento> {
-        const session = this.driver.session()
-        const txc = session.beginTransaction()
+        const session = await this.driver.session()
+        const txc = await session.beginTransaction()
         try {
             const result = await txc.run(
                 'MATCH (seguidor:UsuarioSeguimiento {idUsuario: $idUser}) RETURN seguidor',
@@ -62,22 +63,27 @@ export class SeguidorRepositoryNeo4j implements SeguidorRepository {
             )
 
             const userNode = result.records[0].get('seguidor');
+            if (userNode === null) {
+                throw new EntityNotFoundError('Usuario de seguimiento no encontrado con id ' + id);
+            }
+
             await txc.commit()
             return this.toUsuarioSeguimientoDomain(userNode);
         } catch (error) {
-            console.log(error)
-            await txc.rollback()
-            console.log('rolled back')
+            // await txc.rollback()
+            if (error instanceof EntityNotFoundError) {
+                throw error;
+            }
+
+            throw new RepositoryError('Error al obtener el usuario de seguimiento');
         } finally {
             await session.close()
         }
-
-        return null;
     }
 
     async getAll(): Promise<UsuarioSeguimiento[]> {
-        const session = this.driver.session()
-        const txc = session.beginTransaction()
+        const session = await this.driver.session()
+        const txc = await session.beginTransaction()
         try {
             const result = await txc.run(
                 'MATCH (seguidor:UsuarioSeguimiento) RETURN seguidor',
@@ -87,21 +93,18 @@ export class SeguidorRepositoryNeo4j implements SeguidorRepository {
             await txc.commit()
             return userNodes.map((userNode) => this.toUsuarioSeguimientoDomain(userNode));
         } catch (error) {
-            console.log(error)
             await txc.rollback()
-            console.log('rolled back')
+            throw new RepositoryError('Error al obtener los usuarios de seguimiento');
         } finally {
             await session.close()
         }
-
-        return [];
     }
 
     async update(id: string, item: UsuarioSeguimiento): Promise<UsuarioSeguimiento> {
-        const session = this.driver.session();
-        const txc = session.beginTransaction();
+        const session = await this.driver.session();
+        const txc = await session.beginTransaction();
         try {
-            
+
             const result = await txc.run(
                 'MATCH (seguidor:UsuarioSeguimiento {idUsuario: $idUser}) SET seguidor = $seguidor RETURN seguidor',
                 {
@@ -112,25 +115,22 @@ export class SeguidorRepositoryNeo4j implements SeguidorRepository {
                     },
                 }
             );
-    
+
             await txc.commit();
             return item;
         } catch (error) {
-            console.log(error);
             txc.rollback();
-            console.log('rolled back');
+            throw new RepositoryError('Error al actualizar el usuario de seguimiento');
         } finally {
-            session.close();
+            await session.close();
         }
-
-        return null;
     }
 
     async delete(id: string): Promise<UsuarioSeguimiento> {
-        const session = this.driver.session();
-        const txc = session.beginTransaction();
+        const item = await this.get(id);
+        const session = await this.driver.session();
+        const txc = await session.beginTransaction();
         try {
-            const item = await this.get(id);
             const result = await txc.run(
                 'MATCH (seguidor:UsuarioSeguimiento {idUsuario: $idUser}) DELETE seguidor',
                 {
@@ -141,19 +141,16 @@ export class SeguidorRepositoryNeo4j implements SeguidorRepository {
             await txc.commit();
             return item;
         } catch (error) {
-            console.log(error);
-            txc.rollback();
-            console.log('rolled back');
+            await txc.rollback();
+            throw new RepositoryError('Error al eliminar el usuario de seguimiento');
         } finally {
-            session.close();
+            await session.close();
         }
-
-        return null;
     }
 
     async seguir(seguidorOrigen: UsuarioSeguimiento, seguidorDestino: UsuarioSeguimiento): Promise<UsuarioSeguimiento> {
-        const session = this.driver.session();
-        const txc = session.beginTransaction();
+        const session = await this.driver.session();
+        const txc = await session.beginTransaction();
         console.log('seguir repository', seguidorOrigen, seguidorDestino);
         try {
             const result = await txc.run(
@@ -172,19 +169,16 @@ export class SeguidorRepositoryNeo4j implements SeguidorRepository {
             await txc.commit();
             return this.toUsuarioSeguimientoDomain(seguidorDestinoNode);
         } catch (error) {
-            console.log(error);
-            txc.rollback();
-            console.log('rolled back');
+            await txc.rollback();
+            throw new RepositoryError('Error al crear la relación de seguimiento');
         } finally {
-            session.close();
+            await session.close();
         }
-
-        return null;
     }
 
     async getUsuariosSeguidos(id: string): Promise<UsuarioSeguimiento[]> {
-        const session = this.driver.session();
-        const txc = session.beginTransaction();
+        const session = await this.driver.session();
+        const txc = await session.beginTransaction();
         try {
             const result = await txc.run(
                 'MATCH (p1:UsuarioSeguimiento {idUsuario: $idUser})-[:SEGUIR_TO]->(p2:UsuarioSeguimiento) RETURN p2',
@@ -197,19 +191,16 @@ export class SeguidorRepositoryNeo4j implements SeguidorRepository {
             await txc.commit();
             return seguidores.map((seguidor) => this.toUsuarioSeguimientoDomain(seguidor));
         } catch (error) {
-            console.log(error);
-            txc.rollback();
-            console.log('rolled back');
+            await txc.rollback();
+            throw new RepositoryError('Error al obtener los usuarios seguidos');
         } finally {
-            session.close();
+            await session.close();
         }
-
-        return [];
     }
 
     async getUsuariosSeguidores(id: string): Promise<UsuarioSeguimiento[]> {
-        const session = this.driver.session();
-        const txc = session.beginTransaction();
+        const session = await this.driver.session();
+        const txc = await session.beginTransaction();
         try {
             const result = await txc.run(
                 'MATCH (p1:UsuarioSeguimiento)-[:SEGUIR_TO]->(p2:UsuarioSeguimiento {idUsuario: $idUser}) RETURN p1',
@@ -222,13 +213,10 @@ export class SeguidorRepositoryNeo4j implements SeguidorRepository {
             await txc.commit();
             return seguidores.map((seguidor) => this.toUsuarioSeguimientoDomain(seguidor));
         } catch (error) {
-            console.log(error);
-            txc.rollback();
-            console.log('rolled back');
+            await txc.rollback();
+            throw new RepositoryError('Error al obtener los usuarios seguidores');
         } finally {
-            session.close();
+            await session.close();
         }
-
-        return [];
     }
 }

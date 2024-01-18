@@ -4,6 +4,7 @@ import { UpdateApoyoRegistroDto } from './dto/update-apoyo-registro.dto';
 import { IApoyoRegistroService } from './interfaces/apoyo-registro.service.interface';
 import { ApoyoRegistro } from './domain/apoyo-registro.damain';
 import { ApoyoRegistroRepository } from './repositories/apoyo-registro.repository';
+import { IllegalArgumentError } from 'src/base/argumentError';
 
 @Injectable()
 export class ApoyoRegistroServiceImpl implements IApoyoRegistroService {
@@ -12,21 +13,29 @@ export class ApoyoRegistroServiceImpl implements IApoyoRegistroService {
     private apoyoRegistroRepository: ApoyoRegistroRepository,
   ) {
   }
-  
-  create(CreateApoyoDto: CreateApoyoRegistroDto): Promise<ApoyoRegistro> {
+
+  async create(CreateApoyoDto: CreateApoyoRegistroDto): Promise<ApoyoRegistro> {
     const apoyoRegistro = new ApoyoRegistro(CreateApoyoDto);
-    return this.apoyoRegistroRepository.create(apoyoRegistro);
+    return await this.apoyoRegistroRepository.create(apoyoRegistro);
   }
 
-  findOne(id: string): Promise<ApoyoRegistro> {
-    return this.apoyoRegistroRepository.get(id);
+  async findOne(id: string): Promise<ApoyoRegistro> {
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id del apoyo al registro no puede ser vacio');
+    }
+
+    return await this.apoyoRegistroRepository.get(id);
   }
 
-  findAll(): Promise<ApoyoRegistro[]> {
-    return this.apoyoRegistroRepository.getAll();
+  async findAll(): Promise<ApoyoRegistro[]> {
+    return await this.apoyoRegistroRepository.getAll();
   }
 
   async update(id: string, updateCausaDto: UpdateApoyoRegistroDto) {
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id del apoyo al registro no puede ser vacio');
+    }
+
     const apoyoRegistro = await this.apoyoRegistroRepository.get(id);
 
     if (apoyoRegistro) {
@@ -40,8 +49,11 @@ export class ApoyoRegistroServiceImpl implements IApoyoRegistroService {
     }
   }
 
-  remove(id: string): Promise<ApoyoRegistro> {
-    return this.apoyoRegistroRepository.delete(id);
-  }
+  async remove(id: string): Promise<ApoyoRegistro> {
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id del apoyo al registro no puede ser vacio');
+    }
 
+    return await this.apoyoRegistroRepository.delete(id);
+  }
 }

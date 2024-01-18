@@ -4,6 +4,8 @@ import { CausasRepository } from './causas.repository';
 import { CausaSolidaria } from '../domain/causa_solidaria.domain';
 import { AccionSolidaria } from '../../acciones/domain/accion_solidaria.domain';
 import { CausaMongoModel } from '../schemas/causa.schema';
+import { RepositoryError } from 'src/base/repositoryError';
+import { EntityNotFoundError } from 'src/base/entityNotFounError';
 
 export class CausasRepositoryMongo implements CausasRepository {
   constructor(
@@ -28,87 +30,125 @@ export class CausasRepositoryMongo implements CausasRepository {
   }
 
   async create(item: CausaSolidaria): Promise<CausaSolidaria> {
-    const causaCreated = await this.causaModel.create(item);
+    try {
+      const causaCreated = await this.causaModel.create(item);
+      const causa = new CausaSolidaria({
+        ...item,
+        id: causaCreated._id.toString(),
+      });
 
-    // TODO asignar con el objeto
-    const causa = new CausaSolidaria({
-      ...item,
-      id: causaCreated._id.toString(),
-    });
-
-    return causa;
+      return causa;
+    } catch (error) {
+      throw new RepositoryError('Error al crear la causa solidaria');
+    }
   }
 
   async get(id: string): Promise<CausaSolidaria> {
-    const causa = await this.causaModel.findById(id).exec();
+    try {
+      const causa = await this.causaModel.findById(id).exec();
 
-    return this.toCausaSolidariaDomain(causa);
+      if (causa === null) {
+        throw new EntityNotFoundError('Causa solidaria no encontrada con id ' + id);
+      }
+
+      return this.toCausaSolidariaDomain(causa);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw error;
+      }
+
+      throw new RepositoryError('Error al obtener la causa solidaria con id ' + id);
+    }
   }
 
   async getByName(titulo: string): Promise<CausaSolidaria[]> {
-    const causasModel = await this.causaModel.find({ titulo }).exec();
+    try {
+      const causasModel = await this.causaModel.find({ titulo }).exec();
 
-    const causas = causasModel.map((causaModel) => {
-      return this.toCausaSolidariaDomain(causaModel);
-    });
+      const causas = causasModel.map((causaModel) => {
+        return this.toCausaSolidariaDomain(causaModel);
+      });
 
-    return causas;
+      return causas;
+    } catch (error) {
+      throw new RepositoryError('Error al obtener las causas solidarias por titulo');
+    }
   }
 
   async getByComunidadId(comunidad: string): Promise<CausaSolidaria[]> {
-    const causasModel = await this.causaModel.find({ comunidad }).exec();
+    try {
+      const causasModel = await this.causaModel.find({ comunidad }).exec();
 
-    const causas = causasModel.map((causaModel) => {
-      return this.toCausaSolidariaDomain(causaModel);
-    });
+      const causas = causasModel.map((causaModel) => {
+        return this.toCausaSolidariaDomain(causaModel);
+      });
 
-    return causas;
+      return causas;
+    } catch (error) {
+      throw new RepositoryError('Error al obtener las causas solidarias por id comunidad');
+    }
   }
 
   async getAll(): Promise<CausaSolidaria[]> {
-    const causasModel = await this.causaModel.find().exec();
+    try {
+      const causasModel = await this.causaModel.find().exec();
 
-    const causas = causasModel.map((causaModel) => {
-      return this.toCausaSolidariaDomain(causaModel);
-    });
+      const causas = causasModel.map((causaModel) => {
+        return this.toCausaSolidariaDomain(causaModel);
+      });
 
-    return causas;
+      return causas;
+    } catch (error) {
+      throw new RepositoryError('Error al obtener las causas solidarias');
+    }
   }
 
   async getByNameInsensitivePartial(
     titulo: string,
     idComunidad: string,
   ): Promise<CausaSolidaria[]> {
-    const causas = await this.getByComunidadId(idComunidad);
+    try {
+      const causas = await this.getByComunidadId(idComunidad);
 
-    const causasFiltradasPorComunidad = await this.causaModel
-      .find({
-        comunidad: { $in: causas.map((causa) => causa.comunidad) },
-        titulo: { $regex: titulo, $options: 'i' },
-      })
-      .exec();
+      const causasFiltradasPorComunidad = await this.causaModel
+        .find({
+          comunidad: { $in: causas.map((causa) => causa.comunidad) },
+          titulo: { $regex: titulo, $options: 'i' },
+        })
+        .exec();
 
-    return causasFiltradasPorComunidad.map((causa) => {
-      return this.toCausaSolidariaDomain(causa);
-    });
+      return causasFiltradasPorComunidad.map((causa) => {
+        return this.toCausaSolidariaDomain(causa);
+      });
+    } catch (error) {
+      throw new RepositoryError('Error al obtener la causa solidaria con titulo ' + titulo + ' y comunidad ' + idComunidad);
+    }
   }
 
   async update(id: string, item: CausaSolidaria): Promise<CausaSolidaria> {
-    const causa = await this.causaModel.findByIdAndUpdate(id, item).exec();
-    const causaUpdated = new CausaSolidaria({
-      ...item,
-      id: causa._id.toString(),
-    });
+    try {
+      const causa = await this.causaModel.findByIdAndUpdate(id, item).exec();
+      const causaUpdated = new CausaSolidaria({
+        ...item,
+        id: causa._id.toString(),
+      });
 
-    return causaUpdated;
+      return causaUpdated;
+    } catch (error) {
+      throw new RepositoryError('Error al actualizar la causa solidaria con id ' + id);
+    }
   }
 
   async delete(id: string): Promise<CausaSolidaria> {
     const causa = await this.get(id);
 
-    if (causa) {
-      await this.causaModel.findByIdAndDelete(id).exec();
-      return causa;
+    try {
+      if (causa) {
+        await this.causaModel.findByIdAndDelete(id).exec();
+        return causa;
+      }
+    } catch (error) {
+      throw new RepositoryError('Error al eliminar la causa solidaria con id ' + id);
     }
   }
 }
