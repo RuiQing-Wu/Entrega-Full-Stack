@@ -17,12 +17,13 @@ import { CreateComunidadDto } from './dto/create-comunidad.dto';
 import { UpdateComunidadDto } from './dto/update-comunidad.dto';
 import { IComunidadesService } from './interfaces/comunidades.service.interface';
 import { Public } from 'src/decorators/public.decorator';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { RepositoryError } from 'src/base/repositoryError';
 import { ConflictError } from 'src/base/conflictError';
 import { IllegalArgumentError } from 'src/base/argumentError';
 import { EntityNotFoundError } from 'src/base/entityNotFounError';
 
+@ApiTags('comunidades')
 @Controller('comunidades')
 export class ComunidadesController {
   constructor(private readonly comunidadesService: IComunidadesService) { }
