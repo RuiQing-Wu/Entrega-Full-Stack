@@ -30,6 +30,9 @@ export class UsersServiceImpl implements IUserService {
       if (error instanceof EntityNotFoundError) {
         userExistente = null;
       }
+      else {
+        throw error;
+      }
     }
 
     if (userExistente) {

@@ -12,6 +12,8 @@ import {
   ConflictException,
   BadRequestException,
   NotFoundException,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -24,6 +26,7 @@ import { IllegalArgumentError } from 'src/base/argumentError';
 import { EntityNotFoundError } from 'src/base/entityNotFounError';
 
 @ApiTags('usuarios')
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: IUserService) { }
@@ -138,12 +141,10 @@ export class UserController {
     }
   }
 
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener un usuario mediante el nombre de usuario' })
   @ApiParam({ name: 'username', description: 'Nombre de usuario', required: true })
   @ApiOkResponse({ description: 'Usuario obtenido' })
   @ApiBadRequestResponse({ description: 'Bad request' })
-  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('username/:username')
   @HttpCode(HttpStatus.OK)
@@ -153,6 +154,9 @@ export class UserController {
     } catch (error) {
       if (error instanceof IllegalArgumentError)
         throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
 
       if (error instanceof RepositoryError)
         throw new InternalServerErrorException(error.message);
