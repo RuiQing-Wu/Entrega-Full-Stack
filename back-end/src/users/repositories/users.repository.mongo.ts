@@ -114,16 +114,8 @@ export class UsersRepositoryMongo implements UsersRepository {
     try {
       const userMongo = await this.userModel.findOne({ username: name }).exec();
 
-      if (userMongo === null) {
-        throw new EntityNotFoundError('Usuario no encontrado con nombre ' + name);
-      }
-
       return this.toUserDomain(userMongo);
     } catch (error) {
-      if (error instanceof EntityNotFoundError) {
-        throw error;
-      }
-
       throw new RepositoryError('Error al obtener el usuario con nombre ' + name);
     }
   }

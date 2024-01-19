@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Post,
   Request,
   UseGuards,
@@ -74,6 +75,7 @@ export class AuthController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener perfil de usuario' })
+  @ApiBody({ type: CreateUserDto, description: 'Datos a crear', required: true })
   @ApiOkResponse({ description: 'OK' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiNotFoundResponse({ description: 'Not found' })
@@ -82,7 +84,10 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Get('profile')
   async getProfile(@Request() req) {
-    console.log('profile ', req.user.username);
-    return await this.authService.getProfile(req.user.username);
+    const user = await this.authService.getProfile(req.user.username);
+    if (!user) {
+      throw new NotFoundException();
+    }
+
   }
 }

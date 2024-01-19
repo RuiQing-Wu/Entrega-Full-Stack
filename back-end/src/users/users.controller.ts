@@ -144,7 +144,6 @@ export class UserController {
   @ApiOkResponse({ description: 'Usuario obtenido' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('username/:username')
   @HttpCode(HttpStatus.OK)
@@ -154,9 +153,6 @@ export class UserController {
     } catch (error) {
       if (error instanceof IllegalArgumentError)
         throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
 
       if (error instanceof RepositoryError)
         throw new InternalServerErrorException(error.message);
