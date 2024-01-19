@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateComunidadDto } from './dto/create-comunidad.dto';
 import { UpdateComunidadDto } from './dto/update-comunidad.dto';
 import { Comunidad } from '../comunidades/domain/comunidades.domain';
@@ -6,18 +6,27 @@ import { IComunidadesService } from './interfaces/comunidades.service.interface'
 import { ComunidadesRepository } from './repositories/comunidades.repository';
 import { ConflictError } from 'src/base/conflictError';
 import { IllegalArgumentError } from 'src/base/argumentError';
+import { EntityNotFoundError } from 'src/base/entityNotFounError';
+
 @Injectable()
 export class ComunidadesServiceImpl implements IComunidadesService {
   constructor(
     @Inject(ComunidadesRepository)
     private comunidadesRepository: ComunidadesRepository,
-  ) { }
+  ) {}
 
   async create(createComunidadDto: CreateComunidadDto) {
     // comprobamos que no exista una comunidad con el mismo nombre
-    const comunidadExistente = await this.comunidadesRepository.getByName(
-      createComunidadDto.nombre,
-    );
+    let comunidadExistente;
+    try {
+      comunidadExistente = await this.comunidadesRepository.getByName(
+        createComunidadDto.nombre,
+      );
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        comunidadExistente = null;
+      }
+    }
 
     if (comunidadExistente) {
       throw new ConflictError('Existe ya una comunidad con este nombre');
@@ -43,7 +52,9 @@ export class ComunidadesServiceImpl implements IComunidadesService {
 
   async getByName(nombre: string): Promise<Comunidad> {
     if (nombre === null || nombre.trim() === '') {
-      throw new IllegalArgumentError('El nombre de la comunidad no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El nombre de la comunidad no puede ser vacio',
+      );
     }
 
     return await this.comunidadesRepository.getByName(nombre);
@@ -51,7 +62,9 @@ export class ComunidadesServiceImpl implements IComunidadesService {
 
   async getByNameInsensitivePartial(nombre: string): Promise<Comunidad[]> {
     if (nombre === null || nombre.trim() === '') {
-      throw new IllegalArgumentError('El nombre de la comunidad no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El nombre de la comunidad no puede ser vacio',
+      );
     }
 
     return await this.comunidadesRepository.getByNameInsensitivePartial(nombre);
@@ -63,7 +76,9 @@ export class ComunidadesServiceImpl implements IComunidadesService {
 
   async findOne(id: string) {
     if (id === null || id.trim() === '') {
-      throw new IllegalArgumentError('El id de la comunidad no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El id de la comunidad no puede ser vacio',
+      );
     }
 
     return await this.comunidadesRepository.get(id);
@@ -71,14 +86,16 @@ export class ComunidadesServiceImpl implements IComunidadesService {
 
   async update(id: string, updateComunidadDto: UpdateComunidadDto) {
     if (id === null || id.trim() === '') {
-      throw new IllegalArgumentError('El id de la comunidad no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El id de la comunidad no puede ser vacio',
+      );
     }
 
     const comunidad = await this.comunidadesRepository.get(id);
 
     const comunidadActualizada = new Comunidad({
       ...comunidad,
-      ...updateComunidadDto
+      ...updateComunidadDto,
     });
 
     return await this.comunidadesRepository.update(id, comunidadActualizada);
@@ -86,7 +103,9 @@ export class ComunidadesServiceImpl implements IComunidadesService {
 
   async addMember(idComunidad: string, idUsuario: string) {
     if (idComunidad === null || idComunidad.trim() === '') {
-      throw new IllegalArgumentError('El id de la comunidad no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El id de la comunidad no puede ser vacio',
+      );
     }
 
     if (idUsuario === null || idUsuario.trim() === '') {
@@ -96,7 +115,9 @@ export class ComunidadesServiceImpl implements IComunidadesService {
     const comunidad = await this.comunidadesRepository.get(idComunidad);
 
     if (comunidad.usuarios.includes(idUsuario)) {
-      throw new IllegalArgumentError('El usuario ya es miembro de la comunidad');
+      throw new IllegalArgumentError(
+        'El usuario ya es miembro de la comunidad',
+      );
     }
 
     const comunidadActualizada = {
@@ -104,7 +125,10 @@ export class ComunidadesServiceImpl implements IComunidadesService {
       usuarios: [...comunidad.usuarios, idUsuario],
     };
 
-    return await this.comunidadesRepository.update(idComunidad, comunidadActualizada);
+    return await this.comunidadesRepository.update(
+      idComunidad,
+      comunidadActualizada,
+    );
   }
 
   async getComunidadesByUser(idUsuario: string) {
@@ -117,7 +141,9 @@ export class ComunidadesServiceImpl implements IComunidadesService {
 
   async remove(id: string) {
     if (id === null || id.trim() === '') {
-      throw new IllegalArgumentError('El id de la comunidad no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El id de la comunidad no puede ser vacio',
+      );
     }
 
     return await this.comunidadesRepository.delete(id);

@@ -6,6 +6,7 @@ import { User } from './domain/user.domain';
 import { UsersRepository } from './repositories/users.repository';
 import { ConflictError } from 'src/base/conflictError';
 import { IllegalArgumentError } from 'src/base/argumentError';
+import { EntityNotFoundError } from 'src/base/entityNotFounError';
 
 export enum Role {
   User = 'user',
@@ -16,15 +17,22 @@ export class UsersServiceImpl implements IUserService {
   constructor(
     @Inject(UsersRepository)
     private usersRepository: UsersRepository,
-  ) {
-
-  }
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     // Comprobar si existe el usuario
-    const user = await this.usersRepository.getByName(createUserDto.username);
+    let userExistente;
+    try {
+      userExistente = await this.usersRepository.getByName(
+        createUserDto.username,
+      );
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        userExistente = null;
+      }
+    }
 
-    if (user) {
+    if (userExistente) {
       throw new ConflictError('User already exists!');
     }
 
@@ -65,7 +73,7 @@ export class UsersServiceImpl implements IUserService {
   }
 
   async remove(id: string): Promise<User> {
-    if  (id === null || id.trim() === '') {
+    if (id === null || id.trim() === '') {
       throw new IllegalArgumentError('El id del usuario no puede ser vacio');
     }
 
@@ -74,7 +82,9 @@ export class UsersServiceImpl implements IUserService {
 
   async getByName(name: string): Promise<User> {
     if (name === null || name.trim() === '') {
-      throw new IllegalArgumentError('El nombre del usuario no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El nombre del usuario no puede ser vacio',
+      );
     }
 
     return await this.usersRepository.getByName(name);
