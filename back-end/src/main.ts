@@ -5,7 +5,6 @@ import {
   DocumentBuilder,
   SwaggerDocumentOptions,
 } from '@nestjs/swagger';
-import { LoggerMiddleware } from './middleware/logger.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,11 +20,8 @@ async function bootstrap() {
     .setTitle('Solidarian')
     .setDescription('The solidarian API description')
     .setVersion('1.0')
-    .addBearerAuth(
-      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'header' },
-      'access-token',
-    ) //Indica que algunas operaciones tienen que utilizar un token pero no se le manda ninguno
-    .addServer('http://localhost:3002')
+    .addBearerAuth() //Indica que algunas operaciones tienen que utilizar un token pero no se le manda ninguno
+    .addServer(process.env.SERVER_URL)
     .build();
   const document = SwaggerModule.createDocument(app, config, options);
   SwaggerModule.setup('api', app, document);
