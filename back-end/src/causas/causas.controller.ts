@@ -34,12 +34,16 @@ import { EntityNotFoundError } from 'src/base/entityNotFounError';
 @ApiTags('causas')
 @Controller('causas')
 export class CausasController {
-  constructor(private readonly causasService: ICausasService) { }
+  constructor(private readonly causasService: ICausasService) {}
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear una causa' })
-  @ApiBody({ type: CreateCausaDto, description: 'Datos a crear', required: true })
-  @ApiCreatedResponse({ description: 'Causa creada' })
+  @ApiBody({
+    type: CreateCausaDto,
+    description: 'Datos a crear',
+    required: true,
+  })
+  @ApiCreatedResponse({ description: 'Causa solidaria creada' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
@@ -68,7 +72,12 @@ export class CausasController {
 
   @Public()
   @ApiOperation({ summary: 'Obtener una causa' })
-  @ApiParam({ name: 'id', type: String, required: true, description: 'Id de la causa' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Id de la causa',
+  })
   @ApiOkResponse({ description: 'Devolver la entidad causa' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiNotFoundResponse({ description: 'Not found' })
@@ -94,9 +103,15 @@ export class CausasController {
 
   @Public()
   @ApiOperation({ summary: 'Obtener una causa por su titulo' })
-  @ApiParam({ name: 'nombre', type: String, required: true, description: 'Título de la causa' })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiParam({
+    name: 'nombre',
+    type: String,
+    required: true,
+    description: 'Título de la causa',
+  })
+  @ApiOkResponse({ description: 'Causa encontrada por titulo' })
   @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/name/:nombre')
   async findByName(@Param('nombre') titulo: string) {
@@ -106,6 +121,9 @@ export class CausasController {
       if (error instanceof IllegalArgumentError)
         throw new BadRequestException(error.message);
 
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
       if (error instanceof RepositoryError)
         throw new InternalServerErrorException(error.message);
     }
@@ -113,8 +131,13 @@ export class CausasController {
 
   @Public()
   @ApiOperation({ summary: 'Obtener una causa por su comunidad' })
-  @ApiParam({ name: 'comunidad', type: String, required: true, description: 'Id Comunidad de la causa' })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiParam({
+    name: 'comunidad',
+    type: String,
+    required: true,
+    description: 'Id Comunidad de la causa',
+  })
+  @ApiOkResponse({ description: 'Causa encontrada por comunidad' })
   @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/comunidad/:comunidad')
@@ -132,9 +155,21 @@ export class CausasController {
 
   @Public()
   @ApiOperation({ summary: 'Obtener una causa por su titulo y comunidad' })
-  @ApiParam({ name: 'titulo', type: String, required: true, description: 'Título de la causa' })
-  @ApiParam({ name: 'idComunidad', type: String, required: true, description: 'Id Comunidad de la causa' })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiParam({
+    name: 'titulo',
+    type: String,
+    required: true,
+    description: 'Título de la causa',
+  })
+  @ApiParam({
+    name: 'idComunidad',
+    type: String,
+    required: true,
+    description: 'Id Comunidad de la causa',
+  })
+  @ApiOkResponse({
+    description: 'Causa encontrada por titulo e Id de la comunidad',
+  })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/nameInsensitivePartial/:titulo/:idComunidad')
@@ -143,7 +178,10 @@ export class CausasController {
     @Param('idComunidad') idComunidad: string,
   ) {
     try {
-      return await this.causasService.getByNameInsensitivePartial(titulo, idComunidad);
+      return await this.causasService.getByNameInsensitivePartial(
+        titulo,
+        idComunidad,
+      );
     } catch (error) {
       if (error instanceof IllegalArgumentError)
         throw new BadRequestException(error.message);
@@ -155,15 +193,27 @@ export class CausasController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar una causa' })
-  @ApiParam({ name: 'id', type: String, required: true, description: 'Id de la causa' })
-  @ApiBody({ type: UpdateCausaDto, description: 'Datos a actualizar', required: true })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Id de la causa',
+  })
+  @ApiBody({
+    type: UpdateCausaDto,
+    description: 'Datos a actualizar',
+    required: true,
+  })
   @ApiOkResponse({ description: 'Causa actualizada' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateCausaDto: UpdateCausaDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateCausaDto: UpdateCausaDto,
+  ) {
     try {
       return await this.causasService.update(id, updateCausaDto);
     } catch (error) {
@@ -180,7 +230,12 @@ export class CausasController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar una causa' })
-  @ApiParam({ name: 'id', type: String, required: true, description: 'Id de la causa' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Id de la causa',
+  })
   @ApiOkResponse({ description: 'Causa eliminada' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })

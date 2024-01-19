@@ -11,11 +11,11 @@ export class CausasRepositoryMongo implements CausasRepository {
   constructor(
     @InjectModel(CausaSolidaria.name)
     private readonly causaModel: Model<CausaMongoModel>,
-  ) {
+  ) {}
 
-  }
-
-  private toCausaSolidariaDomain(causaMongoModel: HydratedDocument<CausaMongoModel>): CausaSolidaria {
+  /* private toCausaSolidariaDomain(
+    causaMongoModel: HydratedDocument<CausaMongoModel>,
+  ): CausaSolidaria {
     const causa = new CausaSolidaria({
       id: causaMongoModel._id.toString(),
       titulo: causaMongoModel.titulo,
@@ -27,6 +27,24 @@ export class CausasRepositoryMongo implements CausasRepository {
     });
 
     return causa;
+  } */
+
+  private toCausaSolidariaDomain(
+    causaMongoModel: HydratedDocument<CausaMongoModel>,
+  ): CausaSolidaria {
+    if (causaMongoModel) {
+      const causa = new CausaSolidaria({
+        id: causaMongoModel._id.toString(),
+        titulo: causaMongoModel.titulo,
+        descripcion: causaMongoModel.descripcion,
+        fechaInicio: causaMongoModel.fechaInicio,
+        fechaFin: causaMongoModel.fechaFin,
+        comunidad: causaMongoModel.comunidad,
+        objetivos: causaMongoModel.objetivos,
+      });
+
+      return causa;
+    }
   }
 
   async create(item: CausaSolidaria): Promise<CausaSolidaria> {
@@ -48,7 +66,9 @@ export class CausasRepositoryMongo implements CausasRepository {
       const causa = await this.causaModel.findById(id).exec();
 
       if (causa === null) {
-        throw new EntityNotFoundError('Causa solidaria no encontrada con id ' + id);
+        throw new EntityNotFoundError(
+          'Causa solidaria no encontrada con id ' + id,
+        );
       }
 
       return this.toCausaSolidariaDomain(causa);
@@ -57,21 +77,30 @@ export class CausasRepositoryMongo implements CausasRepository {
         throw error;
       }
 
-      throw new RepositoryError('Error al obtener la causa solidaria con id ' + id);
+      throw new RepositoryError(
+        'Error al obtener la causa solidaria con id ' + id,
+      );
     }
   }
 
-  async getByName(titulo: string): Promise<CausaSolidaria[]> {
+  async getByName(titulo: string): Promise<CausaSolidaria> {
     try {
-      const causasModel = await this.causaModel.find({ titulo }).exec();
+      const causa = await this.causaModel.findOne({ titulo: titulo });
+      if (causa === null) {
+        throw new EntityNotFoundError(
+          'Causa solidaria no encontrada con titulo ' + titulo,
+        );
+      }
 
-      const causas = causasModel.map((causaModel) => {
-        return this.toCausaSolidariaDomain(causaModel);
-      });
-
-      return causas;
+      return this.toCausaSolidariaDomain(causa);
     } catch (error) {
-      throw new RepositoryError('Error al obtener las causas solidarias por titulo');
+      if (error instanceof EntityNotFoundError) {
+        throw error;
+      }
+
+      throw new RepositoryError(
+        'Error al obtener las causas solidarias por titulo',
+      );
     }
   }
 
@@ -85,7 +114,9 @@ export class CausasRepositoryMongo implements CausasRepository {
 
       return causas;
     } catch (error) {
-      throw new RepositoryError('Error al obtener las causas solidarias por id comunidad');
+      throw new RepositoryError(
+        'Error al obtener las causas solidarias por id comunidad',
+      );
     }
   }
 
@@ -121,7 +152,12 @@ export class CausasRepositoryMongo implements CausasRepository {
         return this.toCausaSolidariaDomain(causa);
       });
     } catch (error) {
-      throw new RepositoryError('Error al obtener la causa solidaria con titulo ' + titulo + ' y comunidad ' + idComunidad);
+      throw new RepositoryError(
+        'Error al obtener la causa solidaria con titulo ' +
+          titulo +
+          ' y comunidad ' +
+          idComunidad,
+      );
     }
   }
 
@@ -135,7 +171,9 @@ export class CausasRepositoryMongo implements CausasRepository {
 
       return causaUpdated;
     } catch (error) {
-      throw new RepositoryError('Error al actualizar la causa solidaria con id ' + id);
+      throw new RepositoryError(
+        'Error al actualizar la causa solidaria con id ' + id,
+      );
     }
   }
 
@@ -148,7 +186,9 @@ export class CausasRepositoryMongo implements CausasRepository {
         return causa;
       }
     } catch (error) {
-      throw new RepositoryError('Error al eliminar la causa solidaria con id ' + id);
+      throw new RepositoryError(
+        'Error al eliminar la causa solidaria con id ' + id,
+      );
     }
   }
 }

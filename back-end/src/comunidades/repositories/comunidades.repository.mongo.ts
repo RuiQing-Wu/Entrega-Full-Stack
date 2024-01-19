@@ -10,10 +10,12 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
   constructor(
     @InjectModel(Comunidad.name)
     private readonly comunidadModel: Model<ComunidadMongoModel>,
-  ) { }
+  ) {}
 
   //Transforma un objeto del modelo de persistencia en un objeto de dominio
-  private toComunidadDomain(comunidadModel: HydratedDocument<ComunidadMongoModel>): Comunidad {
+  private toComunidadDomain(
+    comunidadModel: HydratedDocument<ComunidadMongoModel>,
+  ): Comunidad {
     if (comunidadModel) {
       const comunidad = new Comunidad({
         id: comunidadModel._id.toString(),
@@ -65,7 +67,9 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
     try {
       const comunidad = await this.comunidadModel.findOne({ nombre: name });
       if (comunidad === null) {
-        throw new EntityNotFoundError('Comunidad no encontrada con nombre ' + name);
+        throw new EntityNotFoundError(
+          'Comunidad no encontrada con nombre ' + name,
+        );
       }
 
       return this.toComunidadDomain(comunidad);
@@ -74,7 +78,9 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
         throw error;
       }
 
-      throw new RepositoryError('Error al obtener la comunidad con nombre ' + name);
+      throw new RepositoryError(
+        'Error al obtener la comunidad con nombre ' + name,
+      );
     }
   }
 
@@ -88,7 +94,9 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
         return this.toComunidadDomain(comunidad);
       });
     } catch (error) {
-      throw new RepositoryError('Error al obtener las comunidades con nombre ' + nombre);
+      throw new RepositoryError(
+        'Error al obtener las comunidades con nombre ' + nombre,
+      );
     }
   }
 
@@ -115,9 +123,10 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
       return comunidades.map((comunidad) => {
         return this.toComunidadDomain(comunidad);
       });
-
     } catch (error) {
-      throw new RepositoryError('Error al obtener las comunidades del usuario con id ' + idUsuario);
+      throw new RepositoryError(
+        'Error al obtener las comunidades del usuario con id ' + idUsuario,
+      );
     }
   }
 
@@ -130,7 +139,9 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
 
   async update(id: string, item: Comunidad): Promise<Comunidad> {
     try {
-      const comunidad = await this.comunidadModel.findByIdAndUpdate(id, item).exec();
+      const comunidad = await this.comunidadModel
+        .findByIdAndUpdate(id, item)
+        .exec();
       const comunidadUpdated = new Comunidad({
         ...item,
         id: comunidad._id.toString(),
@@ -138,7 +149,9 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
 
       return comunidadUpdated;
     } catch (error) {
-      throw new RepositoryError('Error al actualizar la comunidad con id ' + id);
+      throw new RepositoryError(
+        'Error al actualizar la comunidad con id ' + id,
+      );
     }
   }
 

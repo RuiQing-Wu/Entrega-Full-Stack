@@ -19,7 +19,21 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IUserService } from './interfaces/user.service.interface';
 import { Public } from 'src/decorators/public.decorator';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { RepositoryError } from 'src/base/repositoryError';
 import { ConflictError } from 'src/base/conflictError';
 import { IllegalArgumentError } from 'src/base/argumentError';
@@ -29,11 +43,15 @@ import { EntityNotFoundError } from 'src/base/entityNotFounError';
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: IUserService) { }
+  constructor(private readonly userService: IUserService) {}
 
   @Public()
   @ApiOperation({ summary: 'Crear un usuario' })
-  @ApiBody({ type: CreateUserDto, description: 'Datos a crear', required: true })
+  @ApiBody({
+    type: CreateUserDto,
+    description: 'Datos a crear',
+    required: true,
+  })
   @ApiCreatedResponse({ description: 'Usuario creado' })
   @ApiConflictResponse({ description: 'Ya existe un usuaurio con este nombre' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
@@ -94,7 +112,11 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un usuario mediante id' })
   @ApiParam({ name: 'id', description: 'Id del usuario', required: true })
-  @ApiBody({ type: UpdateUserDto, description: 'Datos a actualizar', required: true })
+  @ApiBody({
+    type: UpdateUserDto,
+    description: 'Datos a actualizar',
+    required: true,
+  })
   @ApiOkResponse({ description: 'Usuario actualizado' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
@@ -141,9 +163,15 @@ export class UserController {
     }
   }
 
+  //TODO ¿Lo dejo como publico o lo pongo con token?
+  @Public()
   @ApiOperation({ summary: 'Obtener un usuario mediante el nombre de usuario' })
-  @ApiParam({ name: 'username', description: 'Nombre de usuario', required: true })
-  @ApiOkResponse({ description: 'Usuario obtenido' })
+  @ApiParam({
+    name: 'username',
+    description: 'Nombre de usuario',
+    required: true,
+  })
+  @ApiOkResponse({ description: 'Usuario obtenido por nombre de usuario' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('username/:username')

@@ -10,9 +10,7 @@ export class UsersRepositoryMongo implements UsersRepository {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserMongoModel>,
-  ) {
-
-  }
+  ) {}
 
   private toUserDomain(userMongo: HydratedDocument<UserMongoModel>): User {
     if (userMongo) {
@@ -112,11 +110,19 @@ export class UsersRepositoryMongo implements UsersRepository {
 
   async getByName(name: string): Promise<User> {
     try {
-      const userMongo = await this.userModel.findOne({ username: name }).exec();
+      const user = await this.userModel.findOne({ username: name });
 
-      return this.toUserDomain(userMongo);
+      if (user === null) {
+        throw new EntityNotFoundError(
+          'Usuario no encontrado con nombre ' + name,
+        );
+      }
+
+      return this.toUserDomain(user);
     } catch (error) {
-      throw new RepositoryError('Error al obtener el usuario con nombre ' + name);
+      throw new RepositoryError(
+        'Error al obtener el usuario con nombre ' + name,
+      );
     }
   }
 }

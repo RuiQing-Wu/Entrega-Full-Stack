@@ -44,7 +44,7 @@ import { ConflictError } from 'src/base/conflictError';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Public()
   @ApiBody({
@@ -54,17 +54,17 @@ export class AuthController {
       properties: {
         username: {
           type: 'string',
-          example: 'user1',
+          example: 'juan',
         },
         password: {
           type: 'string',
-          example: '123456',
-        }
+          example: '1234',
+        },
       },
     },
   })
   @ApiOperation({ summary: 'Iniciar sesión' })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiOkResponse({ description: 'Iniciamos sesión' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiNotFoundResponse({ description: 'Not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
@@ -72,7 +72,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: Record<string, any>) {
-    console.log(signInDto.username, signInDto.password);
     try {
       return this.authService.signIn(signInDto.username, signInDto.password);
     } catch (error) {
@@ -89,7 +88,11 @@ export class AuthController {
 
   @Public()
   @ApiOperation({ summary: 'Registrar usuario' })
-  @ApiBody({ type: CreateUserDto, description: 'Datos a crear', required: true })
+  @ApiBody({
+    type: CreateUserDto,
+    description: 'Datos a crear',
+    required: true,
+  })
   @ApiCreatedResponse({ description: 'Usuario registrado' })
   @ApiConflictResponse({ description: 'Ya existe un usuario con este nombre' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
@@ -109,7 +112,7 @@ export class AuthController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener perfil de usuario' })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiOkResponse({ description: 'Obtenemos perfil del usuario' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiNotFoundResponse({ description: 'Not found' })

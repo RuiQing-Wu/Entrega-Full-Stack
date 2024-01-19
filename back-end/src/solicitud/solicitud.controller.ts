@@ -1,9 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, InternalServerErrorException, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  InternalServerErrorException,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSolicitudDto } from './dto/create-solicitud.dto';
 import { UpdateSolicitudDto } from './dto/update-solicitud.dto';
 import { ISolicitudesService } from './interfaces/solicitudes.service.interface';
 import { Public } from 'src/decorators/public.decorator';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { RepositoryError } from 'src/base/repositoryError';
 import { IllegalArgumentError } from 'src/base/argumentError';
 import { EntityNotFoundError } from 'src/base/entityNotFounError';
@@ -11,17 +36,20 @@ import { EntityNotFoundError } from 'src/base/entityNotFounError';
 @ApiTags('solicitudes')
 @Controller('solicitud')
 export class SolicitudController {
-  constructor(private readonly solicitudService: ISolicitudesService) { }
+  constructor(private readonly solicitudService: ISolicitudesService) {}
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear una solicitud' })
-  @ApiBody({ type: CreateSolicitudDto, description: 'Datos a crear', required: true })
+  @ApiBody({
+    type: CreateSolicitudDto,
+    description: 'Datos a crear',
+    required: true,
+  })
   @ApiCreatedResponse({ description: 'Solicitud creada' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
   async create(@Body() createSolicitudDto: CreateSolicitudDto) {
-    console.log(createSolicitudDto);
     try {
       return await this.solicitudService.create(createSolicitudDto);
     } catch (error) {
@@ -46,7 +74,12 @@ export class SolicitudController {
 
   @Public()
   @ApiOperation({ summary: 'Obtener una solicitud mediante id' })
-  @ApiParam({ name: 'id', type: 'string', description: 'Id de la solicitud', required: true })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    description: 'Id de la solicitud',
+    required: true,
+  })
   @ApiOkResponse({ description: 'Solicitud obtenida' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiNotFoundResponse({ description: 'Not found' })
@@ -72,15 +105,27 @@ export class SolicitudController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar una solicitud mediante id' })
-  @ApiParam({ name: 'id', type: 'string', description: 'Id de la solicitud', required: true })
-  @ApiBody({ type: UpdateSolicitudDto, description: 'Datos a actualizar', required: true })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    description: 'Id de la solicitud',
+    required: true,
+  })
+  @ApiBody({
+    type: UpdateSolicitudDto,
+    description: 'Datos a actualizar',
+    required: true,
+  })
   @ApiOkResponse({ description: 'Solicitud actualizada' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateSolicitudDto: UpdateSolicitudDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateSolicitudDto: UpdateSolicitudDto,
+  ) {
     try {
       return await this.solicitudService.update(id, updateSolicitudDto);
     } catch (error) {
@@ -97,7 +142,12 @@ export class SolicitudController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar una solicitud mediante id' })
-  @ApiParam({ name: 'id', type: 'string', description: 'Id de la solicitud', required: true })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    description: 'Id de la solicitud',
+    required: true,
+  })
   @ApiOkResponse({ description: 'Solicitud eliminada' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })

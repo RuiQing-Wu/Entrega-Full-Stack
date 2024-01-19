@@ -11,9 +11,7 @@ export class CausasServiceImpl implements ICausasService {
   constructor(
     @Inject(CausasRepository)
     private causasRepository: CausasRepository,
-  ) {
-
-  }
+  ) {}
 
   async create(createCausaDto: CreateCausaDto): Promise<CausaSolidaria> {
     const causa = new CausaSolidaria(createCausaDto);
@@ -32,9 +30,11 @@ export class CausasServiceImpl implements ICausasService {
     return await this.causasRepository.get(id);
   }
 
-  async getByName(titulo: string): Promise<CausaSolidaria[]> {
+  async getByName(titulo: string): Promise<CausaSolidaria> {
     if (titulo === null || titulo.trim() === '') {
-      throw new IllegalArgumentError('El titulo de la causa no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El titulo de la causa no puede ser vacio',
+      );
     }
 
     return await this.causasRepository.getByName(titulo);
@@ -42,7 +42,9 @@ export class CausasServiceImpl implements ICausasService {
 
   async getByComunidadId(comunidad: string): Promise<CausaSolidaria[]> {
     if (comunidad === null || comunidad.trim() === '') {
-      throw new IllegalArgumentError('El id de la comunidad no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El id de la comunidad no puede ser vacio',
+      );
     }
 
     return await this.causasRepository.getByComunidadId(comunidad);
@@ -59,8 +61,7 @@ export class CausasServiceImpl implements ICausasService {
     const comunidadActualizada = new CausaSolidaria({
       ...causa,
       ...updateCausaDto,
-    }
-    );
+    });
 
     return await this.causasRepository.update(id, comunidadActualizada);
   }
@@ -70,10 +71,14 @@ export class CausasServiceImpl implements ICausasService {
     idComunidad: string,
   ): Promise<CausaSolidaria[]> {
     if (titulo === null || titulo.trim() === '') {
-      throw new IllegalArgumentError('El titulo de la causa no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El titulo de la causa no puede ser vacio',
+      );
     }
     if (idComunidad === null || idComunidad.trim() === '') {
-      throw new IllegalArgumentError('El id de la comunidad no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El id de la comunidad no puede ser vacio',
+      );
     }
 
     const causas = await this.causasRepository.getByNameInsensitivePartial(
@@ -87,7 +92,7 @@ export class CausasServiceImpl implements ICausasService {
     if (id === null || id.trim() === '') {
       throw new IllegalArgumentError('El id de la causa no puede ser vacio');
     }
-    
+
     return await this.causasRepository.delete(id);
   }
 }

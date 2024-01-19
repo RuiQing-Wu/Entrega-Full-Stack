@@ -17,7 +17,20 @@ import { CreateComunidadDto } from './dto/create-comunidad.dto';
 import { UpdateComunidadDto } from './dto/update-comunidad.dto';
 import { IComunidadesService } from './interfaces/comunidades.service.interface';
 import { Public } from 'src/decorators/public.decorator';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { RepositoryError } from 'src/base/repositoryError';
 import { ConflictError } from 'src/base/conflictError';
 import { IllegalArgumentError } from 'src/base/argumentError';
@@ -26,14 +39,20 @@ import { EntityNotFoundError } from 'src/base/entityNotFounError';
 @ApiTags('comunidades')
 @Controller('comunidades')
 export class ComunidadesController {
-  constructor(private readonly comunidadesService: IComunidadesService) { }
+  constructor(private readonly comunidadesService: IComunidadesService) {}
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear una comunidad' })
-  @ApiBody({ type: CreateComunidadDto, description: 'Datos a crear', required: true })
+  @ApiBody({
+    type: CreateComunidadDto,
+    description: 'Datos a crear',
+    required: true,
+  })
   @ApiCreatedResponse({ description: 'Comunidad creada' })
   @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
-  @ApiConflictResponse({ description: 'Ya existe una comunidad con este nombre' })
+  @ApiConflictResponse({
+    description: 'Ya existe una comunidad con este nombre',
+  })
   @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
   @HttpCode(HttpStatus.CREATED)
   @Post('')
@@ -66,7 +85,7 @@ export class ComunidadesController {
   @Public()
   @ApiOperation({ summary: 'Obtener una comunidad mediante id' })
   @ApiParam({ name: 'id', description: 'Id de la comunidad', required: true })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiOkResponse({ description: 'Comunidad encontrada por id' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
@@ -91,8 +110,12 @@ export class ComunidadesController {
 
   @Public()
   @ApiOperation({ summary: 'Obtener una comunidad mediante nombre' })
-  @ApiParam({ name: 'nombre', description: 'Nombre de la comunidad', required: true })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiParam({
+    name: 'nombre',
+    description: 'Nombre de la comunidad',
+    required: true,
+  })
+  @ApiOkResponse({ description: 'Comunidad encontrada por nombre' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
@@ -113,9 +136,16 @@ export class ComunidadesController {
   }
 
   @Public()
-  @ApiOperation({ summary: 'Obtener una comunidad si contiene en el nombre el valor dado, independientemente de las mayúsculas o minúsculas' })
-  @ApiParam({ name: 'nombre', description: 'Nombre de la comunidad', required: true })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiOperation({
+    summary:
+      'Obtener una comunidad si contiene en el nombre el valor dado, independientemente de las mayúsculas o minúsculas',
+  })
+  @ApiParam({
+    name: 'nombre',
+    description: 'Nombre de la comunidad',
+    required: true,
+  })
+  @ApiOkResponse({ description: 'Comunidad encontrada por nombre parcial' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/nameInsensitivePartial/:nombre')
@@ -134,7 +164,11 @@ export class ComunidadesController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar una comunidad mediante id' })
   @ApiParam({ name: 'id', description: 'Id de la comunidad', required: true })
-  @ApiBody({ type: UpdateComunidadDto, description: 'Datos a actualizar', required: true })
+  @ApiBody({
+    type: UpdateComunidadDto,
+    description: 'Datos a actualizar',
+    required: true,
+  })
   @ApiOkResponse({ description: 'Comunidad actualizada' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
@@ -160,9 +194,19 @@ export class ComunidadesController {
   }
 
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Añade un miembro a una comunidad dados sus respectivos ids' })
-  @ApiParam({ name: 'idComunidad', description: 'Id de la comunidad', required: true })
-  @ApiParam({ name: 'idUsuario', description: 'Id del usuario', required: true })
+  @ApiOperation({
+    summary: 'Añade un miembro a una comunidad dados sus respectivos ids',
+  })
+  @ApiParam({
+    name: 'idComunidad',
+    description: 'Id de la comunidad',
+    required: true,
+  })
+  @ApiParam({
+    name: 'idUsuario',
+    description: 'Id del usuario',
+    required: true,
+  })
   @ApiOkResponse({ description: 'Miembro añadido' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
@@ -174,10 +218,7 @@ export class ComunidadesController {
     @Param('idUsuario') idUsuario: string,
   ) {
     try {
-      return await this.comunidadesService.addMember(
-        idComunidad,
-        idUsuario
-      );
+      return await this.comunidadesService.addMember(idComunidad, idUsuario);
     } catch (error) {
       if (error instanceof IllegalArgumentError)
         throw new BadRequestException(error.message);
@@ -192,8 +233,15 @@ export class ComunidadesController {
 
   // TODOD: ESTA ES PUBLICA O NO ?
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Obtiene todas las comunidades a las que está unida un usuario, dado su id' })
-  @ApiParam({ name: 'idUsuario', description: 'Id del usuario', required: true })
+  @ApiOperation({
+    summary:
+      'Obtiene todas las comunidades a las que está unida un usuario, dado su id',
+  })
+  @ApiParam({
+    name: 'idUsuario',
+    description: 'Id del usuario',
+    required: true,
+  })
   @ApiOkResponse({ description: 'Comunidades obtenidas' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })

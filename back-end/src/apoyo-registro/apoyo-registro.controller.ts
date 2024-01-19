@@ -34,11 +34,15 @@ import { EntityNotFoundError } from 'src/base/entityNotFounError';
 @ApiTags('apoyo-registro')
 @Controller('apoyo-registro')
 export class ApoyoRegistroController {
-  constructor(private readonly apoyoRegistroService: IApoyoRegistroService) { }
+  constructor(private readonly apoyoRegistroService: IApoyoRegistroService) {}
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un registro del apoyo a la causa' })
-  @ApiBody({ type: CreateApoyoRegistroDto, description: 'Datos a crear', required: true })
+  @ApiBody({
+    type: CreateApoyoRegistroDto,
+    description: 'Datos a crear',
+    required: true,
+  })
   @ApiCreatedResponse({ description: 'Registro del apoyo a la causa' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
@@ -54,7 +58,7 @@ export class ApoyoRegistroController {
 
   @Public()
   @ApiOperation({ summary: 'Obtener todas los registros de apoyo a causa' })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiOkResponse({ description: 'Registros de apoyo a causas obtenidos' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
   findAll() {
@@ -68,8 +72,13 @@ export class ApoyoRegistroController {
 
   @Public()
   @ApiOperation({ summary: 'Obtener el registro de apoyo a una causa' })
-  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del registro de apoyo a la causa' })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Id del registro de apoyo a la causa',
+  })
+  @ApiOkResponse({ description: 'Registro de apoyo a una causa obtenido' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
@@ -94,8 +103,17 @@ export class ApoyoRegistroController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar el registro de apoyo a una causa' })
-  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del registro de apoyo a la causa' })
-  @ApiBody({ type: UpdateApoyoRegistroDto, description: 'Datos a actualizar', required: true })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Id del registro de apoyo a la causa',
+  })
+  @ApiBody({
+    type: UpdateApoyoRegistroDto,
+    description: 'Datos a actualizar',
+    required: true,
+  })
   @ApiOkResponse({ description: 'Registro de apoyo a una causa actualizada' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
@@ -122,7 +140,12 @@ export class ApoyoRegistroController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar el registro de apoyo a una causa' })
-  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del registro de apoyo a la causa' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Id del registro de apoyo a la causa',
+  })
   @ApiOkResponse({ description: 'Registro de apoyo a una causa eliminada' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })

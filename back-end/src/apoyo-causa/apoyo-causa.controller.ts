@@ -34,12 +34,12 @@ import { EntityNotFoundError } from 'src/base/entityNotFounError';
 @ApiTags('apoyo-causa')
 @Controller('apoyo-causa')
 export class ApoyoCausaController {
-  constructor(private readonly apoyoCausaService: IApoyoCausaService) { }
+  constructor(private readonly apoyoCausaService: IApoyoCausaService) {}
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un apoyo a una causa solidaria' })
   @ApiBody({ type: CreateApoyoCausaDto })
-  @ApiCreatedResponse({ description: 'Accion solidaria creada' })
+  @ApiCreatedResponse({ description: 'Apoyo a la causa creado' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
@@ -54,7 +54,7 @@ export class ApoyoCausaController {
 
   @Public()
   @ApiOperation({ summary: 'Obtener todas los apoyos a causa' })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiOkResponse({ description: 'Apoyos a causas obtenidos' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
   async findAll() {
@@ -68,8 +68,13 @@ export class ApoyoCausaController {
 
   @Public()
   @ApiOperation({ summary: 'Obtener el apoyo de una causa' })
-  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del apoyo a la causa' })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Id del apoyo a la causa',
+  })
+  @ApiOkResponse({ description: 'Apoyo a la causa obtenido' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
@@ -94,8 +99,17 @@ export class ApoyoCausaController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un apoyo a una causa solidaria' })
-  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del apoyo a la causa' })
-  @ApiBody({ type: UpdateApoyoCausaDto, description: 'Datos a actualizar', required: true })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Id del apoyo a la causa',
+  })
+  @ApiBody({
+    type: UpdateApoyoCausaDto,
+    description: 'Datos a actualizar',
+    required: true,
+  })
   @ApiOkResponse({ description: 'Apoyo a la causa actualizada' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
@@ -122,7 +136,12 @@ export class ApoyoCausaController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un apoyo a una causa solidaria' })
-  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del apoyo a la causa' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Id del apoyo a la causa',
+  })
   @ApiOkResponse({ description: 'Apoyo a la causa eliminada' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiNotFoundResponse({ description: 'Not found' })
@@ -146,8 +165,13 @@ export class ApoyoCausaController {
 
   @Public()
   @ApiOperation({ summary: 'Apoyar una causa solidaria' })
-  @ApiParam({ name: 'id', type: String, required: true, description: 'Id del apoyo a la causa' })
-  @ApiOkResponse({ description: 'OK' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Id del apoyo a la causa',
+  })
+  @ApiOkResponse({ description: 'Apoyo a causa actualizado' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiNotFoundResponse({ description: 'Not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
