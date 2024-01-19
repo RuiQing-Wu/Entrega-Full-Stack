@@ -31,6 +31,11 @@ export default function MostrarAcciones() {
 
   const fetchAccion = useCallback(async () => {
     const response = await getAccionById(param.idAccion);
+
+    if (!response) {
+      alert('No se encontró la acción');
+    }
+
     setAccion(response);
   }, [param.idAccion]);
 

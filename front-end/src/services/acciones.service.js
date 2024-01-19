@@ -2,6 +2,7 @@ import { getToken } from '../utils/utils';
 
 const BASE_URL = 'http://localhost:3001/acciones';
 
+// REGISTRAR ACCIÓN
 async function saveAccion(
   titulo,
   descripcion,
@@ -25,35 +26,40 @@ async function saveAccion(
       causa,
     }),
   });
+
   const data = await response.json();
   return data;
 }
 
+// RECUPERAR ACCIONES ---------- SIN USO
 async function getAcciones() {
-  const accessToken = getToken();
   const response = await fetch(BASE_URL, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   });
+
+  if (!response.ok) {
+    throw new Error('No se encontraron acciones.');
+  }
+
   const data = await response.json();
   return data;
 }
 
+// RECUPERAR ACCIÓN POR ID DE ACCIÓN
 async function getAccionById(id) {
-  const accessToken = getToken();
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   });
+
   if (!response.ok) {
     throw new Error(
-      'No se encontraron acciones que coincidan con la búsqueda.',
+      'No se encontraron acciones que coincidan con el id especificado.',
     );
   }
 
@@ -61,18 +67,19 @@ async function getAccionById(id) {
   return data;
 }
 
+// RECUPERAR ACCIÓN POR NOMBRE DE ACCIÓN
 async function getAccionByName(nombre) {
-  const accessToken = getToken();
+
   const response = await fetch(`${BASE_URL}/name/${nombre}`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   });
+
   if (!response.ok) {
     throw new Error(
-      'No se encontraron acciones que coincidan con la búsqueda.',
+      'No se encontraron acciones que coincidan con el nombre especificado.',
     );
   }
 
@@ -80,35 +87,41 @@ async function getAccionByName(nombre) {
   return data;
 }
 
-async function getAccionesByCausaId(idCausa) {
-  const accessToken = getToken();
-  const response = await fetch(`${BASE_URL}/causa/${idCausa}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const data = await response.json();
-  return data;
-}
-
+// RECUPERAR ACCIÓN POR CADENA COINCIDENTE PARCIAL O TOTALMENTE CON NOMBRE DE ACCIÓN
 async function getAccionesByNameInsensitive(titulo, idCausa) {
-  const accessToken = getToken();
+
   const response = await fetch(
     `${BASE_URL}/nameInsensitivePartial/${titulo}/${idCausa}`,
     {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
     },
   );
+
   if (!response.ok) {
     throw new Error(
-      'No se encontraron acciones que coincidan con la búsqueda.',
+      'No se encontraron acciones que coincidan con el nombre especificado.',
     );
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+// RECUPERAR ACCIONES POR ID DE CAUSA
+async function getAccionesByCausaId(idCausa) {
+
+  const response = await fetch(`${BASE_URL}/causa/${idCausa}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    // alert('No se encontraron acciones pertenecientes a la causa especificada.');
   }
 
   const data = await response.json();
@@ -120,6 +133,6 @@ export {
   getAcciones,
   getAccionById,
   getAccionByName,
-  getAccionesByCausaId,
   getAccionesByNameInsensitive,
+  getAccionesByCausaId,
 };

@@ -80,7 +80,7 @@ export default function Profile() {
       comunidad.nombre.toLowerCase().includes(nombre.toLowerCase()),
     );
     if (comunidadSeleccionada) {
-      navigate(`/comunidad/${comunidadSeleccionada.id}`, { replace: true });
+      navigate(`/comunidades/${comunidadSeleccionada.id}`, { replace: true });
     }
   }
 

@@ -2,6 +2,8 @@ import { getToken } from '../utils/utils';
 
 const BASE_URL = 'http://localhost:3001/apoyo-causa';
 
+
+// REGISTRAR APOYO A CAUSA
 async function createApoyo(idCausa) {
   const accessToken = getToken();
   const url = `${BASE_URL}`;
@@ -25,47 +27,21 @@ async function createApoyo(idCausa) {
   return data;
 }
 
-async function apoyarCausa(idCausa) {
-  const accessToken = getToken();
-  const url = `${BASE_URL}/apoyar/${idCausa}`;
-  const response = await fetch(url, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  if (response.status !== 200) {
-    return undefined;
-  }
-
-  const responseText = await response.text();
-
-  const data = JSON.parse(responseText);
-
-  return data;
-}
-
+// OBTENER APOYO A CAUSA POR ID
 async function getApoyoCausa(idCausa) {
-  const accessToken = getToken();
   const url = `${BASE_URL}/${idCausa}`;
   const response = await fetch(url, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   });
-
-  if (response.status !== 200) {
-    return undefined;
-  }
 
   const data = await response.json();
   return data;
 }
 
+// ELIMINAR APOYO A CAUSA
 async function deleteApoyoCausa(idCausa) {
   const accessToken = getToken();
   const url = `${BASE_URL}/${idCausa}`;
@@ -82,6 +58,28 @@ async function deleteApoyoCausa(idCausa) {
   }
 
   const data = await response.json();
+  return data;
+}
+
+// APOYAR CAUSA
+async function apoyarCausa(idCausa) {
+
+  const url = `${BASE_URL}/apoyar/${idCausa}`;
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (response.status !== 200) {
+    return undefined;
+  }
+
+  const responseText = await response.text();
+
+  const data = JSON.parse(responseText);
+
   return data;
 }
 
