@@ -3,6 +3,7 @@ import { getToken } from '../utils/utils';
 
 const BASE_URL = 'http://localhost:3001/causas';
 
+// REGISTRAR CAUSA
 async function saveCausa(
   titulo,
   descripcion,
@@ -38,12 +39,11 @@ async function saveCausa(
   return data;
 }
 
+// OBTENER CAUSAS
 async function getCausas() {
-  const accessToken = getToken();
   const response = await fetch(BASE_URL, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   });
@@ -51,12 +51,11 @@ async function getCausas() {
   return data;
 }
 
+// OBTENER CAUSA POR ID
 async function getCausaById(id) {
-  const accessToken = getToken();
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   });
@@ -64,12 +63,11 @@ async function getCausaById(id) {
   return data;
 }
 
+// OBTENER CAUSA POR NOMBRE
 async function getCausasByName(name) {
-  const accessToken = getToken();
   const response = await fetch(`${BASE_URL}/name/${name}`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   });
@@ -77,27 +75,13 @@ async function getCausasByName(name) {
   return data;
 }
 
-async function getCausasByComunityId(idComunidad) {
-  const accessToken = getToken();
-  const response = await fetch(`${BASE_URL}/comunidad/${idComunidad}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const data = await response.json();
-  return data;
-}
-
+// OBTENER CAUSA POR NOMBRE TOTAL O PARCIAL (CASE INSENSITIVE)
 async function getCausasByNameInsensitive(titulo, idComunidad) {
-  const accessToken = getToken();
   const response = await fetch(
     `${BASE_URL}/nameInsensitivePartial/${titulo}/${idComunidad}`,
     {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
     },
@@ -110,11 +94,24 @@ async function getCausasByNameInsensitive(titulo, idComunidad) {
   return data;
 }
 
+// OBTENER CAUSAS POR ID DE COMUNIDAD
+async function getCausasByComunityId(idComunidad) {
+  const response = await fetch(`${BASE_URL}/comunidad/${idComunidad}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
+
 export {
   saveCausa,
   getCausas,
   getCausaById,
   getCausasByName,
-  getCausasByComunityId,
   getCausasByNameInsensitive,
+  getCausasByComunityId,
 };

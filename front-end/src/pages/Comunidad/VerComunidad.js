@@ -10,7 +10,6 @@ import { getUserById } from '../../services/users.service';
 import CardComunidad from '../../component/CardComunidad';
 import CardExternalProfile from '../../component/CardExternalProfile';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
-import Popup from '../../component/Popup';
 import Busqueda from '../../component/Buscar';
 import { getComunidadById } from '../../services/comunidades.service';
 import { refactorDate } from '../../utils/utils';
@@ -20,18 +19,10 @@ export default function MostrarComunidad() {
   const param = useParams();
   const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
   const navigate = useNavigate();
-  const [popupMessage, setPopupMessage] = useState('');
   const [error, setError] = useState('');
   const [busqueda, setBusqueda] = useState('');
   const [causasFiltradas, setCausasFiltradas] = useState([]);
   const [usersData, setUsersData] = useState([]);
-
-  const onApoyarCausaClicked = async () => {
-    const response = await getCausasByComunityId(param.idComunidad);
-    setCausasFiltradas(response);
-    navigate(`/comunidad/${param.idComunidad}`, { replace: true });
-    setPopupMessage('¡Causa apoyada exitosamente!');
-  };
 
   const fetchComunidad = useCallback(async () => {
     const response = await getComunidadById(param.idComunidad);
@@ -129,7 +120,7 @@ export default function MostrarComunidad() {
       </Breadcrumb>
 
       <div className="d-flex flex-column m-auto w-75">
-        {user && (
+        {user && user.id === comunidad.idAdministrador && (
           <div className="ms-auto p-2">
             <Button
               variant="outline-success"
@@ -179,7 +170,6 @@ export default function MostrarComunidad() {
                       idCausa={cau.id}
                       titulo={cau.titulo}
                       imageUrl={'../../../imagenes/causa.png'}
-                      onApoyarCausaClicked={onApoyarCausaClicked}
                       detalles={true}
                       apoyar={false}
                     />
@@ -204,9 +194,6 @@ export default function MostrarComunidad() {
             ))}
         </Tab>
       </Tabs>
-      {popupMessage && (
-        <Popup message={popupMessage} onClose={() => setPopupMessage('')} />
-      )}
     </div>
   );
 }

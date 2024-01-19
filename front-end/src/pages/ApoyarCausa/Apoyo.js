@@ -1,13 +1,15 @@
 import './Apoyo.css';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ErrorMessage from '../../component/MensajeError';
 import { createApoyoRegistro } from '../../services/apoyo_registro.service';
 import { apoyarCausa } from '../../services/apoyo_causa.service';
 
 export default function Apoyo(props) {
-  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+  const [nameActual, setNameActual] = useState('');
+
+  const name = useSelector((state) => state.user.userInfo.nombre);
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
 
@@ -20,12 +22,18 @@ export default function Apoyo(props) {
   }
 
   function apoyar() {
+
+    if (name) {
+      setNombre(name);
+    }
+
     const response = createApoyoRegistro(props.idCausa, nombre, correo);
     if (response === undefined) {
       // eslint-disable-next-line no-console
       console.log('No se pudo enviar el apoyo');
     } else {
       apoyarCausa(props.idCausa);
+      alert('Apoyo enviado con éxito');
       props.onHide();
     }
   }
@@ -33,6 +41,7 @@ export default function Apoyo(props) {
   function close() {
     props.onHide();
   }
+
 
   return (
     <Modal
@@ -59,7 +68,7 @@ export default function Apoyo(props) {
               type="text"
               placeholder="nombre"
               autoFocus={false}
-              value={user && user.nombre ? user.nombre : ''}
+              value={nameActual}
               onChange={handleNombreInput}
             />
           </Form.Group>

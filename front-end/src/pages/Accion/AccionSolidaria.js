@@ -93,10 +93,12 @@ export default function Accion() {
 
     if (objetivos.length === 0 || objetivos[0] === '') {
       setObjetivoError('Se debe añadir al menos un objetivo');
+      return;
     }
 
     if (progreso === '') {
       setProgresoError('El progreso no puede estar vacío');
+      return;
     }
 
     const response = await saveAccion(
@@ -107,8 +109,14 @@ export default function Accion() {
       param.idCausa,
     );
 
-    navigate(`/accion/${response.id}`, { replace: true });
+    if (response.status === 201) {
+      navigate(`/accion/${response.id}`, { replace: true });
+    } else {
+      alert('Error al crear la acción solidaria');
+    }
+
   }
+
 
   return (
     <div>
@@ -137,10 +145,9 @@ export default function Accion() {
               <Form.Label>Título</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Título de la causa solidaria"
-                className={`form-control ${tituloError ? 'is-invalid' : ''} ${
-                  titulo && !tituloError ? 'is-valid' : ''
-                }`}
+                placeholder="Título de la acción solidaria"
+                className={`form-control ${tituloError ? 'is-invalid' : ''} ${titulo && !tituloError ? 'is-valid' : ''
+                  }`}
                 onChange={handleTituloInput}
                 value={titulo}
                 required
@@ -155,9 +162,8 @@ export default function Accion() {
               <Form.Control
                 as="textarea"
                 rows={3}
-                className={`form-control ${
-                  descripcionError ? 'is-invalid' : ''
-                } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+                className={`form-control ${descripcionError ? 'is-invalid' : ''
+                  } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
                 onChange={handleDescripcionInput}
                 value={descripcion}
                 required
@@ -172,9 +178,8 @@ export default function Accion() {
               <Form.Control
                 as="textarea"
                 rows={3}
-                className={`form-control ${objetivoError ? 'is-invalid' : ''} ${
-                  objetivo && !objetivoError ? 'is-valid' : ''
-                }`}
+                className={`form-control ${objetivoError ? 'is-invalid' : ''} ${objetivo && !objetivoError ? 'is-valid' : ''
+                  }`}
                 placeholder="Objetivo de la acción solidaria"
                 onChange={handleObjetivoInput}
                 value={objetivo}

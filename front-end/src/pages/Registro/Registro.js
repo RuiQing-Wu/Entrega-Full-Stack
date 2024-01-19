@@ -5,6 +5,8 @@ import { useState } from 'react';
 import ErrorMessage from '../../component/MensajeError';
 import { registerUser } from '../../services/auth.service';
 import Popup from '../../component/Popup';
+import { registrarUsuarioSeguimiento } from '../../services/seguidor.service';
+import { getUserByName } from '../../services/users.service';
 
 export default function Registro() {
   const navigate = useNavigate();
@@ -114,12 +116,19 @@ export default function Registro() {
 
     // Procesar respuesta exitosa
     if (response.status === 201) {
+
+      // Crear un usuario seguimiento en neo4j para el usuario registrado
+      const userRegistrado = await getUserByName(username);
+      const responseUsuarioSeguimiento = await registrarUsuarioSeguimiento(userRegistrado.username, userRegistrado.id);
+
+      // eslint-disable-next-line no-console
+      console.log(responseUsuarioSeguimiento);
+
       // Navegar a la página de inicio
       navigate('/login');
     } else {
       // eslint-disable-next-line no-alert
-      alert('Error al registrar usuario existente');
-      navigate('/registrar');
+      alert('Ya existe un usuario con ese nombre de usuario');
     }
   }
 

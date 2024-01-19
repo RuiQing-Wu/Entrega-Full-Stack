@@ -27,7 +27,7 @@ async function createApoyoRegistro(idCausa, nombre, correo) {
 }
 
 async function getApoyoRegistroById(id) {
-  // TODO
+  // TODO: no se neceista nunca no?
 }
 
 export { createApoyoRegistro, getApoyoRegistroById };

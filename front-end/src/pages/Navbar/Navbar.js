@@ -43,25 +43,6 @@ export default function Menu() {
             <NavLink to={'/comunidades'} className="nav-link">
               Comunidades
             </NavLink>
-            {user.username && (
-              <>
-                {/*
-              <NavLink to={'/causas'} className="nav-link">
-                Causas
-              </NavLink>
-              
-              <NavLink to={'/crear-comunidad'} className="nav-link">
-                Crear comunidad
-              </NavLink>
-              <NavLink to={'/causa'} className="nav-link">
-                Crear causa solidaria
-              </NavLink>
-              <NavLink to={'/crear-accion'} className="nav-link">
-                Crear acción solidaria
-              </NavLink>
-          */}
-              </>
-            )}
           </Nav>
           <Nav className="p-2">
             {user.username ? (

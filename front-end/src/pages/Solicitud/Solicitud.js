@@ -59,7 +59,7 @@ export default function Solicitud(props) {
           if (responseUsuarioComunidad !== undefined) {
             props.usersData.push(user);
             props.onHide();
-            navigate(`/comunidad/${props.idComunidad}`);
+            navigate(`/comunidades/${props.idComunidad}`);
           }
         }
       }

@@ -13,7 +13,7 @@ export default function Comunidad() {
   const [descripcion, setDescripcion] = useState('');
   const [nombreError, setNombreError] = useState('');
   const [descripcionError, setDescripcionError] = useState('');
-  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+  const idUserActual = useSelector((state) => state.user.userInfo.id);
 
   function handleNombreInput(event) {
     setNombre(event.target.value);
@@ -56,16 +56,15 @@ export default function Comunidad() {
       nombre,
       descripcion,
       formattedDate,
-      user.id,
+      idUserActual,
     );
 
-    if (response === undefined) {
-      navigate('/error');
-      return;
+    if (response.status === 201) {
+      // Navegar a la página que contiene los detalles de la nueva comunidad
+      navigate(`/comunidades/${response.id}`);
+    } else {
+      alert('Ya existe una comunidad con ese nombre');
     }
-
-    // Navegar a la página que contiene los detalles de la nueva comunidad
-    navigate(`/comunidades/${response.id}`);
   }
 
   function onHomeClicked() {
@@ -88,9 +87,8 @@ export default function Comunidad() {
               <Form.Control
                 type="text"
                 placeholder="Nombre de la comunidad"
-                className={`form-control ${nombreError ? 'is-invalid' : ''} ${
-                  nombre && !nombreError ? 'is-valid' : ''
-                }`}
+                className={`form-control ${nombreError ? 'is-invalid' : ''} ${nombre && !nombreError ? 'is-valid' : ''
+                  }`}
                 onChange={handleNombreInput}
                 value={nombre}
                 required
@@ -105,9 +103,8 @@ export default function Comunidad() {
                 as="textarea"
                 rows={3}
                 placeholder="Descripción de la comunidad"
-                className={`form-control ${
-                  descripcionError ? 'is-invalid' : ''
-                } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+                className={`form-control ${descripcionError ? 'is-invalid' : ''
+                  } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
                 onChange={handleDescripcionInput}
                 value={descripcion}
                 required

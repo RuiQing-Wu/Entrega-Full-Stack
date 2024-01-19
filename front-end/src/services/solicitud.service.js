@@ -2,6 +2,7 @@ import { getToken } from '../utils/utils';
 
 const BASE_URL = 'http://localhost:3001/solicitud';
 
+// REGISTRAR SOLICITUD
 async function createSolicitud(
   descripcion,
   fechaSolicitud,
@@ -34,37 +35,17 @@ async function createSolicitud(
   return data;
 }
 
+// OBTENER SOLICITUDES
 async function getSolicitud() {
-  const accessToken = getToken();
+
   const response = await fetch(BASE_URL, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   });
   const data = await response.json();
   return data;
 }
-
-/* async function getSolicitudById(id) {
-  const accessToken = getToken();
-  const response = await fetch(`${BASE_URL}/${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  if (response.status === 401) {
-    // eslint-disable-next-line no-console
-    console.log('No existe la solicitud');
-    return undefined;
-  }
-
-  const data = await response.json();
-  return data;
-} */
 
 export { createSolicitud, getSolicitud };

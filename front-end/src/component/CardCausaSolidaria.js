@@ -20,6 +20,7 @@ const CardCausaSolidaria = ({
   const navigate = useNavigate();
   const [modalShowApoyo, setModalShowApoyo] = useState(false);
   const [apoyoActual, setApoyoActual] = useState(0);
+  
 
   function handleRedireccionarACausa() {
     if (titulo !== ' ') {
@@ -32,9 +33,14 @@ const CardCausaSolidaria = ({
   }
 
   async function refreshApoyo() {
-    // TODO: ESTO NO DEBERIA NECESITAR AUTHORIZATION
+
     const apoyo = await getApoyoCausa(idCausa);
-    setApoyoActual(apoyo.numApoyo);
+
+    if (apoyo.status === 404) {
+      setApoyoActual(0);
+    } else {
+      setApoyoActual(apoyo.numApoyo);
+    }
   }
 
   // ESTO DEBERIA DEPENDER DEL VOTO ACTUAL NO?
@@ -50,6 +56,7 @@ const CardCausaSolidaria = ({
   }
 
   return (
+
     <Card id="cardCausa" className="mb-3">
       <Card.Body>
         <Row>
@@ -72,7 +79,7 @@ const CardCausaSolidaria = ({
             {objetivos && <Card.Text>Objetivos DS: {lista || []}</Card.Text>}
             {apoyar && (
               <Card.Text>
-                Apoyos actuales: {apoyoActual === undefined ? 0 : apoyoActual}
+                Apoyos actuales: {apoyoActual !== undefined ? apoyoActual : 0}
               </Card.Text>
             )}
           </Col>
@@ -123,6 +130,7 @@ const CardCausaSolidaria = ({
         />
       </Card.Footer>
     </Card>
+
   );
 };
 
