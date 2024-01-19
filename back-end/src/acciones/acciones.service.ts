@@ -4,9 +4,9 @@ import { AccionSolidaria } from './domain/accion_solidaria.domain';
 import { CreateAccionDto } from './dto/create-accion.dto';
 import { UpdateAccionDto } from './dto/update-accion.dto';
 import { AccionesRepository } from './repositories/acciones.repository';
-import { EntityNotFoundError } from 'src/base/entityNotFounError';
-import { IllegalArgumentError } from 'src/base/argumentError';
-import { RepositoryError } from 'src/base/repositoryError';
+import { EntityNotFoundError } from '../base/entityNotFounError';
+import { IllegalArgumentError } from '../base/argumentError';
+import { RepositoryError } from '../base/repositoryError';
 
 @Injectable()
 export class AccionesServiceImpl implements IAccionService {

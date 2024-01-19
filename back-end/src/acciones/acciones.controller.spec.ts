@@ -1,20 +1,21 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AccionesController } from './acciones.controller';
-import { AccionesService } from './acciones.service';
+import { setup, teardown, getApp } from '../data_base_service/mongo.test.setup';
+import * as request from 'supertest';
 
-describe('AccionesController', () => {
-  let controller: AccionesController;
+describe('AccionesController (e2e)', () => {
+  beforeAll(setup, 60000);
+  afterAll(teardown);
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [AccionesController],
-      providers: [AccionesService],
-    }).compile();
-
-    controller = module.get<AccionesController>(AccionesController);
+  it('should compile successfully', () => {
+    const moduleRef = getApp();
+    expect(moduleRef).toBeDefined();
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  it('/acciones (GET)', async () => {
+    const app = getApp(); 
+    const server = app.getHttpServer(); 
+
+    const response = await request(server).get('/acciones');
+
+    expect(response.status).toBe(200);
   });
 });

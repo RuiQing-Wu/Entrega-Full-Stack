@@ -4,8 +4,8 @@ import { HydratedDocument } from 'mongoose';
 import { AccionesRepository } from './acciones.repository';
 import { AccionSolidaria } from '../domain/accion_solidaria.domain';
 import { AccionMongoModel } from '../schemas/accion.schema';
-import { RepositoryError } from 'src/base/repositoryError';
-import { EntityNotFoundError } from 'src/base/entityNotFounError';
+import { RepositoryError } from '../../base/repositoryError';
+import { EntityNotFoundError } from '../../base/entityNotFounError';
 
 export class AccionesRepositoryMongo implements AccionesRepository {
   constructor(
