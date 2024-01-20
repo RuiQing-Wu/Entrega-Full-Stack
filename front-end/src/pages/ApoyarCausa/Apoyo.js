@@ -6,7 +6,6 @@ import { createApoyoRegistro } from '../../services/apoyo_registro.service';
 import { apoyarCausa } from '../../services/apoyo_causa.service';
 
 export default function Apoyo(props) {
-
   const name = useSelector((state) => state.user.userInfo.nombre);
   const [nombre, setNombre] = useState(name || '');
   const [correo, setCorreo] = useState('');
@@ -20,7 +19,6 @@ export default function Apoyo(props) {
   }
 
   function apoyar() {
-
     const response = createApoyoRegistro(props.idCausa, nombre, correo);
     if (response === undefined) {
       // eslint-disable-next-line no-console
@@ -35,7 +33,6 @@ export default function Apoyo(props) {
   function close() {
     props.onHide();
   }
-
 
   return (
     <Modal

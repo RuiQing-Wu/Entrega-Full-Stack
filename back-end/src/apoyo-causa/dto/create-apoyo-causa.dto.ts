@@ -10,7 +10,7 @@ export class CreateApoyoCausaDto {
   idCausa: string;
 
   @ApiProperty({
-    example: 22,
+    example: 0,
     description: 'Total de apoyos a la causa',
   })
   @IsNotEmpty()

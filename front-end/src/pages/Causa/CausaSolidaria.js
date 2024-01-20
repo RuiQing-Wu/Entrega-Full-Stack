@@ -5,7 +5,12 @@ import { getComunidadById } from '../../services/comunidades.service';
 import { saveCausa } from '../../services/causas.service';
 import './CausaSolidaria.css';
 import ErrorMessage from '../../component/MensajeError';
-import { HTTP_STATUS_CREATED } from '../../utils/utils';
+import { createApoyo } from '../../services/apoyo_causa.service';
+import {
+  HTTP_STATUS_UNAUTHORIZED,
+  alertErrorMessage,
+  checkResponseStatusCode,
+} from '../../utils/utils';
 
 export default function Causa() {
   const [titulo, setTitulo] = useState('');
@@ -158,11 +163,20 @@ export default function Causa() {
       objetivos,
     );
 
-    // TODO COMPROBAR EL ESTADO DE LA RESPUESTA
+    if (!checkResponseStatusCode(response)) {
+      alertErrorMessage(response);
+      if (response.status === HTTP_STATUS_UNAUTHORIZED) navigate(`/login`);
+      return;
+    }
 
-    if (response === HTTP_STATUS_CREATED) {
+    if (response.status === 201) {
       const data = await response.json();
-      navigate(`/causa/${response.id}`, { replace: true });
+      const crearApoyo = await createApoyo(data.id);
+      if (crearApoyo === undefined) {
+        alert('No se ha podido crear el apoyo');
+      } else {
+        navigate(`/causa/${data.id}`);
+      }
     }
   }
 

@@ -1,4 +1,3 @@
-import { createApoyo } from './apoyo_causa.service';
 import { getToken } from '../utils/utils';
 
 const BASE_URL = 'http://localhost:3001/causas';
@@ -31,12 +30,7 @@ async function saveCausa(
     }),
   });
 
-  const data = await response.json();
-  const crearApoyo = await createApoyo(data.id);
-  if (crearApoyo === undefined) {
-    throw new Error('No se pudo crear el apoyo');
-  }
-  return data;
+  return response;
 }
 
 // OBTENER CAUSAS
@@ -105,7 +99,6 @@ async function getCausasByComunityId(idComunidad) {
   const data = await response.json();
   return data;
 }
-
 
 export {
   saveCausa,

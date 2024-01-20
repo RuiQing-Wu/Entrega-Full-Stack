@@ -3,14 +3,13 @@ import { getToken } from '../utils/utils';
 const BASE_URL = 'http://localhost:3001/apoyo-registro';
 
 async function createApoyoRegistro(idCausa, nombre, correo) {
-
   const requestBody = {
     idCausa,
     nombre,
     correo,
   };
 
-  const response = await fetch(BASE_URL, {
+  const response = await fetch(`${BASE_URL}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
