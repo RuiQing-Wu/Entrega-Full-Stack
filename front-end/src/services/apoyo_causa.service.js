@@ -2,7 +2,6 @@ import { getToken } from '../utils/utils';
 
 const BASE_URL = 'http://localhost:3001/apoyo-causa';
 
-
 // REGISTRAR APOYO A CAUSA
 async function createApoyo(idCausa) {
   const accessToken = getToken();
@@ -19,12 +18,13 @@ async function createApoyo(idCausa) {
     }),
   });
 
-  if (response.status !== 201) {
+  return response;
+  /* if (response.status !== 201) {
     return undefined;
   }
 
   const data = await response.json();
-  return data;
+  return data; */
 }
 
 // OBTENER APOYO A CAUSA POR ID
@@ -63,7 +63,6 @@ async function deleteApoyoCausa(idCausa) {
 
 // APOYAR CAUSA
 async function apoyarCausa(idCausa) {
-
   const url = `${BASE_URL}/apoyar/${idCausa}`;
   const response = await fetch(url, {
     method: 'PATCH',

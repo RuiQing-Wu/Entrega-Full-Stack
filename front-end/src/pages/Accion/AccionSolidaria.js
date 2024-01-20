@@ -73,18 +73,13 @@ export default function Accion() {
   }
 
   const fetchCausa = useCallback(async () => {
+    if (param?.idCausa === undefined) return;
     const response = await getCausaById(param.idCausa);
     if (!checkResponseStatusCode(response)) {
-      if (response.status === 401) {
-        navigate('/login');
-      }
-
-      if (response.status === 404) {
-        navigate('/error');
-      }
-      setCausa([]);
-      return;
+      const page = checkPageToNavigate(response);
+      Navigate(page);
     }
+
     const data = await response.json();
     setCausa(data);
   }, [param.idCausa]);

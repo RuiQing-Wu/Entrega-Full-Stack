@@ -69,6 +69,7 @@ export default function MostrarCausa() {
   const fetchComunidad = useCallback(async () => {
     if (causa.comunidad === undefined) return;
     const response = await getComunidadById(causa.comunidad);
+
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
       Navigate(page);
@@ -114,11 +115,11 @@ export default function MostrarCausa() {
   function handleBuscarAcciones(event) {
     event.preventDefault();
 
+    setError('');
     if (busqueda.trim() === '') {
       fetchAcciones();
     } else if (busqueda.trim() !== '') {
       getAccionesFiltradas();
-      setError('');
     }
   }
 
