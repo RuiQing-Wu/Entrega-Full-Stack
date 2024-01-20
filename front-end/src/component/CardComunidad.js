@@ -2,7 +2,6 @@ import './Style/CardComunidad.css';
 import { useState, useEffect } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import Solicitud from '../pages/Solicitud/Solicitud';
-import Apoyo from '../pages/ApoyarCausa/Apoyo';
 
 export default function CardComunidad({
   imageUrl,

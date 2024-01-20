@@ -120,6 +120,10 @@ export class UsersRepositoryMongo implements UsersRepository {
 
       return this.toUserDomain(user);
     } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw error;
+      }
+
       throw new RepositoryError(
         'Error al obtener el usuario con nombre ' + name,
       );

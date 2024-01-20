@@ -36,7 +36,7 @@ import { EntityNotFoundError } from 'src/base/entityNotFounError';
 export class SeguidorController {
   constructor(private readonly seguidorService: ISeguidorService) {}
 
-  @ApiBearerAuth()
+  @Public()
   @ApiOperation({ summary: 'Crear una relación de seguimiento' })
   @ApiBody({
     type: CreateSeguidorDto,
@@ -57,7 +57,7 @@ export class SeguidorController {
     }
   }
 
-  @ApiBearerAuth()
+  @Public()
   @ApiOperation({
     summary: 'Obtiene todas las relaciones de seguimiento entre usuarios',
   })
@@ -74,7 +74,7 @@ export class SeguidorController {
     }
   }
 
-  @ApiBearerAuth()
+  @Public()
   @ApiOperation({ summary: 'Obtener una relación de seguimiento mediante id' })
   @ApiParam({
     name: 'id',

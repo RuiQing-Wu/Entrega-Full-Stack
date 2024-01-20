@@ -41,12 +41,13 @@ async function getComunidades() {
     },
   });
 
-  if (!response.ok) {
+  return response;
+  /* if (!response.ok) {
     throw new Error('No se encontraron comunidades.');
   }
 
   const data = await response.json();
-  return data;
+  return data; */
 }
 
 // RECUPERAR COMUNIDAD POR ID DE COMUNIDAD
@@ -86,14 +87,16 @@ async function getComunidadesByNameInsensitive(busqueda, filtro) {
   const response = await fetch(
     `${BASE_URL}/nameInsensitivePartial/${busqueda}?filtro=${filtro}`,
   );
-  if (!response.ok) {
+
+  return response;
+  /* if (!response.ok) {
     throw new Error(
       'No se encontraron comunidades que coincidan con la búsqueda.',
     );
   }
 
   const data = await response.json();
-  return data;
+  return data; */
 }
 
 // RECUPERAR COMUNIDADES POR ID DE USUARIO

@@ -39,12 +39,12 @@ export default function Comunidad() {
     setDescripcionError('');
 
     // Validar que el usuario y la contraseña no estén vacíos
-    if (nombre === '') {
+    if (nombre === '' || nombre.trim() === '') {
       setNombreError('El nombre de la comunidad no puede estar vacío');
       return;
     }
 
-    if (descripcion === '') {
+    if (descripcion === '' || descripcion.trim() === '') {
       setDescripcionError(
         'La descripción de la comunidad no puede estar vacía',
       );

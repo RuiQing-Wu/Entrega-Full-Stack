@@ -12,8 +12,9 @@ async function getUserById(idUser) {
 // OBTENER USUARIO POR NOMBRE
 async function getUserByName(username) {
   const response = await fetch(`${BASE_URL}/username/${username}`);
-  const data = await response.json();
-  return data;
+  return response;
+  /* const data = await response.json();
+  return data; */
 }
 
 // ACTUALIZAR USUARIO

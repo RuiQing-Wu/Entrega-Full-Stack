@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Breadcrumb, Stack, Button, Row, Col } from 'react-bootstrap';
+import { Breadcrumb, Button, Row, Col } from 'react-bootstrap';
 import {
   getComunidades,
   getComunidadesByNameInsensitive,
 } from '../../services/comunidades.service';
 import Busqueda from '../../component/Buscar';
 import CardComunidad from '../../component/CardComunidad';
+import { checkResponseStatusCode, refactorDate } from '../../utils/utils';
 
 export default function BuscarComunidades() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState('');
   const [comunidadesFiltradas, setComunidadesFiltradas] = useState([]);
   const [error, setError] = useState('');
-  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+  // const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+  const user = useSelector((state) => {
+    return state.user.userInfo;
+  });
   const [filtro, setFiltro] = useState('nombre');
 
-  function onFiltroChange(event) {
+  /* function onFiltroChange(event) {
     setFiltro(event.target.value);
-  }
+  } */
 
   function handleRedireccionarACrearComunidad() {
     return () => {
@@ -29,15 +33,26 @@ export default function BuscarComunidades() {
 
   async function getAllComunidades() {
     const response = await getComunidades();
-    setComunidadesFiltradas(response);
+    if (!checkResponseStatusCode(response)) {
+      setComunidadesFiltradas([]);
+      return;
+    }
+
+    const data = await response.json();
+    setComunidadesFiltradas(data);
   }
 
   async function getComunidadesFiltradas() {
     setComunidadesFiltradas([]);
     const response = await getComunidadesByNameInsensitive(busqueda, filtro);
-    setComunidadesFiltradas(response);
+    if (!checkResponseStatusCode(response)) {
+      setComunidadesFiltradas([]);
+      return;
+    }
+    const data = await response.json();
+    setComunidadesFiltradas(data);
 
-    if (response.length === 0)
+    if (data.length === 0)
       setError('No se encontraron comunidades que coincidan con la búsqueda.');
   }
 
@@ -51,12 +66,12 @@ export default function BuscarComunidades() {
 
   function handleBuscarComunidades(event) {
     event.preventDefault();
-
+    setError('');
+    setBusqueda(event.target.busqueda.value);
     if (busqueda.trim() === '') {
       getAllComunidades();
     } else if (busqueda.trim() !== '') {
       getComunidadesFiltradas(filtro);
-      setError('');
     }
   }
 
@@ -100,12 +115,12 @@ export default function BuscarComunidades() {
             handleBuscar={handleBuscarComunidades}
             handleBusquedaInput={handleBusquedaInput}
             error={error}
-            handleRedireccionar={(nombre) =>
+            /* handleRedireccionar={(nombre) =>
               handleRedireccionarComunidad(nombre)
-            }
-            onFiltroChange={onFiltroChange}
-            filtro={filtro}
-            elementoFiltrado={comunidadesFiltradas}
+            } */
+            // onFiltroChange={onFiltroChange}
+            // filtro={filtro}
+            /* elementoFiltrado={comunidadesFiltradas} */
           />
           {comunidadesFiltradas.length > 0 && (
             <div>
@@ -115,14 +130,16 @@ export default function BuscarComunidades() {
                   <Col key={index}>
                     <CardComunidad
                       imageUrl={'../../../imagenes/comunidad.jpeg'}
+                      id={elemento.id}
                       nombre={elemento.nombre}
                       descripcion={elemento.descripcion}
+                      fechaInicio={refactorDate(elemento.fechaInicio)}
                       handleRedireccionar={(nombre) =>
                         handleRedireccionarComunidad(elemento.nombre)
                       }
                       detalles={true}
-                      solicitud={false}
                       btnSolicitar={false}
+                      solicitud={false}
                     />
                   </Col>
                 ))}

@@ -6,7 +6,7 @@ export default function Busqueda({
   handleBuscar,
   handleBusquedaInput,
   error,
-  busqueda,
+  // busqueda,
 }) {
   const [filtro, setFiltro] = useState('nombre');
 
@@ -26,7 +26,7 @@ export default function Busqueda({
         <Row className="d-flex flex-wrap">
           <Col xs={12} md={8} lg={2} className="p-1">
             <Form.Group controlId="filtroSelect">
-              <Form.Select value={filtro} onChange={onFiltroChange}>
+              <Form.Select readOnly value={filtro} onChange={onFiltroChange}>
                 <option value="nombre">Filtrar por nombre</option>
               </Form.Select>
             </Form.Group>
@@ -37,7 +37,7 @@ export default function Busqueda({
               className="form-control"
               id="busqueda"
               placeholder={`Buscar ${titulo} por ${filtro}...`}
-              value={busqueda}
+              // value={busqueda}
               onChange={handleBusquedaInput}
             />
           </Col>
@@ -48,7 +48,7 @@ export default function Busqueda({
           </Col>
         </Row>
       </Form>
-      <label>{error}</label>
+      {<label className="mt-3">{error}</label>}
     </div>
   );
 }

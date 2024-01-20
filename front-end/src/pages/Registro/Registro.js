@@ -55,8 +55,6 @@ export default function Registro() {
   }
 
   async function registrarUser(event) {
-    // eslint-disable-next-line no-console
-    console.log('Registrar');
     event.preventDefault();
 
     // Resetear los errores
@@ -111,19 +109,16 @@ export default function Registro() {
       return;
     }
 
-    // TODO No haria falta controlar los errores de esta llamada?
-    const userRegistrado = await getUserByName(username);
-    const responseUsuarioSeguimiento = await registrarUsuarioSeguimiento(
-      userRegistrado.username,
-      userRegistrado.id,
-    );
-
-    if (!checkResponseStatusCode(responseUsuarioSeguimiento)) {
-      alertErrorMessage(responseUsuarioSeguimiento);
-      return;
+    const responseUser = await getUserByName(username);
+    if (checkResponseStatusCode(responseUser)) {
+      const userRegistrado = await responseUser.json();
+      const responseUsuarioSeguimiento = await registrarUsuarioSeguimiento(
+        userRegistrado?.username,
+        userRegistrado?.id,
+      );
     }
-    
-    // Se notifica al usuario que se ha registrado correctamente
+
+    // eslint-disable-next-line no-alert
     alert('Usuario registrado con éxito');
 
     // Navegar a la página de inicio
