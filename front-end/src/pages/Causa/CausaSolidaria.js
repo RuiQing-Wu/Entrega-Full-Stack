@@ -181,7 +181,7 @@ export default function Causa() {
 
       if (crearApoyo.status === 201) {
         const crearApoyoData = await crearApoyo.json();
-        navigate(`/causa/${crearApoyoData.id}`);
+        navigate(`/causa/${data.id}`);
       }
     }
   }

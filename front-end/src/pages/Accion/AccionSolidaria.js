@@ -123,7 +123,7 @@ export default function Accion() {
       return;
     }
 
-    if (progreso === '' || progreso.trim() === '') {
+    if (progreso === '') {
       setProgresoError('El progreso no puede estar vacío');
       return;
     }
