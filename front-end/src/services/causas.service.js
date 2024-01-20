@@ -53,8 +53,10 @@ async function getCausaById(id) {
       'Content-Type': 'application/json',
     },
   });
-  const data = await response.json();
-  return data;
+
+  return response;
+  /* const data = await response.json();
+  return data; */
 }
 
 // OBTENER CAUSA POR NOMBRE

@@ -5,6 +5,7 @@ import { getAccionById } from '../../services/acciones.service';
 import { getCausaById } from '../../services/causas.service';
 import { getComunidadById } from '../../services/comunidades.service';
 import CardAccionSolidaria from '../../component/CardAccionSolidaria';
+import { checkResponseStatusCode } from '../../utils/utils';
 
 export default function MostrarAcciones() {
   const param = useParams();
@@ -41,12 +42,36 @@ export default function MostrarAcciones() {
 
   const fetchCausa = useCallback(async () => {
     const response = await getCausaById(accion.causa);
-    setCausa(response);
+    if (!checkResponseStatusCode(response)) {
+      setCausa([]);
+      if (response.status === 401) {
+        navigate('/login');
+      }
+
+      if (response.status === 404) {
+        navigate('/error');
+      }
+      return;
+    }
+    const data = await response.json();
+    setCausa(data);
   }, [accion.causa]);
 
   const fetchComunidad = useCallback(async () => {
     const response = await getComunidadById(causa.comunidad);
-    setComunidad(response);
+    if (!checkResponseStatusCode(response)) {
+      setComunidad([]);
+      if (response.status === 401) {
+        navigate('/login');
+      }
+
+      if (response.status === 404) {
+        navigate('/error');
+      }
+      return;
+    }
+    const data = await response.json();
+    setComunidad(data);
   }, [causa.comunidad]);
 
   useEffect(() => {

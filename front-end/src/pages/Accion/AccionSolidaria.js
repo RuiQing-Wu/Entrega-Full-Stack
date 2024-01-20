@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useCallback, useEffect } from 'react';
 import { Form, Button, Col, Breadcrumb, ProgressBar } from 'react-bootstrap';
 import './AccionSolidaria.css';
@@ -6,6 +6,7 @@ import ErrorMessage from '../../component/MensajeError';
 import { saveAccion } from '../../services/acciones.service';
 import { getCausaById } from '../../services/causas.service';
 import { getComunidadById } from '../../services/comunidades.service';
+import { checkResponseStatusCode, alertErrorMessage } from '../../utils/utils';
 
 export default function Accion() {
   const navigate = useNavigate();
@@ -61,31 +62,56 @@ export default function Accion() {
 
   const fetchCausa = useCallback(async () => {
     const response = await getCausaById(param.idCausa);
-    setCausa(response);
+    if (!checkResponseStatusCode(response)) {
+      if (response.status === 401) {
+        navigate('/login');
+      }
+
+      if (response.status === 404) {
+        navigate('/error');
+      }
+      setCausa([]);
+      return;
+    }
+    const data = await response.json();
+    setCausa(data);
   }, [param.idCausa]);
 
   const fetchComunidad = useCallback(async () => {
+    if (causa.comunidad === undefined) return;
     const response = await getComunidadById(causa.comunidad);
-    setComunidad(response);
-  }, [causa.comunidad]);
+    if (!checkResponseStatusCode(response)) {
+      setComunidad([]);
+      if (response.status === 401) {
+        navigate('/login');
+      }
 
-  useEffect(() => {
-    fetchCausa();
-  }, [fetchCausa]);
+      if (response.status === 404) {
+        navigate('/error');
+      }
+      return;
+    }
+    const data = await response.json();
+    setComunidad(data);
+  }, [causa.comunidad]);
 
   useEffect(() => {
     fetchComunidad();
   }, [fetchComunidad]);
 
+  useEffect(() => {
+    fetchCausa();
+  }, [fetchCausa]);
+
   async function AccionSolidaria(event) {
     event.preventDefault();
 
-    if (titulo === '') {
+    if (titulo === '' || titulo.trim() === '') {
       setTituloError('El título no puede estar vacío');
       return;
     }
 
-    if (descripcion === '') {
+    if (descripcion === '' || descripcion.trim() === '') {
       setDescripcionError('La descripción no puede estar vacía');
       return;
     }
@@ -95,7 +121,7 @@ export default function Accion() {
       return;
     }
 
-    if (progreso === '') {
+    if (progreso === '' || progreso.trim() === '') {
       setProgresoError('El progreso no puede estar vacío');
       return;
     }
@@ -108,10 +134,14 @@ export default function Accion() {
       param.idCausa,
     );
 
+    if (!checkResponseStatusCode(response)) {
+      alertErrorMessage(response);
+      return;
+    }
+
     if (response.status === 201) {
-      navigate(`/accion/${response.id}`, { replace: true });
-    } else {
-      alert('Error al crear la acción solidaria');
+      const data = await response.json();
+      navigate(`/accion/${data.id}`, { replace: true });
     }
   }
 
@@ -122,7 +152,7 @@ export default function Accion() {
         <Breadcrumb.Item onClick={onComunidadesClicked}>
           Comunidades
         </Breadcrumb.Item>
-        <Breadcrumb.Item href={`/comunidad/${causa.comunidad}`}>
+        <Breadcrumb.Item href={`/comunidades/${causa.comunidad}`}>
           {comunidad.nombre}
         </Breadcrumb.Item>
         <Breadcrumb.Item href={`/causa/${param.idCausa}`}>

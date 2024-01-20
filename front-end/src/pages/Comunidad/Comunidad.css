@@ -4,6 +4,7 @@
   border: 2px solid #ccc;
   margin: auto;
   padding: 10px;
+  text-align: left;
 }
 
 #PaginaComunidad form .form-label {

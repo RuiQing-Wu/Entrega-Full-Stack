@@ -8,10 +8,10 @@ async function saveAccion(
   descripcion,
   listaObjetivos,
   progreso,
-  idCausa,
+  causa,
 ) {
   const accessToken = getToken();
-  const causa = idCausa;
+  // const causa = idCausa;
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
@@ -27,8 +27,9 @@ async function saveAccion(
     }),
   });
 
-  const data = await response.json();
-  return data;
+  return response;
+  /* const data = await response.json();
+  return data; */
 }
 
 // RECUPERAR ACCIONES ---------- SIN USO

@@ -59,14 +59,15 @@ async function getComunidadById(id) {
     },
   });
 
-  if (response.status === 401) {
+  return response;
+  /* if (response.status === 401) {
     // eslint-disable-next-line no-console
     console.log('No existe la comunidad');
     return undefined;
   }
 
   const data = await response.json();
-  return data;
+  return data; */
 }
 
 // RECUPERAR COMUNIDAD POR NOMBRE
