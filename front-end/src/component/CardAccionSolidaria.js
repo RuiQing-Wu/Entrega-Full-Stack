@@ -12,14 +12,17 @@ const CardAccionSolidaria = ({
   progreso,
   detalles,
 }) => {
-
   // TODO ESTO NO DEBERIA SER UN USESTATE?
   let objetivos = [];
   const navigate = useNavigate();
 
-  if (listaObjetivos !== undefined) {
-    objetivos = listaObjetivos.join(', ');
-  }
+  const getObjetivos = () => {
+    if (listaObjetivos !== undefined) {
+      objetivos = listaObjetivos.join(', ');
+    }
+  };
+
+  getObjetivos();
 
   function handleRedireccionAAccion() {
     if (titulo !== ' ') {
