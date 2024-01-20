@@ -69,7 +69,13 @@ export default function MostrarCausa() {
   const fetchComunidad = useCallback(async () => {
     if (causa.comunidad === undefined) return;
     const response = await getComunidadById(causa.comunidad);
-    setComunidad(response);
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
+
+    const data = await response.json();
+    setComunidad(data);
   }, [causa.comunidad]);
 
   useEffect(() => {
