@@ -102,7 +102,7 @@ const router = createBrowserRouter([
           </AuthRoute>
         ),
       },
-      { name: 'Error', path: '*', element: <Error /> },
+      { name: 'Error', path: '/error', element: <Error /> },
     ],
   },
   {

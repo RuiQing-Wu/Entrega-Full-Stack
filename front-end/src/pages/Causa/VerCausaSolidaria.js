@@ -50,7 +50,7 @@ export default function MostrarCausa() {
     const response = await getAccionesByCausaId(param.idCausa);
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
     const data = await response.json();
     setAccionesFiltradas(data);
@@ -60,7 +60,7 @@ export default function MostrarCausa() {
     const response = await getCausaById(param.idCausa);
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
     const data = await response.json();
     setCausa(data);
@@ -72,7 +72,7 @@ export default function MostrarCausa() {
 
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
 
     const data = await response.json();
@@ -103,7 +103,7 @@ export default function MostrarCausa() {
     );
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
     const data = await response.json();
     setAccionesFiltradas(data);

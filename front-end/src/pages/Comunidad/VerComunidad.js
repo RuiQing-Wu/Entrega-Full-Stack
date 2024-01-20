@@ -35,18 +35,19 @@ export default function MostrarComunidad() {
     const response = await getComunidadById(param.idComunidad);
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
+    } else {
+      const data = await response.json();
+      setComunidad(data);
     }
-    const data = await response.json();
-    setComunidad(data);
-  }, [param.idComunidad]);
+  }, [param.idComunidad, navigate]);
 
   const fetchCausas = useCallback(async () => {
     const response = await getCausasByComunityId(param.idComunidad);
 
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
 
     const data = await response.json();
@@ -176,7 +177,7 @@ export default function MostrarComunidad() {
             handleBuscar={handleBuscarCausas}
             handleBusquedaInput={handleBusquedaInput}
             error={error}
-          // elementoFiltrado={causasFiltradas}
+            // elementoFiltrado={causasFiltradas}
           />
           {causasFiltradas.length > 0 && (
             <div>

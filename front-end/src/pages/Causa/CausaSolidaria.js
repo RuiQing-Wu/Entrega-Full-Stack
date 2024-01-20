@@ -167,7 +167,7 @@ export default function Causa() {
     if (!checkResponseStatusCode(response)) {
       alertErrorMessage(response);
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
 
     if (response.status === 201) {
@@ -176,7 +176,7 @@ export default function Causa() {
       if (!checkResponseStatusCode(crearApoyo)) {
         alertErrorMessage(crearApoyo);
         const page = checkPageToNavigate(crearApoyo);
-        Navigate(page);
+        navigate(page);
       }
 
       if (crearApoyo.status === 201) {
@@ -196,7 +196,7 @@ export default function Causa() {
 
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
 
     const data = await response.json();

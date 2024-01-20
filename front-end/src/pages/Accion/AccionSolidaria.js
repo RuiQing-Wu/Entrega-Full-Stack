@@ -77,7 +77,7 @@ export default function Accion() {
     const response = await getCausaById(param.idCausa);
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
 
     const data = await response.json();
@@ -89,7 +89,7 @@ export default function Accion() {
     const response = await getComunidadById(causa.comunidad);
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
 
     const data = await response.json();

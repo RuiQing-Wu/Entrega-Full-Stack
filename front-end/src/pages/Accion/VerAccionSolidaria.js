@@ -37,7 +37,7 @@ export default function MostrarAcciones() {
     const response = await getAccionById(param.idAccion);
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
 
     const data = await response.json();
@@ -48,7 +48,7 @@ export default function MostrarAcciones() {
     const response = await getCausaById(accion.causa);
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
 
     const data = await response.json();
@@ -59,7 +59,7 @@ export default function MostrarAcciones() {
     const response = await getComunidadById(causa.comunidad);
     if (!checkResponseStatusCode(response)) {
       const page = checkPageToNavigate(response);
-      Navigate(page);
+      navigate(page);
     }
 
     const data = await response.json();
