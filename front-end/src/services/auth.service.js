@@ -13,13 +13,6 @@ async function login(username, password) {
   });
 
   return response;
-
-  /* if (response.status !== HTTP_STATUS_OK) {
-    return { access_token: undefined };
-  }
-
-  const data = await response.json();
-  return data; */
 }
 
 async function registerUser(

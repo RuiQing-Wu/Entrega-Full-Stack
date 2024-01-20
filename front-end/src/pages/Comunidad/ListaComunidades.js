@@ -15,15 +15,11 @@ export default function BuscarComunidades() {
   const [busqueda, setBusqueda] = useState('');
   const [comunidadesFiltradas, setComunidadesFiltradas] = useState([]);
   const [error, setError] = useState('');
-  // const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
   const user = useSelector((state) => {
     return state.user.userInfo;
   });
   const [filtro, setFiltro] = useState('nombre');
 
-  /* function onFiltroChange(event) {
-    setFiltro(event.target.value);
-  } */
 
   function handleRedireccionarACrearComunidad() {
     return () => {
@@ -117,12 +113,6 @@ export default function BuscarComunidades() {
             handleBuscar={handleBuscarComunidades}
             handleBusquedaInput={handleBusquedaInput}
             error={error}
-            /* handleRedireccionar={(nombre) =>
-              handleRedireccionarComunidad(nombre)
-            } */
-            // onFiltroChange={onFiltroChange}
-            // filtro={filtro}
-            /* elementoFiltrado={comunidadesFiltradas} */
           />
           {comunidadesFiltradas.length > 0 && (
             <div>

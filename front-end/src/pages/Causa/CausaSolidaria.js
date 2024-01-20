@@ -183,11 +183,6 @@ export default function Causa() {
         const crearApoyoData = await crearApoyo.json();
         navigate(`/causa/${crearApoyoData.id}`);
       }
-      /* if (crearApoyo === undefined) {
-        alert('No se ha podido crear el apoyo');
-      } else {
-        navigate(`/causa/${data.id}`);
-      } */
     }
   }
 

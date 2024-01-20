@@ -19,12 +19,6 @@ async function createApoyo(idCausa) {
   });
 
   return response;
-  /* if (response.status !== 201) {
-    return undefined;
-  }
-
-  const data = await response.json();
-  return data; */
 }
 
 // OBTENER APOYO A CAUSA POR ID
@@ -38,8 +32,6 @@ async function getApoyoCausa(idCausa) {
   });
 
   return response;
-  /* const data = await response.json();
-  return data; */
 }
 
 // APOYAR CAUSA

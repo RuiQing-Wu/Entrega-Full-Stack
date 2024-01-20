@@ -42,12 +42,6 @@ async function getComunidades() {
   });
 
   return response;
-  /* if (!response.ok) {
-    throw new Error('No se encontraron comunidades.');
-  }
-
-  const data = await response.json();
-  return data; */
 }
 
 // RECUPERAR COMUNIDAD POR ID DE COMUNIDAD
@@ -60,14 +54,6 @@ async function getComunidadById(id) {
   });
 
   return response;
-  /* if (response.status === 401) {
-    // eslint-disable-next-line no-console
-    console.log('No existe la comunidad');
-    return undefined;
-  }
-
-  const data = await response.json();
-  return data; */
 }
 
 // RECUPERAR COMUNIDAD POR NOMBRE
@@ -90,14 +76,6 @@ async function getComunidadesByNameInsensitive(busqueda, filtro) {
   );
 
   return response;
-  /* if (!response.ok) {
-    throw new Error(
-      'No se encontraron comunidades que coincidan con la búsqueda.',
-    );
-  }
-
-  const data = await response.json();
-  return data; */
 }
 
 // RECUPERAR COMUNIDADES POR ID DE USUARIO

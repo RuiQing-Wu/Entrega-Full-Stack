@@ -28,8 +28,6 @@ export default function Login() {
   }
 
   async function loginUser(event) {
-    // eslint-disable-next-line no-console
-    console.log('Login');
     event.preventDefault();
 
     // Resetear los errores
@@ -93,12 +91,11 @@ export default function Login() {
               isInvalid={!!passwordError}
               isValid={password && !passwordError}
             />
-            {/* Reemplaza Form.Control.Feedback con tu componente ErrorMessage */}
             {passwordError && (
               <ErrorMessage
                 message={
                   passwordError
-                } /* Pasa otras props según sea necesario */
+                } 
               />
             )}
           </Form.Group>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { createApoyoRegistro } from '../../services/apoyo_registro.service';
+import createApoyoRegistro from '../../services/apoyo_registro.service';
 import { apoyarCausa } from '../../services/apoyo_causa.service';
 import {
   HTTP_STATUS_UNAUTHORIZED,
