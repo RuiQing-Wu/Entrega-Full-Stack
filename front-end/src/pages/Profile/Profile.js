@@ -24,6 +24,7 @@ import {
   alertErrorMessage,
   checkResponseStatusCode,
   checkPageToNavigate,
+  HTTP_STATUS_UNAUTHORIZED,
 } from '../../utils/utils';
 import './Profile.css';
 
@@ -44,7 +45,9 @@ export default function Profile() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
+  const [isNotFollowing, setIsNotFollowing] = useState(true);
   const [comunidadesUser, setComunidadesUser] = useState([]);
+  const [actualizacion, setActualizacion] = useState(false);
   const [errorComunidades, setErrorComunidades] = useState('');
   const [seguidos, setSeguidos] = useState([]);
   const [errorSeguidos, setErrorSeguidos] = useState('');
@@ -81,9 +84,14 @@ export default function Profile() {
 
   const fetchUser = useCallback(async () => {
     const response = await getUserByName(params.nombrePerfil);
+
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      navigate(page);
+    }
     const data = await response.json();
     setUser(data);
-  }, [params.nombrePerfil]);
+  }, [params.nombrePerfil, navigate]);
 
   function handleRedireccionarComunidad(nombre) {
     const comunidadSeleccionada = comunidadesUser.find((comunidad) =>
@@ -98,9 +106,21 @@ export default function Profile() {
     navigate(`/perfil/${nombreUser}`);
   }
 
-  function seguir() {
-    seguirUsuario(idActual, usernameActual, user.id, user.username);
+  async function seguir() {
+    setActualizacion(false);
+    const response = await seguirUsuario(idActual, usernameActual, user.id, user.username);
+
+    if (!checkResponseStatusCode(response)) {
+      alertErrorMessage(response);
+      if (response.status === HTTP_STATUS_UNAUTHORIZED) navigate('/login');
+    } else {
+      alert('Usuario seguido correctamente');
+    }
+
+    setActualizacion(true);
+    setIsNotFollowing(false);
   }
+
 
   useEffect(() => {
     fetchUser();
@@ -126,20 +146,6 @@ export default function Profile() {
     });
   }
 
-  /* function getSeguidos() {
-    setSeguidos([]);
-
-    return getSeguidosByUser(user.id).then((response) => {
-      setSeguidos(response);
-
-      if (response.length === 0) {
-        setErrorSeguidos(
-          'No se encontraron usuarios seguidores por el usuario.',
-        );
-      }
-    });
-  } */
-
   const getSeguidos = useCallback(async () => {
     if (user.id === undefined) return;
     setSeguidos([]);
@@ -148,15 +154,6 @@ export default function Profile() {
       setErrorSeguidos('No se encontraron usuarios seguidores por el usuario.');
     }
     setSeguidos(response);
-    /* const response = getSeguidosByUser(user.id).then((response) => {
-      setSeguidos(response);
-
-      if (response.length === 0) {
-        setErrorSeguidos(
-          'No se encontraron usuarios seguidores por el usuario.',
-        );
-      }
-    }); */
   }, [user.id]);
 
   const getSeguidores = useCallback(async () => {
@@ -167,34 +164,31 @@ export default function Profile() {
       setErrorSeguidores('No se encontraron usuarios que sigan al usuario.');
     }
 
+    if (response.length > 0) {
+      response.forEach((element) => {
+        if (element.id === idActual) {
+          setIsNotFollowing(false);
+        }
+      });
+    }
+
     setSeguidores(response);
 
-    /* return getSeguidoresByUser(user.id).then((response) => {
-      setSeguidores(response);
-
-      if (response.length === 0) {
-        setErrorSeguidores('No se encontraron usuarios que sigan al usuario.');
-      }
-    }); */
   }, [user.id]);
 
   useEffect(() => {
     getSeguidores();
-  }, [user.id]);
+  }, [user.id, actualizacion]);
 
   useEffect(() => {
     getSeguidos();
-  }, [user.id]);
+  }, [user.id, actualizacion]);
 
-  /* useEffect(() => {
-    Promise.all([getComunidadesUser(), getSeguidos(), getSeguidores()])
-      .then(() => {
-        console.log('Todas las solicitudes han sido completadas');
-      })
-      .catch((error) => {
-        console.error('Error al realizar las solicitudes', error);
-      });
-  }, [user.id]); */
+
+  useEffect(() => {
+    getComunidadesUser();
+  },
+    [user.id]);
 
   return (
     <div className="container mt-5">
@@ -205,11 +199,11 @@ export default function Profile() {
             alt="Imagen de perfil"
             rounded
             fluid
-            style={{ maxHeight: '150px' }} // ajusta el tamaño máximo de la imagen
+            style={{ maxHeight: '150px' }}
           />
         </div>
         <div className="col-md-9">
-          {!isOwnProfile && (
+          {!isOwnProfile && isNotFollowing && (
             <div className="ms-auto p-2">
               <Button variant="outline-success" size="sm" onClick={seguir}>
                 Seguir al usuario

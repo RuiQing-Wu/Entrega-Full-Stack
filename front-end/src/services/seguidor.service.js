@@ -45,6 +45,8 @@ async function seguirUsuario(
     },
     body: JSON.stringify(resultArray),
   });
+
+  return response;
 }
 
 async function getSeguidosByUser(idUsuario) {
