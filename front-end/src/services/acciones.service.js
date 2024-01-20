@@ -11,7 +11,6 @@ async function saveAccion(
   causa,
 ) {
   const accessToken = getToken();
-  // const causa = idCausa;
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
@@ -28,8 +27,6 @@ async function saveAccion(
   });
 
   return response;
-  /* const data = await response.json();
-  return data; */
 }
 
 // RECUPERAR ACCIONES ---------- SIN USO
@@ -41,12 +38,7 @@ async function getAcciones() {
     },
   });
 
-  if (!response.ok) {
-    throw new Error('No se encontraron acciones.');
-  }
-
-  const data = await response.json();
-  return data;
+  return response;
 }
 
 // RECUPERAR ACCIÓN POR ID DE ACCIÓN
@@ -58,19 +50,11 @@ async function getAccionById(id) {
     },
   });
 
-  if (!response.ok) {
-    throw new Error(
-      'No se encontraron acciones que coincidan con el id especificado.',
-    );
-  }
-
-  const data = await response.json();
-  return data;
+  return response;
 }
 
 // RECUPERAR ACCIÓN POR NOMBRE DE ACCIÓN
 async function getAccionByName(nombre) {
-
   const response = await fetch(`${BASE_URL}/name/${nombre}`, {
     method: 'GET',
     headers: {
@@ -78,19 +62,11 @@ async function getAccionByName(nombre) {
     },
   });
 
-  if (!response.ok) {
-    throw new Error(
-      'No se encontraron acciones que coincidan con el nombre especificado.',
-    );
-  }
-
-  const data = await response.json();
-  return data;
+  return response;
 }
 
 // RECUPERAR ACCIÓN POR CADENA COINCIDENTE PARCIAL O TOTALMENTE CON NOMBRE DE ACCIÓN
 async function getAccionesByNameInsensitive(titulo, idCausa) {
-
   const response = await fetch(
     `${BASE_URL}/nameInsensitivePartial/${titulo}/${idCausa}`,
     {
@@ -101,19 +77,11 @@ async function getAccionesByNameInsensitive(titulo, idCausa) {
     },
   );
 
-  if (!response.ok) {
-    throw new Error(
-      'No se encontraron acciones que coincidan con el nombre especificado.',
-    );
-  }
-
-  const data = await response.json();
-  return data;
+  return response;
 }
 
 // RECUPERAR ACCIONES POR ID DE CAUSA
 async function getAccionesByCausaId(idCausa) {
-
   const response = await fetch(`${BASE_URL}/causa/${idCausa}`, {
     method: 'GET',
     headers: {
@@ -121,12 +89,7 @@ async function getAccionesByCausaId(idCausa) {
     },
   });
 
-  if (!response.ok) {
-    // alert('No se encontraron acciones pertenecientes a la causa especificada.');
-  }
-
-  const data = await response.json();
-  return data;
+  return response;
 }
 
 export {

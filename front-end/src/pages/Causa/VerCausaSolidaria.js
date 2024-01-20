@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState } from 'react';
 import { Breadcrumb, Tabs, Tab, Col, Button, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import {
   getAccionesByCausaId,
   getAccionesByNameInsensitive,
@@ -10,7 +10,11 @@ import { getCausaById } from '../../services/causas.service';
 import { getComunidadById } from '../../services/comunidades.service';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import Busqueda from '../../component/Buscar';
-import { refactorDate } from '../../utils/utils';
+import {
+  checkResponseStatusCode,
+  checkPageToNavigate,
+  refactorDate,
+} from '../../utils/utils';
 import CardAccionSolidaria from '../../component/CardAccionSolidaria';
 
 export default function MostrarCausa() {
@@ -44,20 +48,33 @@ export default function MostrarCausa() {
 
   const fetchAcciones = useCallback(async () => {
     const response = await getAccionesByCausaId(param.idCausa);
-    setAccionesFiltradas(response);
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
+    const data = await response.json();
+    setAccionesFiltradas(data);
   }, [param.idCausa]);
 
   const fetchCausas = useCallback(async () => {
     const response = await getCausaById(param.idCausa);
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
     const data = await response.json();
-    console.log(data);
     setCausa(data);
   }, [param.idCausa]);
 
   const fetchComunidad = useCallback(async () => {
     if (causa.comunidad === undefined) return;
     const response = await getComunidadById(causa.comunidad);
-    setComunidad(response);
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
+    const data = await response.json();
+    setComunidad(data);
   }, [causa.comunidad]);
 
   useEffect(() => {
@@ -82,7 +99,12 @@ export default function MostrarCausa() {
       busqueda,
       param.idCausa,
     );
-    setAccionesFiltradas(response);
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
+    const data = await response.json();
+    setAccionesFiltradas(data);
 
     if (response.length === 0)
       setError('No se encontraron causas que coincidan con la búsqueda.');

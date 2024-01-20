@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Breadcrumb } from 'react-bootstrap';
 import { getAccionById } from '../../services/acciones.service';
 import { getCausaById } from '../../services/causas.service';
 import { getComunidadById } from '../../services/comunidades.service';
 import CardAccionSolidaria from '../../component/CardAccionSolidaria';
-import { checkResponseStatusCode } from '../../utils/utils';
+import {
+  checkResponseStatusCode,
+  checkPageToNavigate,
+} from '../../utils/utils';
 
 export default function MostrarAcciones() {
   const param = useParams();
@@ -32,27 +35,22 @@ export default function MostrarAcciones() {
 
   const fetchAccion = useCallback(async () => {
     const response = await getAccionById(param.idAccion);
-
-    if (!response) {
-      alert('No se encontró la acción');
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
     }
 
-    setAccion(response);
+    const data = await response.json();
+    setAccion(data);
   }, [param.idAccion]);
 
   const fetchCausa = useCallback(async () => {
     const response = await getCausaById(accion.causa);
     if (!checkResponseStatusCode(response)) {
-      setCausa([]);
-      if (response.status === 401) {
-        navigate('/login');
-      }
-
-      if (response.status === 404) {
-        navigate('/error');
-      }
-      return;
+      const page = checkPageToNavigate(response);
+      Navigate(page);
     }
+
     const data = await response.json();
     setCausa(data);
   }, [accion.causa]);
@@ -60,15 +58,8 @@ export default function MostrarAcciones() {
   const fetchComunidad = useCallback(async () => {
     const response = await getComunidadById(causa.comunidad);
     if (!checkResponseStatusCode(response)) {
-      setComunidad([]);
-      if (response.status === 401) {
-        navigate('/login');
-      }
-
-      if (response.status === 404) {
-        navigate('/error');
-      }
-      return;
+      const page = checkPageToNavigate(response);
+      Navigate(page);
     }
     const data = await response.json();
     setComunidad(data);
