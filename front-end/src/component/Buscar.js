@@ -7,8 +7,6 @@ export default function Busqueda({
   handleBusquedaInput,
   error,
   busqueda,
-  // onFiltroChange,
-  // filtro,
 }) {
   const [filtro, setFiltro] = useState('nombre');
 
@@ -22,7 +20,6 @@ export default function Busqueda({
     setFiltro(nuevoFiltro);
   };
 
-  // TODO COMENTADO
   return (
     <div className="container mb-4">
       <Form onSubmit={onSubmit}>
@@ -31,10 +28,6 @@ export default function Busqueda({
             <Form.Group controlId="filtroSelect">
               <Form.Select value={filtro} onChange={onFiltroChange}>
                 <option value="nombre">Filtrar por nombre</option>
-                {/* <option value="ubicación">Filtrar por ubicación</option>
-                <option value="número de voluntarios">
-                  Filtrar por nº voluntarios que apoyan la causa
-                </option> */}
               </Form.Select>
             </Form.Group>
           </Col>

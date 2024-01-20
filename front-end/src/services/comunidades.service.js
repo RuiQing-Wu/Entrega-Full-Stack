@@ -14,6 +14,7 @@ async function saveComunidad(
     descripcion,
     fechaInicio,
     idAdministrador,
+    usuarios: [],
   };
 
   const accessToken = getToken();

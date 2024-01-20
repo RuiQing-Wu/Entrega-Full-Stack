@@ -68,7 +68,7 @@ export default function Registro() {
 
     // Validar que el usuario y la contraseña no estén vacíos
     if (username === '' || username.trim() === '') {
-      setUsernameError('El usuario no puede estar vacío');
+      setUsernameError('El nombre de usuario no puede estar vacío');
       return;
     }
 
@@ -83,7 +83,7 @@ export default function Registro() {
     }
 
     if (telefono === '' || telefono.trim() === '') {
-      setTelefonoError('El telefono no puede estar vacío');
+      setTelefonoError('El teléfono no puede estar vacío');
       return;
     }
 
@@ -93,7 +93,7 @@ export default function Registro() {
     }
 
     if (pais === '' || pais.trim() === '') {
-      setPaisError('El pais no puede estar vacío');
+      setPaisError('El país no puede estar vacío');
       return;
     }
 
@@ -118,8 +118,13 @@ export default function Registro() {
       userRegistrado.id,
     );
 
-    // eslint-disable-next-line no-console
-    console.log(responseUsuarioSeguimiento);
+    if (!checkResponseStatusCode(responseUsuarioSeguimiento)) {
+      alertErrorMessage(responseUsuarioSeguimiento);
+      return;
+    }
+    
+    // Se notifica al usuario que se ha registrado correctamente
+    alert('Usuario registrado con éxito');
 
     // Navegar a la página de inicio
     navigate('/login');
@@ -131,7 +136,7 @@ export default function Registro() {
       <Form onSubmit={registrarUser}>
         <Col sd={10} md={10} lg={8} className="mx-auto">
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="username">User</Form.Label>
+            <Form.Label htmlFor="username">Nombre de usuario</Form.Label>
             <Form.Control
               type="text"
               id="username"
@@ -145,7 +150,7 @@ export default function Registro() {
             {usernameError && <ErrorMessage message={usernameError} />}
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="password">Password</Form.Label>
+            <Form.Label htmlFor="password">Contraseña</Form.Label>
             <Form.Control
               type="password"
               id="password"
@@ -176,7 +181,7 @@ export default function Registro() {
               type="tel"
               id="telefono"
               inputMode="numeric"
-              placeholder="Telefono movil"
+              placeholder="Teléfono móvil"
               autoComplete="off"
               value={telefono}
               onChange={handleTelefonoInput}
@@ -200,7 +205,7 @@ export default function Registro() {
             {ciudadError && <ErrorMessage message={ciudadError} />}
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="pais">Pais</Form.Label>
+            <Form.Label htmlFor="pais">País</Form.Label>
             <Form.Control
               type="text"
               id="pais"

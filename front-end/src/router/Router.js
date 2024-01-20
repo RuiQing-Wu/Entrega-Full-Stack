@@ -30,23 +30,12 @@ const router = createBrowserRouter([
       // TODO PDTE REVISAR
       {
         name: 'Profile',
-        path: '/perfil/',
+        path: '/perfil/:nombrePerfil',
         element: (
           <AuthRoute>
             <Profile />
           </AuthRoute>
         ),
-        children: [
-          {
-            name: 'ExternalProfile',
-            path: '/perfil/:nombrePerfil',
-            element: (
-              <AuthRoute>
-                <Profile />
-              </AuthRoute>
-            ),
-          },
-        ],
       },
       {
         name: 'ListaComunidades',
