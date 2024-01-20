@@ -65,6 +65,14 @@ function checkResponseStatusCode(response) {
   return true;
 }
 
+function checkPageToNavigate(response) {
+  if (response.status === HTTP_STATUS_UNAUTHORIZED) {
+    return '/login';
+  }
+
+  return '/error';
+}
+
 async function alertErrorMessage(response) {
   const data = await response.json();
   // eslint-disable-next-line no-alert
@@ -81,5 +89,6 @@ export {
   dateToString,
   refactorDate,
   checkResponseStatusCode,
+  checkPageToNavigate,
   alertErrorMessage,
 };

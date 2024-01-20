@@ -6,7 +6,11 @@ import ErrorMessage from '../../component/MensajeError';
 import { saveAccion } from '../../services/acciones.service';
 import { getCausaById } from '../../services/causas.service';
 import { getComunidadById } from '../../services/comunidades.service';
-import { checkResponseStatusCode, alertErrorMessage } from '../../utils/utils';
+import {
+  checkResponseStatusCode,
+  checkPageToNavigate,
+  alertErrorMessage,
+} from '../../utils/utils';
 
 export default function Accion() {
   const navigate = useNavigate();
@@ -89,16 +93,10 @@ export default function Accion() {
     if (causa.comunidad === undefined) return;
     const response = await getComunidadById(causa.comunidad);
     if (!checkResponseStatusCode(response)) {
-      setComunidad([]);
-      if (response.status === 401) {
-        navigate('/login');
-      }
-
-      if (response.status === 404) {
-        navigate('/error');
-      }
-      return;
+      const page = checkPageToNavigate(response);
+      Navigate(page);
     }
+
     const data = await response.json();
     setComunidad(data);
   }, [causa.comunidad]);
