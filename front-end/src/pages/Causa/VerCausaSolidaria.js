@@ -39,7 +39,7 @@ export default function MostrarCausa() {
   }
 
   function onComunidadClicked() {
-    navigate(`/comunidades/${causa.comunidad}`, { replace: true });
+    navigate(`/comunidades/${causa.comunidad}`);
   }
 
   const fetchAcciones = useCallback(async () => {
@@ -49,7 +49,9 @@ export default function MostrarCausa() {
 
   const fetchCausas = useCallback(async () => {
     const response = await getCausaById(param.idCausa);
-    setCausa(response);
+    const data = await response.json();
+    console.log(data);
+    setCausa(data);
   }, [param.idCausa]);
 
   const fetchComunidad = useCallback(async () => {

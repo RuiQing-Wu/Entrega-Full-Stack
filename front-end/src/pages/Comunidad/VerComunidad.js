@@ -172,6 +172,11 @@ export default function MostrarComunidad() {
                       imageUrl={'../../../imagenes/causa.png'}
                       detalles={true}
                       apoyar={false}
+                      idComunidad={cau.comunidad}
+                      descripcion={cau.descripcion}
+                      fechaInicio={refactorDate(cau.fechaInicio)}
+                      fechaFin={refactorDate(cau.fechaFin)}
+                      objetivos={cau.objetivos}
                     />
                   </Col>
                 ))}

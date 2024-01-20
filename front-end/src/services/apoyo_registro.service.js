@@ -1,5 +1,3 @@
-import { getToken } from '../utils/utils';
-
 const BASE_URL = 'http://localhost:3001/apoyo-registro';
 
 async function createApoyoRegistro(idCausa, nombre, correo) {
@@ -18,12 +16,7 @@ async function createApoyoRegistro(idCausa, nombre, correo) {
     body: JSON.stringify(requestBody),
   });
 
-  if (response.status !== 201) {
-    return response;
-  }
-
-  const data = await response.json();
-  return data;
+  return response;
 }
 
 async function getApoyoRegistroById(id) {

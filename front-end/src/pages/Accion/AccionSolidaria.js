@@ -27,6 +27,14 @@ export default function Accion() {
     navigate('/');
   }
 
+  function onCausaClicked() {
+    navigate(`/causa/${param.idCausa}`);
+  }
+
+  function onComunidadClicked() {
+    navigate(`/comunidades/${causa.comunidad}`);
+  }
+
   function onComunidadesClicked() {
     navigate('/comunidades');
   }
@@ -96,8 +104,10 @@ export default function Accion() {
   }, [causa.comunidad]);
 
   useEffect(() => {
-    fetchComunidad();
-  }, [fetchComunidad]);
+    if (causa && causa.comunidad) {
+      fetchComunidad();
+    }
+  }, [fetchComunidad, causa]);
 
   useEffect(() => {
     fetchCausa();
@@ -152,10 +162,10 @@ export default function Accion() {
         <Breadcrumb.Item onClick={onComunidadesClicked}>
           Comunidades
         </Breadcrumb.Item>
-        <Breadcrumb.Item href={`/comunidades/${causa.comunidad}`}>
+        <Breadcrumb.Item onClick={onComunidadClicked}>
           {comunidad.nombre}
         </Breadcrumb.Item>
-        <Breadcrumb.Item href={`/causa/${param.idCausa}`}>
+        <Breadcrumb.Item onClick={onCausaClicked}>
           {causa.titulo}
         </Breadcrumb.Item>
         <Breadcrumb.Item active>Crear acción solidaria</Breadcrumb.Item>

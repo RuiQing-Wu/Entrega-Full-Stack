@@ -1,11 +1,18 @@
 import './Apoyo.css';
+import { useNavigate } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { createApoyoRegistro } from '../../services/apoyo_registro.service';
 import { apoyarCausa } from '../../services/apoyo_causa.service';
+import {
+  HTTP_STATUS_UNAUTHORIZED,
+  alertErrorMessage,
+  checkResponseStatusCode,
+} from '../../utils/utils';
 
 export default function Apoyo(props) {
+  const navigate = useNavigate();
   const name = useSelector((state) => state.user.userInfo.nombre);
   const [nombre, setNombre] = useState(name || '');
   const [correo, setCorreo] = useState('');
@@ -18,15 +25,17 @@ export default function Apoyo(props) {
     setCorreo(event.target.value);
   }
 
-  function apoyar() {
-    const response = createApoyoRegistro(props.idCausa, nombre, correo);
-    if (response === undefined) {
-      // eslint-disable-next-line no-console
-      console.log('No se pudo enviar el apoyo');
-    } else {
+  async function apoyar() {
+    const response = await createApoyoRegistro(props.idCausa, nombre, correo);
+    if (!checkResponseStatusCode(response)) {
+      alertErrorMessage(response);
+      if (response.status === HTTP_STATUS_UNAUTHORIZED) navigate(`/login`);
+    } else if (response.status === 201) {
       apoyarCausa(props.idCausa);
       alert('Apoyo enviado con éxito');
       props.onHide();
+    } else {
+      alert('No se pudo enviar el apoyo');
     }
   }
 
