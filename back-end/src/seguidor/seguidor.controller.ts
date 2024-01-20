@@ -176,6 +176,7 @@ export class SeguidorController {
     summary: 'Establece una relación de seguimiento entre usuarios',
   })
   @ApiBody({
+    type: [CreateSeguidorDto],
     examples: {
       example1: {
         value: [
