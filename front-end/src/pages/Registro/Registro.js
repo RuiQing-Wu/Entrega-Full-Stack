@@ -4,9 +4,9 @@ import { Form, Button, Col, Container, Label } from 'react-bootstrap';
 import { useState } from 'react';
 import ErrorMessage from '../../component/MensajeError';
 import { registerUser } from '../../services/auth.service';
-import Popup from '../../component/Popup';
 import { registrarUsuarioSeguimiento } from '../../services/seguidor.service';
 import { getUserByName } from '../../services/users.service';
+import { alertErrorMessage, checkResponseStatusCode } from '../../utils/utils';
 
 export default function Registro() {
   const navigate = useNavigate();
@@ -42,10 +42,6 @@ export default function Registro() {
   function handleTelefonoInput(event) {
     setTelefono(event.target.value);
     setTelefonoError('');
-
-    /* if (!/^\d+$/.test(event.target.value)) {
-      setTelefonoError('Ingresa solo números en el teléfono');
-    } */
   }
 
   function handleCiudadInput(event) {
@@ -71,37 +67,36 @@ export default function Registro() {
     setPasswordError('');
 
     // Validar que el usuario y la contraseña no estén vacíos
-    if (username === '') {
+    if (username === '' || username.trim() === '') {
       setUsernameError('El usuario no puede estar vacío');
       return;
     }
 
-    if (password === '') {
+    if (password === '' || password.trim() === '') {
       setPasswordError('La contraseña no puede estar vacía');
       return;
     }
 
-    if (nombre === '') {
+    if (nombre === '' || nombre.trim() === '') {
       setNombreError('El nombre no puede estar vacío');
       return;
     }
 
-    if (telefono === '') {
+    if (telefono === '' || telefono.trim() === '') {
       setTelefonoError('El telefono no puede estar vacío');
       return;
     }
 
-    if (ciudad === '') {
+    if (ciudad === '' || ciudad.trim() === '') {
       setCiudadError('La ciudad no puede estar vacía');
       return;
     }
 
-    if (pais === '') {
+    if (pais === '' || pais.trim() === '') {
       setPaisError('El pais no puede estar vacío');
       return;
     }
 
-    // TODO Llamar a la API para iniciar sesión
     const response = await registerUser(
       username,
       password,
@@ -111,25 +106,23 @@ export default function Registro() {
       pais,
     );
 
-    // eslint-disable-next-line no-console
-    console.log(response);
-
-    // Procesar respuesta exitosa
-    if (response.status === 201) {
-
-      // Crear un usuario seguimiento en neo4j para el usuario registrado
-      const userRegistrado = await getUserByName(username);
-      const responseUsuarioSeguimiento = await registrarUsuarioSeguimiento(userRegistrado.username, userRegistrado.id);
-
-      // eslint-disable-next-line no-console
-      console.log(responseUsuarioSeguimiento);
-
-      // Navegar a la página de inicio
-      navigate('/login');
-    } else {
-      // eslint-disable-next-line no-alert
-      alert('Ya existe un usuario con ese nombre de usuario');
+    if (!checkResponseStatusCode(response)) {
+      alertErrorMessage(response);
+      return;
     }
+
+    // TODO No haria falta controlar los errores de esta llamada?
+    const userRegistrado = await getUserByName(username);
+    const responseUsuarioSeguimiento = await registrarUsuarioSeguimiento(
+      userRegistrado.username,
+      userRegistrado.id,
+    );
+
+    // eslint-disable-next-line no-console
+    console.log(responseUsuarioSeguimiento);
+
+    // Navegar a la página de inicio
+    navigate('/login');
   }
 
   return (

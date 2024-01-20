@@ -16,6 +16,7 @@ import {
 import App from '../App';
 import AuthRoute from '../component/AuthRoute';
 import ComunidadOutlet from '../pages/Comunidad/Comunidad.outlet';
+import CausaOutlet from '../pages/Causa/CausasOutlet';
 
 const router = createBrowserRouter([
   {
@@ -85,10 +86,15 @@ const router = createBrowserRouter([
       {
         name: 'VerCausaSolidaria',
         path: '/causa/:idCausa',
-        element: <MostrarCausa />,
+        element: <CausaOutlet />,
         children: [
           {
-            name: 'Accion',
+            name: 'crearAccion',
+            index: true,
+            element: <MostrarCausa />,
+          },
+          {
+            name: 'crearAccion',
             path: '/causa/:idCausa/crear-accion',
             element: (
               <AuthRoute>

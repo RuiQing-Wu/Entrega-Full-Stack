@@ -5,6 +5,12 @@ import { useState } from 'react';
 import { saveComunidad } from '../../services/comunidades.service';
 import './Comunidad.css';
 import ErrorMessage from '../../component/MensajeError';
+import {
+  HTTP_STATUS_UNAUTHORIZED,
+  alertErrorMessage,
+  checkResponseStatusCode,
+  dateToString,
+} from '../../utils/utils';
 
 export default function Comunidad() {
   // Crear un hook para navegar entre páginas
@@ -45,13 +51,8 @@ export default function Comunidad() {
       return;
     }
 
-    const currentDate = new Date();
-    const formattedDate = currentDate.toLocaleDateString('en-EN', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    });
-
+    // TODO CHANGES
+    const formattedDate = dateToString();
     const response = await saveComunidad(
       nombre,
       descripcion,
@@ -59,11 +60,16 @@ export default function Comunidad() {
       idUserActual,
     );
 
+    // COMPROBAR EL ESTADO DE LA RESPUESTA
+    if (!checkResponseStatusCode(response)) {
+      alertErrorMessage(response);
+      if (response.status === HTTP_STATUS_UNAUTHORIZED) navigate('/login');
+      return;
+    }
+
     if (response.status === 201) {
-      // Navegar a la página que contiene los detalles de la nueva comunidad
-      navigate(`/comunidades/${response.id}`);
-    } else {
-      alert('Ya existe una comunidad con ese nombre');
+      const data = await response.json();
+      navigate(`/comunidades/${data.id}`);
     }
   }
 
@@ -87,8 +93,9 @@ export default function Comunidad() {
               <Form.Control
                 type="text"
                 placeholder="Nombre de la comunidad"
-                className={`form-control ${nombreError ? 'is-invalid' : ''} ${nombre && !nombreError ? 'is-valid' : ''
-                  }`}
+                className={`form-control ${nombreError ? 'is-invalid' : ''} ${
+                  nombre && !nombreError ? 'is-valid' : ''
+                }`}
                 onChange={handleNombreInput}
                 value={nombre}
                 required
@@ -103,8 +110,9 @@ export default function Comunidad() {
                 as="textarea"
                 rows={3}
                 placeholder="Descripción de la comunidad"
-                className={`form-control ${descripcionError ? 'is-invalid' : ''
-                  } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+                className={`form-control ${
+                  descripcionError ? 'is-invalid' : ''
+                } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
                 onChange={handleDescripcionInput}
                 value={descripcion}
                 required

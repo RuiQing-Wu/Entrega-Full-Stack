@@ -22,7 +22,7 @@ export default function Busqueda({
     setFiltro(nuevoFiltro);
   };
 
-  // TODO PORQUE EXISTE FILTRO DE BUSQUEDA Y EL LABEL ULTIMO SE PUEDE CAMBIAR POR EL COMPONENTE DE ERROR?
+  // TODO COMENTADO
   return (
     <div className="container mb-4">
       <Form onSubmit={onSubmit}>
@@ -31,10 +31,10 @@ export default function Busqueda({
             <Form.Group controlId="filtroSelect">
               <Form.Select value={filtro} onChange={onFiltroChange}>
                 <option value="nombre">Filtrar por nombre</option>
-                <option value="ubicación">Filtrar por ubicación</option>
+                {/* <option value="ubicación">Filtrar por ubicación</option>
                 <option value="número de voluntarios">
                   Filtrar por nº voluntarios que apoyan la causa
-                </option>
+                </option> */}
               </Form.Select>
             </Form.Group>
           </Col>

@@ -9,7 +9,6 @@ async function saveComunidad(
   fechaInicio,
   idAdministrador,
 ) {
-
   const requestBody = {
     nombre,
     descripcion,
@@ -27,8 +26,9 @@ async function saveComunidad(
     body: JSON.stringify(requestBody),
   });
 
-  const data = await response.json();
-  return data;
+  return response;
+  // const data = await response.json();
+  // return data;
 }
 
 // RECUPERAR COMUNIDADES
@@ -98,14 +98,13 @@ async function getComunidadesByNameInsensitive(busqueda, filtro) {
 // RECUPERAR COMUNIDADES POR ID DE USUARIO
 async function getComunidadesByUser(idUsuario) {
   const accessToken = getToken();
-  const response = await fetch(`${BASE_URL}/user/${idUsuario}`
-    , {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    });
+  const response = await fetch(`${BASE_URL}/user/${idUsuario}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
   if (!response.ok) {
     throw new Error(
       'No se encontraron comunidades que coincidan con la búsqueda.',

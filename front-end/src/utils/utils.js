@@ -1,5 +1,12 @@
 export const TOKEN = 'token';
 export const USER_INFO = 'userInfo';
+export const HTTP_STATUS_OK = 200;
+export const HTTP_STATUS_CREATED = 201;
+export const HTTP_STATUS_BAD_REQUEST = 400;
+export const HTTP_STATUS_UNAUTHORIZED = 401;
+export const HTTP_STATUS_NOT_FOUND = 404;
+export const HTTP_STATUS_CONFLICT = 409;
+export const HTTP_STATUS_SERVER_ERROR = 500;
 
 function getToken() {
   return localStorage.getItem(TOKEN);
@@ -47,6 +54,23 @@ function refactorDate(fecha) {
   return formattedDate;
 }
 
+function checkResponseStatusCode(response) {
+  if (
+    response.status !== HTTP_STATUS_OK &&
+    response.status !== HTTP_STATUS_CREATED
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+async function alertErrorMessage(response) {
+  const data = await response.json();
+  // eslint-disable-next-line no-alert
+  alert(data.message);
+}
+
 export {
   getToken,
   setToken,
@@ -56,4 +80,6 @@ export {
   removeUserInfo,
   dateToString,
   refactorDate,
+  checkResponseStatusCode,
+  alertErrorMessage,
 };

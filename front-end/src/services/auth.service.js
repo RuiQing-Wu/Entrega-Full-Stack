@@ -12,14 +12,14 @@ async function login(username, password) {
     body: JSON.stringify({ username, password }),
   });
 
-  if (response.status === 401) {
-    // eslint-disable-next-line no-console
-    // console.log('Usuario o contraseña incorrectos');
+  return response;
+
+  /* if (response.status !== HTTP_STATUS_OK) {
     return { access_token: undefined };
   }
 
   const data = await response.json();
-  return data;
+  return data; */
 }
 
 async function registerUser(

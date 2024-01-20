@@ -3,7 +3,6 @@ import { getToken } from '../utils/utils';
 const BASE_URL = 'http://localhost:3001/seguidor';
 
 async function registrarUsuarioSeguimiento(username, idUsuario) {
-
   // Construye un objeto con las propiedades 'username' e 'idUsuario'
   const requestBody = {
     username,
@@ -32,7 +31,6 @@ async function seguirUsuario(
   idUsuarioDestino,
   usernameDestino,
 ) {
-
   const accessToken = getToken();
   const resultArray = [
     { idUsuario: idUsuarioOrigen, username: usernameOrigen },
@@ -51,31 +49,37 @@ async function seguirUsuario(
 
 async function getSeguidosByUser(idUsuario) {
   const accessToken = getToken();
-  const response = await fetch(`${BASE_URL}/seguidos/${idUsuario}`,
-  
-  { method: 'GET',        
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },    
-  }
-    );
-  const data = await response.json();
-  return data;
-}
+  const response = await fetch(
+    `${BASE_URL}/seguidos/${idUsuario}`,
 
-async function getSeguidoresByUser(idUsuario) {
-  const accessToken = getToken();
-  const response = await fetch(`${BASE_URL}/seguidores/${idUsuario}`,
     {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-    });
+    },
+  );
   const data = await response.json();
   return data;
 }
 
-export { registrarUsuarioSeguimiento, seguirUsuario, getSeguidosByUser, getSeguidoresByUser };
+async function getSeguidoresByUser(idUsuario) {
+  const accessToken = getToken();
+  const response = await fetch(`${BASE_URL}/seguidores/${idUsuario}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
+export {
+  registrarUsuarioSeguimiento,
+  seguirUsuario,
+  getSeguidosByUser,
+  getSeguidoresByUser,
+};

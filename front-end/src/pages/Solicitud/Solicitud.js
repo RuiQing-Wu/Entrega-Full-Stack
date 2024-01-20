@@ -3,10 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  createSolicitud,
-  getSolicitud,
-} from '../../services/solicitud.service';
+import { createSolicitud } from '../../services/solicitud.service';
 import ErrorMessage from '../../component/MensajeError';
 import { addMember } from '../../services/comunidades.service';
 import { dateToString } from '../../utils/utils';
@@ -15,7 +12,6 @@ export default function Solicitud(props) {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const user = useSelector((state) => {
-    // console.log('state.user.userInfo', state.user.userInfo);
     return state.user.userInfo;
   });
 
@@ -29,14 +25,6 @@ export default function Solicitud(props) {
     event.preventDefault();
 
     if (user) {
-      /* const userSols = await getSolicitud();
-      if (
-        userSols.some(
-          (solicitud) =>
-            solicitud.idUsuario === user.id &&
-            solicitud.idComunidad === props.idComunidad,
-        )
-      ) */
       if (props.usersData.some((usuario) => usuario.id === user.id)) {
         setError(
           'Ya existe una solicitud con este usuario para esta comunidad',

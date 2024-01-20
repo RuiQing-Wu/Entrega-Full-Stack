@@ -93,8 +93,8 @@ export default function Profile() {
   }
 
   useEffect(() => {
-    fetchUser(); 
-  }, [fetchUser, params.nombrePerfil]);
+    fetchUser();
+  }, [params.nombrePerfil]);
 
   useEffect(() => {
     if (usernameActual === user.username) {
@@ -102,16 +102,17 @@ export default function Profile() {
     }
   }, [usernameActual, user.username]);
 
-
   function getComunidadesUser() {
     setComunidadesUser([]);
 
-    return getComunidadesByUser(user.id).then(response => {
+    return getComunidadesByUser(user.id).then((response) => {
       console.log(response);
       setComunidadesUser(response);
 
       if (response.length === 0) {
-        setErrorComunidades('No se encontraron comunidades a las que el usuario pertenezca.');
+        setErrorComunidades(
+          'No se encontraron comunidades a las que el usuario pertenezca.',
+        );
       }
     });
   }
@@ -119,12 +120,14 @@ export default function Profile() {
   function getSeguidos() {
     setSeguidos([]);
 
-    return getSeguidosByUser(user.id).then(response => {
+    return getSeguidosByUser(user.id).then((response) => {
       console.log('seguidos', response);
       setSeguidos(response);
 
       if (response.length === 0) {
-        setErrorSeguidos('No se encontraron usuarios seguidores por el usuario.');
+        setErrorSeguidos(
+          'No se encontraron usuarios seguidores por el usuario.',
+        );
       }
     });
   }
@@ -132,7 +135,7 @@ export default function Profile() {
   function getSeguidores() {
     setSeguidores([]);
 
-    return getSeguidoresByUser(user.id).then(response => {
+    return getSeguidoresByUser(user.id).then((response) => {
       console.log(response);
       setSeguidores(response);
 
@@ -145,12 +148,12 @@ export default function Profile() {
   useEffect(() => {
     Promise.all([getComunidadesUser(), getSeguidos(), getSeguidores()])
       .then(() => {
-        console.log("Todas las solicitudes han sido completadas");
+        console.log('Todas las solicitudes han sido completadas');
       })
-      .catch(error => {
-        console.error("Error al realizar las solicitudes", error);
+      .catch((error) => {
+        console.error('Error al realizar las solicitudes', error);
       });
-  }, [user.id]); 
+  }, [user.id]);
 
   return (
     <div className="container mt-5">

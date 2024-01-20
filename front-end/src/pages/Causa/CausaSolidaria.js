@@ -5,6 +5,7 @@ import { getComunidadById } from '../../services/comunidades.service';
 import { saveCausa } from '../../services/causas.service';
 import './CausaSolidaria.css';
 import ErrorMessage from '../../component/MensajeError';
+import { HTTP_STATUS_CREATED } from '../../utils/utils';
 
 export default function Causa() {
   const [titulo, setTitulo] = useState('');
@@ -128,22 +129,22 @@ export default function Causa() {
   async function CausaSolidaria(event) {
     event.preventDefault();
 
-    if (titulo === '') {
+    if (titulo === '' || titulo.trim() === '') {
       setTituloError('El titulo no puede estar vacío');
       return;
     }
 
-    if (descripcion === '') {
+    if (descripcion === '' || descripcion.trim() === '') {
       setDescripcionError('La descripción no puede estar vacía');
       return;
     }
 
-    if (fechaInicio === '') {
+    if (fechaInicio === '' || fechaInicio.trim() === '') {
       setFechaInicioError('La fecha de inicio no puede estar vacía');
       return;
     }
 
-    if (fechaFin === '') {
+    if (fechaFin === '' || fechaFin.trim() === '') {
       setFechaFinError('La fecha de fin no puede estar vacía');
       return;
     }
@@ -157,7 +158,10 @@ export default function Causa() {
       objetivos,
     );
 
-    if (response) {
+    // TODO COMPROBAR EL ESTADO DE LA RESPUESTA
+
+    if (response === HTTP_STATUS_CREATED) {
+      const data = await response.json();
       navigate(`/causa/${response.id}`, { replace: true });
     }
   }
@@ -175,7 +179,7 @@ export default function Causa() {
     navigate('/');
   }
 
-  function obComunidadesClicked() {
+  function onComunidadesClicked() {
     navigate('/comunidades');
   }
 
@@ -187,7 +191,7 @@ export default function Causa() {
     <div>
       <Breadcrumb className="p-2">
         <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
-        <Breadcrumb.Item onClick={obComunidadesClicked}>
+        <Breadcrumb.Item onClick={onComunidadesClicked}>
           Comunidades
         </Breadcrumb.Item>
         <Breadcrumb.Item onClick={onComunidadClicked}>

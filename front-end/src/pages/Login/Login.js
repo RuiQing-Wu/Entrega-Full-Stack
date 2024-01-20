@@ -6,6 +6,7 @@ import './Login.css';
 import ErrorMessage from '../../component/MensajeError';
 import { setTokenRedux } from '../../store/module/user';
 import { login } from '../../services/auth.service';
+import { checkResponseStatusCode } from '../../utils/utils';
 
 export default function Login() {
   // Crear un hook para navegar entre páginas
@@ -36,30 +37,28 @@ export default function Login() {
     setPasswordError('');
 
     // Validar que el usuario y la contraseña no estén vacíos
-    if (username === '') {
+    if (username === '' || username.trim() === '') {
       setUsernameError('El usuario no puede estar vacío');
       return;
     }
 
-    if (password === '') {
+    if (password === '' || password.trim() === '') {
       setPasswordError('La contraseña no puede estar vacía');
       return;
     }
 
-    // TODO Llamar a la API para iniciar sesión
     const response = await login(username, password);
-    // eslint-disable-next-line no-console
-    console.log(response.access_token);
 
     // Procesar la respuesta de la API
-    if (response.access_token === undefined) {
+    if (!checkResponseStatusCode(response)) {
       // Mostrar un mensaje de error
       setUsernameError('Usuario o contraseña incorrectos');
       setPasswordError('Usuario o contraseña incorrectos');
       return;
     }
 
-    dispatch(setTokenRedux(response.access_token));
+    const data = await response.json();
+    dispatch(setTokenRedux(data.access_token));
     navigate('/');
     window.location.reload(true);
   }

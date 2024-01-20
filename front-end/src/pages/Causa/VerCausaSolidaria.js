@@ -16,7 +16,10 @@ import CardAccionSolidaria from '../../component/CardAccionSolidaria';
 export default function MostrarCausa() {
   const [causa, setCausa] = useState([]);
   const [comunidad, setComunidad] = useState([]);
-  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+  // const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+  const user = useSelector((state) => {
+    return state.user.userInfo;
+  });
   const [error, setError] = useState('');
   const [busqueda, setBusqueda] = useState('');
   const [accionesFiltradas, setAccionesFiltradas] = useState([]);
@@ -101,7 +104,7 @@ export default function MostrarCausa() {
   return (
     <div>
       <Breadcrumb className="p-2">
-        <Breadcrumb.Item onClick={onHomeClicked}>Home</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={onHomeClicked}>Home </Breadcrumb.Item>
         <Breadcrumb.Item onClick={onComunidadesClicked}>
           Comunidades
         </Breadcrumb.Item>
