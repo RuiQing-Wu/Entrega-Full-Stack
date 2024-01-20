@@ -13,8 +13,6 @@ async function getUserById(idUser) {
 async function getUserByName(username) {
   const response = await fetch(`${BASE_URL}/username/${username}`);
   return response;
-  /* const data = await response.json();
-  return data; */
 }
 
 // ACTUALIZAR USUARIO
@@ -35,8 +33,7 @@ async function updateUser(username, nombre, telefono, ciudad, pais, idUser) {
     }),
   });
 
-  const data = await response.json();
-  return data;
+  return response;
 }
 
 export { getUserById, getUserByName, updateUser };

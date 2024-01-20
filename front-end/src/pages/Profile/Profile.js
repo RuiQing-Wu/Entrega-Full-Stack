@@ -20,6 +20,8 @@ import {
   getSeguidoresByUser,
 } from '../../services/seguidor.service';
 import CardExternalProfile from '../../component/CardExternalProfile';
+import { alertErrorMessage, checkResponseStatusCode, HTTP_STATUS_UNAUTHORIZED } from '../../utils/utils';
+
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -33,8 +35,11 @@ export default function Profile() {
     pais: '',
   });
 
+
   const usernameActual = useSelector((state) => state.user.userInfo.username);
   const idActual = useSelector((state) => state.user.userInfo.id);
+  console.log(idActual);
+  console.log(usernameActual);
 
   const [isEditing, setIsEditing] = useState(false);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
@@ -55,7 +60,7 @@ export default function Profile() {
   };
 
   const handleSaveClick = async () => {
-    setIsEditing(false);
+    
     const response = await updateUser(
       user.username,
       user.nombre,
@@ -65,14 +70,20 @@ export default function Profile() {
       user.id,
     );
 
-    if (!response) {
-      console.log('Error al actualizar el usuario');
+    if (!checkResponseStatusCode(response)) {
+      alertErrorMessage(response);
+      if (response.status === HTTP_STATUS_UNAUTHORIZED) navigate('/login');
+    }
+    else {
+      setIsEditing(false);
     }
   };
 
   const fetchUser = async () => {
+
     const response = await getUserByName(params.nombrePerfil);
-    setUser(response);
+    const data = await response.json();
+    setUser(data);
   };
 
   function handleRedireccionarComunidad(nombre) {
@@ -106,7 +117,6 @@ export default function Profile() {
     setComunidadesUser([]);
 
     return getComunidadesByUser(user.id).then((response) => {
-      console.log(response);
       setComunidadesUser(response);
 
       if (response.length === 0) {
@@ -121,7 +131,6 @@ export default function Profile() {
     setSeguidos([]);
 
     return getSeguidosByUser(user.id).then((response) => {
-      console.log('seguidos', response);
       setSeguidos(response);
 
       if (response.length === 0) {
@@ -136,7 +145,6 @@ export default function Profile() {
     setSeguidores([]);
 
     return getSeguidoresByUser(user.id).then((response) => {
-      console.log(response);
       setSeguidores(response);
 
       if (response.length === 0) {
@@ -271,7 +279,7 @@ export default function Profile() {
                   </div>
                 ) : (
                   <p>
-                    {errorSeguidos || 'No se encontraron usuarios seguidos.'}
+                    {errorSeguidos}
                   </p>
                 )}
               </TabContent>
@@ -297,8 +305,7 @@ export default function Profile() {
                   </div>
                 ) : (
                   <p>
-                    {errorSeguidores ||
-                      'No se encontraron usuarios seguidores.'}
+                    {errorSeguidores}
                   </p>
                 )}
               </TabContent>
@@ -324,7 +331,7 @@ export default function Profile() {
                     </Row>
                   </div>
                 ) : (
-                  <p>{errorComunidades || 'No se encontraron comunidades.'}</p>
+                  <p>{errorComunidades}</p>
                 )}
               </TabContent>
             </Tab>

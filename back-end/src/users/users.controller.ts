@@ -122,6 +122,9 @@ export class UserController {
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiConflictResponse({
+    description: 'Ya existe un usuario con este nombre de usuario',
+  })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
@@ -134,6 +137,9 @@ export class UserController {
 
       if (error instanceof EntityNotFoundError)
         throw new NotFoundException(error.message);
+
+      if (error instanceof ConflictError)
+        throw new ConflictException(error.message);
 
       if (error instanceof RepositoryError)
         throw new InternalServerErrorException(error.message);

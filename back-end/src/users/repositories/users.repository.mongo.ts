@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../domain/user.domain';
 import { RepositoryError } from 'src/base/repositoryError';
 import { EntityNotFoundError } from 'src/base/entityNotFounError';
+import { ConflictError } from 'src/base/conflictError';
 
 export class UsersRepositoryMongo implements UsersRepository {
   constructor(
@@ -79,7 +80,16 @@ export class UsersRepositoryMongo implements UsersRepository {
 
   async update(id: string, item: User): Promise<User> {
     try {
-      // TODOD QUE ES ESTE PARAMETRO NEW
+      const existingUser = await this.userModel
+        .findOne({ username: item.username })
+        .exec();
+
+      if (existingUser && existingUser._id.toString() !== id) {
+        throw new ConflictError(
+          'El nombre de usuario ya está en uso por otro usuario.',
+        );
+      }
+
       const updatedUserMongo = await this.userModel
         .findOneAndUpdate({ _id: id }, item, { new: true }) // Aquí va el filtro y los datos a actualizar
         .exec();
@@ -91,6 +101,9 @@ export class UsersRepositoryMongo implements UsersRepository {
 
       return updateUser;
     } catch (error) {
+      if (error instanceof ConflictError) {
+        throw error;
+      }
       throw new RepositoryError('Error al actualizar el usuario con id ' + id);
     }
   }
