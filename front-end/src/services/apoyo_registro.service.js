@@ -19,7 +19,7 @@ async function createApoyoRegistro(idCausa, nombre, correo) {
   });
 
   if (response.status !== 201) {
-    return undefined;
+    return response;
   }
 
   const data = await response.json();

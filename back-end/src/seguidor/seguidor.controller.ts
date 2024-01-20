@@ -32,7 +32,6 @@ import { IllegalArgumentError } from 'src/base/argumentError';
 import { EntityNotFoundError } from 'src/base/entityNotFounError';
 
 @ApiTags('seguidores')
-@Public()
 @Controller('seguidor')
 export class SeguidorController {
   constructor(private readonly seguidorService: ISeguidorService) {}
