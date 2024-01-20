@@ -82,12 +82,14 @@ async function getCausasByNameInsensitive(titulo, idComunidad) {
       },
     },
   );
-  if (!response.ok) {
+
+  return response;
+  /* if (!response.ok) {
     throw new Error('No se encontraron causas que coincidan con la búsqueda.');
   }
 
   const data = await response.json();
-  return data;
+  return data; */
 }
 
 // OBTENER CAUSAS POR ID DE COMUNIDAD
