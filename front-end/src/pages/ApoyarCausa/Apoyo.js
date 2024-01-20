@@ -10,12 +10,14 @@ import {
   alertErrorMessage,
   checkResponseStatusCode,
 } from '../../utils/utils';
+import ErrorMessage from '../../component/MensajeError';
 
 export default function Apoyo(props) {
   const navigate = useNavigate();
   const name = useSelector((state) => state.user.userInfo.nombre);
   const [nombre, setNombre] = useState(name || '');
   const [correo, setCorreo] = useState('');
+  const [error, setError] = useState('');
 
   function handleNombreInput(event) {
     setNombre(event.target.value);
@@ -26,6 +28,12 @@ export default function Apoyo(props) {
   }
 
   async function apoyar() {
+
+    if (correo === '') {
+      setError('Debes ingresar un correo electrónico');
+      return;
+    }
+
     const response = await createApoyoRegistro(props.idCausa, nombre, correo);
     if (!checkResponseStatusCode(response)) {
       alertErrorMessage(response);
@@ -82,6 +90,7 @@ export default function Apoyo(props) {
               required
             />
           </Form.Group>
+          {error && <ErrorMessage message={error} gravedad="warning" />}
         </Form>
       </Modal.Body>
       <Modal.Footer>
