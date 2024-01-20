@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs, Button, Row, Col } from 'react-bootstrap';
 import {
   getCausasByComunityId,
@@ -12,12 +12,19 @@ import CardExternalProfile from '../../component/CardExternalProfile';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import Busqueda from '../../component/Buscar';
 import { getComunidadById } from '../../services/comunidades.service';
-import { refactorDate } from '../../utils/utils';
+import {
+  checkResponseStatusCode,
+  checkPageToNavigate,
+  refactorDate,
+} from '../../utils/utils';
 
 export default function MostrarComunidad() {
   const [comunidad, setComunidad] = useState();
   const param = useParams();
-  const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+  // const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+  const user = useSelector((state) => {
+    return state.user.userInfo;
+  });
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [busqueda, setBusqueda] = useState('');
@@ -26,7 +33,12 @@ export default function MostrarComunidad() {
 
   const fetchComunidad = useCallback(async () => {
     const response = await getComunidadById(param.idComunidad);
-    setComunidad(response);
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
+    const data = await response.json();
+    setComunidad(data);
   }, [param.idComunidad]);
 
   const fetchCausas = useCallback(async () => {
@@ -157,7 +169,7 @@ export default function MostrarComunidad() {
             handleBuscar={handleBuscarCausas}
             handleBusquedaInput={handleBusquedaInput}
             error={error}
-            elementoFiltrado={causasFiltradas}
+            // elementoFiltrado={causasFiltradas}
           />
           {causasFiltradas.length > 0 && (
             <div>

@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState } from 'react';
 import { Breadcrumb, Tabs, Tab, Col, Button, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import {
   getAccionesByCausaId,
   getAccionesByNameInsensitive,
@@ -10,7 +10,11 @@ import { getCausaById } from '../../services/causas.service';
 import { getComunidadById } from '../../services/comunidades.service';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import Busqueda from '../../component/Buscar';
-import { refactorDate } from '../../utils/utils';
+import {
+  checkResponseStatusCode,
+  checkPageToNavigate,
+  refactorDate,
+} from '../../utils/utils';
 import CardAccionSolidaria from '../../component/CardAccionSolidaria';
 
 export default function MostrarCausa() {
@@ -50,14 +54,19 @@ export default function MostrarCausa() {
   const fetchCausas = useCallback(async () => {
     const response = await getCausaById(param.idCausa);
     const data = await response.json();
-    console.log(data);
     setCausa(data);
   }, [param.idCausa]);
 
   const fetchComunidad = useCallback(async () => {
     if (causa.comunidad === undefined) return;
     const response = await getComunidadById(causa.comunidad);
-    setComunidad(response);
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
+
+    const data = await response.json();
+    setComunidad(data);
   }, [causa.comunidad]);
 
   useEffect(() => {
@@ -156,7 +165,7 @@ export default function MostrarCausa() {
               handleBuscar={handleBuscarAcciones}
               handleBusquedaInput={handleBusquedaInput}
               error={error}
-              elementoFiltrado={accionesFiltradas}
+              // elementoFiltrado={accionesFiltradas}
             />
             {accionesFiltradas.length > 0 && (
               <div>
