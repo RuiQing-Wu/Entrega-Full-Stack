@@ -22,7 +22,6 @@ export default function Accion() {
   const [comunidad, setComunidad] = useState([]);
   const param = useParams();
 
-  // TODO ESTO SE PUEDE HACER COMO GLOBAL NO CON DISPATCH
   function onHomeClicked() {
     navigate('/');
   }
@@ -114,9 +113,7 @@ export default function Accion() {
     } else {
       alert('Error al crear la acción solidaria');
     }
-
   }
-
 
   return (
     <div>
@@ -146,8 +143,9 @@ export default function Accion() {
               <Form.Control
                 type="text"
                 placeholder="Título de la acción solidaria"
-                className={`form-control ${tituloError ? 'is-invalid' : ''} ${titulo && !tituloError ? 'is-valid' : ''
-                  }`}
+                className={`form-control ${tituloError ? 'is-invalid' : ''} ${
+                  titulo && !tituloError ? 'is-valid' : ''
+                }`}
                 onChange={handleTituloInput}
                 value={titulo}
                 required
@@ -162,8 +160,9 @@ export default function Accion() {
               <Form.Control
                 as="textarea"
                 rows={3}
-                className={`form-control ${descripcionError ? 'is-invalid' : ''
-                  } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
+                className={`form-control ${
+                  descripcionError ? 'is-invalid' : ''
+                } ${descripcion && !descripcionError ? 'is-valid' : ''}`}
                 onChange={handleDescripcionInput}
                 value={descripcion}
                 required
@@ -178,8 +177,9 @@ export default function Accion() {
               <Form.Control
                 as="textarea"
                 rows={3}
-                className={`form-control ${objetivoError ? 'is-invalid' : ''} ${objetivo && !objetivoError ? 'is-valid' : ''
-                  }`}
+                className={`form-control ${objetivoError ? 'is-invalid' : ''} ${
+                  objetivo && !objetivoError ? 'is-valid' : ''
+                }`}
                 placeholder="Objetivo de la acción solidaria"
                 onChange={handleObjetivoInput}
                 value={objetivo}

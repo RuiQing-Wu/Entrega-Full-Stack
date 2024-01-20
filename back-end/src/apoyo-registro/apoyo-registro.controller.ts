@@ -36,7 +36,7 @@ import { EntityNotFoundError } from 'src/base/entityNotFounError';
 export class ApoyoRegistroController {
   constructor(private readonly apoyoRegistroService: IApoyoRegistroService) {}
 
-  @ApiBearerAuth()
+  @Public()
   @ApiOperation({ summary: 'Crear un registro del apoyo a la causa' })
   @ApiBody({
     type: CreateApoyoRegistroDto,
@@ -44,7 +44,6 @@ export class ApoyoRegistroController {
     required: true,
   })
   @ApiCreatedResponse({ description: 'Registro del apoyo a la causa' })
-  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
   create(@Body() createApoyoRegistroDto: CreateApoyoRegistroDto) {
