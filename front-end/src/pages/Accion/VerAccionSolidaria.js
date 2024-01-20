@@ -61,6 +61,7 @@ export default function MostrarAcciones() {
       const page = checkPageToNavigate(response);
       Navigate(page);
     }
+
     const data = await response.json();
     setComunidad(data);
   }, [causa.comunidad]);

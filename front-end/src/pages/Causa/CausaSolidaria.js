@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import { Breadcrumb, Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { useState, useCallback, useEffect } from 'react';
 import { getComunidadById } from '../../services/comunidades.service';
@@ -9,6 +9,7 @@ import { createApoyo } from '../../services/apoyo_causa.service';
 import {
   HTTP_STATUS_UNAUTHORIZED,
   alertErrorMessage,
+  checkPageToNavigate,
   checkResponseStatusCode,
 } from '../../utils/utils';
 
@@ -165,24 +166,41 @@ export default function Causa() {
 
     if (!checkResponseStatusCode(response)) {
       alertErrorMessage(response);
-      if (response.status === HTTP_STATUS_UNAUTHORIZED) navigate(`/login`);
-      return;
+      const page = checkPageToNavigate(response);
+      Navigate(page);
     }
 
     if (response.status === 201) {
       const data = await response.json();
       const crearApoyo = await createApoyo(data.id);
-      if (crearApoyo === undefined) {
+      if (!checkResponseStatusCode(crearApoyo)) {
+        alertErrorMessage(crearApoyo);
+        const page = checkPageToNavigate(crearApoyo);
+        Navigate(page);
+      }
+
+      if (crearApoyo.status === 201) {
+        const crearApoyoData = await crearApoyo.json();
+        navigate(`/causa/${crearApoyoData.id}`);
+      }
+      /* if (crearApoyo === undefined) {
         alert('No se ha podido crear el apoyo');
       } else {
         navigate(`/causa/${data.id}`);
-      }
+      } */
     }
   }
 
   const fetchComunidad = useCallback(async () => {
     const response = await getComunidadById(param.idComunidad);
-    setComunidad(response);
+
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
+
+    const data = await response.json();
+    setComunidad(data);
   }, [param.idComunidad]);
 
   useEffect(() => {

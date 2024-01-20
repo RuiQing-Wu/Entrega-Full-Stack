@@ -6,8 +6,8 @@ import { saveComunidad } from '../../services/comunidades.service';
 import './Comunidad.css';
 import ErrorMessage from '../../component/MensajeError';
 import {
-  HTTP_STATUS_UNAUTHORIZED,
   alertErrorMessage,
+  checkPageToNavigate,
   checkResponseStatusCode,
   dateToString,
 } from '../../utils/utils';
@@ -51,7 +51,6 @@ export default function Comunidad() {
       return;
     }
 
-    // TODO CHANGES
     const formattedDate = dateToString();
     const response = await saveComunidad(
       nombre,
@@ -63,7 +62,8 @@ export default function Comunidad() {
     // COMPROBAR EL ESTADO DE LA RESPUESTA
     if (!checkResponseStatusCode(response)) {
       alertErrorMessage(response);
-      if (response.status === HTTP_STATUS_UNAUTHORIZED) navigate('/login');
+      /* const page = checkPageToNavigate(response);
+      navigate(page); */
       return;
     }
 
