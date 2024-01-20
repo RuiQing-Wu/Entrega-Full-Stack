@@ -23,7 +23,7 @@ const CardAccionSolidaria = ({
 
   useEffect(() => {
     getObjetivos();
-  }, [getObjetivos]);
+  }, []);
 
   function handleRedireccionAAccion() {
     if (titulo !== ' ') {

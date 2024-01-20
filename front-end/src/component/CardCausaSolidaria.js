@@ -35,8 +35,8 @@ const CardCausaSolidaria = ({
   async function refreshApoyo() {
     const response = await getApoyoCausa(idCausa);
     if (!checkResponseStatusCode(response)) {
-      alertErrorMessage(response);
-      // setApoyoActual(0);
+      // alertErrorMessage(response);
+      setApoyoActual(0);
       return;
     }
 
