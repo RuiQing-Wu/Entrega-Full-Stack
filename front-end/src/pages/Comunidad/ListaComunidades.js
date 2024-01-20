@@ -45,10 +45,12 @@ export default function BuscarComunidades() {
   async function getComunidadesFiltradas() {
     setComunidadesFiltradas([]);
     const response = await getComunidadesByNameInsensitive(busqueda, filtro);
+
     if (!checkResponseStatusCode(response)) {
       setComunidadesFiltradas([]);
       return;
     }
+
     const data = await response.json();
     setComunidadesFiltradas(data);
 

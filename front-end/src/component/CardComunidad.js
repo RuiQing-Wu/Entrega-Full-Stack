@@ -17,14 +17,12 @@ export default function CardComunidad({
   btnSolicitar,
   solicitud,
 }) {
-
   const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
 
   const idActual = useSelector((state) => state.user.userInfo.id);
 
   function showModal() {
-
     if (idActual === undefined) {
       navigate('/login');
     } else {

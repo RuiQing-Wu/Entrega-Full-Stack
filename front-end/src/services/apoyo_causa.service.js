@@ -37,8 +37,9 @@ async function getApoyoCausa(idCausa) {
     },
   });
 
-  const data = await response.json();
-  return data;
+  return response;
+  /* const data = await response.json();
+  return data; */
 }
 
 // ELIMINAR APOYO A CAUSA

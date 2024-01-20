@@ -43,7 +43,14 @@ export default function MostrarComunidad() {
 
   const fetchCausas = useCallback(async () => {
     const response = await getCausasByComunityId(param.idComunidad);
-    setCausasFiltradas(response);
+
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
+
+    const data = await response.json();
+    setCausasFiltradas(data);
   }, [param.idComunidad]);
 
   const fetchUser = useCallback(async () => {
@@ -90,12 +97,12 @@ export default function MostrarComunidad() {
 
   function handleBuscarCausas(event) {
     event.preventDefault();
+    setError('');
 
     if (busqueda.trim() === '') {
       fetchCausas();
     } else if (busqueda.trim() !== '') {
       getCausasFiltradas();
-      setError('');
     }
   }
 

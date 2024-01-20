@@ -4,6 +4,7 @@ import { Card, Row, Col, Button } from 'react-bootstrap';
 import Apoyo from '../pages/ApoyarCausa/Apoyo';
 import './Style/CardCausaSolidaria.css';
 import { getApoyoCausa } from '../services/apoyo_causa.service';
+import { checkResponseStatusCode, alertErrorMessage } from '../utils/utils';
 
 const CardCausaSolidaria = ({
   imageUrl,
@@ -32,12 +33,15 @@ const CardCausaSolidaria = ({
   }
 
   async function refreshApoyo() {
-    const apoyo = await getApoyoCausa(idCausa);
-    if (apoyo.status === 404) {
-      setApoyoActual(0);
-    } else {
-      setApoyoActual(apoyo.numApoyo);
+    const response = await getApoyoCausa(idCausa);
+    if (!checkResponseStatusCode(response)) {
+      alertErrorMessage(response);
+      // setApoyoActual(0);
+      return;
     }
+
+    const apoyo = await response.json();
+    setApoyoActual(apoyo.numApoyo);
   }
 
   // ESTO DEBERIA DEPENDER DEL VOTO ACTUAL NO?

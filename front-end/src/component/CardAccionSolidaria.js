@@ -12,8 +12,6 @@ const CardAccionSolidaria = ({
   progreso,
   detalles,
 }) => {
-
-  // TODO ESTO NO DEBERIA SER UN USESTATE?
   let objetivos = [];
   const navigate = useNavigate();
 

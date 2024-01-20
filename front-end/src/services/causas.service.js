@@ -98,8 +98,10 @@ async function getCausasByComunityId(idComunidad) {
       'Content-Type': 'application/json',
     },
   });
-  const data = await response.json();
-  return data;
+
+  return response;
+  /* const data = await response.json();
+  return data; */
 }
 
 export {
