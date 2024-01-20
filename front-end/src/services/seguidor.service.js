@@ -3,7 +3,7 @@ import { getToken } from '../utils/utils';
 const BASE_URL = 'http://localhost:3001/seguidor';
 
 async function registrarUsuarioSeguimiento(username, idUsuario) {
-  // Construye un objeto con las propiedades 'username' e 'idUsuario'
+
   const requestBody = {
     username,
     idUsuario,
@@ -14,7 +14,7 @@ async function registrarUsuarioSeguimiento(username, idUsuario) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(requestBody), // Usa JSON.stringify con un solo argumento
+    body: JSON.stringify(requestBody), 
   });
 
   if (response.status !== 201) {

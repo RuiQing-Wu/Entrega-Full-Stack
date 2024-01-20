@@ -9,7 +9,7 @@ import { login } from '../../services/auth.service';
 import { checkResponseStatusCode } from '../../utils/utils';
 
 export default function Login() {
-  // Crear un hook para navegar entre páginas
+
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -30,11 +30,10 @@ export default function Login() {
   async function loginUser(event) {
     event.preventDefault();
 
-    // Resetear los errores
+
     setUsernameError('');
     setPasswordError('');
 
-    // Validar que el usuario y la contraseña no estén vacíos
     if (username === '' || username.trim() === '') {
       setUsernameError('El usuario no puede estar vacío');
       return;
@@ -47,9 +46,7 @@ export default function Login() {
 
     const response = await login(username, password);
 
-    // Procesar la respuesta de la API
     if (!checkResponseStatusCode(response)) {
-      // Mostrar un mensaje de error
       setUsernameError('Usuario o contraseña incorrectos');
       setPasswordError('Usuario o contraseña incorrectos');
       return;

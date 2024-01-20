@@ -306,7 +306,7 @@ export default function Causa() {
                           <img
                             src={opcion.imagen}
                             alt={opcion.nombre}
-                            style={{ width: '100px', height: '100px' }} // Tamaño ajustable
+                            style={{ width: '100px', height: '100px' }} 
                           />
                         </div>
                       }

@@ -57,14 +57,12 @@ export default function Registro() {
   async function registrarUser(event) {
     event.preventDefault();
 
-    // Resetear los errores
     setUsernameError('');
     setTelefonoError('');
     setCiudadError('');
     setPaisError('');
     setPasswordError('');
 
-    // Validar que el usuario y la contraseña no estén vacíos
     if (username === '' || username.trim() === '') {
       setUsernameError('El nombre de usuario no puede estar vacío');
       return;
@@ -121,7 +119,6 @@ export default function Registro() {
     // eslint-disable-next-line no-alert
     alert('Usuario registrado con éxito');
 
-    // Navegar a la página de inicio
     navigate('/login');
   }
 

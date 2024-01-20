@@ -96,9 +96,7 @@ const router = createBrowserRouter([
         name: 'VerAccionSolidaria',
         path: '/accion/:idAccion',
         element: (
-          <AuthRoute>
-            <MostrarAcciones />
-          </AuthRoute>
+          <MostrarAcciones />
         ),
       },
       { name: 'Error', path: '/error', element: <Error /> },

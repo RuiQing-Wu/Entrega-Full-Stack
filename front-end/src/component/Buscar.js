@@ -6,7 +6,6 @@ export default function Busqueda({
   handleBuscar,
   handleBusquedaInput,
   error,
-  // busqueda,
 }) {
   const [filtro, setFiltro] = useState('nombre');
 
@@ -37,7 +36,6 @@ export default function Busqueda({
               className="form-control"
               id="busqueda"
               placeholder={`Buscar ${titulo} por ${filtro}...`}
-              // value={busqueda}
               onChange={handleBusquedaInput}
             />
           </Col>

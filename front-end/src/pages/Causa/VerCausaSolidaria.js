@@ -20,7 +20,6 @@ import CardAccionSolidaria from '../../component/CardAccionSolidaria';
 export default function MostrarCausa() {
   const [causa, setCausa] = useState([]);
   const [comunidad, setComunidad] = useState([]);
-  // const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
   const user = useSelector((state) => {
     return state.user.userInfo;
   });
@@ -180,7 +179,6 @@ export default function MostrarCausa() {
               handleBuscar={handleBuscarAcciones}
               handleBusquedaInput={handleBusquedaInput}
               error={error}
-              // elementoFiltrado={accionesFiltradas}
             />
             {accionesFiltradas.length > 0 && (
               <div>

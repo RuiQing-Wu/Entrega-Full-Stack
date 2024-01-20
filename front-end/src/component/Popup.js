@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Style/Popup.css'; // Estilos para el popup, puedes personalizarlos
+import './Style/Popup.css'; 
 
 const Popup = ({ message, onClose }) => {
   const [visible, setVisible] = useState(true);
@@ -8,7 +8,7 @@ const Popup = ({ message, onClose }) => {
     const timer = setTimeout(() => {
       setVisible(false);
       onClose();
-    }, 3000); // Cerrar el popup después de 3 segundos (puedes ajustar el tiempo)
+    }, 3000); 
 
     return () => clearTimeout(timer);
   }, [onClose]);

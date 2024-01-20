@@ -13,7 +13,7 @@ import {
 } from '../../utils/utils';
 
 export default function Comunidad() {
-  // Crear un hook para navegar entre páginas
+
   const navigate = useNavigate();
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -34,11 +34,9 @@ export default function Comunidad() {
   async function crearComunidad(event) {
     event.preventDefault();
 
-    // Resetear los errores
     setNombreError('');
     setDescripcionError('');
 
-    // Validar que el usuario y la contraseña no estén vacíos
     if (nombre === '' || nombre.trim() === '') {
       setNombreError('El nombre de la comunidad no puede estar vacío');
       return;
@@ -59,7 +57,6 @@ export default function Comunidad() {
       idUserActual,
     );
 
-    // COMPROBAR EL ESTADO DE LA RESPUESTA
     if (!checkResponseStatusCode(response)) {
       alertErrorMessage(response);
       return;

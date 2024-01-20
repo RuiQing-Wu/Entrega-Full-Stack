@@ -58,7 +58,6 @@ export default function Accion() {
     setObjetivo(value);
     setObjetivoError('');
 
-    // Separar los objetivos por coma y eliminar espacios en blanco alrededor de cada objetivo
     const objetivosArray = value
       .split(',')
       .map((item) => item.trim())

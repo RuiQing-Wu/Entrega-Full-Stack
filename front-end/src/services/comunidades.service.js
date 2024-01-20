@@ -28,8 +28,6 @@ async function saveComunidad(
   });
 
   return response;
-  // const data = await response.json();
-  // return data;
 }
 
 // RECUPERAR COMUNIDADES

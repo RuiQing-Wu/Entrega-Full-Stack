@@ -177,7 +177,6 @@ export default function MostrarComunidad() {
             handleBuscar={handleBuscarCausas}
             handleBusquedaInput={handleBusquedaInput}
             error={error}
-            // elementoFiltrado={causasFiltradas}
           />
           {causasFiltradas.length > 0 && (
             <div>

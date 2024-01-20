@@ -35,7 +35,7 @@ const CardCausaSolidaria = ({
   async function refreshApoyo() {
     const response = await getApoyoCausa(idCausa);
     if (!checkResponseStatusCode(response)) {
-      // alertErrorMessage(response);
+
       setApoyoActual(0);
       return;
     }
@@ -44,12 +44,10 @@ const CardCausaSolidaria = ({
     setApoyoActual(apoyo.numApoyo);
   }
 
-  // ESTO DEBERIA DEPENDER DEL VOTO ACTUAL NO?
   useEffect(() => {
     refreshApoyo();
   });
 
-  // ESTO NO DEBERIA SER UN USESTATE?
   let lista = [];
 
   if (objetivos !== undefined) {
