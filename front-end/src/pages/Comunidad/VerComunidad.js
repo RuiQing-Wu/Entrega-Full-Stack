@@ -8,7 +8,6 @@ import {
 } from '../../services/causas.service';
 import { getUserById } from '../../services/users.service';
 import CardComunidad from '../../component/CardComunidad';
-import CardExternalProfile from '../../component/CardExternalProfile';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
 import Busqueda from '../../component/Buscar';
 import { getComunidadById } from '../../services/comunidades.service';
