@@ -94,6 +94,7 @@ export class AuthController {
     required: true,
   })
   @ApiCreatedResponse({ description: 'Usuario registrado' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiConflictResponse({ description: 'Ya existe un usuario con este nombre' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @HttpCode(HttpStatus.CREATED)

@@ -49,6 +49,7 @@ export class ComunidadesController {
     required: true,
   })
   @ApiCreatedResponse({ description: 'Comunidad creada' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
   @ApiConflictResponse({
     description: 'Ya existe una comunidad con este nombre',

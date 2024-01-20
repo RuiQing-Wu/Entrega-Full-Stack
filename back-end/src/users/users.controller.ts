@@ -53,6 +53,7 @@ export class UserController {
     required: true,
   })
   @ApiCreatedResponse({ description: 'Usuario creado' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiConflictResponse({ description: 'Ya existe un usuaurio con este nombre' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()

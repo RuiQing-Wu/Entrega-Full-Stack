@@ -46,6 +46,7 @@ export class SolicitudController {
     required: true,
   })
   @ApiCreatedResponse({ description: 'Solicitud creada' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()

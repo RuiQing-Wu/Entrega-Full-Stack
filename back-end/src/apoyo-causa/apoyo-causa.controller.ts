@@ -40,6 +40,7 @@ export class ApoyoCausaController {
   @ApiOperation({ summary: 'Crear un apoyo a una causa solidaria' })
   @ApiBody({ type: CreateApoyoCausaDto })
   @ApiCreatedResponse({ description: 'Apoyo a la causa creado' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()

@@ -45,6 +45,7 @@ export class SeguidorController {
     required: true,
   })
   @ApiCreatedResponse({ description: 'Seguimiento creado' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()

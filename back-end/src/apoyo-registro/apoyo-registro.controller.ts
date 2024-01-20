@@ -44,11 +44,12 @@ export class ApoyoRegistroController {
     required: true,
   })
   @ApiCreatedResponse({ description: 'Registro del apoyo a la causa' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
-  create(@Body() createApoyoRegistroDto: CreateApoyoRegistroDto) {
+  async create(@Body() createApoyoRegistroDto: CreateApoyoRegistroDto) {
     try {
-      return this.apoyoRegistroService.create(createApoyoRegistroDto);
+      return await this.apoyoRegistroService.create(createApoyoRegistroDto);
     } catch (error) {
       if (error instanceof RepositoryError)
         throw new InternalServerErrorException(error.message);
@@ -60,9 +61,9 @@ export class ApoyoRegistroController {
   @ApiOkResponse({ description: 'Registros de apoyo a causas obtenidos' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
-  findAll() {
+  async findAll() {
     try {
-      return this.apoyoRegistroService.findAll();
+      return await this.apoyoRegistroService.findAll();
     } catch (error) {
       if (error instanceof RepositoryError)
         throw new InternalServerErrorException(error.message);

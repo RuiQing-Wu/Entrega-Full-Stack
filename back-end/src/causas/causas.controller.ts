@@ -44,6 +44,7 @@ export class CausasController {
     required: true,
   })
   @ApiCreatedResponse({ description: 'Causa solidaria creada' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()

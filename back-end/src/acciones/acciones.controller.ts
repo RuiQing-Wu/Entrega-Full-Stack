@@ -35,7 +35,7 @@ import { EntityNotFoundError } from '../base/entityNotFounError';
 @ApiTags('acciones')
 @Controller('acciones')
 export class AccionesController {
-  constructor(private readonly accionesService: IAccionService) {}
+  constructor(private readonly accionesService: IAccionService) { }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear una accion solidaria' })
@@ -45,6 +45,7 @@ export class AccionesController {
     required: true,
   })
   @ApiCreatedResponse({ status: 201, description: 'Accion solidaria creada' })
+  @ApiBadRequestResponse({ status: 400, description: 'Bad request' })
   @ApiUnauthorizedResponse({ status: 401, description: 'Unauthorized' })
   @ApiInternalServerErrorResponse({
     status: 500,
