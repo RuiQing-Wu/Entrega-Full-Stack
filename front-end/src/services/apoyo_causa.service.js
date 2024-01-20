@@ -42,26 +42,6 @@ async function getApoyoCausa(idCausa) {
   return data; */
 }
 
-// ELIMINAR APOYO A CAUSA
-async function deleteApoyoCausa(idCausa) {
-  const accessToken = getToken();
-  const url = `${BASE_URL}/${idCausa}`;
-  const response = await fetch(url, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  if (response.status !== 201) {
-    return undefined;
-  }
-
-  const data = await response.json();
-  return data;
-}
-
 // APOYAR CAUSA
 async function apoyarCausa(idCausa) {
   const url = `${BASE_URL}/apoyar/${idCausa}`;
@@ -83,4 +63,4 @@ async function apoyarCausa(idCausa) {
   return data;
 }
 
-export { apoyarCausa, getApoyoCausa, deleteApoyoCausa, createApoyo };
+export { apoyarCausa, getApoyoCausa, createApoyo };
