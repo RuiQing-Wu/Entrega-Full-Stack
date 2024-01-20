@@ -1,5 +1,5 @@
 import './Style/CardAccionSolidaria.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 
@@ -21,7 +21,9 @@ const CardAccionSolidaria = ({
     }
   };
 
-  getObjetivos();
+  useEffect(() => {
+    getObjetivos();
+  }, [getObjetivos]);
 
   function handleRedireccionAAccion() {
     if (titulo !== ' ') {

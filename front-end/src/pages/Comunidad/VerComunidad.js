@@ -16,11 +16,12 @@ import {
   checkPageToNavigate,
   refactorDate,
 } from '../../utils/utils';
+import CardExternalProfile from '../../component/CardExternalProfile';
 
 export default function MostrarComunidad() {
   const [comunidad, setComunidad] = useState();
   const param = useParams();
-  // const [user, setUser] = useState(useSelector((state) => state.user.userInfo));
+
   const user = useSelector((state) => {
     return state.user.userInfo;
   });
@@ -175,7 +176,7 @@ export default function MostrarComunidad() {
             handleBuscar={handleBuscarCausas}
             handleBusquedaInput={handleBusquedaInput}
             error={error}
-            // elementoFiltrado={causasFiltradas}
+          // elementoFiltrado={causasFiltradas}
           />
           {causasFiltradas.length > 0 && (
             <div>
@@ -203,7 +204,7 @@ export default function MostrarComunidad() {
           )}
         </Tab>
 
-        <Tab eventKey="seguidores" title="Seguidores">
+        <Tab eventKey="seguidores" title="Miembros">
           {usersData.length > 0 &&
             usersData.map((userData, index) => (
               <CardExternalProfile
