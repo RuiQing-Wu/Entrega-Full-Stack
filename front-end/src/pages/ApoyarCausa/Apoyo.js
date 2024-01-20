@@ -2,15 +2,13 @@ import './Apoyo.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import ErrorMessage from '../../component/MensajeError';
 import { createApoyoRegistro } from '../../services/apoyo_registro.service';
 import { apoyarCausa } from '../../services/apoyo_causa.service';
 
 export default function Apoyo(props) {
-  const [nameActual, setNameActual] = useState('');
 
   const name = useSelector((state) => state.user.userInfo.nombre);
-  const [nombre, setNombre] = useState('');
+  const [nombre, setNombre] = useState(name || '');
   const [correo, setCorreo] = useState('');
 
   function handleNombreInput(event) {
@@ -22,10 +20,6 @@ export default function Apoyo(props) {
   }
 
   function apoyar() {
-
-    if (name) {
-      setNombre(name);
-    }
 
     const response = createApoyoRegistro(props.idCausa, nombre, correo);
     if (response === undefined) {
@@ -57,7 +51,7 @@ export default function Apoyo(props) {
           className="text-center"
           style={{ textAlign: 'center' }}
         >
-          Apoyar Causa Solidaria
+          Apoyar causa solidaria
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -68,7 +62,7 @@ export default function Apoyo(props) {
               type="text"
               placeholder="nombre"
               autoFocus={false}
-              value={nameActual}
+              value={nombre}
               onChange={handleNombreInput}
             />
           </Form.Group>
