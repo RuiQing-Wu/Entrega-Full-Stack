@@ -232,7 +232,6 @@ export class ComunidadesController {
     }
   }
 
-  // TODOD: ESTA ES PUBLICA O NO ?
   @ApiBearerAuth()
   @ApiOperation({
     summary:

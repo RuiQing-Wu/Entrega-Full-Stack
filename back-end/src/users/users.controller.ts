@@ -170,7 +170,6 @@ export class UserController {
     }
   }
 
-  //TODO ¿Lo dejo como publico o lo pongo con token?
   @Public()
   @ApiOperation({ summary: 'Obtener un usuario mediante el nombre de usuario' })
   @ApiParam({

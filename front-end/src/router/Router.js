@@ -27,7 +27,6 @@ const router = createBrowserRouter([
       { index: true, name: 'Home', element: <Home /> },
       { name: 'Login', path: '/login', element: <Login /> },
       { name: 'Registrar', path: '/registrar', element: <Registro /> },
-      // TODO PDTE REVISAR
       {
         name: 'Profile',
         path: '/perfil/:nombrePerfil',

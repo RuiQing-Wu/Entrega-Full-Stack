@@ -19,8 +19,4 @@ async function createApoyoRegistro(idCausa, nombre, correo) {
   return response;
 }
 
-async function getApoyoRegistroById(id) {
-  // TODO: no se neceista nunca no?
-}
-
-export { createApoyoRegistro, getApoyoRegistroById };
+export default createApoyoRegistro;

@@ -13,22 +13,6 @@ export class CausasRepositoryMongo implements CausasRepository {
     private readonly causaModel: Model<CausaMongoModel>,
   ) {}
 
-  /* private toCausaSolidariaDomain(
-    causaMongoModel: HydratedDocument<CausaMongoModel>,
-  ): CausaSolidaria {
-    const causa = new CausaSolidaria({
-      id: causaMongoModel._id.toString(),
-      titulo: causaMongoModel.titulo,
-      descripcion: causaMongoModel.descripcion,
-      fechaInicio: causaMongoModel.fechaInicio,
-      fechaFin: causaMongoModel.fechaFin,
-      comunidad: causaMongoModel.comunidad,
-      objetivos: causaMongoModel.objetivos,
-    });
-
-    return causa;
-  } */
-
   private toCausaSolidariaDomain(
     causaMongoModel: HydratedDocument<CausaMongoModel>,
   ): CausaSolidaria {
