@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Image,
@@ -20,7 +20,11 @@ import {
   getSeguidoresByUser,
 } from '../../services/seguidor.service';
 import CardExternalProfile from '../../component/CardExternalProfile';
-import { alertErrorMessage, checkResponseStatusCode, HTTP_STATUS_UNAUTHORIZED } from '../../utils/utils';
+import {
+  alertErrorMessage,
+  checkResponseStatusCode,
+  checkPageToNavigate,
+} from '../../utils/utils';
 import './Profile.css';
 
 export default function Profile() {
@@ -34,7 +38,6 @@ export default function Profile() {
     ciudad: '',
     pais: '',
   });
-
 
   const usernameActual = useSelector((state) => state.user.userInfo.username);
   const idActual = useSelector((state) => state.user.userInfo.id);
@@ -58,7 +61,6 @@ export default function Profile() {
   };
 
   const handleSaveClick = async () => {
-
     const response = await updateUser(
       user.username,
       user.nombre,
@@ -70,19 +72,18 @@ export default function Profile() {
 
     if (!checkResponseStatusCode(response)) {
       alertErrorMessage(response);
-      if (response.status === HTTP_STATUS_UNAUTHORIZED) navigate('/login');
-    }
-    else {
+      const page = checkPageToNavigate(response);
+      navigate(page);
+    } else {
       setIsEditing(false);
     }
   };
 
-  const fetchUser = async () => {
-
+  const fetchUser = useCallback(async () => {
     const response = await getUserByName(params.nombrePerfil);
     const data = await response.json();
     setUser(data);
-  };
+  }, [params.nombrePerfil]);
 
   function handleRedireccionarComunidad(nombre) {
     const comunidadSeleccionada = comunidadesUser.find((comunidad) =>
@@ -103,7 +104,7 @@ export default function Profile() {
 
   useEffect(() => {
     fetchUser();
-  }, [params.nombrePerfil]);
+  }, [fetchUser]);
 
   useEffect(() => {
     if (usernameActual === user.username) {
@@ -125,7 +126,7 @@ export default function Profile() {
     });
   }
 
-  function getSeguidos() {
+  /* function getSeguidos() {
     setSeguidos([]);
 
     return getSeguidosByUser(user.id).then((response) => {
@@ -137,21 +138,55 @@ export default function Profile() {
         );
       }
     });
-  }
+  } */
 
-  function getSeguidores() {
+  const getSeguidos = useCallback(async () => {
+    if (user.id === undefined) return;
+    setSeguidos([]);
+    const response = await getSeguidosByUser(user.id);
+    if (response.length === 0) {
+      setErrorSeguidos('No se encontraron usuarios seguidores por el usuario.');
+    }
+    setSeguidos(response);
+    /* const response = getSeguidosByUser(user.id).then((response) => {
+      setSeguidos(response);
+
+      if (response.length === 0) {
+        setErrorSeguidos(
+          'No se encontraron usuarios seguidores por el usuario.',
+        );
+      }
+    }); */
+  }, [user.id]);
+
+  const getSeguidores = useCallback(async () => {
+    if (user.id === undefined) return;
     setSeguidores([]);
+    const response = await getSeguidoresByUser(user.id);
+    if (response.length === 0) {
+      setErrorSeguidores('No se encontraron usuarios que sigan al usuario.');
+    }
 
-    return getSeguidoresByUser(user.id).then((response) => {
+    setSeguidores(response);
+
+    /* return getSeguidoresByUser(user.id).then((response) => {
       setSeguidores(response);
 
       if (response.length === 0) {
         setErrorSeguidores('No se encontraron usuarios que sigan al usuario.');
       }
-    });
-  }
+    }); */
+  }, [user.id]);
 
   useEffect(() => {
+    getSeguidores();
+  }, [user.id]);
+
+  useEffect(() => {
+    getSeguidos();
+  }, [user.id]);
+
+  /* useEffect(() => {
     Promise.all([getComunidadesUser(), getSeguidos(), getSeguidores()])
       .then(() => {
         console.log('Todas las solicitudes han sido completadas');
@@ -159,7 +194,7 @@ export default function Profile() {
       .catch((error) => {
         console.error('Error al realizar las solicitudes', error);
       });
-  }, [user.id]);
+  }, [user.id]); */
 
   return (
     <div className="container mt-5">
@@ -185,7 +220,7 @@ export default function Profile() {
           <Form>
             <Col sd={10} md={10} lg={8} className="mx-auto">
               <Form.Group className="mb-3" controlId="formUsername">
-                <Form.Label >Nombre de usuario</Form.Label>
+                <Form.Label>Nombre de usuario</Form.Label>
                 <Form.Control
                   type="text"
                   name="username"
@@ -276,9 +311,7 @@ export default function Profile() {
                     </Row>
                   </div>
                 ) : (
-                  <p>
-                    {errorSeguidos}
-                  </p>
+                  <p>{errorSeguidos}</p>
                 )}
               </TabContent>
             </Tab>
@@ -302,9 +335,7 @@ export default function Profile() {
                     </Row>
                   </div>
                 ) : (
-                  <p>
-                    {errorSeguidores}
-                  </p>
+                  <p>{errorSeguidores}</p>
                 )}
               </TabContent>
             </Tab>
