@@ -21,7 +21,7 @@ import {
 } from '../../services/seguidor.service';
 import CardExternalProfile from '../../component/CardExternalProfile';
 import { alertErrorMessage, checkResponseStatusCode, HTTP_STATUS_UNAUTHORIZED } from '../../utils/utils';
-
+import './Profile.css';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -38,8 +38,6 @@ export default function Profile() {
 
   const usernameActual = useSelector((state) => state.user.userInfo.username);
   const idActual = useSelector((state) => state.user.userInfo.id);
-  console.log(idActual);
-  console.log(usernameActual);
 
   const [isEditing, setIsEditing] = useState(false);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
@@ -60,7 +58,7 @@ export default function Profile() {
   };
 
   const handleSaveClick = async () => {
-    
+
     const response = await updateUser(
       user.username,
       user.nombre,
@@ -186,8 +184,8 @@ export default function Profile() {
           <h2>Perfil de usuario</h2>
           <Form>
             <Col sd={10} md={10} lg={8} className="mx-auto">
-              <Form.Group controlId="formUsername">
-                <Form.Label>Username</Form.Label>
+              <Form.Group className="mb-3" controlId="formUsername">
+                <Form.Label >Nombre de usuario</Form.Label>
                 <Form.Control
                   type="text"
                   name="username"
@@ -197,7 +195,7 @@ export default function Profile() {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formName">
+              <Form.Group className="mb-3" controlId="formName">
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control
                   type="text"
@@ -207,7 +205,7 @@ export default function Profile() {
                   disabled={!isEditing}
                 />
               </Form.Group>
-              <Form.Group controlId="formTlf">
+              <Form.Group className="mb-3" controlId="formTlf">
                 <Form.Label>Teléfono móvil</Form.Label>
                 <Form.Control
                   type="text"
@@ -217,7 +215,7 @@ export default function Profile() {
                   disabled={!isEditing}
                 />
               </Form.Group>
-              <Form.Group controlId="formCiudad">
+              <Form.Group className="mb-3" controlId="formCiudad">
                 <Form.Label>Ciudad</Form.Label>
                 <Form.Control
                   type="text"
@@ -227,7 +225,7 @@ export default function Profile() {
                   disabled={!isEditing}
                 />
               </Form.Group>
-              <Form.Group controlId="formPais">
+              <Form.Group className="mb-3" controlId="formPais">
                 <Form.Label>País</Form.Label>
                 <Form.Control
                   type="text"
@@ -238,7 +236,7 @@ export default function Profile() {
                 />
               </Form.Group>
               {isOwnProfile && (
-                <Form.Group controlId="editar">
+                <Form.Group className="mb-3" controlId="editar">
                   {!isEditing ? (
                     <Button variant="primary" onClick={handleEditClick}>
                       Editar

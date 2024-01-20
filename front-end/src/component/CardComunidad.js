@@ -1,6 +1,8 @@
 import './Style/CardComunidad.css';
 import { useState, useEffect } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Solicitud from '../pages/Solicitud/Solicitud';
 
 export default function CardComunidad({
@@ -15,10 +17,19 @@ export default function CardComunidad({
   btnSolicitar,
   solicitud,
 }) {
+
+  const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
 
+  const idActual = useSelector((state) => state.user.userInfo.id);
+
   function showModal() {
-    setModalShow(true);
+
+    if (idActual === undefined) {
+      navigate('/login');
+    } else {
+      setModalShow(true);
+    }
   }
 
   async function refreshOnCloseModal() {
@@ -85,7 +96,7 @@ export function CardListaComunidad({
   miembros,
 }) {
   return (
-    <Card id="cardComunidad" className="mb-3">
+    <Card id="cardListaComunidad" className="mb-3">
       <Card.Body>
         <Row>
           <Col xs={12} md={4}>
@@ -100,7 +111,6 @@ export function CardListaComunidad({
           <Col xs={12} md={6}>
             <Card.Title>{nombre}</Card.Title>
             <Card.Text>Descripción: {descripcion}</Card.Text>
-            <Card.Text>Miembros de la comunidad: {miembros}</Card.Text>
           </Col>
 
           <Col
