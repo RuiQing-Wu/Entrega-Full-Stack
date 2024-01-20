@@ -31,6 +31,10 @@ export default function Solicitud(props) {
         );
       } else {
         const fechaSolicitud = dateToString();
+        if (descripcion === '') {
+          setError('Debes ingresar una descripción');
+          return;
+        }
         const response = await createSolicitud(
           descripcion,
           fechaSolicitud,
