@@ -129,7 +129,7 @@ export default function MostrarCausa() {
         <div>
           <CardCausaSolidaria
             imageUrl={'../../../imagenes/causa.png'}
-            idCausa={causa.id}
+            idCausa={param.idCausa}
             idComunidad={causa.comunidad}
             titulo={causa.titulo}
             descripcion={causa.descripcion}
