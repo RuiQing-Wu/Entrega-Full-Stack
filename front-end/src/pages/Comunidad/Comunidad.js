@@ -62,8 +62,6 @@ export default function Comunidad() {
     // COMPROBAR EL ESTADO DE LA RESPUESTA
     if (!checkResponseStatusCode(response)) {
       alertErrorMessage(response);
-      /* const page = checkPageToNavigate(response);
-      navigate(page); */
       return;
     }
 

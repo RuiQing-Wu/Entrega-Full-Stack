@@ -55,8 +55,6 @@ async function getCausaById(id) {
   });
 
   return response;
-  /* const data = await response.json();
-  return data; */
 }
 
 // OBTENER CAUSA POR NOMBRE
@@ -84,12 +82,6 @@ async function getCausasByNameInsensitive(titulo, idComunidad) {
   );
 
   return response;
-  /* if (!response.ok) {
-    throw new Error('No se encontraron causas que coincidan con la búsqueda.');
-  }
-
-  const data = await response.json();
-  return data; */
 }
 
 // OBTENER CAUSAS POR ID DE COMUNIDAD
@@ -102,8 +94,6 @@ async function getCausasByComunityId(idComunidad) {
   });
 
   return response;
-  /* const data = await response.json();
-  return data; */
 }
 
 export {
