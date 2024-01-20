@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState } from 'react';
 import { Breadcrumb, Tabs, Tab, Col, Button, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams, Navigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import {
   getAccionesByCausaId,
   getAccionesByNameInsensitive,
@@ -48,11 +48,20 @@ export default function MostrarCausa() {
 
   const fetchAcciones = useCallback(async () => {
     const response = await getAccionesByCausaId(param.idCausa);
-    setAccionesFiltradas(response);
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
+    const data = await response.json();
+    setAccionesFiltradas(data);
   }, [param.idCausa]);
 
   const fetchCausas = useCallback(async () => {
     const response = await getCausaById(param.idCausa);
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
     const data = await response.json();
     setCausa(data);
   }, [param.idCausa]);
@@ -60,13 +69,7 @@ export default function MostrarCausa() {
   const fetchComunidad = useCallback(async () => {
     if (causa.comunidad === undefined) return;
     const response = await getComunidadById(causa.comunidad);
-    if (!checkResponseStatusCode(response)) {
-      const page = checkPageToNavigate(response);
-      Navigate(page);
-    }
-
-    const data = await response.json();
-    setComunidad(data);
+    setComunidad(response);
   }, [causa.comunidad]);
 
   useEffect(() => {
@@ -91,7 +94,12 @@ export default function MostrarCausa() {
       busqueda,
       param.idCausa,
     );
-    setAccionesFiltradas(response);
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      Navigate(page);
+    }
+    const data = await response.json();
+    setAccionesFiltradas(data);
 
     if (response.length === 0)
       setError('No se encontraron causas que coincidan con la búsqueda.');
