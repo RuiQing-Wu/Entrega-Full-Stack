@@ -26,9 +26,17 @@
     "eject": "react-scripts eject",
     "eslint": "eslint . --ext .js",
     "eslint-fix": "eslint . --ext .js --fix",
-    "start:local": "env-cmd -f ./config/.env react-scripts start"
+    "start:local": "env-cmd -f ./config/.env react-scripts start",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "eslintConfig": {
+    "env": {
+      "cypress/globals": true
+    },
+    "plugins": [
+      "cypress"
+    ],
     "extends": [
       "react-app",
       "react-app/jest"
@@ -48,9 +56,11 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "cypress": "^13.6.3",
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-prettier": "^5.1.2",
