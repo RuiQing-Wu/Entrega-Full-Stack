@@ -37,6 +37,7 @@ Cypress.Commands.add('login', (username, password) => {
 Cypress.Commands.add('logout', () => {
   cy.visit('/');
   cy.get('.nav-link').contains('Cerrar sesión'); 
-  cy.contains('Cerrar sesión').click();
-  cy.getAllLocalStorage().should('not.exist', 'token');
+  cy.get('.nav-link').contains('Cerrar sesión').click();
+  cy.getAllLocalStorage().should('not.have.property', 'token');
+  cy.url().should('include', '/login');
 });

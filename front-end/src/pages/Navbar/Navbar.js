@@ -17,7 +17,8 @@ export default function Menu() {
   function logOut() {
     setToken('');
     dispatch(removeUserInfoRedux());
-    dispatch(removeToken());
+    removeToken();
+    // dispatch(removeToken());
   }
 
   useEffect(() => {

@@ -30,12 +30,10 @@ describe('Solidarian Test', () => {
     descripcion: 'Causa de prueba',
   };
 
-  beforeEach(() => {
-
-  });
+  beforeEach(() => {});
 
   after(() => {
-    // cy.logout();
+    cy.logout();
   });
 
   it('Visits the Solidarian Register page and redirect to login page', () => {
@@ -52,7 +50,7 @@ describe('Solidarian Test', () => {
     cy.get('#pais').type(newUser.pais);
 
     cy.get('button[type=submit]').contains('Registrar').click();
-    // cy.url().should('include', '/login');
+    cy.url().should('include', '/login');
   });
 
   it('Login with new user and check token', () => {
@@ -114,7 +112,9 @@ describe('Solidarian Test', () => {
     cy.get('button[type=button]').contains('Crear causa solidaria').click();
     cy.url().should('include', '/crear-causa');
 
-    cy.get('[placeholder="Título de la causa solidaria"]').type(newCausa.nombre);
+    cy.get('[placeholder="Título de la causa solidaria"]').type(
+      newCausa.nombre,
+    );
     cy.get('#descripcion').type(newCausa.descripcion);
     cy.get('#fechaInicio').type('2021-06-01');
     cy.get('#fechaFin').type('2021-06-30');
@@ -134,9 +134,20 @@ describe('Solidarian Test', () => {
     }).then((response) => {
       expect(response.status).to.eq(200);
       let causa = response.body;
-      
+
       const causaId = causa.id;
       cy.url().should('include', '/causa/' + causaId);
     });
+  });
+
+  it('Check user profile', () => {
+    cy.login(user.username, user.password);
+    cy.visit('/perfil/' + user.username);
+    cy.get('#formUsername').should('have.value', user.username);
+    cy.get('#formName').should('have.value', newUser.nombre);
+    cy.get('#formTlf').should('have.value', newUser.telefono);
+    cy.get('#formCiudad').should('have.value', newUser.ciudad);
+    cy.get('#formPais').should('have.value', newUser.pais);
+    cy.get('button[type=button]').contains('Editar');
   });
 });
