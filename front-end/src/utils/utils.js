@@ -55,7 +55,7 @@ function refactorDate(fecha) {
 }
 
 function checkResponseStatusCode(response) {
-  if (
+  if (response &&
     response.status !== HTTP_STATUS_OK &&
     response.status !== HTTP_STATUS_CREATED
   ) {
