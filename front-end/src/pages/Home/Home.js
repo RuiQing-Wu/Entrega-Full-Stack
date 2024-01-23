@@ -33,6 +33,7 @@ export default function Home() {
         <Col className="p-5">
           <h5>Navega entre las comunidades de nuestra web</h5>
           <Button
+            id="btnVerComunidades"
             onClick={() => handleRedireccionAComunidades()}
             variant="outline-info"
             size="sm"

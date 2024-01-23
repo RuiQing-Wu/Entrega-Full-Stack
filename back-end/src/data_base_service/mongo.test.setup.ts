@@ -8,10 +8,11 @@ import CacheConfigService from './cache.config.service';
 import { AccionesModule } from '../acciones/acciones.module';
 
 let app: INestApplication;
+const PATH_TO_ENV = './config/.env';
 
 export const setup = async () => {
   try {
-    loadEnvConfig({path: './config/.env'}); // Load environment variables
+    loadEnvConfig({path: PATH_TO_ENV}); // Load environment variables
 
     const moduleRef = await Test.createTestingModule({
       imports: [

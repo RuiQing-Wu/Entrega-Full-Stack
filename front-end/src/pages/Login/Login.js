@@ -97,7 +97,7 @@ export default function Login() {
             )}
           </Form.Group>
           <div className="d-grid my-4">
-            <Button type="submit" variant="primary">
+            <Button id="submit" type="submit" variant="primary">
               Login
             </Button>
             <Form.Label id="LinkRegistro" className="mt-3">
