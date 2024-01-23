@@ -13,7 +13,7 @@ jest.mock('react-router-dom', () => ({
 const userData = {
   username: 'usuario123',
   password: 'password123',
-  nombre: 'John Doe',
+  nombre: 'John',
   telefono: '123456789',
   ciudad: 'Ciudad de Ejemplo',
   pais: 'Pais de Ejemplo',
