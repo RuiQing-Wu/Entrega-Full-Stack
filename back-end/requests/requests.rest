@@ -11,7 +11,7 @@ GET http://localhost:3001/acciones
 Content-Type: application/json
 
 ### Obtenemos usuarios
-GET http://localhost:3001/usuarios
+GET http://localhost:3001/users
 
 ### Obtenemos apoyos
 GET http://localhost:3001/apoyo-causa
