@@ -19,6 +19,11 @@ const userData = {
   pais: 'Pais de Ejemplo',
 };
 
+const modifiedUserData = {
+  ...userData,
+  telefono: '987654321',
+};
+
 
 beforeAll(() => {
 
@@ -218,6 +223,80 @@ describe('Manejo de respuestas en el componente Registro', () => {
         userData.telefono,
         userData.ciudad,
         userData.pais,
+      );
+    });
+  });
+
+  test('Procesar response exitoso de registerUser con pruebas metamórficas', async () => {
+  
+    // Renderizar el componente
+    const { container } = render(
+      <BrowserRouter>
+        <Registro />
+      </BrowserRouter>,
+    );
+
+    // Configurar el mock de navigate
+    const navigateMock = jest.fn();
+    useNavigate.mockReturnValue(navigateMock);
+
+    // Simular entradas del usuario
+    fireEvent.change(screen.getByLabelText('Nombre de usuario'), {
+      target: { value: userData.username },
+    });
+    fireEvent.change(screen.getByLabelText('Contraseña'), {
+      target: { value: userData.password },
+    });
+    fireEvent.change(screen.getByLabelText('Nombre'), {
+      target: { value: userData.nombre },
+    });
+    fireEvent.change(screen.getByLabelText('Teléfono'), {
+      target: { value: userData.telefono },
+    });
+    fireEvent.change(screen.getByLabelText('Ciudad'), {
+      target: { value: userData.ciudad },
+    });
+    fireEvent.change(screen.getByLabelText('País'), {
+      target: { value: userData.pais },
+    });
+
+    // Simular envío de formulario
+    fireEvent.submit(screen.getByRole('button', { name: 'Registrar' }));
+
+    // Esperar a que la función de registro se resuelva
+    await waitFor(() => {
+      // Verificar que registerUser se llamó con los datos correctos
+      expect(registerUser).toHaveBeenCalledWith(
+        userData.username,
+        userData.password,
+        userData.nombre,
+        userData.telefono,
+        userData.ciudad,
+        userData.pais,
+      );
+    });
+
+    // Reemplazar el mock de registerUser con uno nuevo
+    registerUser.mockClear();
+
+    // Simular entradas del usuario con los datos modificados para la prueba metamórfica
+    fireEvent.change(screen.getByLabelText('Teléfono'), {
+      target: { value: modifiedUserData.telefono },
+    });
+
+    // Simular envío de formulario con los datos modificados
+    fireEvent.submit(screen.getByRole('button', { name: 'Registrar' }));
+
+    // Esperar a que la función de registro se resuelva con los datos modificados
+    await waitFor(() => {
+      // Verificar que registerUser se llamó con los datos modificados
+      expect(registerUser).toHaveBeenCalledWith(
+        modifiedUserData.username,
+        modifiedUserData.password,
+        modifiedUserData.nombre,
+        modifiedUserData.telefono,
+        modifiedUserData.ciudad,
+        modifiedUserData.pais,
       );
     });
   });
