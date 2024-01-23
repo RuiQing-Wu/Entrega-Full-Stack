@@ -1,43 +1,20 @@
-POST http://localhost:3001/auth/login
+### Obtenemos comunidades
+GET http://localhost:3001/comunidades
 Content-Type: application/json
 
-{
-	"username":"juan",
-	"password":"1234"
-}
-
-### Creamos un nodo en el grafo de neo4j (pegar token del primer POST)
-POST http://localhost:3001/seguidor
+### Obtenemos causas
+GET http://localhost:3001/causas
 Content-Type: application/json
-Authorization: "Bearer" + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWEyOGY0N2I0OGIxY2IyNmM0MTVmZTAiLCJ1c2VybmFtZSI6Imp1YW4iLCJyb2xlIjoidXNlciIsImlhdCI6MTcwNTYwMTQ4MSwiZXhwIjoxNzA1NjA1MDgxfQ.M_Qg7y1ImzaZN1koGRSmWZBtnclLjy4r_4mGjl9UyeQ
 
-{
-  "idUsuario": "65a5224d00704a47ca02acef",
-  "username": "ana"
-}
-
-### Creamos un nodo en el grafo de neo4j (pegar token del primer POST)
-POST http://localhost:3001/seguidor
+### Obtenemos acciones
+GET http://localhost:3001/acciones
 Content-Type: application/json
-Authorization: "Bearer" + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWEyOGY0N2I0OGIxY2IyNmM0MTVmZTAiLCJ1c2VybmFtZSI6Imp1YW4iLCJyb2xlIjoidXNlciIsImlhdCI6MTcwNTYwMTQ4MSwiZXhwIjoxNzA1NjA1MDgxfQ.M_Qg7y1ImzaZN1koGRSmWZBtnclLjy4r_4mGjl9UyeQ
 
-{
-  "idUsuario": "65a5224d00704a47ca02ace9",
-  "username": "juan"
-}
+### Obtenemos usuarios
+GET http://localhost:3001/usuarios
 
-###Juan sigue a Sara
-POST http://localhost:3001/seguidor/seguir
+### Obtenemos apoyos
+GET http://localhost:3001/apoyo-causa
 Content-Type: application/json
-Authorization: "Bearer" + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWEyOGY0N2I0OGIxY2IyNmM0MTVmZTAiLCJ1c2VybmFtZSI6Imp1YW4iLCJyb2xlIjoidXNlciIsImlhdCI6MTcwNTYwMTQ4MSwiZXhwIjoxNzA1NjA1MDgxfQ.M_Qg7y1ImzaZN1koGRSmWZBtnclLjy4r_4mGjl9UyeQ
-
-[{"username":"juan",
-"idUsuario": "65a51734fa40779cbdb63506"},
-{
-"username": "ana",
-"idUsuario": "65a5224d00704a47ca02acef" }]
 
 
-###Obtenemos a los usuarios seguidos por Juan
-GET http://localhost:3001/seguidor/seguidos/65a5224d00704a47ca02acef
-Content-Type: application/json
