@@ -1,9 +1,11 @@
+import { Field, InputType } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
 import { IsNotEmpty, IsOptional } from "class-validator";
-
+@InputType()
 export class CreateUserDto {
 
+  @Field()
   @ApiProperty({
     example: 'juan',
     description: 'Nombre de usuario particular',
@@ -11,6 +13,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   username: string;
 
+  @Field()
   @ApiProperty({
     example: '1234',
     description: 'Cotraseña de usuario',
@@ -18,6 +21,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
+  @Field()
   @ApiProperty({
     example: 'Juan',
     description: 'Nombre del usuario',
@@ -25,6 +29,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   nombre: string;
 
+  @Field()
   @ApiProperty({
     example: '658925123',
     description: 'Teléfono del usuario',
@@ -32,6 +37,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   telefono: string;
 
+  @Field()
   @ApiProperty({
     example: 'Madrid',
     description: 'Ciduad del usuario',
@@ -39,6 +45,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   ciudad: string;
 
+  @Field()
   @ApiProperty({
     example: 'España',
     description: 'Pais del usuario',
@@ -46,6 +53,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   pais: string;
 
+  @Field()
   @ApiProperty({
     example: 'user',
     description: 'Rol del usuario',

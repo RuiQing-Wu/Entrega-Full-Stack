@@ -1,0 +1,35 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  username: String!
+  password: String!
+  nombre: String!
+  telefono: String!
+  ciudad: String!
+  pais: String!
+  role: String!
+}
+
+type Query {
+  allUsers: [User!]!
+  user(id: String!): User!
+  userByUsername(username: String!): User!
+}
+
+type Mutation {
+  createUser(username: String!, password: String!, nombre: String!, telefono: String!, ciudad: String!, pais: String!): User!
+  createUserDto(createUserDto: CreateUserDto!): User!
+}
+
+input CreateUserDto {
+  username: String!
+  password: String!
+  nombre: String!
+  telefono: String!
+  ciudad: String!
+  pais: String!
+  role: String!
+}

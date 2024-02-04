@@ -13,7 +13,7 @@ export class ComunidadesServiceImpl implements IComunidadesService {
   constructor(
     @Inject(ComunidadesRepository)
     private comunidadesRepository: ComunidadesRepository,
-  ) {}
+  ) { }
 
   async create(createComunidadDto: CreateComunidadDto) {
     // comprobamos que no exista una comunidad con el mismo nombre

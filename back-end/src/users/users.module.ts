@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './schemas/user.schema';
 import { UserController } from './users.controller';
 import { User } from './domain/user.domain';
+import { UsersResolver } from './users.resolver';
 
 @Module({
   imports: [
@@ -22,6 +23,8 @@ import { User } from './domain/user.domain';
       provide: UsersRepository,
       useClass: UsersRepositoryMongo,
     },
+    
+    UsersResolver
   ],
 
   controllers: [UserController],

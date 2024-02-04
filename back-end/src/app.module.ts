@@ -15,6 +15,9 @@ import MongooseConfigService from './data_base_service/mongo.config.service';
 import { ApoyoRegistroModule } from './apoyo-registro/apoyo-registro.module';
 import { ApoyoCausaModule } from './apoyo-causa/apoyo-causa.module';
 import { SeguidorModule } from './seguidor/seguidor.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -32,6 +35,16 @@ import { SeguidorModule } from './seguidor/seguidor.module';
     CacheModule.registerAsync({
       isGlobal: true,
       useClass: CacheConfigService,
+    }),
+
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      // typePaths: ['./**/*.graphql'],
+      /* definitions: {
+        path: join(process.cwd(), 'src/graphql.ts'),
+        outputAs: 'class',
+      }, */
+      autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
     }),
 
     AuthModule,
