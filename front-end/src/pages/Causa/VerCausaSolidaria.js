@@ -24,7 +24,7 @@ export default function MostrarCausa() {
     return state.user.userInfo;
   });
   const [error, setError] = useState('');
-  const [busqueda, setBusqueda] = useState('');
+  const [busquedaNombre, setBusquedaNombre] = useState('');
   const [accionesFiltradas, setAccionesFiltradas] = useState([]);
   const param = useParams();
   const navigate = useNavigate();
@@ -97,7 +97,7 @@ export default function MostrarCausa() {
   async function getAccionesFiltradas() {
     setAccionesFiltradas([]);
     const response = await getAccionesByNameInsensitive(
-      busqueda,
+      busquedaNombre,
       param.idCausa,
     );
     if (!checkResponseStatusCode(response)) {
@@ -111,19 +111,17 @@ export default function MostrarCausa() {
       setError('No se encontraron causas que coincidan con la búsqueda.');
   }
 
-  function handleBuscarAcciones(event) {
-    event.preventDefault();
-
+  function handleBuscarAcciones(busqueda, filtro) {
     setError('');
     if (busqueda.trim() === '') {
       fetchAcciones();
-    } else if (busqueda.trim() !== '') {
+    } else if (filtro === 'nombre') {
       getAccionesFiltradas();
     }
   }
 
-  function handleBusquedaInput(event) {
-    setBusqueda(event.target.value);
+  function handleBusquedaNombreInput(event) {
+    setBusquedaNombre(event);
   }
 
   return (
@@ -177,7 +175,7 @@ export default function MostrarCausa() {
             <Busqueda
               titulo={'acciones'}
               handleBuscar={handleBuscarAcciones}
-              handleBusquedaInput={handleBusquedaInput}
+              handleNombreInput={handleBusquedaNombreInput}
               error={error}
             />
             {accionesFiltradas.length > 0 && (
