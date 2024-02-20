@@ -21,7 +21,6 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
   }
 
   async create(item: ApoyoCausa): Promise<ApoyoCausa> {
-
     try {
       const redisClient = this.redisStore.client;
       const key = process.env.REDIS_CAUSA_KEY_PREFIX + item.idCausa;
@@ -54,6 +53,42 @@ export class ApoyoCausaRepositoryRedis implements ApoyoCausaRepository {
       }
 
       throw new RepositoryError('Error al obtener el apoyo ' + id);
+    }
+  }
+
+  async getByNumApoyo(numApoyo: number): Promise<ApoyoCausa[]> {
+    try {
+      const redisClient = this.redisStore.client;
+      const keys = await redisClient.KEYS(process.env.REDIS_CAUSA_KEY_PATTERN);
+
+      const lista = [];
+
+      await Promise.all(
+        keys.map(async (element) => {
+          let resultado = await redisClient.GET(element);
+          let idCausa = element.replace(process.env.REDIS_CAUSA_KEY_PREFIX, '');
+          let resultadoInt = Number(resultado);
+          let numApoyoInt = Number(numApoyo);
+
+          if (resultadoInt === numApoyoInt) {
+            lista.push(this.toApoyoCausadDomain(idCausa, parseInt(resultado)));
+          }
+        }),
+      );
+
+      if (lista.length === 0) {
+        throw new EntityNotFoundError(
+          'Apoyo no encontrado con numApoyo ' + numApoyo,
+        );
+      }
+
+      return lista;
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw error;
+      }
+
+      throw new RepositoryError('Error al obtener el apoyo ' + numApoyo);
     }
   }
 

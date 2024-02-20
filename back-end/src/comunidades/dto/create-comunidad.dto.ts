@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateComunidadDto {
-
   @ApiProperty({
     example: 'Unidos por el Bien',
     description: 'Nombre de la comunidad',
@@ -11,7 +10,8 @@ export class CreateComunidadDto {
   nombre: string;
 
   @ApiProperty({
-    example: 'Comunidad comprometida con la ayuda mutua y el apoyo emocional. Juntos, creamos un entorno donde cada miembro se siente valorado y respaldado.',
+    example:
+      'Comunidad comprometida con la ayuda mutua y el apoyo emocional. Juntos, creamos un entorno donde cada miembro se siente valorado y respaldado.',
     description: 'Descripción de la comunidad',
   })
   @IsNotEmpty()
@@ -33,12 +33,19 @@ export class CreateComunidadDto {
 
   @ApiProperty({
     example: [
-      "65a5224d00704a47ca02ace9",
-      "65a5224d00704a47ca02aceb",
-      "65a5224d00704a47ca02aced"
+      '65a5224d00704a47ca02ace9',
+      '65a5224d00704a47ca02aceb',
+      '65a5224d00704a47ca02aced',
     ],
     description: 'Lista de usuarios de la comunidad',
   })
   @IsNotEmpty()
   usuarios: string[];
+
+  @ApiProperty({
+    example: 'Salud',
+    description: 'Categoría de la comunidad',
+  })
+  @IsNotEmpty()
+  categorias: string[];
 }

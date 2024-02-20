@@ -24,6 +24,7 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
         fechaInicio: comunidadModel.fechaInicio,
         idAdministrador: comunidadModel.idAdministrador,
         usuarios: comunidadModel.usuarios,
+        categorias: comunidadModel.categorias,
       });
 
       return comunidad;
@@ -96,6 +97,43 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
     } catch (error) {
       throw new RepositoryError(
         'Error al obtener las comunidades con nombre ' + nombre,
+      );
+    }
+  }
+
+  async getByCategoryInsensitivePartial(
+    categoria: string,
+  ): Promise<Comunidad[]> {
+    try {
+      const comunidades = await this.comunidadModel.find({
+        categorias: { $regex: categoria, $options: 'i' },
+      });
+
+      return comunidades.map((comunidad) => {
+        return this.toComunidadDomain(comunidad);
+      });
+    } catch (error) {
+      throw new RepositoryError(
+        'Error al obtener las comunidades por la categoria ' + categoria,
+      );
+    }
+  }
+
+  async getByYear(year: number): Promise<Comunidad[]> {
+    try {
+      const comunidades = await this.comunidadModel.find({
+        fechaInicio: {
+          $gte: new Date(year, 0, 1),
+          $lte: new Date(year, 11, 31, 23, 59, 59),
+        },
+      });
+
+      return comunidades.map((comunidad) => {
+        return this.toComunidadDomain(comunidad);
+      });
+    } catch (error) {
+      throw new RepositoryError(
+        'Error al obtener las comunidades por el año ' + year,
       );
     }
   }

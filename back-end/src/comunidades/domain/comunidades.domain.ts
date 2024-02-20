@@ -8,6 +8,7 @@ export class Comunidad {
   readonly fechaInicio: Date;
   readonly idAdministrador: string;
   readonly usuarios: string[];
+  readonly categorias: string[];
 
   constructor({
     id,
@@ -16,6 +17,7 @@ export class Comunidad {
     fechaInicio,
     idAdministrador,
     usuarios,
+    categorias,
   }: {
     id?: string;
     nombre: string;
@@ -23,6 +25,7 @@ export class Comunidad {
     fechaInicio: Date;
     idAdministrador: string;
     usuarios: string[];
+    categorias: string[];
   }) {
     this.id = id;
     this.nombre = nombre;
@@ -30,5 +33,6 @@ export class Comunidad {
     this.fechaInicio = fechaInicio;
     this.idAdministrador = idAdministrador;
     this.usuarios = usuarios;
+    this.categorias = categorias;
   }
 }

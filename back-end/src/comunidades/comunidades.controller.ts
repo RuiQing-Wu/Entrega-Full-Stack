@@ -162,6 +162,53 @@ export class ComunidadesController {
     }
   }
 
+  @Public()
+  @ApiOperation({
+    summary:
+      'Obtener una comunidad si contiene en la categoría el valor dado, independientemente de las mayúsculas o minúsculas',
+  })
+  @ApiParam({
+    name: 'categorias',
+    description: 'Categoría o categorías de la comunidad',
+    required: true,
+  })
+  @ApiOkResponse({ description: 'Comunidad encontrada por categoría parcial' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  @Get('/categoryInsensitivePartial/:categoria')
+  async getByCategoryInsensitivePartial(@Param('categoria') categoria: string) {
+    try {
+      return await this.comunidadesService.getByCategoryInsensitivePartial(
+        categoria,
+      );
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  @Public()
+  @ApiOperation({ summary: 'Obtener todas las comunidades de un año dado' })
+  @ApiParam({ name: 'year', description: 'Año de inicio de la comunidad' })
+  @ApiOkResponse({ description: 'Comunidades obtenidas por año' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  @Get('/year/:year')
+  async getByYear(@Param('year') year: number) {
+    try {
+      return await this.comunidadesService.getByYear(year);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
+  }
+
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar una comunidad mediante id' })
   @ApiParam({ name: 'id', description: 'Id de la comunidad', required: true })

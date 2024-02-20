@@ -13,7 +13,7 @@ export class ComunidadesServiceImpl implements IComunidadesService {
   constructor(
     @Inject(ComunidadesRepository)
     private comunidadesRepository: ComunidadesRepository,
-  ) { }
+  ) {}
 
   async create(createComunidadDto: CreateComunidadDto) {
     // comprobamos que no exista una comunidad con el mismo nombre
@@ -60,6 +60,14 @@ export class ComunidadesServiceImpl implements IComunidadesService {
     return await this.comunidadesRepository.getByName(nombre);
   }
 
+  async getByYear(year: number): Promise<Comunidad[]> {
+    if (year === null) {
+      throw new IllegalArgumentError('El año no puede ser vacio');
+    }
+
+    return await this.comunidadesRepository.getByYear(year);
+  }
+
   async getByNameInsensitivePartial(nombre: string): Promise<Comunidad[]> {
     if (nombre === null || nombre.trim() === '') {
       throw new IllegalArgumentError(
@@ -72,6 +80,18 @@ export class ComunidadesServiceImpl implements IComunidadesService {
 
   async findAll() {
     return await this.comunidadesRepository.getAll();
+  }
+
+  async getByCategoryInsensitivePartial(categoria: string) {
+    if (categoria === null || categoria.trim() === '') {
+      throw new IllegalArgumentError(
+        'El nombre de la comunidad no puede ser vacio',
+      );
+    }
+
+    return await this.comunidadesRepository.getByCategoryInsensitivePartial(
+      categoria,
+    );
   }
 
   async findOne(id: string) {

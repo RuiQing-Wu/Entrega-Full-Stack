@@ -39,11 +39,11 @@ import { join } from 'path';
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      // typePaths: ['./**/*.graphql'],
-      /* definitions: {
+      typePaths: ['./**/*.graphql'],
+      definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
         outputAs: 'class',
-      }, */
+      },
       autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
     }),
 
@@ -55,11 +55,10 @@ import { join } from 'path';
     SolicitudModule,
     ApoyoRegistroModule,
     ApoyoCausaModule,
-    SeguidorModule
+    SeguidorModule,
   ],
 
   controllers: [AppController],
   providers: [AppService],
 })
-
-export class AppModule { }
+export class AppModule {}

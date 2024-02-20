@@ -11,7 +11,7 @@ export class ApoyoCausaServiceImpl implements IApoyoCausaService {
   constructor(
     @Inject(ApoyoCausaRepository)
     private apoyoCausaRepository: ApoyoCausaRepository,
-  ) { }
+  ) {}
 
   async create(createApoyoCausaDto: CreateApoyoCausaDto): Promise<ApoyoCausa> {
     const apoyoCausa = new ApoyoCausa(createApoyoCausaDto);
@@ -23,11 +23,21 @@ export class ApoyoCausaServiceImpl implements IApoyoCausaService {
   }
 
   async findOne(id: string): Promise<ApoyoCausa> {
-      if (id === null || id.trim() === '') {
-        throw new IllegalArgumentError('El id del apoyo no puede ser vacio');
-      }
+    if (id === null || id.trim() === '') {
+      throw new IllegalArgumentError('El id del apoyo no puede ser vacio');
+    }
 
-      return await this.apoyoCausaRepository.get(id);
+    return await this.apoyoCausaRepository.get(id);
+  }
+
+  async findByNumApoyo(numApoyo: number): Promise<ApoyoCausa[]> {
+    if (numApoyo === null || numApoyo <= 0) {
+      throw new IllegalArgumentError(
+        'El numero de apoyo no puede ser vacio o negativo',
+      );
+    }
+
+    return await this.apoyoCausaRepository.getByNumApoyo(numApoyo);
   }
 
   async update(id: string, updateApoyoCausaDto: UpdateApoyoCausaDto) {

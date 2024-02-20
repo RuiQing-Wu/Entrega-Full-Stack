@@ -34,6 +34,27 @@ async function getApoyoCausa(idCausa) {
   return response;
 }
 
+// OBTENER APOYO A CAUSA POR NUMAPOYO
+async function getApoyoCausaByNumApoyo(numApoyo) {
+  const url = `${BASE_URL}/numApoyo/${numApoyo}`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (response.status !== 200) {
+    return undefined;
+  }
+
+  const responseText = await response.text();
+
+  const data = JSON.parse(responseText);
+
+  return data;
+}
+
 // APOYAR CAUSA
 async function apoyarCausa(idCausa) {
   const url = `${BASE_URL}/apoyar/${idCausa}`;
@@ -55,4 +76,4 @@ async function apoyarCausa(idCausa) {
   return data;
 }
 
-export { apoyarCausa, getApoyoCausa, createApoyo };
+export { apoyarCausa, getApoyoCausa, createApoyo, getApoyoCausaByNumApoyo };

@@ -5,6 +5,8 @@ import { Breadcrumb, Button, Row, Col } from 'react-bootstrap';
 import {
   getComunidades,
   getComunidadesByNameInsensitive,
+  getComunidadesByCategoryInsensitive,
+  getComunidadesByYear,
 } from '../../services/comunidades.service';
 import Busqueda from '../../component/Buscar';
 import CardComunidad from '../../component/CardComunidad';
@@ -12,14 +14,14 @@ import { checkResponseStatusCode, refactorDate } from '../../utils/utils';
 
 export default function BuscarComunidades() {
   const navigate = useNavigate();
-  const [busqueda, setBusqueda] = useState('');
+  const [busquedaNombre, setBusquedaNombre] = useState('');
+  const [busquedaCategoria, setBusquedaCategoria] = useState('');
+  const [busquedaYear, setBusquedaYear] = useState('');
   const [comunidadesFiltradas, setComunidadesFiltradas] = useState([]);
   const [error, setError] = useState('');
   const user = useSelector((state) => {
     return state.user.userInfo;
   });
-  const [filtro, setFiltro] = useState('nombre');
-
 
   function handleRedireccionarACrearComunidad() {
     return () => {
@@ -38,9 +40,47 @@ export default function BuscarComunidades() {
     setComunidadesFiltradas(data);
   }
 
-  async function getComunidadesFiltradas() {
+  async function getComunidadesFiltradasByNombre() {
     setComunidadesFiltradas([]);
-    const response = await getComunidadesByNameInsensitive(busqueda, filtro);
+    const response = await getComunidadesByNameInsensitive(
+      busquedaNombre,
+      'nombre',
+    );
+
+    if (!checkResponseStatusCode(response)) {
+      setComunidadesFiltradas([]);
+      return;
+    }
+
+    const data = await response.json();
+    setComunidadesFiltradas(data);
+
+    if (data.length === 0)
+      setError('No se encontraron comunidades que coincidan con la búsqueda.');
+  }
+
+  async function getComunidadesFiltradasByCategoria() {
+    setComunidadesFiltradas([]);
+    const response = await getComunidadesByCategoryInsensitive(
+      busquedaCategoria,
+      'categoria',
+    );
+
+    if (!checkResponseStatusCode(response)) {
+      setComunidadesFiltradas([]);
+      return;
+    }
+
+    const data = await response.json();
+    setComunidadesFiltradas(data);
+
+    if (data.length === 0)
+      setError('No se encontraron comunidades que coincidan con la búsqueda.');
+  }
+
+  async function getComunidadesFiltradasByYear() {
+    setComunidadesFiltradas([]);
+    const response = await getComunidadesByYear(busquedaYear);
 
     if (!checkResponseStatusCode(response)) {
       setComunidadesFiltradas([]);
@@ -58,18 +98,31 @@ export default function BuscarComunidades() {
     getAllComunidades();
   }, []);
 
-  function handleBusquedaInput(event) {
-    setBusqueda(event.target.value);
+  function handleBusquedaNombreInput(event) {
+    setBusquedaNombre(event);
   }
 
-  function handleBuscarComunidades(event) {
-    event.preventDefault();
+  function handleBusquedaCategoriaInput(event) {
+    setBusquedaCategoria(event);
+  }
+
+  function handleBusquedaYearInput(event) {
+    setBusquedaYear(event);
+  }
+
+  function handleBuscarComunidades(busqueda, filtro) {
     setError('');
-    setBusqueda(event.target.busqueda.value);
-    if (busqueda.trim() === '') {
+    const tipoBusqueda =
+      filtro === 'nombre' ? busquedaNombre.trim() : busquedaCategoria.trim();
+
+    if (busqueda === '') {
       getAllComunidades();
-    } else if (busqueda.trim() !== '') {
-      getComunidadesFiltradas(filtro);
+    } else if (filtro === 'nombre') {
+      getComunidadesFiltradasByNombre();
+    } else if (filtro === 'categoria') {
+      getComunidadesFiltradasByCategoria();
+    } else if (filtro === 'year') {
+      getComunidadesFiltradasByYear();
     }
   }
 
@@ -111,7 +164,9 @@ export default function BuscarComunidades() {
           <Busqueda
             titulo={'comunidades'}
             handleBuscar={handleBuscarComunidades}
-            handleBusquedaInput={handleBusquedaInput}
+            handleNombreInput={handleBusquedaNombreInput}
+            handleCategoriaInput={handleBusquedaCategoriaInput}
+            handleYearInput={handleBusquedaYearInput}
             error={error}
           />
           {comunidadesFiltradas.length > 0 && (

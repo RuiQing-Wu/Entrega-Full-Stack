@@ -19,6 +19,9 @@ export class ComunidadMongoModel {
 
   @Prop()
   usuarios: string[];
+
+  @Prop()
+  categorias: string[];
 }
 
 export const ComunidadSchema =

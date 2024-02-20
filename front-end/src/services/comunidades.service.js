@@ -76,6 +76,27 @@ async function getComunidadesByNameInsensitive(busqueda, filtro) {
   return response;
 }
 
+// RECUPERAR COMUNIDAD POR CATEGORIA TOTAL O PARCIAL (CASE INSENSITIVE)
+async function getComunidadesByCategoryInsensitive(busqueda, filtro) {
+  const response = await fetch(
+    `${BASE_URL}/categoryInsensitivePartial/${busqueda}?filtro=${filtro}`,
+  );
+
+  return response;
+}
+
+// RECUPERAR COMUNIDAD POR AÑO
+async function getComunidadesByYear(year) {
+  const response = await fetch(`${BASE_URL}/year/${year}`);
+  if (!response.ok) {
+    throw new Error(
+      'No se encontraron comunidades que coincidan con la búsqueda.',
+    );
+  }
+
+  return response;
+}
+
 // RECUPERAR COMUNIDADES POR ID DE USUARIO
 async function getComunidadesByUser(idUsuario) {
   const accessToken = getToken();
@@ -122,6 +143,8 @@ export {
   getComunidadById,
   getComunidadByName,
   getComunidadesByNameInsensitive,
+  getComunidadesByCategoryInsensitive,
+  getComunidadesByYear,
   getComunidadesByUser,
   addMember,
 };

@@ -98,6 +98,37 @@ export class ApoyoCausaController {
     }
   }
 
+  @Public()
+  @ApiOperation({ summary: 'Obtener el apoyo de una causa por numApoyo' })
+  @ApiParam({
+    name: 'numApoyo',
+    type: Number,
+    required: true,
+    description: 'Numero de apoyo a la causa',
+  })
+  @ApiOkResponse({ description: 'Apoyo a la causa obtenido' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  @Get('numApoyo/:numApoyo')
+  async getByNumApoyo(@Param('numApoyo') numApoyo: number) {
+    try {
+      return await this.apoyoCausaService.findByNumApoyo(numApoyo);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError) {
+        throw new BadRequestException(error.message);
+      }
+
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      if (error instanceof RepositoryError) {
+        throw new InternalServerErrorException(error.message);
+      }
+    }
+  }
+
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un apoyo a una causa solidaria' })
   @ApiParam({

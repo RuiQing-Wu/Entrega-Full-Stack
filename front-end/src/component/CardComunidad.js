@@ -11,6 +11,7 @@ export default function CardComunidad({
   nombre,
   descripcion,
   fechaInicio,
+  categorias,
   usersData,
   handleRedireccionar,
   detalles,
@@ -19,8 +20,17 @@ export default function CardComunidad({
 }) {
   const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
+  let listaCategorias = [];
 
   const idActual = useSelector((state) => state.user.userInfo.id);
+
+  const getCategorias = () => {
+    if (categorias !== undefined) {
+      listaCategorias = categorias.join(', ');
+    }
+  };
+
+  getCategorias();
 
   function showModal() {
     if (idActual === undefined) {
@@ -50,6 +60,9 @@ export default function CardComunidad({
           <Col xs={12} md={6}>
             <Card.Title>{nombre}</Card.Title>
             <Card.Text>Descripción: {descripcion}</Card.Text>
+            {categorias && (
+              <Card.Text>Categorias: {listaCategorias || []}</Card.Text>
+            )}
             <Card.Text>Fecha de creación: {fechaInicio}</Card.Text>
           </Col>
 

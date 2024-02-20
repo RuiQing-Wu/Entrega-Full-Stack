@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams, Navigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Breadcrumb, Tab, Tabs, Button, Row, Col } from 'react-bootstrap';
 import {
   getCausasByComunityId,
   getCausasByNameInsensitive,
 } from '../../services/causas.service';
+import { getApoyoCausaByNumApoyo } from '../../services/apoyo_causa.service';
 import { getUserById } from '../../services/users.service';
 import CardComunidad from '../../component/CardComunidad';
 import CardCausaSolidaria from '../../component/CardCausaSolidaria';
@@ -27,7 +28,8 @@ export default function MostrarComunidad() {
   });
   const navigate = useNavigate();
   const [error, setError] = useState('');
-  const [busqueda, setBusqueda] = useState('');
+  const [busquedaNombre, setBusquedaNombre] = useState('');
+  const [busquedaNumApoyo, setBusquedaNumApoyo] = useState('');
   const [causasFiltradas, setCausasFiltradas] = useState([]);
   const [usersData, setUsersData] = useState([]);
 
@@ -84,26 +86,66 @@ export default function MostrarComunidad() {
     return <div>No hay datos de la comunidad</div>;
   }
 
-  async function getCausasFiltradas() {
+  async function getCausasFiltradasByNumApoyo() {
     setCausasFiltradas([]);
-    const response = await getCausasByNameInsensitive(
-      busqueda,
+    const responseNumApoyo = await getApoyoCausaByNumApoyo(busquedaNumApoyo);
+    const responseCausasByComunidad = await getCausasByComunityId(
       param.idComunidad,
     );
-    setCausasFiltradas(response);
+    if (!checkResponseStatusCode(responseCausasByComunidad)) {
+      const page = checkPageToNavigate(responseCausasByComunidad);
+      navigate(page);
+    }
+
+    const data = await responseCausasByComunidad.json();
+    if (responseNumApoyo !== undefined) {
+      if (responseNumApoyo.length > 0) {
+        const idCausasResponse = responseNumApoyo.map((causa) => causa.idCausa);
+        const nuevasCausasFiltradas = data.filter((causa) =>
+          idCausasResponse.includes(causa.id),
+        );
+
+        setCausasFiltradas(nuevasCausasFiltradas);
+
+        if (nuevasCausasFiltradas.length === 0)
+          setError('No se encontraron causas que coincidan con la búsqueda.');
+      } else {
+        setError('No se encontraron causas que coincidan con la búsqueda.');
+      }
+    } else {
+      setError('No se encontraron causas que coincidan con la búsqueda.');
+    }
+  }
+
+  async function getCausasFiltradas() {
+    setCausasFiltradas([]);
+
+    const response = await getCausasByNameInsensitive(
+      busquedaNombre,
+      param.idComunidad,
+    );
+    if (!checkResponseStatusCode(response)) {
+      const page = checkPageToNavigate(response);
+      navigate(page);
+    }
+
+    const data = await response.json();
+    setCausasFiltradas(data);
 
     if (response.length === 0)
       setError('No se encontraron causas que coincidan con la búsqueda.');
   }
 
-  function handleBuscarCausas(event) {
-    event.preventDefault();
+  function handleBuscarCausas(busqueda, filtro) {
     setError('');
+    const tipoBusqueda = filtro === 'nombre' ? busqueda : busqueda;
 
     if (busqueda.trim() === '') {
       fetchCausas();
-    } else if (busqueda.trim() !== '') {
+    } else if (filtro === 'nombre') {
       getCausasFiltradas();
+    } else if (filtro === 'numApoyo') {
+      getCausasFiltradasByNumApoyo();
     }
   }
 
@@ -121,8 +163,12 @@ export default function MostrarComunidad() {
     });
   }
 
-  function handleBusquedaInput(event) {
-    setBusqueda(event.target.value);
+  function handleBusquedaNombreInput(event) {
+    setBusquedaNombre(event);
+  }
+
+  function handleBusquedaNumApoyoInput(event) {
+    setBusquedaNumApoyo(event);
   }
 
   function handleRedireccionarPerfil(nombreUser) {
@@ -156,6 +202,7 @@ export default function MostrarComunidad() {
             imageUrl={'../../../imagenes/comunidad.jpeg'}
             id={comunidad.id}
             nombre={comunidad.nombre}
+            categorias={comunidad.categorias}
             descripcion={comunidad.descripcion}
             fechaInicio={refactorDate(comunidad.fechaInicio)}
             usersData={usersData}
@@ -175,7 +222,8 @@ export default function MostrarComunidad() {
           <Busqueda
             titulo={'causas'}
             handleBuscar={handleBuscarCausas}
-            handleBusquedaInput={handleBusquedaInput}
+            handleNombreInput={handleBusquedaNombreInput}
+            handleNumApoyoInput={handleBusquedaNumApoyoInput}
             error={error}
           />
           {causasFiltradas.length > 0 && (
