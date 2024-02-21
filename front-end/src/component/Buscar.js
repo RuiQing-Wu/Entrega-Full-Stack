@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 
 export default function Busqueda({
@@ -15,19 +15,16 @@ export default function Busqueda({
   const [categoria, setCategoria] = useState('');
   const [numApoyo, setNumApoyo] = useState('');
   const [year, setYear] = useState('');
+  const [valueInput, setValueInput] = useState('');
 
   const onSubmit = (event) => {
     event.preventDefault();
-    if (filtro === 'nombre') {
-      handleBuscar(nombre, filtro);
-    } else if (filtro === 'categoria') {
-      handleBuscar(categoria, filtro);
-    } else if (filtro === 'year') {
-      handleBuscar(year, filtro);
-    } else if (filtro === 'numApoyo') {
-      handleBuscar(numApoyo, filtro);
-    }
+    handleBuscar(valueInput, filtro);
   };
+
+  useEffect(() => {
+    setValueInput('');
+  }, [filtro]);
 
   const onFiltroChange = (event) => {
     const nuevoFiltro = event.target.value;
@@ -36,18 +33,26 @@ export default function Busqueda({
 
   const onInputChange = (event) => {
     const inputValue = event.target.value;
-    if (filtro === 'nombre') {
-      setNombre(inputValue);
-      handleNombreInput(inputValue);
-    } else if (filtro === 'categoria') {
-      setCategoria(inputValue);
-      handleCategoriaInput(inputValue);
-    } else if (filtro === 'year') {
-      setYear(inputValue);
-      handleYearInput(inputValue);
-    } else if (filtro === 'numApoyo') {
-      setNumApoyo(inputValue);
-      handleNumApoyoInput(inputValue);
+    setValueInput(inputValue);
+    switch (filtro) {
+      case 'nombre':
+        setNombre(inputValue);
+        handleNombreInput(inputValue);
+        break;
+      case 'categoria':
+        setCategoria(inputValue);
+        handleCategoriaInput(inputValue);
+        break;
+      case 'year':
+        setYear(inputValue);
+        handleYearInput(inputValue);
+        break;
+      case 'numApoyo':
+        setNumApoyo(inputValue);
+        handleNumApoyoInput(inputValue);
+        break;
+      default:
+        break;
     }
   };
 
@@ -73,11 +78,14 @@ export default function Busqueda({
           </Col>
           <Col xs={12} md={8} lg={6} className="p-1">
             <input
-              type="text"
+              type={
+                filtro === 'year' || filtro === 'numApoyo' ? 'number' : 'text'
+              }
               className="form-control"
               id="busqueda"
               placeholder={`Buscar ${titulo} por ${filtro}...`}
               onChange={onInputChange}
+              value={valueInput}
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="p-1">
