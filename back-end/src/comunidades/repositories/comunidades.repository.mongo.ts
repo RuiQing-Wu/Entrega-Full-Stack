@@ -186,6 +186,38 @@ export class ComunidadesRepositoryMongo implements ComunidadesRepository {
     }
   }
 
+  async deleteMember(
+    idComunidad: string,
+    idUsuario: string,
+  ): Promise<Comunidad> {
+    try {
+      const comunidad = await this.comunidadModel.findById(idComunidad);
+
+      if (!comunidad) {
+        throw new Error(`No se encontró la comunidad con el ID ${idComunidad}`);
+      }
+
+      if (!comunidad.usuarios.includes(idUsuario)) {
+        throw new Error(
+          `El usuario con el ID ${idUsuario} no es miembro de la comunidad`,
+        );
+      }
+
+      await this.comunidadModel.findByIdAndUpdate(idComunidad, {
+        $pull: { usuarios: idUsuario },
+      });
+
+      return this.toComunidadDomain(comunidad);
+    } catch (error) {
+      throw new RepositoryError(
+        'Error al eliminar el usuario con id ' +
+          idUsuario +
+          ' de la comunidad con id ' +
+          idComunidad,
+      );
+    }
+  }
+
   async delete(id: string): Promise<Comunidad> {
     const comunidad = await this.get(id);
 

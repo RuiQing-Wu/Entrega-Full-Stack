@@ -13,17 +13,25 @@ import {
 } from '../../utils/utils';
 
 export default function Comunidad() {
-
   const navigate = useNavigate();
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [nombreError, setNombreError] = useState('');
   const [descripcionError, setDescripcionError] = useState('');
+  const [selectedCategorias, setSelectedCategorias] = useState([]);
   const idUserActual = useSelector((state) => state.user.userInfo.id);
 
   function handleNombreInput(event) {
     setNombre(event.target.value);
     setNombreError('');
+  }
+
+  function handleCategoriasChange(event) {
+    const options = event.target;
+    const selectedOptions = Array.from(options)
+      .filter((option) => option.selected)
+      .map((option) => option.value);
+    setSelectedCategorias(selectedOptions);
   }
 
   function handleDescripcionInput(event) {
@@ -55,6 +63,7 @@ export default function Comunidad() {
       descripcion,
       formattedDate,
       idUserActual,
+      selectedCategorias,
     );
 
     if (!checkResponseStatusCode(response)) {
@@ -116,6 +125,20 @@ export default function Comunidad() {
               <div className="invalid-feedback">
                 <ErrorMessage message={descripcionError} />
               </div>
+            </Form.Group>
+            <Form.Group controlId="categorias" className="mb-3">
+              <Form.Label> Categorías de la comunidad </Form.Label>
+              <Form.Select
+                multiple
+                value={selectedCategorias}
+                onChange={handleCategoriasChange}
+                required
+              >
+                <option value="medio_ambiente">Medio Ambiente</option>
+                <option value="salud">Salud</option>
+                <option value="desarrollo_social">Desarrollo Social</option>
+                <option value="educacion">Educación</option>
+              </Form.Select>
             </Form.Group>
             <div className="mb-3 text-center">
               <Button type="submit" className="btn btn-primary">

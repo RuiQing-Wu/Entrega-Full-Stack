@@ -26,15 +26,39 @@ export class SolicitudServiceImpl extends ISolicitudesService {
 
   async findOne(id: string): Promise<Solicitud> {
     if (id === null || id.trim() === '') {
-      throw new IllegalArgumentError('El id de la solicitud no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El id de la solicitud no puede ser vacio',
+      );
     }
 
     return await this.solicitudesRepository.get(id);
   }
 
+  async findByUserIdAndCommunityId(
+    idUsuario: string,
+    idComunidad: string,
+  ): Promise<Solicitud> {
+    if (idUsuario === null || idUsuario.trim() === '') {
+      throw new IllegalArgumentError('El id del usuario no puede ser vacio');
+    }
+
+    if (idComunidad === null || idComunidad.trim() === '') {
+      throw new IllegalArgumentError(
+        'El id de la comunidad no puede ser vacio',
+      );
+    }
+
+    return await this.solicitudesRepository.getByUserIdAndCommunityId(
+      idUsuario,
+      idComunidad,
+    );
+  }
+
   async update(id: string, updateSolicitudDto: UpdateSolicitudDto) {
     if (id === null || id.trim() === '') {
-      throw new IllegalArgumentError('El id de la solicitud no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El id de la solicitud no puede ser vacio',
+      );
     }
 
     const solicitud = await this.solicitudesRepository.get(id);
@@ -51,10 +75,11 @@ export class SolicitudServiceImpl extends ISolicitudesService {
 
   async remove(id: string): Promise<Solicitud> {
     if (id === null || id.trim() === '') {
-      throw new IllegalArgumentError('El id de la solicitud no puede ser vacio');
+      throw new IllegalArgumentError(
+        'El id de la solicitud no puede ser vacio',
+      );
     }
-    
+
     return await this.solicitudesRepository.delete(id);
   }
-
 }

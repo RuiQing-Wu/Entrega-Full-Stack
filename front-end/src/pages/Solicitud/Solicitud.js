@@ -1,50 +1,109 @@
 import './Solicitud.css';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Badge } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createSolicitud } from '../../services/solicitud.service';
+import {
+  createSolicitud,
+  getSolicitudByUserAndComunidad,
+} from '../../services/solicitud.service';
 import ErrorMessage from '../../component/MensajeError';
-import { addMember } from '../../services/comunidades.service';
+import { getComunidadById } from '../../services/comunidades.service';
 import { dateToString } from '../../utils/utils';
 
 export default function Solicitud(props) {
   const navigate = useNavigate();
+  const [administradorComunidad, setAdministradorComunidad] = useState(false);
   const [error, setError] = useState('');
+  const [estado, setEstado] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [badgeVariant, setBadgeVariant] = useState('secondary');
   const user = useSelector((state) => {
     return state.user.userInfo;
   });
-
-  const [descripcion, setDescripcion] = useState('');
 
   function handleDescripcion(event) {
     setDescripcion(event.target.value);
   }
 
+  async function estadoSolicitud() {
+    const reponseEstado = await getSolicitudByUserAndComunidad(
+      user.id,
+      props.idComunidad,
+    );
+    if (reponseEstado !== undefined) {
+      setEstado(reponseEstado.estado);
+    }
+  }
+
+  async function verificarAdministrador() {
+    const comunidad = await getComunidadById(props.idComunidad);
+    const dataComunidad = await comunidad.json();
+    if (dataComunidad && dataComunidad.idAdministrador === user.id) {
+      setAdministradorComunidad(true);
+      setError(
+        'El administrador no puede solicitar unirse a su propia comunidad',
+      );
+    }
+  }
+
+  useEffect(() => {
+    verificarAdministrador();
+  }, [user.id, props.idComunidad]);
+
+  useEffect(() => {
+    estadoSolicitud();
+  }, [user.id, props.idComunidad]);
+
+  useEffect(() => {
+    if (estado === 'pendiente') {
+      setBadgeVariant('warning');
+    } else if (estado === 'aceptada') {
+      setBadgeVariant('success');
+    } else if (estado === 'rechazada') {
+      setBadgeVariant('danger');
+    } else {
+      setBadgeVariant('secondary');
+    }
+  }, [estado]);
+
   async function enviar(event) {
     event.preventDefault();
+    const estadoPendiente = 'pendiente';
 
     if (user) {
       if (props.usersData.some((usuario) => usuario.id === user.id)) {
-        setError(
-          'Ya existe una solicitud con este usuario para esta comunidad',
-        );
+        if (!administradorComunidad) {
+          setError(
+            'Ya existe una solicitud con este usuario para esta comunidad',
+          );
+        }
       } else {
         const fechaSolicitud = dateToString();
         if (descripcion === '') {
           setError('Debes ingresar una descripción');
           return;
         }
-        const response = await createSolicitud(
-          descripcion,
-          fechaSolicitud,
-          true,
-          user.id,
-          props.idComunidad,
-        );
+        if (estado === 'pendiente') {
+          setError('Ya existe una solicitud pendiente');
+        } else {
+          const response = await createSolicitud(
+            descripcion,
+            fechaSolicitud,
+            estadoPendiente,
+            user.id,
+            props.idComunidad,
+          );
 
-        if (response !== undefined) {
-          const responseUsuarioComunidad = await addMember(
+          if (response !== undefined) {
+            setEstado(estadoPendiente);
+            setError('Solicitud enviada');
+            props.onHide();
+            navigate(`/comunidades/${props.idComunidad}`);
+          }
+        }
+
+        /* const responseUsuarioComunidad = await addMember(
             user.id,
             props.idComunidad,
           );
@@ -52,8 +111,8 @@ export default function Solicitud(props) {
             props.usersData.push(user);
             props.onHide();
             navigate(`/comunidades/${props.idComunidad}`);
-          }
-        }
+            estadoSolicitud();
+          } */
       }
     } else {
       setError('Debes tener un usuario para unirte a la comunidad');
@@ -73,14 +132,17 @@ export default function Solicitud(props) {
       centered
       backdrop="static"
     >
-      <Modal.Header className="d-flex justify-content-center">
+      <Modal.Header className="d-flex justify-content-between align-items-center">
         <Modal.Title
           id="contained-modal-title-vcenter"
           className="text-center"
-          style={{ textAlign: 'center' }}
+          style={{ textAlign: 'center', flex: '1' }}
         >
           Solicitud de ingreso a comunidad
         </Modal.Title>
+        {!administradorComunidad && (
+          <Badge bg={badgeVariant}>{estado || 'no solicitada'}</Badge>
+        )}
       </Modal.Header>
       <Form onSubmit={enviar}>
         <Modal.Body>

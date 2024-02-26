@@ -10,9 +10,7 @@ export class SolicitudesRepositoryMongo implements SolicitudesRepository {
   constructor(
     @InjectModel(Solicitud.name)
     private readonly solicitudModel: Model<SolicitudMongoModel>,
-  ) {
-
-  }
+  ) {}
 
   private toSolicitudDomain(
     solicitudMongo: HydratedDocument<SolicitudMongoModel>,
@@ -63,6 +61,39 @@ export class SolicitudesRepositoryMongo implements SolicitudesRepository {
     }
   }
 
+  async getByUserIdAndCommunityId(
+    idUsuario: string,
+    idComunidad: string,
+  ): Promise<Solicitud> {
+    try {
+      const solicitud = await this.solicitudModel
+        .findOne({ idUsuario, idComunidad })
+        .exec();
+
+      if (solicitud === null) {
+        throw new EntityNotFoundError(
+          'Solicitud no encontrada con idUsuario ' +
+            idUsuario +
+            ' e idComunidad ' +
+            idComunidad,
+        );
+      }
+
+      return this.toSolicitudDomain(solicitud);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw error;
+      }
+
+      throw new RepositoryError(
+        'Error al obtener la solicitud con idUsuario ' +
+          idUsuario +
+          ' e idComunidad ' +
+          idComunidad,
+      );
+    }
+  }
+
   async getAll(): Promise<Solicitud[]> {
     try {
       const solicitudesMongo = await this.solicitudModel.find().exec();
@@ -77,7 +108,9 @@ export class SolicitudesRepositoryMongo implements SolicitudesRepository {
 
   async update(id: string, item: Solicitud): Promise<Solicitud> {
     try {
-      const solicitud = await this.solicitudModel.findByIdAndUpdate(id, item).exec();
+      const solicitud = await this.solicitudModel
+        .findByIdAndUpdate(id, item)
+        .exec();
       const newSolicitud = new Solicitud({
         ...item,
         id: solicitud._id.toString(),
@@ -85,7 +118,9 @@ export class SolicitudesRepositoryMongo implements SolicitudesRepository {
 
       return newSolicitud;
     } catch (error) {
-      throw new RepositoryError('Error al actualizar la solicitud con id ' + id);
+      throw new RepositoryError(
+        'Error al actualizar la solicitud con id ' + id,
+      );
     }
   }
 

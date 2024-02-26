@@ -281,6 +281,44 @@ export class ComunidadesController {
 
   @ApiBearerAuth()
   @ApiOperation({
+    summary: 'Eliminar un miembro de una comunidad dados sus respectivos ids',
+  })
+  @ApiParam({
+    name: 'idComunidad',
+    description: 'Id de la comunidad',
+    required: true,
+  })
+  @ApiParam({
+    name: 'idUsuario',
+    description: 'Id del usuario',
+    required: true,
+  })
+  @ApiOkResponse({ description: 'Miembro eliminado' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({ description: 'Usuario no autorizado' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  @Delete(':idComunidad/:idUsuario')
+  async removeMember(
+    @Param('idComunidad') idComunidad: string,
+    @Param('idUsuario') idUsuario: string,
+  ) {
+    try {
+      return await this.comunidadesService.removeMember(idComunidad, idUsuario);
+    } catch (error) {
+      if (error instanceof IllegalArgumentError)
+        throw new BadRequestException(error.message);
+
+      if (error instanceof EntityNotFoundError)
+        throw new NotFoundException(error.message);
+
+      if (error instanceof RepositoryError)
+        throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({
     summary:
       'Obtiene todas las comunidades a las que está unida un usuario, dado su id',
   })

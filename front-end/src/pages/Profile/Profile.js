@@ -9,10 +9,24 @@ import {
   Tab,
   TabContent,
   Tabs,
+  Table,
 } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { updateUser, getUserByName } from '../../services/users.service';
-import { getComunidadesByUser } from '../../services/comunidades.service';
+import {
+  updateUser,
+  getUserByName,
+  getUserById,
+} from '../../services/users.service';
+import {
+  getComunidadesByUser,
+  getComunidadById,
+  addMember,
+  removeMember,
+} from '../../services/comunidades.service';
+import {
+  getSolicitud,
+  updateSolicitud,
+} from '../../services/solicitud.service';
 import { CardListaComunidad } from '../../component/CardComunidad';
 import {
   seguirUsuario,
@@ -31,7 +45,7 @@ import './Profile.css';
 export default function Profile() {
   const navigate = useNavigate();
   const params = useParams();
-
+  const [solicitud, setSolicitud] = useState([]);
   const [user, setUser] = useState({
     username: '',
     nombre: '',
@@ -82,6 +96,42 @@ export default function Profile() {
     }
   };
 
+  const fetchSolicitud = useCallback(async () => {
+    const responseSolicitud = await getSolicitud();
+
+    if (comunidadesUser.length > 0) {
+      if (!responseSolicitud) return;
+      const solicitudesParaAdministradorComunidad = responseSolicitud.filter(
+        (sol) => {
+          return comunidadesUser.some(
+            (comunidad) =>
+              comunidad.id === sol.idComunidad &&
+              comunidad.idAdministrador === idActual,
+          );
+        },
+      );
+
+      const datosSolicitudes = await Promise.all(
+        solicitudesParaAdministradorComunidad.map(async (sol) => {
+          const us = await getUserById(sol.idUsuario);
+          const comunidades = await getComunidadById(sol.idComunidad);
+          const dataComunidad = await comunidades.json();
+          return {
+            ...sol,
+            username: us.username,
+            comunidad: dataComunidad.nombre,
+          };
+        }),
+      );
+
+      setSolicitud(datosSolicitudes);
+    }
+  }, [comunidadesUser, idActual]);
+
+  useEffect(() => {
+    fetchSolicitud();
+  }, [fetchSolicitud]);
+
   const fetchUser = useCallback(async () => {
     const response = await getUserByName(params.nombrePerfil);
 
@@ -108,7 +158,12 @@ export default function Profile() {
 
   async function seguir() {
     setActualizacion(false);
-    const response = await seguirUsuario(idActual, usernameActual, user.id, user.username);
+    const response = await seguirUsuario(
+      idActual,
+      usernameActual,
+      user.id,
+      user.username,
+    );
 
     if (!checkResponseStatusCode(response)) {
       alertErrorMessage(response);
@@ -121,7 +176,6 @@ export default function Profile() {
     setIsNotFollowing(false);
   }
 
-
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
@@ -132,10 +186,11 @@ export default function Profile() {
     }
   }, [usernameActual, user.username]);
 
-  function getComunidadesUser() {
+  async function getComunidadesUser() {
     setComunidadesUser([]);
 
-    return getComunidadesByUser(user.id).then((response) => {
+    try {
+      const response = await getComunidadesByUser(user.id);
       setComunidadesUser(response);
 
       if (response.length === 0) {
@@ -143,7 +198,76 @@ export default function Profile() {
           'No se encontraron comunidades a las que el usuario pertenezca.',
         );
       }
-    });
+    } catch (error) {
+      console.error('Error al obtener comunidades del usuario:', error);
+      setErrorComunidades(
+        'Ocurrió un error al obtener las comunidades a las que el usuario pertenece.',
+      );
+    }
+  }
+
+  async function aceptarSolicitud(idSolicitud) {
+    const response = updateSolicitud(idSolicitud, 'aceptada');
+
+    if (response !== undefined) {
+      const solicitudAceptada = solicitud.find((sol) => sol.id === idSolicitud);
+
+      if (solicitudAceptada) {
+        const addMemberComunidad = await addMember(
+          solicitudAceptada.idUsuario,
+          solicitudAceptada.idComunidad,
+        );
+
+        if (addMemberComunidad === undefined) {
+          alert('No se ha podido añadir el miembro a la comunidad');
+        } else {
+          const solicitudActualizada = solicitud.map((sol) => {
+            if (sol.id === idSolicitud) {
+              return { ...sol, estado: 'aceptada' };
+            }
+            return sol;
+          });
+
+          setSolicitud(solicitudActualizada);
+        }
+      }
+    }
+  }
+
+  async function rechazarSolicitud(idSolicitud) {
+    const response = updateSolicitud(idSolicitud, 'rechazada');
+    if (response !== undefined) {
+      const solicitudRechazada = solicitud.find(
+        (sol) => sol.id === idSolicitud,
+      );
+
+      if (solicitudRechazada) {
+        try {
+          const usuarioComunidad = await getComunidadById(
+            solicitudRechazada.idComunidad,
+          );
+          const dataComunidad = await usuarioComunidad.json();
+          if (dataComunidad.usuarios.includes(solicitudRechazada.idUsuario)) {
+            const removeMemberComunidad = await removeMember(
+              solicitudRechazada.idUsuario,
+              solicitudRechazada.idComunidad,
+            );
+
+            const solicitudActualizada = solicitud.map((sol) => {
+              if (sol.id === idSolicitud) {
+                return { ...sol, estado: 'rechazada' };
+              }
+              return sol;
+            });
+
+            setSolicitud(solicitudActualizada);
+          }
+        } catch (error) {
+          console.error('Error al rechazar solicitud:', error);
+          alert('No se ha podido quitar el miembro de la comunidad');
+        }
+      }
+    }
   }
 
   const getSeguidos = useCallback(async () => {
@@ -173,7 +297,6 @@ export default function Profile() {
     }
 
     setSeguidores(response);
-
   }, [user.id]);
 
   useEffect(() => {
@@ -184,11 +307,9 @@ export default function Profile() {
     getSeguidos();
   }, [user.id, actualizacion]);
 
-
   useEffect(() => {
     getComunidadesUser();
-  },
-    [user.id]);
+  }, [user.id]);
 
   return (
     <div className="container mt-5">
@@ -355,6 +476,83 @@ export default function Profile() {
                   </div>
                 ) : (
                   <p>{errorComunidades}</p>
+                )}
+              </TabContent>
+            </Tab>
+            <Tab eventKey="solicitudes" title="Solicitudes">
+              <TabContent>
+                {solicitud.length > 0 ? (
+                  <Table className="mt-4">
+                    <thead>
+                      <tr>
+                        <th>Nombre de usuario</th>
+                        <th>Nombre de comunidad</th>
+                        <th>Estado de la solicitud</th>
+                        <th>Cambiar estado de la solicitud</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {solicitud.map((sol) => (
+                        <tr key={sol.id}>
+                          <td>{sol.username}</td>
+                          <td>{sol.comunidad}</td>
+                          <td>
+                            {sol.estado === 'pendiente' && (
+                              <span className="text-warning">{sol.estado}</span>
+                            )}
+                            {sol.estado === 'aceptada' && (
+                              <span className="text-success">{sol.estado}</span>
+                            )}
+                            {sol.estado === 'rechazada' && (
+                              <span className="text-danger">{sol.estado}</span>
+                            )}
+                          </td>
+                          <td>
+                            {sol.estado === 'pendiente' && (
+                              <>
+                                <Button
+                                  variant="success"
+                                  size="sm"
+                                  onClick={() => aceptarSolicitud(sol.id)}
+                                  className="mb-2 mb-md-0"
+                                >
+                                  Aceptar
+                                </Button>{' '}
+                                <Button
+                                  variant="danger"
+                                  size="sm"
+                                  onClick={() => rechazarSolicitud(sol.id)}
+                                  className="ms-md-2"
+                                >
+                                  Rechazar
+                                </Button>
+                              </>
+                            )}
+                            {sol.estado === 'aceptada' && (
+                              <Button
+                                variant="danger"
+                                size="sm"
+                                onClick={() => rechazarSolicitud(sol.id)}
+                              >
+                                Rechazar
+                              </Button>
+                            )}
+                            {sol.estado === 'rechazada' && (
+                              <Button
+                                variant="success"
+                                size="sm"
+                                onClick={() => aceptarSolicitud(sol.id)}
+                              >
+                                Aceptar
+                              </Button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                ) : (
+                  <p>No hay solicitudes pendientes</p>
                 )}
               </TabContent>
             </Tab>

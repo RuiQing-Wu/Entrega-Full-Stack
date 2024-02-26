@@ -8,6 +8,7 @@ async function saveComunidad(
   descripcion,
   fechaInicio,
   idAdministrador,
+  categorias,
 ) {
   const requestBody = {
     nombre,
@@ -15,6 +16,7 @@ async function saveComunidad(
     fechaInicio,
     idAdministrador,
     usuarios: [],
+    categorias,
   };
 
   const accessToken = getToken();
@@ -137,6 +139,25 @@ async function addMember(idUsuario, idComunidad) {
   return data;
 }
 
+// ELIMINAR MIEMBRO DE LA COMUNIDAD
+async function removeMember(idUsuario, idComunidad) {
+  const accessToken = getToken();
+  const response = await fetch(`${BASE_URL}/${idComunidad}/${idUsuario}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (response.status !== 200) {
+    return undefined;
+  }
+
+  const data = await response.json();
+  return data;
+}
+
 export {
   saveComunidad,
   getComunidades,
@@ -147,4 +168,5 @@ export {
   getComunidadesByYear,
   getComunidadesByUser,
   addMember,
+  removeMember,
 };

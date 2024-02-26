@@ -8,5 +8,9 @@ export abstract class ComunidadesRepository extends IGenericRepository<Comunidad
     category: string,
   ): Promise<Comunidad[]>;
   abstract getByYear(year: number): Promise<Comunidad[]>;
+  abstract deleteMember(
+    idComunidad: string,
+    idUsuario: string,
+  ): Promise<Comunidad>;
   abstract getComunidadesByUser(idUsuario: string): Promise<Comunidad[]>;
 }

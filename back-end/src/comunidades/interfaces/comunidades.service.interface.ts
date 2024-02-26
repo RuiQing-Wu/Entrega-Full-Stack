@@ -20,7 +20,7 @@ export abstract class IComunidadesService {
     idComunidad: string,
     idUsuario: string,
   ): Promise<Comunidad>;
-  abstract addMember(
+  abstract removeMember(
     idComunidad: string,
     idUsuario: string,
   ): Promise<Comunidad>;

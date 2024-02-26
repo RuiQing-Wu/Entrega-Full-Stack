@@ -102,6 +102,53 @@ export class SolicitudController {
     }
   }
 
+  // Recoger solicitud por idUsuario e idComunidad
+
+  @Public()
+  @ApiOperation({
+    summary: 'Obtener una solicitud mediante idUsuario e idComunidad',
+  })
+  @ApiParam({
+    name: 'idUsuario',
+    type: 'string',
+    description: 'Id del usuario',
+    required: true,
+  })
+  @ApiParam({
+    name: 'idComunidad',
+    type: 'string',
+    description: 'Id de la comunidad',
+    required: true,
+  })
+  @ApiOkResponse({ description: 'Solicitud obtenida' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  @Get(':idUsuario/:idComunidad')
+  async getByUserIdAndCommunityId(
+    @Param('idUsuario') idUsuario: string,
+    @Param('idComunidad') idComunidad: string,
+  ) {
+    try {
+      return await this.solicitudService.findByUserIdAndCommunityId(
+        idUsuario,
+        idComunidad,
+      );
+    } catch (error) {
+      if (error instanceof IllegalArgumentError) {
+        throw new BadRequestException(error.message);
+      }
+
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      if (error instanceof RepositoryError) {
+        throw new InternalServerErrorException(error.message);
+      }
+    }
+  }
+
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar una solicitud mediante id' })
   @ApiParam({

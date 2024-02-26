@@ -159,6 +159,36 @@ export class ComunidadesServiceImpl implements IComunidadesService {
     return await this.comunidadesRepository.getComunidadesByUser(idUsuario);
   }
 
+  async removeMember(idComunidad: string, idUsuario: string) {
+    if (idComunidad === null || idComunidad.trim() === '') {
+      throw new IllegalArgumentError(
+        'El id de la comunidad no puede ser vacio',
+      );
+    }
+
+    if (idUsuario === null || idUsuario.trim() === '') {
+      throw new IllegalArgumentError('El id del usuario no puede ser vacio');
+    }
+
+    const comunidad = await this.comunidadesRepository.get(idComunidad);
+
+    if (!comunidad.usuarios.includes(idUsuario)) {
+      throw new IllegalArgumentError(
+        'El usuario no es miembro de la comunidad',
+      );
+    }
+
+    const comunidadActualizada = {
+      ...comunidad,
+      usuarios: comunidad.usuarios.filter((usuario) => usuario !== idUsuario),
+    };
+
+    return await this.comunidadesRepository.update(
+      idComunidad,
+      comunidadActualizada,
+    );
+  }
+
   async remove(id: string) {
     if (id === null || id.trim() === '') {
       throw new IllegalArgumentError(
