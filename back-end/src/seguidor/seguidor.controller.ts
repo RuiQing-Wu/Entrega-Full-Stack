@@ -49,12 +49,7 @@ export class SeguidorController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
   async create(@Body() createSeguidorDto: CreateSeguidorDto) {
-    try {
       return await this.seguidorService.create(createSeguidorDto);
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -66,12 +61,7 @@ export class SeguidorController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
   async findAll() {
-    try {
       return await this.seguidorService.findAll();
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -88,21 +78,7 @@ export class SeguidorController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    try {
       return await this.seguidorService.findOne(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
   }
 
   @ApiBearerAuth()
@@ -129,18 +105,7 @@ export class SeguidorController {
     @Param('id') id: string,
     @Body() updateSeguidorDto: UpdateSeguidorDto,
   ) {
-    try {
       return await this.seguidorService.update(id, updateSeguidorDto);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -157,18 +122,7 @@ export class SeguidorController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    try {
       return await this.seguidorService.remove(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -198,15 +152,7 @@ export class SeguidorController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post('seguir/')
   async seguir(@Body() createSeguidorOrigenDto: CreateSeguidorDto[]) {
-    try {
       return await this.seguidorService.seguir(createSeguidorOrigenDto);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -225,17 +171,7 @@ export class SeguidorController {
   @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
   @Get('seguidos/:id')
   async getUsuariosSeguidos(@Param('id') id: string) {
-    try {
       return await this.seguidorService.getUsuariosSeguidos(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
   }
 
   @ApiBearerAuth()
@@ -254,16 +190,6 @@ export class SeguidorController {
   @ApiInternalServerErrorResponse({ description: 'Error del servidor' })
   @Get('seguidores/:id')
   async getUsuariosSeguidores(@Param('id') id: string) {
-    try {
       return await this.seguidorService.getUsuariosSeguidores(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
   }
 }

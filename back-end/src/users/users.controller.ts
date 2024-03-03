@@ -58,15 +58,7 @@ export class UserController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    try {
       return await this.userService.create(createUserDto);
-    } catch (error) {
-      if (error instanceof ConflictError)
-        throw new ConflictException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -75,12 +67,7 @@ export class UserController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
   async findAll() {
-    try {
       return await this.userService.findAll();
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -93,21 +80,7 @@ export class UserController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async findOne(@Param('id') id: string) {
-    try {
       return await this.userService.findOne(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
   }
 
   @ApiBearerAuth()
@@ -129,21 +102,7 @@ export class UserController {
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    try {
       return await this.userService.update(id, updateUserDto);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof ConflictError)
-        throw new ConflictException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -156,18 +115,7 @@ export class UserController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    try {
       return await this.userService.remove(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -183,17 +131,6 @@ export class UserController {
   @Get('username/:username')
   @HttpCode(HttpStatus.OK)
   async getByName(@Param('username') username: string) {
-    try {
       return await this.userService.getByName(username);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 }

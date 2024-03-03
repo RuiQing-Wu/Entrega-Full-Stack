@@ -58,15 +58,7 @@ export class ComunidadesController {
   @HttpCode(HttpStatus.CREATED)
   @Post('')
   async create(@Body() createComunidadDto: CreateComunidadDto) {
-    try {
       return await this.comunidadesService.create(createComunidadDto);
-    } catch (error) {
-      if (error instanceof ConflictError)
-        throw new ConflictException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -75,12 +67,7 @@ export class ComunidadesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
   async findAll() {
-    try {
       return await this.comunidadesService.findAll();
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -92,21 +79,7 @@ export class ComunidadesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    try {
       return await this.comunidadesService.findOne(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
   }
 
   @Public()
@@ -122,18 +95,7 @@ export class ComunidadesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/name/:nombre')
   async getByName(@Param('nombre') nombre: string) {
-    try {
       return await this.comunidadesService.getByName(nombre);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -151,15 +113,7 @@ export class ComunidadesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/nameInsensitivePartial/:nombre')
   async getByNameInsensitivePartial(@Param('nombre') nombre: string) {
-    try {
       return await this.comunidadesService.getByNameInsensitivePartial(nombre);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -177,17 +131,9 @@ export class ComunidadesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/categoryInsensitivePartial/:categoria')
   async getByCategoryInsensitivePartial(@Param('categoria') categoria: string) {
-    try {
       return await this.comunidadesService.getByCategoryInsensitivePartial(
         categoria,
       );
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -198,15 +144,7 @@ export class ComunidadesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/year/:year')
   async getByYear(@Param('year') year: number) {
-    try {
       return await this.comunidadesService.getByYear(year);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -227,18 +165,7 @@ export class ComunidadesController {
     @Param('id') id: string,
     @Body() updateReunioneDto: UpdateComunidadDto,
   ) {
-    try {
       return await this.comunidadesService.update(id, updateReunioneDto);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -265,18 +192,7 @@ export class ComunidadesController {
     @Param('idComunidad') idComunidad: string,
     @Param('idUsuario') idUsuario: string,
   ) {
-    try {
       return await this.comunidadesService.addMember(idComunidad, idUsuario);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -303,18 +219,7 @@ export class ComunidadesController {
     @Param('idComunidad') idComunidad: string,
     @Param('idUsuario') idUsuario: string,
   ) {
-    try {
       return await this.comunidadesService.removeMember(idComunidad, idUsuario);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -332,15 +237,7 @@ export class ComunidadesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/user/:idUsuario')
   async getComunidadesByUser(@Param('idUsuario') idUsuario: string) {
-    try {
       return await this.comunidadesService.getComunidadesByUser(idUsuario);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -353,17 +250,6 @@ export class ComunidadesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    try {
       return await this.comunidadesService.remove(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 }

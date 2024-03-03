@@ -72,18 +72,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: Record<string, any>) {
-    try {
       return this.authService.signIn(signInDto.username, signInDto.password);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -100,15 +89,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
-    try {
       return await this.authService.signUp(createUserDto);
-    } catch (error) {
-      if (error instanceof ConflictError)
-        throw new ConflictException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -123,17 +104,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Get('profile')
   async getProfile(@Request() req) {
-    try {
       return await this.authService.getProfile(req.user.username);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 }

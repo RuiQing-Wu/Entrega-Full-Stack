@@ -49,12 +49,7 @@ export class CausasController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
   async create(@Body() createCausaDto: CreateCausaDto) {
-    try {
       return await this.causasService.create(createCausaDto);
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -63,12 +58,7 @@ export class CausasController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
   async findAll() {
-    try {
       return await this.causasService.findAll();
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -85,21 +75,7 @@ export class CausasController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    try {
       return await this.causasService.findOne(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
   }
 
   @Public()
@@ -116,18 +92,7 @@ export class CausasController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/name/:nombre')
   async findByName(@Param('nombre') titulo: string) {
-    try {
       return await this.causasService.getByName(titulo);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -143,15 +108,7 @@ export class CausasController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('/comunidad/:comunidad')
   async findByComunidad(@Param('comunidad') comunidad: string) {
-    try {
       return await this.causasService.getByComunidadId(comunidad);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -178,18 +135,10 @@ export class CausasController {
     @Param('titulo') titulo: string,
     @Param('idComunidad') idComunidad: string,
   ) {
-    try {
       return await this.causasService.getByNameInsensitivePartial(
         titulo,
         idComunidad,
       );
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -215,18 +164,7 @@ export class CausasController {
     @Param('id') id: string,
     @Body() updateCausaDto: UpdateCausaDto,
   ) {
-    try {
       return await this.causasService.update(id, updateCausaDto);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -244,17 +182,6 @@ export class CausasController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    try {
       return await this.causasService.remove(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 }

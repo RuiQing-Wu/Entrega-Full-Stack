@@ -1,15 +1,20 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import {
-  SwaggerModule,
   DocumentBuilder,
   SwaggerDocumentOptions,
+  SwaggerModule,
 } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { AppModule } from './app.module';
+import { IllegalArgumentFilter } from './base/filter/argumentFilter';
+import { ConflictFilter } from './base/filter/conflictFilter';
+import { EntityNotFoundFilter } from './base/filter/entityNotFounFilter';
+import { RepositoryFilter } from './base/filter/repositoryFilter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new IllegalArgumentFilter(), new EntityNotFoundFilter(), new ConflictFilter(), new RepositoryFilter());
   app.enableCors({
     origin: ['http://localhost:3000'],
   });

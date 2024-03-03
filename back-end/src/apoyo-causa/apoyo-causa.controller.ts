@@ -45,12 +45,7 @@ export class ApoyoCausaController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
   async create(@Body() createApoyoCausaDto: CreateApoyoCausaDto) {
-    try {
       return await this.apoyoCausaService.create(createApoyoCausaDto);
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -59,12 +54,7 @@ export class ApoyoCausaController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
   async findAll() {
-    try {
       return await this.apoyoCausaService.findAll();
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -81,21 +71,7 @@ export class ApoyoCausaController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    try {
       return await this.apoyoCausaService.findOne(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
   }
 
   @Public()
@@ -112,21 +88,7 @@ export class ApoyoCausaController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get('numApoyo/:numApoyo')
   async getByNumApoyo(@Param('numApoyo') numApoyo: number) {
-    try {
       return await this.apoyoCausaService.findByNumApoyo(numApoyo);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
   }
 
   @ApiBearerAuth()
@@ -152,18 +114,7 @@ export class ApoyoCausaController {
     @Param('id') id: string,
     @Body() updateApoyoCausaDto: UpdateApoyoCausaDto,
   ) {
-    try {
       return await this.apoyoCausaService.update(id, updateApoyoCausaDto);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -181,18 +132,7 @@ export class ApoyoCausaController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    try {
       return await this.apoyoCausaService.remove(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -209,17 +149,6 @@ export class ApoyoCausaController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Patch('apoyar/:id')
   async apoyar(@Param('id') id: string) {
-    try {
       return await this.apoyoCausaService.apoyar(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 }

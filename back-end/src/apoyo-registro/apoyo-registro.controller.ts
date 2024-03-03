@@ -48,12 +48,7 @@ export class ApoyoRegistroController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
   async create(@Body() createApoyoRegistroDto: CreateApoyoRegistroDto) {
-    try {
       return await this.apoyoRegistroService.create(createApoyoRegistroDto);
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -62,12 +57,7 @@ export class ApoyoRegistroController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
   async findAll() {
-    try {
       return await this.apoyoRegistroService.findAll();
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @Public()
@@ -84,21 +74,7 @@ export class ApoyoRegistroController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    try {
       return await this.apoyoRegistroService.findOne(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
   }
 
   @ApiBearerAuth()
@@ -124,18 +100,7 @@ export class ApoyoRegistroController {
     @Param('id') id: string,
     @Body() updateApoyoRegistroDto: UpdateApoyoRegistroDto,
   ) {
-    try {
       return await this.apoyoRegistroService.update(id, updateApoyoRegistroDto);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 
   @ApiBearerAuth()
@@ -153,17 +118,6 @@ export class ApoyoRegistroController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    try {
       return await this.apoyoRegistroService.remove(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
   }
 }

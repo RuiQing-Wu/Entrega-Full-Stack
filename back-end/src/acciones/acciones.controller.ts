@@ -6,9 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  InternalServerErrorException,
-  NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -27,9 +24,6 @@ import { Public } from '../decorators/public.decorator';
 import { IAccionService } from './interfaces/accion.service.interface';
 import { CreateAccionDto } from './dto/create-accion.dto';
 import { UpdateAccionDto } from './dto/update-accion.dto';
-import { RepositoryError } from '../base/repositoryError';
-import { IllegalArgumentError } from '../base/argumentError';
-import { EntityNotFoundError } from '../base/entityNotFounError';
 
 @ApiTags('acciones')
 @Controller('acciones')
@@ -52,12 +46,7 @@ export class AccionesController {
   })
   @Post()
   async create(@Body() createAccionDto: CreateAccionDto) {
-    try {
-      return await this.accionesService.create(createAccionDto);
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.accionesService.create(createAccionDto);
   }
 
   @Public()
@@ -72,12 +61,7 @@ export class AccionesController {
   })
   @Get()
   async findAll() {
-    try {
-      return await this.accionesService.findAll();
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.accionesService.findAll();
   }
 
   @Public()
@@ -97,21 +81,7 @@ export class AccionesController {
   })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    try {
-      return await this.accionesService.findOne(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
+    return await this.accionesService.findOne(id);
   }
 
   @Public()
@@ -134,18 +104,7 @@ export class AccionesController {
   })
   @Get('/name/:nombre')
   async findByName(@Param('nombre') titulo: string) {
-    try {
-      return await this.accionesService.getByName(titulo);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.accionesService.getByName(titulo);
   }
 
   @Public()
@@ -167,15 +126,7 @@ export class AccionesController {
   })
   @Get('/causa/:causa')
   async findByCausa(@Param('causa') causa: string) {
-    try {
-      return await this.accionesService.getByCausaId(causa);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.accionesService.getByCausaId(causa);
   }
 
   @Public()
@@ -206,18 +157,10 @@ export class AccionesController {
     @Param('titulo') titulo: string,
     @Param('idCausa') idCausa: string,
   ) {
-    try {
-      return await this.accionesService.getByNameInsensitivePartial(
-        titulo,
-        idCausa,
-      );
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.accionesService.getByNameInsensitivePartial(
+      titulo,
+      idCausa,
+    );
   }
 
   @ApiBearerAuth()
@@ -246,18 +189,7 @@ export class AccionesController {
     @Param('id') id: string,
     @Body() updateAccioneDto: UpdateAccionDto,
   ) {
-    try {
-      return await this.accionesService.update(id, updateAccioneDto);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.accionesService.update(id, updateAccioneDto);
   }
 
   @ApiBearerAuth()
@@ -278,17 +210,6 @@ export class AccionesController {
   })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    try {
-      return await this.accionesService.remove(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.accionesService.remove(id);
   }
 }

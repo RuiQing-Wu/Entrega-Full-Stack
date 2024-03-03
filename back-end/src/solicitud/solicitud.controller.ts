@@ -34,7 +34,7 @@ import { EntityNotFoundError } from 'src/base/entityNotFounError';
 @ApiTags('solicitudes')
 @Controller('solicitud')
 export class SolicitudController {
-  constructor(private readonly solicitudService: ISolicitudesService) {}
+  constructor(private readonly solicitudService: ISolicitudesService) { }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear una solicitud' })
@@ -49,12 +49,7 @@ export class SolicitudController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
   async create(@Body() createSolicitudDto: CreateSolicitudDto) {
-    try {
-      return await this.solicitudService.create(createSolicitudDto);
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.solicitudService.create(createSolicitudDto);
   }
 
   @Public()
@@ -63,12 +58,7 @@ export class SolicitudController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get()
   async findAll() {
-    try {
-      return await this.solicitudService.findAll();
-    } catch (error) {
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.solicitudService.findAll();
   }
 
   @Public()
@@ -85,21 +75,7 @@ export class SolicitudController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    try {
-      return await this.solicitudService.findOne(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
+    return await this.solicitudService.findOne(id);
   }
 
   // Recoger solicitud por idUsuario e idComunidad
@@ -129,24 +105,10 @@ export class SolicitudController {
     @Param('idUsuario') idUsuario: string,
     @Param('idComunidad') idComunidad: string,
   ) {
-    try {
-      return await this.solicitudService.findByUserIdAndCommunityId(
-        idUsuario,
-        idComunidad,
-      );
-    } catch (error) {
-      if (error instanceof IllegalArgumentError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      if (error instanceof RepositoryError) {
-        throw new InternalServerErrorException(error.message);
-      }
-    }
+    return await this.solicitudService.findByUserIdAndCommunityId(
+      idUsuario,
+      idComunidad,
+    );
   }
 
   @ApiBearerAuth()
@@ -172,18 +134,7 @@ export class SolicitudController {
     @Param('id') id: string,
     @Body() updateSolicitudDto: UpdateSolicitudDto,
   ) {
-    try {
-      return await this.solicitudService.update(id, updateSolicitudDto);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.solicitudService.update(id, updateSolicitudDto);
   }
 
   @ApiBearerAuth()
@@ -201,17 +152,6 @@ export class SolicitudController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    try {
-      return await this.solicitudService.remove(id);
-    } catch (error) {
-      if (error instanceof IllegalArgumentError)
-        throw new BadRequestException(error.message);
-
-      if (error instanceof EntityNotFoundError)
-        throw new NotFoundException(error.message);
-
-      if (error instanceof RepositoryError)
-        throw new InternalServerErrorException(error.message);
-    }
+    return await this.solicitudService.remove(id);
   }
 }
