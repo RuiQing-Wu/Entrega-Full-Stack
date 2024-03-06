@@ -43,7 +43,7 @@ router.get("/", async (req, res) => {
   });
 
   console.log(comunidades);
-  res.render("comunidad", { comunidades: comunidades });
+  res.render("estadisticas/comunidad", { comunidades: comunidades });
 });
 
 router.get("/:id/", async (req, res) => {
