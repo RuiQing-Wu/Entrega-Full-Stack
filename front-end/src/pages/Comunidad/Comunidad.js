@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Breadcrumb, Col, Button, Form } from 'react-bootstrap';
+import { Breadcrumb, Col, Button, Form, Check } from 'react-bootstrap';
 import { useState } from 'react';
 import { saveComunidad } from '../../services/comunidades.service';
 import './Comunidad.css';
@@ -21,17 +21,29 @@ export default function Comunidad() {
   const [selectedCategorias, setSelectedCategorias] = useState([]);
   const idUserActual = useSelector((state) => state.user.userInfo.id);
 
+  const categorias = [
+    { value: 'medio ambiente', label: 'Medio ambiente' },
+    { value: 'salud', label: 'Salud' },
+    { value: 'desarrollo social', label: 'Desarrollo social' },
+    { value: 'educacion', label: 'Educación' },
+    { value: 'derechos humanos', label: 'Derechos humanos' },
+    { value: 'infancia', label: 'Infancia' },
+  ];
+
   function handleNombreInput(event) {
     setNombre(event.target.value);
     setNombreError('');
   }
 
   function handleCategoriasChange(event) {
-    const options = event.target;
-    const selectedOptions = Array.from(options)
-      .filter((option) => option.selected)
-      .map((option) => option.value);
-    setSelectedCategorias(selectedOptions);
+    const { value } = event.target;
+    const isChecked = event.target.checked;
+
+    setSelectedCategorias(
+      isChecked
+        ? [...selectedCategorias, value]
+        : selectedCategorias.filter((v) => v !== value),
+    );
   }
 
   function handleDescripcionInput(event) {
@@ -128,17 +140,14 @@ export default function Comunidad() {
             </Form.Group>
             <Form.Group controlId="categorias" className="mb-3">
               <Form.Label> Categorías de la comunidad </Form.Label>
-              <Form.Select
-                multiple
-                value={selectedCategorias}
-                onChange={handleCategoriasChange}
-                required
-              >
-                <option value="medio_ambiente">Medio Ambiente</option>
-                <option value="salud">Salud</option>
-                <option value="desarrollo_social">Desarrollo Social</option>
-                <option value="educacion">Educación</option>
-              </Form.Select>
+              {categorias.map((categoria) => (
+                <Form.Check
+                  key={categoria.value}
+                  label={categoria.label}
+                  value={categoria.value}
+                  onChange={handleCategoriasChange}
+                />
+              ))}
             </Form.Group>
             <div className="mb-3 text-center">
               <Button type="submit" className="btn btn-primary">

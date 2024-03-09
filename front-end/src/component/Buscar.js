@@ -77,16 +77,32 @@ export default function Busqueda({
             </Form.Group>
           </Col>
           <Col xs={12} md={8} lg={6} className="p-1">
-            <input
-              type={
-                filtro === 'year' || filtro === 'numApoyo' ? 'number' : 'text'
-              }
-              className="form-control"
-              id="busqueda"
-              placeholder={`Buscar ${titulo} por ${filtro}...`}
-              onChange={onInputChange}
-              value={valueInput}
-            />
+            {filtro !== 'categoria' && (
+              <input
+                type={
+                  filtro === 'year' || filtro === 'numApoyo' ? 'number' : 'text'
+                }
+                className="form-control"
+                id="busqueda"
+                placeholder={`Buscar ${titulo} por ${filtro}...`}
+                onChange={onInputChange}
+                value={valueInput}
+              />
+            )}
+            {filtro === 'categoria' && (
+              <Form.Select
+                value={categoria}
+                onChange={onInputChange}
+                className="form-control"
+              >
+                <option value="medio ambiente">Medio ambiente</option>
+                <option value="salud">Salud</option>
+                <option value="desarrollo social">Desarrollo social</option>
+                <option value="educacion">Educación</option>
+                <option value="derechos humanos">Derechos humanos</option>
+                <option value="infancia">Infancia</option>
+              </Form.Select>
+            )}
           </Col>
           <Col xs={12} md={4} lg={4} className="p-1">
             <Button type="submit" className="btn btn-primary">
