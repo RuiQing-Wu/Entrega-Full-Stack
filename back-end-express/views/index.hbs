@@ -1,2 +1,31 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<div class="container mt-5">
+  <h1> Publicaciones </h1>
+  <div class="row">
+    <div class="col-12">
+      {{#each publicaciones}}
+        <div class="card mb-3">
+          <div class="card-body">
+            <p class="card-text">{{this.comunidad}}</p>
+            <p class="card-text">{{this.administrador}}</p>
+            <p class="card-text">{{this.fecha}}</p>
+            <p class="card-text">{{this.descripcion}}</p>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <p> Introduce publicaciones </p>
+  <form method="POST" action="/publicaciones">
+    <div class="form-group">
+      <textarea
+        id="publicaciones"
+        class="form-control"
+        rows="3"
+        placeholder="Escribe tu comentario"
+        name="publicacion"
+      ></textarea>
+    </div>
+    <button type="submit">Enviar</button>
+  </form>
+</div>

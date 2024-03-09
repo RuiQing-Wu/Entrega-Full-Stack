@@ -13,6 +13,8 @@ const mongoURL = process.env.MONGO_URL;
 async function connectMongo() {
   // Conecta a MongoDB
   mongoose.connect(mongoURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
     dbName: dbName,
     user: username,
     pass: password,
