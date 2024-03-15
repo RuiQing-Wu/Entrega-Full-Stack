@@ -1,0 +1,4 @@
+/node_modules
+.env
+certificado_autofirmado_equipo5.pem
+clave_privada_equipo5.pem

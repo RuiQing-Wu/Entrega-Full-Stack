@@ -1,0 +1,26 @@
+<!-- Barra de navegación de Bootstrap -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="#">Mi Blog</a>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Inicio</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <li id="cerrarSesionNavItem" class="nav-item">
+        <a
+          id="cerrarSesionLink"
+          class="nav-link text-danger"
+          href="/login/cerrar-sesion"
+        >Cerrar sesión</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<script>
+  var currentPath = window.location.pathname; if (currentPath === "/login") {
+  var cerrarSesionNavItem = document.getElementById('cerrarSesionNavItem'); if
+  (cerrarSesionNavItem) { cerrarSesionNavItem.style.display = 'none'; } }
+</script>

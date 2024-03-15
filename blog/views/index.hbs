@@ -1,0 +1,96 @@
+<div class="container mt-5 pt-5">
+  <h1>Blog</h1>
+  <div class="row">
+    <div class="col-12">
+      {{#each publicaciones}}
+        <div class="card mb-3">
+          <div class="card-body">
+            <h3>Publicación</h3>
+            <p class="card-text"><b>Comunidad</b> {{this.comunidad}}</p>
+            <p id="fecha_publicacion" class="card-text"><b>Fecha de publicación</b>
+              {{this.fecha_publicacion}}</p>
+            <p class="card-text"><b>Descripción</b> {{this.descripcion}}</p>
+          </div>
+          <div class="card-body">
+            <h3>Comentarios</h3>
+            {{#each this.comentarios}}
+              <div class="card bg-light mb-3">
+                <div class="card-header">
+                  <p class="card-text"><b>Usuario</b> {{this.idUsuario}}</p>
+                  <p id="fecha_comentario" class="card-text"><b>Fecha comentario</b>
+                    {{this.fecha_comentario}}</p>
+                </div>
+                <div class="card-body">
+                  <p class="card-text">{{this.comentario}}</p>
+                </div>
+              </div>
+            {{/each}}
+          </div>
+          <!-- Botón de "Añadir comentario" con data-id -->
+          <div class="card-footer">
+            <div id="formulario-comentario" class="card-body">
+              <h5>Añadir comentario</h5>
+              <form method="POST" action="/comentarios">
+                <input
+                  type="hidden"
+                  name="id_publicacion"
+                  id="id_publicacion"
+                  value="{{this._id}}"
+                />
+                <div id="textarea-comentario" class="form-group">
+                  <textarea
+                    id="comentario"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Escribe tu comentario aquí..."
+                    name="comentario"
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Añadir comentario</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+
+<!-- Formulario de crear publicaciones -->
+{{#if comunidades}}
+  <div class="container">
+    <h3>Crear publicaciones</h3>
+    <form id="formulario" method="POST" action="/publicaciones">
+      <div class="form-group">
+        <label for="comunidad">Selecciona una comunidad</label>
+        <select class="form-control" name="comunidad" id="comunidad">
+          <option disabled selected value="">Selecciona una comunidad para
+            añadir la publicación</option>
+          {{#each comunidades}}
+            <option value="{{this._id}}">{{this.nombre}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="publicaciones">Introduce una publicación</label>
+        <textarea
+          id="publicaciones"
+          class="form-control"
+          rows="3"
+          placeholder="Escribe tu publicación aquí..."
+          name="publicacion"
+        ></textarea>
+      </div>
+      <button class="btn btn-primary" type="submit">Enviar</button>
+    </form>
+
+    <div
+      id="error-comunidad"
+      class="alert alert-danger mt-3"
+      role="alert"
+      style="display: none;"
+    >
+      <p id="error-message-comunidad"></p>
+    </div>
+  </div>
+{{/if}}
