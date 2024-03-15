@@ -26,6 +26,11 @@ app.engine(
     handlebars: require("handlebars"),
     allowProtoPropertiesByDefault: true,
     allowProtoMethodsByDefault: true,
+    helpers: {
+      striptags: function (text) {
+        return text.toString().replace(/<[^>]*>/g, "");
+      },
+    },
   })
 );
 app.set("view engine", "hbs");

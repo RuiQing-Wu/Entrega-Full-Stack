@@ -9,6 +9,7 @@
     <title>SolidarianID</title>
     {{!-- BOOTSTRAP --}}
     <link href="./stylesheets/bootstrap.min.css" rel="stylesheet" />
+    <link href="./stylesheets/all.min.css" rel="stylesheet">
     
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -25,16 +26,12 @@
 
     {{> footer}}
 
-    <!-- Bootstrap JS -->
-    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet" />
     <!-- jQuery library -->
     <script src="/stylesheets/jquery-3.5.1.slim.min.js"></script>
     <!-- Popper JS -->
     <script src="/stylesheets/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="/stylesheets/bootstrap.min.js"></script>
-    <!-- Custom scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Main JS -->
@@ -45,11 +42,18 @@
     <script src="../tinymce/tinymce.min.js"></script>
     <!-- Validar formulario -->
     <script src="/javascripts/validarFormulario.js"></script>
+    <!-- Fechas -->
+    <script src="/javascripts/fechas.js"></script>
     <script>
       tinymce.init({ selector: '#publicaciones', plugins: `advlist autolink lists
       link image charmap print preview hr anchor pagebreak`, toolbar_mode:
       'floating', tinycomments_mode: 'embedded', tinycomments_author: `Author
       name`, });
+
+      tinymce.init({ selector: '#comentario', plugins: `advlist autolink lists
+        link image charmap print preview hr anchor pagebreak`, toolbar_mode:
+        'floating', tinycomments_mode: 'embedded', tinycomments_author: `Author
+        name`, });
     </script>
 </body>
 

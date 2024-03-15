@@ -31,8 +31,8 @@ class publicacionesRepository {
   static async savePublicacion(req) {
     try {
       //Quitar <p> y </p> de la publicacion
-      const regex = /<p>|<\/p>/g;
-      req.body.publicacion = req.body.publicacion.replace(regex, "");
+      //const regex = /<p>|<\/p>/g;
+      //req.body.publicacion = req.body.publicacion.replace(regex, "");
 
       const publicacion = new modelPublicaciones({
         descripcion: req.body.publicacion,
