@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/images/blog_16.png">
     <link rel="manifest" href="/manifest.json">
     <title>SolidarianID</title>
     {{!-- BOOTSTRAP --}}
-    <link href="./stylesheets/bootstrap.min.css" rel="stylesheet" />
-    <link href="./stylesheets/all.min.css" rel="stylesheet">
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet" />
+    <link href="/stylesheets/all.min.css" rel="stylesheet">
     
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -34,14 +35,12 @@
     <script src="/stylesheets/bootstrap.min.js"></script>
     <!-- Custom scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Main JS -->
-    <script src="/javascripts/main.js"></script>
-    <!-- IndexDB -->
-    <script src="/javascripts/indexdb.js"></script>
+    <!-- Publicaciones con notificaciones y guardados en indexDB JS -->
+    <script src="/javascripts/publicaciones_noti_db.js"></script>
+    <!-- Usuarios y comunidades en indexDB JS 
+    <script src="/javascripts/usuarios_comunidades_indexDB.js"></script> -->
     <!-- TinyMCE -->
     <script src="../tinymce/tinymce.min.js"></script>
-    <!-- Validar formulario -->
-    <script src="/javascripts/validarFormulario.js"></script>
     <!-- Fechas -->
     <script src="/javascripts/fechas.js"></script>
     <script>
@@ -55,6 +54,8 @@
         'floating', tinycomments_mode: 'embedded', tinycomments_author: `Author
         name`, });
     </script>
+    <!-- Index push 
+    <script src="/javascripts/index_push.js"></script> -->
 </body>
 
 </html>

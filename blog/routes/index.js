@@ -43,29 +43,6 @@ router.get("/", async (req, res) => {
       publicacionesPromises.push(...publicaciones);
     }
 
-    //Cambiar el formato de las fechas
-    publicacionesPromises.forEach((publicacion) => {
-      publicacion.fecha_publicacion = formatDate(publicacion.fecha_publicacion);
-      publicacion.comentarios.forEach((comentario) => {
-        comentario.fecha_comentario = formatDate(comentario.fecha_comentario);
-      });
-    });
-
-    // Función para formatear la fecha
-    function formatDate(dateString) {
-      const dateObj = new Date(dateString);
-      const options = {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        timeZoneName: "short",
-      };
-      return dateObj.toLocaleDateString(undefined, options);
-    }
-
     publicacionesPromises.forEach((publicacion) => {
       miembroComunidades.forEach((comunidad) => {
         if (publicacion.comunidad == comunidad._id) {
@@ -78,6 +55,7 @@ router.get("/", async (req, res) => {
       publicaciones: publicacionesPromises,
       comunidades: comunidadesUser,
       user: req.session.user,
+      display: "none",
     });
   } catch (error) {
     res.status(500).send(error.message);

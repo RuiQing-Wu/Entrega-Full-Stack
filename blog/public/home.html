@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/images/blog_16.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Blog y Comentarios</title>
+    <!-- Enlace a Bootstrap CSS (puedes cambiar la versión según tus necesidades) -->
+    <link href="./stylesheets/bootstrap.min.css" rel="stylesheet" />
+    <link href="./stylesheets/all.min.css" rel="stylesheet" />
+    <link href="./stylesheets/style.css" rel="stylesheet" />
+    <style>
+      /* Agrega estilos personalizados aquí si es necesario */
+      body {
+        padding-top: 70px; /* Ajusta el espacio según la altura de la barra de navegación de Bootstrap */
+      }
+    </style>
+  </head>
+  <!-- Barra de navegación de Bootstrap -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">Mi Blog</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Inicio</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <body>
+    <h1>Publicaciones</h1>
+    <div id="postsContainer"></div>
+
+    <footer>
+      <div class="footer">
+        <p>
+          Desarrollo Full-Stack. Máster en Ingeniería del Software 2023-2024.
+        </p>
+      </div>
+    </footer>
+
+    <!-- jQuery library -->
+    <script src="/stylesheets/jquery-3.5.1.slim.min.js"></script>
+    <!-- Popper JS -->
+    <script src="/stylesheets/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="/stylesheets/bootstrap.min.js"></script>
+    <!-- Custom scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SW -->
+    <script src="/javascripts/sw.js"></script>
+    <!-- Main JS -->
+    <script src="/javascripts/main.js"></script>
+    <!-- IndexDB -->
+    <script src="/javascripts/indexdb.js"></script>
+    <!-- TinyMCE -->
+    <script src="../tinymce/tinymce.min.js"></script>
+    <!-- Fechas -->
+    <script src="/javascripts/fechas.js"></script>
+    <!-- Textarea -->
+    <script>
+      tinymce.init({
+        selector: "#publicaciones",
+        plugins: `advlist autolink lists
+      link image charmap print preview hr anchor pagebreak`,
+        toolbar_mode: "floating",
+        tinycomments_mode: "embedded",
+        tinycomments_author: `Author
+      name`,
+      });
+
+      tinymce.init({
+        selector: "#comentario",
+        plugins: `advlist autolink lists
+        link image charmap print preview hr anchor pagebreak`,
+        toolbar_mode: "floating",
+        tinycomments_mode: "embedded",
+        tinycomments_author: `Author
+        name`,
+      });
+    </script>
+    <!-- Login button -->
+    <script>
+      var currentPath = window.location.pathname;
+      if (currentPath === "/login") {
+        var cerrarSesionNavItem = document.getElementById(
+          "cerrarSesionNavItem"
+        );
+        if (cerrarSesionNavItem) {
+          cerrarSesionNavItem.style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>

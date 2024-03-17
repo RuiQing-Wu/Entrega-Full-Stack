@@ -1,6 +1,16 @@
-<!-- Barra de navegación de Bootstrap -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <a class="navbar-brand" href="#">Mi Blog</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNav"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
@@ -22,5 +32,6 @@
 <script>
   var currentPath = window.location.pathname; if (currentPath === "/login") {
   var cerrarSesionNavItem = document.getElementById('cerrarSesionNavItem'); if
-  (cerrarSesionNavItem) { cerrarSesionNavItem.style.display = 'none'; } }
+  (cerrarSesionNavItem) { cerrarSesionNavItem.classList.add('d-lg-block'); //
+  Mostrar en dispositivos grandes } }
 </script>

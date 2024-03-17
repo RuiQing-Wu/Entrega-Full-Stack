@@ -1,7 +1,6 @@
 const mongoClient = require("../config/mongoClient");
 let db = mongoClient.connectMongo();
 const modelPublicaciones = require("../models/publicaciones");
-const modelComentarios = require("../models/comentarios");
 
 class publicacionesRepository {
   static async getPublicaciones(req) {

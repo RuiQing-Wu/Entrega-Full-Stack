@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-12">
       {{#each publicaciones}}
-        <div class="card mb-3">
+        <div class="card mb-3" id="publicacion-{{this._id}}">
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <h4>Publicación sobre la comunidad {{this.comunidad}}</h4>
@@ -13,7 +13,7 @@
           </div>
           <div class="card-body">
             {{#each this.comentarios}}
-              <div class="card bg-light mb-3">
+              <div class="card bg-light mb-3" id="comentario-{{this._id}}">
                 <div class="card-header">
                   <div class="d-flex justify-content-between">
                     <span><i class="fas fa-user"></i> {{this.idUsuario}}</span>
@@ -49,6 +49,14 @@
                 <button type="submit" class="btn btn-primary">Añadir comentario</button>
               </form>
             </div>
+            <div
+              id="error-comentario"
+              class="alert alert-danger mt-3"
+              role="alert"
+              style="display: none;"
+            >
+              <p id="error-message-comentario"></p>
+            </div>
           </div>
         </div>
       {{/each}}
@@ -61,14 +69,17 @@
   <div class="container p-3 bg-info">
     <div class="col">
       <h3>Crear nueva publicación</h3>
-      <form id="formulario" method="POST" action="/publicaciones">
+      <form id="formulario-publicaciones" method="POST" action="/publicaciones">
         <div class="form-group">
           <label for="comunidad"><b>Selecciona una comunidad</b></label>
           <select class="form-control" name="comunidad" id="comunidad">
-            <option disabled selected value="">Selecciona una comunidad para
-              añadir la publicación</option>
+            <option disabled selected>Selecciona una comunidad para añadir la
+              publicación</option>
             {{#each comunidades}}
-              <option value="{{this._id}}">{{this.nombre}}</option>
+              <option
+                value="{{this._id}}"
+                data-nombre="{{this.nombre}}"
+              >{{this.nombre}}</option>
             {{/each}}
           </select>
         </div>
@@ -82,24 +93,28 @@
             name="publicacion"
           ></textarea>
         </div>
-        <button class="btn btn-dark" type="submit">Enviar</button>
+        <button
+          id="crear-publicacion"
+          class="btn btn-dark"
+          type="submit"
+        >Enviar</button>
       </form>
 
       <div
         id="error-comunidad"
         class="alert alert-danger mt-3"
         role="alert"
-        style="display: none;"
+        style="display: {{display}};"
       >
-        <p id="error-message-comunidad"></p>
+        {{mensajeErrorComunidad}}
       </div>
       <div
         id="error-publicacion"
         class="alert alert-danger mt-3"
         role="alert"
-        style="display: none;"
+        style="display: {{display}};"
       >
-        <p id="error-message-publicacion"></p>
+        {{mensajeErrorPublicacion}}
       </div>
     </div>
   </div>

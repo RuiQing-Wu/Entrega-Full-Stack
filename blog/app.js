@@ -6,11 +6,13 @@ var cookieParser = require("cookie-parser");
 var session = require("express-session");
 var logger = require("morgan");
 
+
 var indexRouter = require("./routes/index");
 var publicacionRouter = require("./routes/publicacion");
 var comunidadesRouter = require("./routes/comunidades");
 var loginRouter = require("./routes/login");
 var comentariosRouter = require("./routes/comentarios");
+var subscriptionRouter = require("./routes/subscription");
 
 var app = express();
 
@@ -34,6 +36,7 @@ app.engine(
   })
 );
 app.set("view engine", "hbs");
+
 
 app.use(session({ secret: "secret", resave: false, saveUninitialized: true }));
 app.use(logger("dev"));
@@ -68,6 +71,7 @@ app.use("/publicaciones", publicacionRouter);
 app.use("/comunidades", comunidadesRouter);
 app.use("/login", loginRouter);
 app.use("/comentarios", comentariosRouter);
+app.use("/subscription", subscriptionRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

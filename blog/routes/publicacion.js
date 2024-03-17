@@ -5,6 +5,9 @@ var publicacionesController = require("../controllers/publicacionesController");
 // Recibo una peticion POST a publicaciones y la envio al controlador
 router.post("/", async function (req, res) {
   try {
+    const publicacion = req.body.publicacion;
+    const comunidad = req.body.comunidad;
+
     const savePublicacion = await publicacionesController.savePublicacion(
       req,
       res

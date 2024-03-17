@@ -14,26 +14,26 @@ var https = require("https");
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || "3000");
+var port = normalizePort(process.env.PORT || "3002");
 app.set("port", port);
 
 /**
  * Create HTTP server.
  */
 
-// var server = http.createServer(app);
+var server = http.createServer(app);
 
 /**
  * Create HTTPS server.
  */
 
-var server = https.createServer(
+/*var server = https.createServer(
   {
     cert: fs.readFileSync("certificado_autofirmado_equipo5.pem"),
     key: fs.readFileSync("clave_privada_equipo5.pem"),
   },
   app
-);
+);*/
 
 /**
  * Listen on provided port, on all network interfaces.
