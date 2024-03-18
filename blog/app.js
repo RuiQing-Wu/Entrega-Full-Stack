@@ -6,7 +6,6 @@ var cookieParser = require("cookie-parser");
 var session = require("express-session");
 var logger = require("morgan");
 
-
 var indexRouter = require("./routes/index");
 var publicacionRouter = require("./routes/publicacion");
 var comunidadesRouter = require("./routes/comunidades");
@@ -37,7 +36,6 @@ app.engine(
 );
 app.set("view engine", "hbs");
 
-
 app.use(session({ secret: "secret", resave: false, saveUninitialized: true }));
 app.use(logger("dev"));
 app.use(express.json());
@@ -48,22 +46,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(
   "/tinymce",
   express.static(path.join(__dirname, "node_modules", "tinymce"))
-);
-app.use(
-  "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce", "skins"))
-);
-app.use(
-  "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce", "themes"))
-);
-app.use(
-  "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce", "plugins"))
-);
-app.use(
-  "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce", "langs"))
 );
 
 app.use("/", indexRouter);

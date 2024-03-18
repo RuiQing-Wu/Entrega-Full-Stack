@@ -14,8 +14,15 @@ class publicacionesController {
     return publicaciones;
   }
 
-  static async savePublicacion(req, res) {
-    const savePublicacion = await publicacionesRepository.savePublicacion(req);
+  static async savePublicacion(res, req, publicacion, comunidad, usuario) {
+    console.log("llega");
+    const savePublicacion = await publicacionesRepository.savePublicacion(
+      res,
+      req,
+      publicacion,
+      comunidad,
+      usuario
+    );
     return savePublicacion;
   }
 }

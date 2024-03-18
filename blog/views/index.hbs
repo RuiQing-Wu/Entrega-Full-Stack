@@ -70,6 +70,12 @@
     <div class="col">
       <h3>Crear nueva publicación</h3>
       <form id="formulario-publicaciones" method="POST" action="/publicaciones">
+        <input
+          type="hidden"
+          name="usuario"
+          id="user"
+          value="{{user.username}}"
+        />
         <div class="form-group">
           <label for="comunidad"><b>Selecciona una comunidad</b></label>
           <select class="form-control" name="comunidad" id="comunidad">
@@ -90,7 +96,7 @@
             class="form-control"
             rows="3"
             placeholder="Escribe tu publicación aquí..."
-            name="publicacion"
+            name="publicaciones"
           ></textarea>
         </div>
         <button

@@ -5,12 +5,15 @@ var publicacionesController = require("../controllers/publicacionesController");
 // Recibo una peticion POST a publicaciones y la envio al controlador
 router.post("/", async function (req, res) {
   try {
-    const publicacion = req.body.publicacion;
-    const comunidad = req.body.comunidad;
-
+    const publicacion = req.body.data.publicaciones; // Acceder al dato publicaciones en el cuerpo de la solicitud
+    const comunidad = req.body.data.comunidad;
+    const usuario = req.body.data.usuario;
     const savePublicacion = await publicacionesController.savePublicacion(
       req,
-      res
+      res,
+      publicacion,
+      comunidad,
+      usuario
     );
     if (!savePublicacion) {
       throw new Error("Error al guardar la publicacion");
