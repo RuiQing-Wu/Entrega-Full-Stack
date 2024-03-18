@@ -25,12 +25,13 @@ function openDB() {
 }
 
 // Función para guardar una notificación en IndexedDB
-async function guardarNotificacion(notificacion, comunidad) {
+async function guardarNotificacion(notificacion, comunidad, usuario) {
   const db = await openDB();
   const transaction = db.transaction(["notificaciones"], "readwrite");
   const store = transaction.objectStore("notificaciones");
 
   notificacion.comunidad = comunidad;
+  notificacion.user = usuario;
   notificacion.vista = false;
 
   store.add(notificacion);
@@ -49,20 +50,17 @@ async function marcarNotificacionComoVista(idNotificacion) {
       notification.vista = true;
       const putRequest = store.put(notification);
       putRequest.onsuccess = () => {
-        console.log("Notificación actualizada:", notification);
+        //console.log("Notificación actualizada:", notification);
       };
       putRequest.onerror = (event) => {
-        console.error(
-          "Error al actualizar la notificación:",
-          event.target.error
-        );
+        alert.error("Error al actualizar la notificación:", event.target.error);
       };
     } else {
-      console.error("Notificación no encontrada");
+      alert.error("Notificación no encontrada");
     }
   };
   request.onerror = (event) => {
-    console.error("Error al obtener la notificación:", event.target.error);
+    alert.error("Error al obtener la notificación:", event.target.error);
   };
 }
 
@@ -129,32 +127,65 @@ const subscription = async () => {
 };
 
 // Lógica para enviar el formulario al servidor
-const form = document.querySelector("#formulario-publicaciones");
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector("#formulario-publicaciones");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  var selectComunidad = document.getElementById("comunidad");
-  var nombreComunidad =
-    selectComunidad.options[selectComunidad.selectedIndex].getAttribute(
-      "data-nombre"
-    );
+    var descripcionPublicacion = tinymce.get("publicaciones").getContent();
+    var selectComunidad = document.getElementById("comunidad");
+    var idComunidad =
+      selectComunidad.options[selectComunidad.selectedIndex].value;
+    var nombreComunidad =
+      selectComunidad.options[selectComunidad.selectedIndex].getAttribute(
+        "data-nombre"
+      );
+    var usuario = document.getElementById("user").value;
 
-  // Obtener el mensaje del formulario
-  const message = `Nueva publicación en la comunidad ${nombreComunidad}`;
+    if (!descripcionPublicacion.trim() || idComunidad === "") {
+      var mensajeErrorPublicacion =
+        document.getElementById("error-publicacion");
+      mensajeErrorPublicacion.style.display = "block";
+      var mensajeErrorComunidad = document.getElementById("error-comunidad");
+      mensajeErrorComunidad.style.display = "block";
+      return;
+    }
 
-  // Guardar la notificación en IndexedDB
-  guardarNotificacion({ message }, nombreComunidad);
+    // Obtener el mensaje del formulario
+    const message = `Nueva publicación en la comunidad ${nombreComunidad}`;
 
-  // Enviar el mensaje al servidor para que envíe la notificación push
-  await fetch("/subscription/new-message", {
+    const data = {
+      publicaciones: descripcionPublicacion,
+      comunidad: idComunidad,
+      usuario: usuario,
+    };
+
+    try {
+      const response = await fetch("/publicaciones", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data }),
+      });
+
+      location.reload();
+    } catch (error) {
+      alert.log("Error al guardar la publicación");
+    }
+
+    // Guardar la notificación en IndexedDB
+    guardarNotificacion({ message }, nombreComunidad, usuario);
+
+    // Enviar el mensaje al servidor para que envíe la notificación push
+    /*await fetch("/subscription/new-message", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ message }),
+  });*/
   });
-
-  form.reset();
 });
 
 // Ejecutar la función de suscripción al cargar la página

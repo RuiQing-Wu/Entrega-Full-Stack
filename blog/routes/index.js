@@ -55,7 +55,6 @@ router.get("/", async (req, res) => {
       publicaciones: publicacionesPromises,
       comunidades: comunidadesUser,
       user: req.session.user,
-      display: "none",
     });
   } catch (error) {
     res.status(500).send(error.message);

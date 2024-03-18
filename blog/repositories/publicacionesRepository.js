@@ -27,15 +27,18 @@ class publicacionesRepository {
     }
   }
 
-  static async savePublicacion(req) {
+  static async savePublicacion(req, res, publi, comunidad, usuario) {
     try {
       //Quitar <p> y </p> de la publicacion
       //const regex = /<p>|<\/p>/g;
       //req.body.publicacion = req.body.publicacion.replace(regex, "");
 
+      console.log("Publicacion: " + publi);
+      console.log("Comunidad: " + comunidad);
+      console.log("Usuario session: " + req.session.user.id);
       const publicacion = new modelPublicaciones({
-        descripcion: req.body.publicacion,
-        comunidad: req.body.comunidad,
+        descripcion: publi,
+        comunidad: comunidad,
         usuario: req.session.user.id,
         fecha_publicacion: new Date(),
       });

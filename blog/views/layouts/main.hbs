@@ -39,21 +39,12 @@
     <script src="/javascripts/publicaciones_noti_db.js"></script>
     <!-- Usuarios y comunidades en indexDB JS 
     <script src="/javascripts/usuarios_comunidades_indexDB.js"></script> -->
-    <!-- TinyMCE -->
-    <script src="../tinymce/tinymce.min.js"></script>
     <!-- Fechas -->
     <script src="/javascripts/fechas.js"></script>
-    <script>
-      tinymce.init({ selector: '#publicaciones', plugins: `advlist autolink lists
-      link image charmap print preview hr anchor pagebreak`, toolbar_mode:
-      'floating', tinycomments_mode: 'embedded', tinycomments_author: `Author
-      name`, });
-
-      tinymce.init({ selector: '#comentario', plugins: `advlist autolink lists
-        link image charmap print preview hr anchor pagebreak`, toolbar_mode:
-        'floating', tinycomments_mode: 'embedded', tinycomments_author: `Author
-        name`, });
-    </script>
+    <!-- Script element sourcing TinyMCE -->
+    <script type="application/javascript" src= "/tinymce/tinymce.min.js"></script>
+    <!-- Script element sourcing the TinyMCE configuration -->
+    <script type="application/javascript" src= "/javascripts/tinymce-config.js"></script>
     <!-- Index push 
     <script src="/javascripts/index_push.js"></script> -->
 </body>
