@@ -50,20 +50,17 @@ async function marcarNotificacionComoVista(idNotificacion) {
       notification.vista = true;
       const putRequest = store.put(notification);
       putRequest.onsuccess = () => {
-        console.log("Notificación actualizada:", notification);
+        //console.log("Notificación actualizada:", notification);
       };
       putRequest.onerror = (event) => {
-        console.error(
-          "Error al actualizar la notificación:",
-          event.target.error
-        );
+        alert.error("Error al actualizar la notificación:", event.target.error);
       };
     } else {
-      console.error("Notificación no encontrada");
+      alert.error("Notificación no encontrada");
     }
   };
   request.onerror = (event) => {
-    console.error("Error al obtener la notificación:", event.target.error);
+    alert.error("Error al obtener la notificación:", event.target.error);
   };
 }
 
@@ -145,7 +142,14 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     var usuario = document.getElementById("user").value;
 
-    console.log("Publicaciones:", descripcionPublicacion);
+    if (!descripcionPublicacion.trim() || idComunidad === "") {
+      var mensajeErrorPublicacion =
+        document.getElementById("error-publicacion");
+      mensajeErrorPublicacion.style.display = "block";
+      var mensajeErrorComunidad = document.getElementById("error-comunidad");
+      mensajeErrorComunidad.style.display = "block";
+      return;
+    }
 
     // Obtener el mensaje del formulario
     const message = `Nueva publicación en la comunidad ${nombreComunidad}`;
@@ -167,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       location.reload();
     } catch (error) {
-      console.log("Error al guardar la publicación");
+      alert.log("Error al guardar la publicación");
     }
 
     // Guardar la notificación en IndexedDB
