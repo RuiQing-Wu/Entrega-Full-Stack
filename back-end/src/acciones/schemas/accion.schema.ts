@@ -15,6 +15,12 @@ export class AccionMongoModel {
   listaObjetivos: [];
 
   @Prop()
+  tipo: string;
+
+  @Prop()
+  totalObjetivo: number;
+
+  @Prop()
   progreso: number;
 
   @Prop({ type: mongoose.Types.ObjectId, ref: 'CausaMongoModel' })

@@ -1,0 +1,19 @@
+type ContribucionAccion {
+  id: ID!
+  idUsuario: String!
+  idAccion: String!
+  nombre: String!
+  email: String!
+  contribucion: number!
+}
+
+type Query {
+  listarContribuciones: [ContribucionAccion!]!
+  getContribucionByID(id: String!): ContribucionAccion!
+  getContribucionByIDAccion(idAccion: String!): [ContribucionAccion]!
+  getContribucionByIDUsuario(idUsuario: String!): [ContribucionAccion]!
+}
+
+type Mutation {
+  crearContribucionAccion(idUsuario: String!, idAccion: String!, nombre: String!, email: String!, contribucion: number!): ContribucionAccion!
+}

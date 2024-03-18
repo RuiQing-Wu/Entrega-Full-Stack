@@ -13,15 +13,29 @@ type User {
   role: String!
 }
 
+type ContribucionAccion {
+  id: ID!
+  idUsuario: String!
+  idAccion: String!
+  nombre: String!
+  email: String!
+  contribucion: Float!
+}
+
 type Query {
   allUsers: [User!]!
   user(id: String!): User!
   userByUsername(username: String!): User!
+  listarContribuciones: [ContribucionAccion!]!
+  getContribucionByID: ContribucionAccion!
+  getContribucionByIDAccion: [ContribucionAccion!]!
+  getContribucionByIDUsuario: [ContribucionAccion!]!
 }
 
 type Mutation {
   createUser(username: String!, password: String!, nombre: String!, telefono: String!, ciudad: String!, pais: String!): User!
   createUserDto(createUserDto: CreateUserDto!): User!
+  crearContribucionAccion(idUsuario: String!, idAccion: String!, nombre: String!, email: String!, contribucion: Float!): ContribucionAccion!
 }
 
 input CreateUserDto {

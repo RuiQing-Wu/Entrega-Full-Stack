@@ -29,18 +29,37 @@ export class User {
     role: string;
 }
 
+export class ContribucionAccion {
+    id: string;
+    idUsuario: string;
+    idAccion: string;
+    nombre: string;
+    email: string;
+    contribucion: number;
+}
+
 export abstract class IQuery {
     abstract allUsers(): User[] | Promise<User[]>;
 
     abstract user(id: string): User | Promise<User>;
 
     abstract userByUsername(username: string): User | Promise<User>;
+
+    abstract listarContribuciones(): ContribucionAccion[] | Promise<ContribucionAccion[]>;
+
+    abstract getContribucionByID(): ContribucionAccion | Promise<ContribucionAccion>;
+
+    abstract getContribucionByIDAccion(): ContribucionAccion[] | Promise<ContribucionAccion[]>;
+
+    abstract getContribucionByIDUsuario(): ContribucionAccion[] | Promise<ContribucionAccion[]>;
 }
 
 export abstract class IMutation {
     abstract createUser(username: string, password: string, nombre: string, telefono: string, ciudad: string, pais: string): User | Promise<User>;
 
     abstract createUserDto(createUserDto: CreateUserDto): User | Promise<User>;
+
+    abstract crearContribucionAccion(idUsuario: string, idAccion: string, nombre: string, email: string, contribucion: number): ContribucionAccion | Promise<ContribucionAccion>;
 }
 
 type Nullable<T> = T | null;

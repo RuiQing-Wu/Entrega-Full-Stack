@@ -21,6 +21,8 @@ export class AccionesRepositoryMongo implements AccionesRepository {
       titulo: accionModel.titulo,
       descripcion: accionModel.descripcion,
       listaObjetivos: accionModel.listaObjetivos,
+      tipo: accionModel.tipo,
+      totalObjetivo: accionModel.totalObjetivo,
       progreso: accionModel.progreso,
       causa: accionModel.causa,
     });

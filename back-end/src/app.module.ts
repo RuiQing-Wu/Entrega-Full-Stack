@@ -18,6 +18,7 @@ import { SeguidorModule } from './seguidor/seguidor.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { ContribucionAccionModule } from './contribucion-accion/contribucion-accion.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { join } from 'path';
     ApoyoRegistroModule,
     ApoyoCausaModule,
     SeguidorModule,
+    ContribucionAccionModule,
   ],
 
   controllers: [AppController],

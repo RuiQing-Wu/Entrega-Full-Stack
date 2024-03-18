@@ -29,6 +29,20 @@ export class CreateAccionDto {
   listaObjetivos: string[];
 
   @ApiProperty({
+    example: 'Monetaria',
+    description: 'Tipo de la accion',
+  })
+  @IsNotEmpty()
+  tipo: string;
+
+  @ApiProperty({
+    example: 100,
+    description: 'Objetivo total a alcanzar',
+  })
+  @IsNotEmpty()
+  totalObjetivo: number;
+
+  @ApiProperty({
     example: 22,
     description: 'Progreso de la accion',
   })

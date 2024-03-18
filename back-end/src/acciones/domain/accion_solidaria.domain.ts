@@ -3,6 +3,8 @@ export class AccionSolidaria {
   readonly titulo: string;
   readonly descripcion: string;
   readonly listaObjetivos: string[];
+  readonly tipo: string;
+  readonly totalObjetivo: number;
   readonly progreso: number;
   readonly causa: string;
 
@@ -11,6 +13,8 @@ export class AccionSolidaria {
     titulo,
     descripcion,
     listaObjetivos,
+    tipo,
+    totalObjetivo,
     progreso,
     causa,
   }: {
@@ -18,6 +22,8 @@ export class AccionSolidaria {
     titulo: string;
     descripcion: string;
     listaObjetivos: string[];
+    tipo: string;
+    totalObjetivo: number;
     progreso: number;
     causa: string;
   }) {
@@ -25,6 +31,8 @@ export class AccionSolidaria {
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.listaObjetivos = listaObjetivos;
+    this.tipo = tipo;
+    this.totalObjetivo = totalObjetivo;
     this.progreso = progreso;
     this.causa = causa;
   }
