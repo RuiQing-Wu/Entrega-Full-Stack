@@ -4,7 +4,7 @@ type ContribucionAccion {
   idAccion: String!
   nombre: String!
   email: String!
-  contribucion: number!
+  contribucion: Float!
 }
 
 type Query {
@@ -15,5 +15,5 @@ type Query {
 }
 
 type Mutation {
-  crearContribucionAccion(idUsuario: String!, idAccion: String!, nombre: String!, email: String!, contribucion: number!): ContribucionAccion!
+  crearContribucionAccion(idUsuario: String!, idAccion: String!, nombre: String!, email: String!, contribucion: Float!): ContribucionAccion!
 }
