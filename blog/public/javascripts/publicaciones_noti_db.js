@@ -129,63 +129,65 @@ const subscription = async () => {
 // Lógica para enviar el formulario al servidor
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector("#formulario-publicaciones");
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    var descripcionPublicacion = tinymce.get("publicaciones").getContent();
-    var selectComunidad = document.getElementById("comunidad");
-    var idComunidad =
-      selectComunidad.options[selectComunidad.selectedIndex].value;
-    var nombreComunidad =
-      selectComunidad.options[selectComunidad.selectedIndex].getAttribute(
-        "data-nombre"
-      );
-    var usuario = document.getElementById("user").value;
+      var descripcionPublicacion = tinymce.get("publicaciones").getContent();
+      var selectComunidad = document.getElementById("comunidad");
+      var idComunidad =
+        selectComunidad.options[selectComunidad.selectedIndex].value;
+      var nombreComunidad =
+        selectComunidad.options[selectComunidad.selectedIndex].getAttribute(
+          "data-nombre"
+        );
+      var usuario = document.getElementById("user").value;
 
-    if (!descripcionPublicacion.trim() || idComunidad === "") {
-      var mensajeErrorPublicacion =
-        document.getElementById("error-publicacion");
-      mensajeErrorPublicacion.style.display = "block";
-      var mensajeErrorComunidad = document.getElementById("error-comunidad");
-      mensajeErrorComunidad.style.display = "block";
-      return;
-    }
+      if (!descripcionPublicacion.trim() || idComunidad === "") {
+        var mensajeErrorPublicacion =
+          document.getElementById("error-publicacion");
+        mensajeErrorPublicacion.style.display = "block";
+        var mensajeErrorComunidad = document.getElementById("error-comunidad");
+        mensajeErrorComunidad.style.display = "block";
+        return;
+      }
 
-    // Obtener el mensaje del formulario
-    const message = `Nueva publicación en la comunidad ${nombreComunidad}`;
+      // Obtener el mensaje del formulario
+      const message = `Nueva publicación en la comunidad ${nombreComunidad}`;
 
-    const data = {
-      publicaciones: descripcionPublicacion,
-      comunidad: idComunidad,
-      usuario: usuario,
-    };
+      const data = {
+        publicaciones: descripcionPublicacion,
+        comunidad: idComunidad,
+        usuario: usuario,
+      };
 
-    try {
-      const response = await fetch("/publicaciones", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data }),
-      });
+      try {
+        const response = await fetch("/publicaciones", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data }),
+        });
 
-      location.reload();
-    } catch (error) {
-      alert.log("Error al guardar la publicación");
-    }
+        location.reload();
+      } catch (error) {
+        alert.log("Error al guardar la publicación");
+      }
 
-    // Guardar la notificación en IndexedDB
-    guardarNotificacion({ message }, nombreComunidad, usuario);
+      // Guardar la notificación en IndexedDB
+      guardarNotificacion({ message }, nombreComunidad, usuario);
 
-    // Enviar el mensaje al servidor para que envíe la notificación push
-    /*await fetch("/subscription/new-message", {
+      // Enviar el mensaje al servidor para que envíe la notificación push
+      /*await fetch("/subscription/new-message", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ message }),
   });*/
-  });
+    });
+  }
 });
 
 // Ejecutar la función de suscripción al cargar la página
@@ -193,20 +195,28 @@ subscription();
 
 // En el evento load, obtener las notificaciones y marcarlas como vistas
 window.addEventListener("load", async function () {
-  obtenerNotificaciones(async function (notificaciones) {
-    for (const notificacion of notificaciones) {
-      if (!notificacion.vista) {
-        const { message, id } = notificacion;
-        await fetch("/subscription/new-message", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ message }),
-        });
-        // Marcar la notificación como vista después de enviarla
-        await marcarNotificacionComoVista(id);
+  document.addEventListener("DOMContentLoaded", async function () {
+    obtenerNotificaciones(async function (notificaciones) {
+      var usuario = document.getElementById("user");
+      if (usuario) {
+        var usuario = usuario.value;
+        for (const notificacion of notificaciones) {
+          if (notificacion.user === usuario) {
+            await marcarNotificacionComoVista(notificacion.id);
+          } else if (!notificacion.vista) {
+            const { message, id } = notificacion;
+            await fetch("/subscription/new-message", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ message }),
+            });
+            // Marcar la notificación como vista después de enviarla
+            await marcarNotificacionComoVista(id);
+          }
+        }
       }
-    }
+    });
   });
 });

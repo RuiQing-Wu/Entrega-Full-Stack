@@ -23,7 +23,7 @@
           id="cerrarSesionLink"
           class="nav-link text-danger"
           href="/login/cerrar-sesion"
-        >Cerrar sesión</a>
+        >Cerrar sesión <i class="fa fa-sign-in" aria-hidden="true"></i></a>
       </li>
     </ul>
   </div>
@@ -32,5 +32,5 @@
 <script>
   var currentPath = window.location.pathname; if (currentPath === "/login") {
   var cerrarSesionNavItem = document.getElementById('cerrarSesionNavItem'); if
-  (cerrarSesionNavItem) { cerrarSesionNavItem.classList.add('d-lg-block'); } }
+  (cerrarSesionNavItem) { cerrarSesionNavItem.classList.add('d-none'); } }
 </script>

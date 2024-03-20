@@ -6,7 +6,9 @@
         <div class="card mb-3" id="publicacion-{{this._id}}">
           <div class="card-body">
             <div class="d-flex justify-content-between">
-              <h4>Publicación sobre la comunidad {{this.comunidad}}</h4>
+              <h4><i class="fa fa-star" aria-hidden="true"></i>
+                Publicación sobre la comunidad
+                {{this.comunidad}}</h4>
               <span id="fecha_publicacion">{{this.fecha_publicacion}}</span>
             </div>
             {{{this.descripcion}}}
@@ -16,7 +18,8 @@
               <div class="card bg-light mb-3" id="comentario-{{this._id}}">
                 <div class="card-header">
                   <div class="d-flex justify-content-between">
-                    <span><i class="fas fa-user"></i> {{this.idUsuario}}</span>
+                    <span><i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      {{this.idUsuario}}</span>
                     <span id="fecha_comentario">{{this.fecha_comentario}}</span>
                   </div>
                 </div>
@@ -29,7 +32,8 @@
           <!-- Botón de "Añadir comentario" con data-id -->
           <div class="card-footer">
             <div id="formulario-comentario" class="card-body">
-              <h5>Añadir nuevo comentario</h5>
+              <h5><i class="fa fa-comments-o" aria-hidden="true"></i>
+                Añadir nuevo comentario</h5>
               <form id="comentario-form" method="POST" action="/comentarios">
                 <input
                   type="hidden"

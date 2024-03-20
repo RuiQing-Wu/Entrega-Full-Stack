@@ -3,24 +3,48 @@
     <h1 class="text-center pt-5">Iniciar sesión</h1>
     <form method="POST" action="/login/user-login">
       <div class="form-group text-center">
-        <label for="username">Nombre de usuario</label>
-        <input
-          type="text"
-          class="form-control"
-          id="username"
-          name="username"
-          placeholder="Introduce tu nombre de usuario"
-        />
+        <label for="username">
+          Nombre de usuario</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i
+                class="fa fa-user"
+                aria-hidden="true"
+                style="font-size: 1rem;"
+              ></i>
+            </span>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Introduce tu nombre de usuario"
+          />
+        </div>
       </div>
       <div class="form-group text-center">
-        <label for="password">Contraseña</label>
-        <input
-          type="password"
-          class="form-control"
-          id="password"
-          name="password"
-          placeholder="Introduce tu contraseña"
-        />
+        <label for="password">
+          Contraseña</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i
+                class="fa fa-key"
+                aria-hidden="true"
+                style="font-size: 1rem;"
+              ></i>
+            </span>
+          </div>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Introduce tu contraseña"
+          />
+        </div>
       </div>
       <div class="text-center">
         <button class="btn btn-primary btn-block" type="submit">Iniciar sesión</button>
