@@ -13,9 +13,9 @@ class usersRepository {
     }
   }
 
-  static async getUserById(req) {
+  static async getUserById(res, req, id) {
     try {
-      const user = await modelUsers.findById(req);
+      const user = await modelUsers.findById(id).lean();
       return user;
     } catch (error) {
       throw error;

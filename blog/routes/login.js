@@ -7,6 +7,16 @@ router.get("/", function (req, res, next) {
   res.render("login", { display: "none" });
 });
 
+router.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ error: "ID de usuario no proporcionado" });
+  }
+
+  const user = await usersController.getUserById(res, req, id);
+  return res.status(200).json(user);
+});
+
 router.post("/user-login", async function (req, res, next) {
   const user = await usersController.userLogin(req, res);
   if (!user) {
@@ -21,7 +31,7 @@ router.post("/user-login", async function (req, res, next) {
   res.redirect("/");
 });
 
-router.get("/cerrar-sesion", function (req, res, next) {
+router.get("/user/cerrar-sesion", function (req, res, next) {
   req.session.destroy();
   res.redirect("/login");
 });

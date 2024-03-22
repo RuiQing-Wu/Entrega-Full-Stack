@@ -15,7 +15,6 @@ class publicacionesController {
   }
 
   static async savePublicacion(res, req, publicacion, comunidad, usuario) {
-    console.log("llega");
     const savePublicacion = await publicacionesRepository.savePublicacion(
       res,
       req,

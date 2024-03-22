@@ -1,6 +1,6 @@
 const usersRepository = require("../repositories/usersRepository");
 
-class loginController {
+class usersController {
   static async userLogin(req, res) {
     try {
       const user = await usersRepository.userLogin(
@@ -13,14 +13,15 @@ class loginController {
     }
   }
 
-  static async getUserById(req, res) {
+  static async getUserById(res, req, id) {
     try {
-      const user = await usersRepository.getUserById(req);
+      const user = await usersRepository.getUserById(res, req, id);
+
       return user;
     } catch (error) {
-      res.status(500).send(error.message);
+      console.error("Error al obtener usuario por ID:", error);
     }
   }
 }
 
-module.exports = loginController;
+module.exports = usersController;

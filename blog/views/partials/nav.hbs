@@ -14,7 +14,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Inicio</a>
+        <a id="name-user" class="nav-link" href="/">{{user.username}}</a>
       </li>
     </ul>
     <ul class="navbar-nav">
@@ -22,7 +22,7 @@
         <a
           id="cerrarSesionLink"
           class="nav-link text-danger"
-          href="/login/cerrar-sesion"
+          href="/login/user/cerrar-sesion"
         >Cerrar sesión <i class="fa fa-sign-in" aria-hidden="true"></i></a>
       </li>
     </ul>

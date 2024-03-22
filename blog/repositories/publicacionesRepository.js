@@ -33,13 +33,10 @@ class publicacionesRepository {
       //const regex = /<p>|<\/p>/g;
       //req.body.publicacion = req.body.publicacion.replace(regex, "");
 
-      console.log("Publicacion: " + publi);
-      console.log("Comunidad: " + comunidad);
-      console.log("Usuario session: " + req.session.user.id);
       const publicacion = new modelPublicaciones({
         descripcion: publi,
         comunidad: comunidad,
-        usuario: req.session.user.id,
+        usuario: "juan",
         fecha_publicacion: new Date(),
       });
 

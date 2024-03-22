@@ -19,11 +19,12 @@ router.get("/", async (req, res) => {
     const comunidadesUser = await comunidadesController.getComunidadesByAdminId(
       user.id
     );
+
     const publicacionesPromises = [];
 
     for (const comunidad of miembroComunidades) {
       const publicaciones = await publicacionesController.getPublicaciones(
-        comunidad._id
+        comunidad.nombre
       );
 
       for (const publicacion of publicaciones) {

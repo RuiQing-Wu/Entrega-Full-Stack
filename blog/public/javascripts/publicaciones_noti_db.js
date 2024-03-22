@@ -24,44 +24,161 @@ function openDB() {
   });
 }
 
-// Función para guardar una notificación en IndexedDB
-async function guardarNotificacion(notificacion, comunidad, usuario) {
-  const db = await openDB();
-  const transaction = db.transaction(["notificaciones"], "readwrite");
-  const store = transaction.objectStore("notificaciones");
+async function obtenerDatosNotificacion(idComunidad) {
+  try {
+    const usuarios = await obtenerUsuariosComunidad(idComunidad);
+    const usuariosComunidad = [];
 
-  notificacion.comunidad = comunidad;
-  notificacion.user = usuario;
-  notificacion.vista = false;
+    for (const usuarioId of usuarios) {
+      const username = await obtenerUsernameUsuario(usuarioId);
+      if (username) {
+        usuariosComunidad.push(username);
+      }
+    }
 
-  store.add(notificacion);
+    return { usuariosComunidad, usuarios };
+  } catch (error) {
+    console.error("Error al obtener datos de notificación:", error);
+    throw error;
+  }
+}
+
+async function obtenerUsuariosComunidad(idComunidad) {
+  try {
+    const response = await fetch(`/comunidades/notificacion/${idComunidad}`);
+    const comunidad = await response.json();
+    return comunidad.usuarios;
+  } catch (error) {
+    console.error("Error al obtener los usuarios de la comunidad:", error);
+    throw error;
+  }
+}
+
+async function obtenerUsernameUsuario(idUsuario) {
+  try {
+    const response = await fetch(`/login/${idUsuario}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      const usuario = await response.json();
+
+      return usuario.username;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error al obtener el nombre de usuario:", error);
+    throw error;
+  }
+}
+
+async function guardarNotificacion(
+  notificacion,
+  comunidad,
+  usuario,
+  idComunidad
+) {
+  try {
+    obtenerDatosNotificacion(idComunidad)
+      .then(async ({ usuariosComunidad }) => {
+        notificacion.usuarios = usuariosComunidad.map((usuario) => ({
+          usuario,
+          vista: false,
+        }));
+        notificacion.comunidad = comunidad;
+        notificacion.idComunidad = idComunidad;
+        notificacion.user = usuario;
+        notificacion.vista = false;
+
+        const db = await openDB();
+        const transaction = db.transaction(["notificaciones"], "readwrite");
+        const store = transaction.objectStore("notificaciones");
+
+        const addRequest = store.add(notificacion);
+
+        addRequest.onsuccess = (event) => {
+          console.log("Notificación agregada correctamente a IndexedDB");
+        };
+
+        addRequest.onerror = (event) => {
+          console.error(
+            "Error al agregar la notificación a IndexedDB:",
+            event.target.error
+          );
+        };
+
+        transaction.oncomplete = (event) => {
+          console.log("Transacción completada correctamente");
+        };
+
+        transaction.onerror = (event) => {
+          console.error("Error en la transacción:", event.target.error);
+        };
+      })
+      .catch((error) => {
+        console.error("Error al obtener datos de notificación:", error);
+      });
+  } catch (error) {
+    console.error("Error al guardar la notificación:", error);
+  }
 }
 
 // Función para marcar una notificación como vista
-async function marcarNotificacionComoVista(idNotificacion) {
-  const db = await openDB();
-  const transaction = db.transaction(["notificaciones"], "readwrite");
-  const store = transaction.objectStore("notificaciones");
+async function marcarNotificacionComoVista(idNotificacion, usuarioActual) {
+  try {
+    const db = await openDB();
+    const transaction = db.transaction(["notificaciones"], "readwrite");
+    const store = transaction.objectStore("notificaciones");
 
-  const request = store.get(idNotificacion);
-  request.onsuccess = async (event) => {
-    const notification = event.target.result;
-    if (notification) {
-      notification.vista = true;
-      const putRequest = store.put(notification);
-      putRequest.onsuccess = () => {
-        //console.log("Notificación actualizada:", notification);
-      };
-      putRequest.onerror = (event) => {
-        alert.error("Error al actualizar la notificación:", event.target.error);
-      };
-    } else {
-      alert.error("Notificación no encontrada");
-    }
-  };
-  request.onerror = (event) => {
-    alert.error("Error al obtener la notificación:", event.target.error);
-  };
+    const request = store.get(idNotificacion);
+    request.onsuccess = async (event) => {
+      const notification = event.target.result;
+      if (notification) {
+        const usuarios = notification.usuarios;
+
+        // Encontrar el índice del usuario actual en el array de usuarios
+        const index = usuarios.findIndex(
+          (user) => user.usuario === usuarioActual
+        );
+
+        // Verificar si se encontró al usuario actual en la notificación
+        if (index !== -1) {
+          // Marcar la propiedad vista como true solo para el usuario actual
+          usuarios[index].vista = true;
+
+          // Actualizar la notificación en IndexedDB
+          const putRequest = store.put(notification);
+          putRequest.onsuccess = () => {
+            console.log(
+              `Notificación marcada como vista para el usuario ${usuarioActual}`
+            );
+          };
+          putRequest.onerror = (event) => {
+            console.error(
+              "Error al actualizar la notificación:",
+              event.target.error
+            );
+          };
+        } else {
+          console.error(
+            "El usuario actual no tiene acceso a esta notificación"
+          );
+        }
+      } else {
+        console.error("Notificación no encontrada");
+      }
+    };
+
+    request.onerror = (event) => {
+      console.error("Error al obtener la notificación:", event.target.error);
+    };
+  } catch (error) {
+    console.error("Error al marcar notificación como vista:", error);
+  }
 }
 
 // Función para obtener todas las notificaciones almacenadas con su ID
@@ -157,7 +274,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const data = {
         publicaciones: descripcionPublicacion,
-        comunidad: idComunidad,
+        idComunidad: idComunidad,
+        comunidad: nombreComunidad,
         usuario: usuario,
       };
 
@@ -170,13 +288,13 @@ document.addEventListener("DOMContentLoaded", function () {
           body: JSON.stringify({ data }),
         });
 
+        // Guardar la notificación en IndexedDB
+        guardarNotificacion({ message }, nombreComunidad, usuario, idComunidad);
+
         location.reload();
       } catch (error) {
         alert.log("Error al guardar la publicación");
       }
-
-      // Guardar la notificación en IndexedDB
-      guardarNotificacion({ message }, nombreComunidad, usuario);
 
       // Enviar el mensaje al servidor para que envíe la notificación push
       /*await fetch("/subscription/new-message", {
@@ -194,8 +312,41 @@ document.addEventListener("DOMContentLoaded", function () {
 subscription();
 
 // En el evento load, obtener las notificaciones y marcarlas como vistas
-window.addEventListener("load", async function () {
-  document.addEventListener("DOMContentLoaded", async function () {
+
+document.addEventListener("DOMContentLoaded", async function () {
+  obtenerNotificaciones(async function (notificaciones) {
+    var usuario = document.getElementById("name-user");
+    if (usuario) {
+      var usuarioActual = usuario.textContent.trim();
+      const notificacionesUsuarioActual = notificaciones.filter(
+        (notificacion) => notificacion.user !== usuarioActual
+      );
+      for (const notificacion of notificacionesUsuarioActual) {
+        const usuariosNotificacion = notificacion.usuarios;
+
+        for (let i = 1; i < usuariosNotificacion.length; i++) {
+          // Accede a la propiedad 'vista' de cada usuario en la notificación
+          const usuario = usuariosNotificacion[i];
+
+          // Verifica si el usuario ha visto la notificación
+          if (usuario.usuario === usuarioActual && !usuario.vista) {
+            await fetch("/subscription/new-message", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ message: notificacion.message }),
+            });
+            await marcarNotificacionComoVista(notificacion.id, usuarioActual);
+          }
+        }
+      }
+    }
+  });
+});
+
+/*
+    
     obtenerNotificaciones(async function (notificaciones) {
       var usuario = document.getElementById("user");
       if (usuario) {
@@ -219,4 +370,4 @@ window.addEventListener("load", async function () {
       }
     });
   });
-});
+});*/
