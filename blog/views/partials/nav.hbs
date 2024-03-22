@@ -13,10 +13,20 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
+
       <li class="nav-item active">
-        <a class="nav-link"><i>Te has logueado con el usuario
-            <span id="name-user"><b>{{user.username}}</b></span></i></a>
+        {{#if user.username}}
+          <a class="nav-link"><i>Te has logueado con el usuario
+              <span id="name-user"><b>{{user.username}}</b></span></i></a>
+        {{else}}
+          <a class="nav-link" href="/login"><i
+              class="fa fa-sign-in"
+              aria-hidden="true"
+            ></i>
+            Iniciar sesión</a>
+        {{/if}}
       </li>
+
     </ul>
     <ul class="navbar-nav">
       <li id="cerrarSesionNavItem" class="nav-item">
