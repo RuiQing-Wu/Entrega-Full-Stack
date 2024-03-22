@@ -13,6 +13,15 @@ class usersRepository {
     }
   }
 
+  static async getUserComentarioById(id) {
+    try {
+      const user = await modelUsers.findById(id).lean();
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getUserById(res, req, id) {
     try {
       const user = await modelUsers.findById(id).lean();

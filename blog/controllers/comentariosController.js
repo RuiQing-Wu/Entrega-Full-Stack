@@ -18,7 +18,7 @@ class comentariosController {
   }
 
   static async saveComentario(req, res) {
-    const saveComentario = await comentariosRepository.saveComentario(req);
+    const saveComentario = await comentariosRepository.saveComentario(req, res);
     return saveComentario;
   }
 }

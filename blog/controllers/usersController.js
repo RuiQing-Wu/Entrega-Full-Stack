@@ -13,6 +13,15 @@ class usersController {
     }
   }
 
+  static async getUserComentarioById(id) {
+    try {
+      const user = await usersRepository.getUserComentarioById(id);
+      return user;
+    } catch (error) {
+      console.error("Error al obtener usuario por ID:", error);
+    }
+  }
+
   static async getUserById(res, req, id) {
     try {
       const user = await usersRepository.getUserById(res, req, id);

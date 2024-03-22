@@ -24,7 +24,7 @@ class comentariosRepository {
     }
   }
 
-  static async saveComentario(req) {
+  static async saveComentario(req, res) {
     try {
       const comentario = new modelComentarios({
         idPublicacion: req.body.id_publicacion,

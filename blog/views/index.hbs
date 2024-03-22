@@ -29,12 +29,23 @@
               </div>
             {{/each}}
           </div>
-          <!-- Botón de "Añadir comentario" con data-id -->
           <div class="card-footer">
             <div id="formulario-comentario" class="card-body">
               <h5><i class="fa fa-comments-o" aria-hidden="true"></i>
                 Añadir nuevo comentario</h5>
               <form id="comentario-form" method="POST" action="/comentarios">
+                <input
+                  type="hidden"
+                  name="nombreComunidad"
+                  id="nombreComunidad"
+                  value="{{this.comunidad}}"
+                />
+                <input
+                  type="hidden"
+                  name="usuario"
+                  id="usuario"
+                  value="{{user.username}}"
+                />
                 <input
                   type="hidden"
                   name="id_publicacion"
@@ -52,6 +63,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Añadir comentario</button>
               </form>
+
             </div>
             <div
               id="error-comentario"

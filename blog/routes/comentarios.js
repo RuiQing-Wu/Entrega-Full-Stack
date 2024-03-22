@@ -13,8 +13,7 @@ router.get("/:id", async function (req, res) {
 
 router.post("/", async function (req, res) {
   try {
-    console.log(req.body);
-    const saveComentario = await comentariosController.saveComentario(req);
+    const saveComentario = await comentariosController.saveComentario(req, res);
     if (!saveComentario) {
       throw new Error("Error al guardar el comentario");
     }

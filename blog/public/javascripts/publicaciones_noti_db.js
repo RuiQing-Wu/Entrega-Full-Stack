@@ -17,8 +17,6 @@ function openDB() {
           keyPath: "id",
           autoIncrement: true,
         });
-        // Añadir un índice para el campo "vista"
-        store.createIndex("vista", "vista", { unique: false });
       }
     };
   });
@@ -293,7 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         location.reload();
       } catch (error) {
-        alert.log("Error al guardar la publicación");
+        console.log("Error al guardar la publicación", error);
       }
 
       // Enviar el mensaje al servidor para que envíe la notificación push

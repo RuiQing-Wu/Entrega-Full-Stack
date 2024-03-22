@@ -33,9 +33,10 @@ router.get("/", async (req, res) => {
             publicacion._id
           );
         for (const comentario of comentarios) {
-          const usuario = await usersController.getUserById(
+          const usuario = await usersController.getUserComentarioById(
             comentario.idUsuario
           );
+
           comentario.idUsuario = usuario.username;
         }
         publicacion.comentarios = comentarios;
@@ -52,11 +53,19 @@ router.get("/", async (req, res) => {
       });
     });
 
-    res.render("index", {
-      publicaciones: publicacionesPromises,
-      comunidades: comunidadesUser,
-      user: req.session.user,
-    });
+    if (req.headers.accept.includes("application/json")) {
+      res.status(200).json({
+        publicaciones: publicacionesPromises,
+        comunidades: comunidadesUser,
+        user: req.session.user,
+      });
+    } else {
+      res.render("index", {
+        publicaciones: publicacionesPromises,
+        comunidades: comunidadesUser,
+        user: req.session.user,
+      });
+    }
   } catch (error) {
     res.status(500).send(error.message);
   }
