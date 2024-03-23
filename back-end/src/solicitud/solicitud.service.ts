@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateSolicitudDto } from './dto/create-solicitud.dto';
-import { UpdateSolicitudDto } from './dto/update-solicitud.dto';
+import { UpdateSolicitudDto } from './dto/update-solicitud-estado.dto';
 import { SolicitudesRepository } from './repositories/solicitudes.repository';
 import { ISolicitudesService } from './interfaces/solicitudes.service.interface';
 import { Solicitud } from './domain/solicitud.domain';
 import { IllegalArgumentError } from 'src/base/argumentError';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class SolicitudServiceImpl extends ISolicitudesService {
@@ -81,5 +82,27 @@ export class SolicitudServiceImpl extends ISolicitudesService {
     }
 
     return await this.solicitudesRepository.delete(id);
+  }
+
+  @Cron(CronExpression.EVERY_10_MINUTES)
+  async revisarSolicitudesVencidas() {
+    const solicitudes = await this.findAll();
+    const fechaActual = new Date();
+    const limiteTiempo = 7 * 24 * 60 * 60 * 1000;
+
+    for (const solicitud of solicitudes) {
+      const fechaSolicitud = new Date(solicitud.fechaSolicitud);
+      const fechaLimite = new Date(fechaSolicitud.getTime() + limiteTiempo);
+
+      if (fechaActual > fechaLimite && solicitud.estado === 'pendiente') {
+        const solicitudUpdateDto = new UpdateSolicitudDto('rechazada');
+
+        try {
+          await this.update(solicitud.id, solicitudUpdateDto);
+        } catch (error) {
+          throw new Error('Error al actualizar la solicitud');
+        }
+      }
+    }
   }
 }
