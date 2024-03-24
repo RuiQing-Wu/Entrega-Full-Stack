@@ -37,5 +37,19 @@
   "id": "/",
   "display": "standalone",
   "background_color": "#2596be",
-  "theme_color": "#2596be"
+  "theme_color": "#2596be",
+  "description": "Nuevo blog de solidarianID donde podrás crear nuevas publicaciones y comentarios sobre las comunidades de la plataforma",
+  "prefer_related_applications": false,
+  "lang": "es",
+  "categories": ["blog", "comunidad", "solidarianID"],
+  "scope": "/",
+  "screenshots": [
+    {
+      "src": "images/comunidad.jpg",
+      "sizes": "320x320",
+      "type": "image/jpg",
+      "form_factor": "wide",
+      "label": "Blog solidarianID"
+    }
+  ]
 }
