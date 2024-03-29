@@ -3,7 +3,7 @@ import { IContribucionAccionService } from "./interfaces/contribucion-accion.ser
 import { ContribucionAccion } from "./domain/contribucion-accion.domain";
 import { Public } from "src/decorators/public.decorator";
 
-@Resolver((of) => ContribucionAccion)
+@Resolver(of => ContribucionAccion)
 export class ContribucionAccionResolver {
     constructor(private readonly contribucionAccionService: IContribucionAccionService) { }
 
@@ -27,19 +27,19 @@ export class ContribucionAccionResolver {
 
     @Public()
     @Query((returns) => ContribucionAccion, {name: 'getContribucionByID'})
-    async getContribucionByID(id: string) {
+    async getContribucionByID(@Args('id') id: string) {
         return await this.contribucionAccionService.getContribucionByID(id);
     }
 
     @Public()
     @Query((returns) => [ContribucionAccion], {name: 'getContribucionByIDAccion'})
-    async getContribucionByIDAccion(idAccion: string) {
+    async getContribucionByIDAccion(@Args('idAccion') idAccion: string) {
         return await this.contribucionAccionService.getContribucionesByIDAccion(idAccion);
     }
 
     @Public()
     @Query((returns) => [ContribucionAccion], {name: 'getContribucionByIDUsuario'})
-    async getContribucionByIDUsuario(idUsuario: string) {
+    async getContribucionByIDUsuario(@Args('idUsuario') idUsuario: string) {
         return await this.contribucionAccionService.getContribucionesByIDUsuario(idUsuario);
     }
 }

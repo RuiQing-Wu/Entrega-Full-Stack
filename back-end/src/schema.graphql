@@ -27,9 +27,9 @@ type Query {
   user(id: String!): User!
   userByUsername(username: String!): User!
   listarContribuciones: [ContribucionAccion!]!
-  getContribucionByID: ContribucionAccion!
-  getContribucionByIDAccion: [ContribucionAccion!]!
-  getContribucionByIDUsuario: [ContribucionAccion!]!
+  getContribucionByID(id: String!): ContribucionAccion!
+  getContribucionByIDAccion(idAccion: String!): [ContribucionAccion!]!
+  getContribucionByIDUsuario(idUsuario: String!): [ContribucionAccion!]!
 }
 
 type Mutation {
