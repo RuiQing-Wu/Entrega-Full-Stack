@@ -7,6 +7,8 @@ async function saveAccion(
   titulo,
   descripcion,
   listaObjetivos,
+  tipo,
+  totalObjetivo,
   progreso,
   causa,
 ) {
@@ -21,6 +23,8 @@ async function saveAccion(
       titulo,
       descripcion,
       listaObjetivos,
+      tipo,
+      totalObjetivo,
       progreso,
       causa,
     }),
@@ -92,6 +96,27 @@ async function getAccionesByCausaId(idCausa) {
   return response;
 }
 
+async function actualizarProgresoAccion(idAccion, progreso) {
+  const accessToken = getToken();
+  const accion = await getAccionById(idAccion);
+
+  const accionJson = await accion.json();
+
+  const progresoActual = accionJson.progreso;
+  const progresoNuevo = progresoActual + progreso;
+
+  const response = await fetch(`${BASE_URL}/${idAccion}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ progreso: progresoNuevo }),
+  });
+
+  return response;
+}
+
 export {
   saveAccion,
   getAcciones,
@@ -99,4 +124,5 @@ export {
   getAccionByName,
   getAccionesByNameInsensitive,
   getAccionesByCausaId,
+  actualizarProgresoAccion,
 };

@@ -18,14 +18,21 @@ export default function Accion() {
   const [descripcion, setDescripcion] = useState('');
   const [objetivo, setObjetivo] = useState('');
   const [objetivos, setObjetivos] = useState('');
+  const [totalObjetivo, setTotalObjetivo] = useState(0);
   const [progreso, setProgreso] = useState(0);
   const [tituloError, setTituloError] = useState('');
   const [descripcionError, setDescripcionError] = useState('');
   const [objetivoError, setObjetivoError] = useState('');
+  const [tipoAccion, setTipoAccion] = useState({
+    kindOfStand: 'monetario',
+    another: 'another',
+  });
+  const [totalObjetivoError, setTotalObjetivoError] = useState('');
   const [progresoError, setProgresoError] = useState('');
   const [causa, setCausa] = useState([]);
   const [comunidad, setComunidad] = useState([]);
   const param = useParams();
+  const { kindOfStand } = tipoAccion;
 
   function onHomeClicked() {
     navigate('/');
@@ -64,6 +71,21 @@ export default function Accion() {
       .filter((item) => item !== '');
 
     setObjetivos(objetivosArray);
+  }
+
+  const handleTipoChanged = e => {
+    e.persist();
+    console.log(e.target.value);
+
+    setTipoAccion(prevState => ({
+      ...prevState,
+      kindOfStand: e.target.value
+    }));
+  };
+
+  function handleTotalObjetivoInput(event) {
+    setTotalObjetivo(event.target.value);
+    setTotalObjetivoError('');
   }
 
   function handleProgresoInput(event) {
@@ -123,8 +145,15 @@ export default function Accion() {
       return;
     }
 
-    if (progreso === '') {
-      setProgresoError('El progreso no puede estar vacío');
+    if (totalObjetivo === '' || totalObjetivo === 0) {
+      setTotalObjetivoError('Se debe añadir un total objetivo');
+      return;
+    }
+
+    if (progreso === '' || progreso < 0) {
+      setProgresoError(
+        'Se debe indicar el progreso de la acción, con un mínimo de 0',
+      );
       return;
     }
 
@@ -132,6 +161,8 @@ export default function Accion() {
       titulo,
       descripcion,
       objetivos,
+      tipoAccion.kindOfStand,
+      totalObjetivo,
       progreso,
       param.idCausa,
     );
@@ -222,24 +253,56 @@ export default function Accion() {
               </div>
             </Form.Group>
 
+            <Form.Check
+              inline
+              label="Monetario"
+              name="tipoAccion"
+              type="radio"
+              id={'tipoMonetario'}
+              onChange={handleTipoChanged}
+              checked={kindOfStand === 'monetario'}
+              value={'monetario'}
+            />
+            <Form.Check
+              inline
+              label="Voluntariado"
+              name="tipoAccion"
+              type="radio"
+              id={'tipoVoluntariado'}
+              onChange={handleTipoChanged}
+              checked={kindOfStand === 'voluntariado'}
+              value={'voluntariado'}
+            />
+
+            <Form.Group controlId="totalObjetivo" className="mb-3">
+              <Form.Label>Objetivo total a alcanzar</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Total objetivo"
+                className={`form-control ${
+                  totalObjetivoError ? 'is-invalid' : ''
+                } ${totalObjetivo && !totalObjetivoError ? 'is-valid' : ''}`}
+                onChange={handleTotalObjetivoInput}
+                value={totalObjetivo}
+                required
+              />
+              <div className="invalid-feedback">
+                <ErrorMessage message={totalObjetivoError} />
+              </div>
+            </Form.Group>
+
             <Form.Group controlId="progreso" className="mb-3">
               <Form.Label>Progreso de la acción solidaria</Form.Label>
-              <div>
-                <ProgressBar
-                  now={progreso}
-                  label={`${progreso}%`}
-                  striped
-                  animated
-                />
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={progreso}
-                  onChange={handleProgresoInput}
-                  style={{ width: '100%' }}
-                />
-              </div>
+              <Form.Control
+                type="number"
+                placeholder="Total objetivo"
+                className={`form-control ${progresoError ? 'is-invalid' : ''} ${
+                  progreso && !progresoError ? 'is-valid' : ''
+                }`}
+                onChange={handleProgresoInput}
+                value={progreso}
+                required
+              />
               <div className="invalid-feedback">
                 <ErrorMessage message={progresoError} />
               </div>

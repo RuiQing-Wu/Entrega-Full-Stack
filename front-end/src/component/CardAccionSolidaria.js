@@ -1,7 +1,16 @@
 import './Style/CardAccionSolidaria.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
+import Contribucion from '../pages/ApoyarAccion/ApoyoAccion';
+import Pasarela from '../pages/ApoyarAccion/PasarelaApoyoAccion';
+import { crearContribucionAccion } from '../services/contribucion_accion.service';
+import { actualizarProgresoAccion } from '../services/acciones.service';
+import {
+  HTTP_STATUS_UNAUTHORIZED,
+  alertErrorMessage,
+  checkResponseStatusCode,
+} from '../utils/utils';
 
 const CardAccionSolidaria = ({
   idAccion,
@@ -9,11 +18,18 @@ const CardAccionSolidaria = ({
   titulo,
   descripcion,
   listaObjetivos,
+  tipoContribucion,
+  totalObjetivo,
   progreso,
   detalles,
+  apoyar,
 }) => {
   let objetivos = [];
   const navigate = useNavigate();
+  const [modalShowApoyo, setModalShowApoyo] = useState(false);
+  const [modalShowPasarela, setModalShowPasarela] = useState(false);
+  const [TransactionData, setTransactionData] = useState({});
+  const porcentaje = (progreso / totalObjetivo) * 100;
 
   const getObjetivos = () => {
     if (listaObjetivos !== undefined) {
@@ -27,6 +43,42 @@ const CardAccionSolidaria = ({
     if (titulo !== ' ') {
       navigate(`/accion/${idAccion}`, { replace: true });
     }
+  }
+
+  function showModalApoyo() {
+    setModalShowApoyo(true);
+  }
+
+  function showModalPasarela() {
+    setModalShowPasarela(true);
+  }
+
+  async function makeTransaction(data) {
+    const responseActualizacion = await actualizarProgresoAccion(
+      idAccion,
+      data.contribucion,
+    );
+    if (!checkResponseStatusCode(responseActualizacion)) {
+      alertErrorMessage(responseActualizacion);
+      if (responseActualizacion.status === HTTP_STATUS_UNAUTHORIZED) navigate(`/login`);
+    } else if (responseActualizacion.status === 200) {
+      alert('Progreso actualizado con éxito');
+      const response = await crearContribucionAccion(
+        data.idUsuario,
+        idAccion,
+        data.nombre,
+        data.correo,
+        data.contribucion,
+      );
+      if(response){
+        alert('Apoyo enviado con éxito');
+      } else {
+        alert('No se pudo enviar el apoyo');
+      }
+    } else {
+      alert('No se pudo actualizar el progreso');
+    }
+    window.location.reload();
   }
 
   return (
@@ -45,7 +97,18 @@ const CardAccionSolidaria = ({
           <Col xs={12} md={6} className="m-auto">
             <Card.Title>{titulo}</Card.Title>
             {descripcion && <Card.Text>Descripción: {descripcion}</Card.Text>}
-            {progreso && <Card.Text>Progreso: {progreso}%</Card.Text>}
+            {tipoContribucion && (
+              <Card.Text>Tipo de contribución: {tipoContribucion}</Card.Text>
+            )}
+            {totalObjetivo && (
+              <Card.Text>
+                Objetivo: {totalObjetivo.toLocaleString()}
+                {tipoContribucion === 'monetario' ? '$' : ' voluntarios'}
+              </Card.Text>
+            )}
+            {progreso && (
+              <Card.Text>Progreso: {porcentaje.toFixed(2)}%</Card.Text>
+            )}
             {listaObjetivos && (
               <Card.Text>Objetivos: {objetivos || []}</Card.Text>
             )}
@@ -58,8 +121,9 @@ const CardAccionSolidaria = ({
           ></Col>
         </Row>
       </Card.Body>
-      {detalles && (
-        <Card.Footer>
+
+      <Card.Footer>
+        {detalles && (
           <Row>
             <Col xs={12} md={2} className="m-auto">
               <Button
@@ -72,8 +136,53 @@ const CardAccionSolidaria = ({
               </Button>
             </Col>
           </Row>
-        </Card.Footer>
-      )}
+        )}
+        {apoyar && (
+          <Row>
+            <Col xs={12} md={2} className="m-auto">
+              <Button
+                type="button"
+                variant="outline-primary"
+                size="sm"
+                onClick={showModalApoyo}
+              >
+                Contribuir
+              </Button>
+            </Col>
+          </Row>
+        )}
+        <Contribucion
+          show={modalShowApoyo}
+          onHide={() => {
+            setModalShowApoyo(false);
+            setTransactionData({});
+          }}
+          showPasarela={(data) => {
+            setTransactionData(data);
+            showModalPasarela();
+          }}
+          contribuirVoluntariado={(data) => {
+            makeTransaction(data);
+            setModalShowApoyo(false);
+            setTransactionData({});
+          }}
+          idAccion={idAccion}
+          tipo={tipoContribucion}
+          maxContribucion={totalObjetivo - progreso}
+        />
+        <Pasarela
+          show={modalShowPasarela}
+          onHide={() => {
+            setModalShowPasarela(false);
+            setModalShowApoyo(false);
+            makeTransaction(TransactionData);
+            setTransactionData({});
+          }}
+          cancelar={() => {
+            setModalShowPasarela(false);
+          }}
+        />
+      </Card.Footer>
     </Card>
   );
 };
