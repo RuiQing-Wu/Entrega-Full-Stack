@@ -189,6 +189,12 @@ export default function MostrarCausa() {
                         idAccion={acc.id}
                         imageUrl={'../../../imagenes/accion.png'}
                         titulo={acc.titulo}
+                        descripcion={acc.descripcion}
+                        listaObjetivos={acc.listaObjetivos}
+                        tipo={acc.tipo}
+                        totalObjetivo={acc.totalObjetivo}
+                        progreso={acc.progreso}
+                        causa={param.idCausa}
                         detalles={true}
                       />
                     </Col>

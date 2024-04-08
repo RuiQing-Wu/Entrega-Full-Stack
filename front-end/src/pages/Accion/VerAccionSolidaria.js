@@ -105,11 +105,15 @@ export default function MostrarAcciones() {
       {accion && (
         <CardAccionSolidaria
           imageUrl={'../../../imagenes/accion.png'}
+          idAccion={accion.id}
           titulo={accion.titulo}
           descripcion={accion.descripcion}
           listaObjetivos={accion.listaObjetivos}
+          tipoContribucion={accion.tipo}
+          totalObjetivo={accion.totalObjetivo}
           progreso={accion.progreso}
           detalles={false}
+          apoyar={true}
         />
       )}
     </div>

@@ -10,9 +10,9 @@ const filesToCache = [
   "/stylesheets/popper.min.js",
   "/stylesheets/jquery-3.5.1.slim.min.js",
   "/stylesheets/style.css",
-  "/shell.html",
-  "/javascripts/main.js",
-  "/index.html",
+  "/javascripts/notificaciones.js",
+  "shell.html",
+  "home.html",
 ];
 
 // Instalación del Service Worker y cacheo de archivos

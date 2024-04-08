@@ -47,11 +47,11 @@ export abstract class IQuery {
 
     abstract listarContribuciones(): ContribucionAccion[] | Promise<ContribucionAccion[]>;
 
-    abstract getContribucionByID(): ContribucionAccion | Promise<ContribucionAccion>;
+    abstract getContribucionByID(id: string): ContribucionAccion | Promise<ContribucionAccion>;
 
-    abstract getContribucionByIDAccion(): ContribucionAccion[] | Promise<ContribucionAccion[]>;
+    abstract getContribucionByIDAccion(idAccion: string): ContribucionAccion[] | Promise<ContribucionAccion[]>;
 
-    abstract getContribucionByIDUsuario(): ContribucionAccion[] | Promise<ContribucionAccion[]>;
+    abstract getContribucionByIDUsuario(idUsuario: string): ContribucionAccion[] | Promise<ContribucionAccion[]>;
 }
 
 export abstract class IMutation {
