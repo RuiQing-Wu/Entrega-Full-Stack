@@ -7,18 +7,27 @@ import { AccionesRepository } from './repositories/acciones.repository';
 import { EntityNotFoundError } from '../base/entityNotFounError';
 import { IllegalArgumentError } from '../base/argumentError';
 import { RepositoryError } from '../base/repositoryError';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class AccionesServiceImpl implements IAccionService {
   constructor(
     @Inject(AccionesRepository)
     private accionesRepository: AccionesRepository,
+    @Inject('NATS_SERVICE') private client: ClientProxy
   ) {
   }
 
   async create(createAccionDto: CreateAccionDto): Promise<AccionSolidaria> {
     const accion = new AccionSolidaria(createAccionDto);
-    return await this.accionesRepository.create(accion);
+    const accionCreada = await this.accionesRepository.create(accion);
+    
+    if (accionCreada) {
+      console.log('Emitiendo evento de accion solidaria creada');
+      this.client.emit('ACCION_MODULE', accionCreada);
+    }
+    
+    return accionCreada;
   }
 
   async getByName(nombre: string): Promise<AccionSolidaria> {

@@ -8,10 +8,12 @@ import { UserSchema } from './schemas/user.schema';
 import { UserController } from './users.controller';
 import { User } from './domain/user.domain';
 import { UsersResolver } from './users.resolver';
+import { NatsClientModule } from 'src/nats/nats.clients';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    NatsClientModule
   ],
 
   providers: [

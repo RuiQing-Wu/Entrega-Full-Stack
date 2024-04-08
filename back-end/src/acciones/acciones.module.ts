@@ -7,12 +7,14 @@ import { AccionSchema } from './schemas/accion.schema';
 import { IAccionService } from './interfaces/accion.service.interface';
 import { AccionesRepository } from './repositories/acciones.repository';
 import { AccionesRepositoryMongo } from './repositories/acciones.repository.mongo';
+import { NatsClientModule } from 'src/nats/nats.clients';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: AccionSolidaria.name, schema: AccionSchema },
     ]),
+    NatsClientModule
   ],
 
   controllers: [AccionesController],

@@ -19,6 +19,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ContribucionAccionModule } from './contribucion-accion/contribucion-accion.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { NatsClientModule } from './nats/nats.clients';
 
 @Module({
   imports: [
@@ -58,9 +60,10 @@ import { ContribucionAccionModule } from './contribucion-accion/contribucion-acc
     ApoyoCausaModule,
     SeguidorModule,
     ContribucionAccionModule,
+    NatsClientModule
   ],
 
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

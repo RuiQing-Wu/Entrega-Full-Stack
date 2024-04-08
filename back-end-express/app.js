@@ -8,9 +8,10 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var estadisticaRouter = require("./routes/estadistica");
 var informeRouter = require("./routes/informe");
-var publicacionRouter = require("./routes/publicacion");
-var comunidadesRouter = require("./routes/comunidades");
+// var comunidadesRouter = require("./routes/comunidades");
 
+var nats = require("nats");
+const { SERVICE } = require("./utils/constantes");
 var app = express();
 
 // view engine setup
@@ -26,38 +27,42 @@ app.engine(
 );
 app.set("view engine", "hbs");
 
+// Configuración de NATS
+async function main() {
+  const nc = await nats.connect({ servers:  "nats://localhost:4222" });
+  // Suscripción a todos los temas
+  const sub = nc.subscribe("*");
+  console.log("Conexión a NATS establecida");
+  // Procesamiento de los mensajes
+  for await (const msg of sub) {
+    if (msg.subject === SERVICE.USER_MODULE) {
+      console.log("Mensaje de usuario creado recibido");
+      console.log(`Tema: ${msg.subject}`);
+      console.log(`Mensaje recibido: ${msg.data}`);
+    }
+    else {
+      console.log("Mensaje recibido");
+      console.log(`Tema: ${msg.subject}`);
+      console.log(`Mensaje recibido: ${msg.data}`);
+    }
+    
+  }
+}
+
+main().catch((err) => {
+  console.error("Error:", err);
+});
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(
-  "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce"))
-);
-app.use(
-  "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce", "skins"))
-);
-app.use(
-  "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce", "themes"))
-);
-app.use(
-  "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce", "plugins"))
-);
-app.use(
-  "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce", "langs"))
-);
-
 app.use("/", indexRouter);
 app.use("/estadisticas", estadisticaRouter);
-app.use("/informe", informeRouter);
-app.use("/publicaciones", publicacionRouter);
-app.use("/comunidades", comunidadesRouter);
+app.use("/informes", informeRouter);
+// app.use("/comunidades", comunidadesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

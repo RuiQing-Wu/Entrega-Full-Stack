@@ -7,12 +7,15 @@ import { ComunidadesRepository } from './repositories/comunidades.repository';
 import { ConflictError } from 'src/base/conflictError';
 import { IllegalArgumentError } from 'src/base/argumentError';
 import { EntityNotFoundError } from 'src/base/entityNotFounError';
+import { ClientProxy } from '@nestjs/microservices';
+import { SERVICE } from 'src/nats/nats.clients';
 
 @Injectable()
 export class ComunidadesServiceImpl implements IComunidadesService {
   constructor(
     @Inject(ComunidadesRepository)
     private comunidadesRepository: ComunidadesRepository,
+    @Inject('NATS_SERVICE') private client: ClientProxy
   ) {}
 
   async create(createComunidadDto: CreateComunidadDto) {
@@ -47,7 +50,12 @@ export class ComunidadesServiceImpl implements IComunidadesService {
       usuarios: createComunidadDto.usuarios,
     });
 
-    return await this.comunidadesRepository.create(comunidad);
+    const comunidadCreada = await this.comunidadesRepository.create(comunidad);
+    if (comunidadCreada) {
+      console.log('Emitiendo evento de comunidad creada');
+      this.client.emit(SERVICE.COMUNIDAD_MODULE, comunidadCreada);
+    }
+    return comunidadCreada
   }
 
   async getByName(nombre: string): Promise<Comunidad> {

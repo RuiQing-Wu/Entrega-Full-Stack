@@ -39,3 +39,9 @@ services:
   environment:
    - NEO4J_AUTH=neo4j/mypassword
    - NEO4J_dbms_default__database=neo4j-solidarian
+  
+ nats:
+  container_name: nats
+  image: nats
+  ports:
+    - 4222:4222

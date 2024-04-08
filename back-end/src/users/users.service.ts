@@ -7,6 +7,8 @@ import { UsersRepository } from './repositories/users.repository';
 import { ConflictError } from 'src/base/conflictError';
 import { IllegalArgumentError } from 'src/base/argumentError';
 import { EntityNotFoundError } from 'src/base/entityNotFounError';
+import { ClientProxy } from '@nestjs/microservices';
+import { SERVICE } from 'src/nats/nats.clients';
 
 export enum Role {
   User = 'user',
@@ -17,7 +19,8 @@ export class UsersServiceImpl implements IUserService {
   constructor(
     @Inject(UsersRepository)
     private usersRepository: UsersRepository,
-  ) {}
+    @Inject('NATS_SERVICE') private client: ClientProxy
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     // Comprobar si existe el usuario
@@ -44,7 +47,14 @@ export class UsersServiceImpl implements IUserService {
       role: Role.User,
     });
 
-    return await this.usersRepository.create(newUser);
+    const user = await this.usersRepository.create(newUser);
+    
+    if (user) {
+      console.log('Emitiendo evento de usuario creado');
+      this.client.emit(SERVICE.USER_MODULE, user);
+    }
+
+    return user;
   }
 
   async findAll(): Promise<User[]> {
