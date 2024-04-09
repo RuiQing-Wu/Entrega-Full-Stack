@@ -18,8 +18,8 @@ export class ContribucionAccionRepositoryMongo implements ContribucionAccionRepo
     private toContribucionAccionDomain(contribucionModel: HydratedDocument<ContribucionAccion>): ContribucionAccion {
         const contribucion = new ContribucionAccion({
           id: contribucionModel._id.toString(),
-          idAccion: contribucionModel.idAccion,
           idUsuario: contribucionModel.idUsuario,
+          idAccion: contribucionModel.idAccion,
           nombre: contribucionModel.nombre,
           email: contribucionModel.email,
           contribucion: contribucionModel.contribucion,
