@@ -3,15 +3,18 @@ import { IContribucionAccionService } from './interfaces/contribucion-accion.ser
 import { ContribucionAccion } from './domain/contribucion-accion.domain';
 import { ContribucionAccionRepository } from './repositories/contribucion-accion.repository';
 import { EntityNotFoundError } from 'src/base/entityNotFounError';
+import { ClientProxy } from '@nestjs/microservices';
+import { SERVICE } from 'src/nats/nats.clients';
 
 @Injectable()
 export class ContribucionAccionService implements IContribucionAccionService{
     constructor(
         @Inject(ContribucionAccionRepository)
         private contribucionAccionRepository: ContribucionAccionRepository,
+        @Inject('NATS_SERVICE') private client: ClientProxy
     ) {}
     
-    crearContribucionAccion(data: ContribucionAccion): Promise<ContribucionAccion> {
+    async crearContribucionAccion(data: ContribucionAccion): Promise<ContribucionAccion> {
         let contribucionExistente;
         try {
             contribucionExistente = this.contribucionAccionRepository.getByIdAccion(data.idAccion);
@@ -30,7 +33,14 @@ export class ContribucionAccionService implements IContribucionAccionService{
         if(contribucionExistente){
             throw new EntityNotFoundError('Ya has realizado una contribución para esa acción');
         }
-        return this.contribucionAccionRepository.create(data);
+
+        const contribucionCreada = await this.contribucionAccionRepository.create(data);
+        if(contribucionCreada){
+            console.log('Emitiendo evento de contribución creada');
+            this.client.emit(SERVICE.CONTRIBUCION_MODULE, contribucionCreada);
+        }
+        
+        return contribucionCreada;
     }
 
     async listarContribuciones(): Promise<ContribucionAccion[]> {

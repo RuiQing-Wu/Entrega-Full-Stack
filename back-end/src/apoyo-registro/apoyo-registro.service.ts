@@ -5,18 +5,26 @@ import { IApoyoRegistroService } from './interfaces/apoyo-registro.service.inter
 import { ApoyoRegistro } from './domain/apoyo-registro.damain';
 import { ApoyoRegistroRepository } from './repositories/apoyo-registro.repository';
 import { IllegalArgumentError } from 'src/base/argumentError';
+import { SERVICE } from 'src/nats/nats.clients';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class ApoyoRegistroServiceImpl implements IApoyoRegistroService {
   constructor(
     @Inject(ApoyoRegistroRepository)
     private apoyoRegistroRepository: ApoyoRegistroRepository,
+    @Inject('NATS_SERVICE') private client: ClientProxy
   ) {
   }
 
   async create(CreateApoyoDto: CreateApoyoRegistroDto): Promise<ApoyoRegistro> {
     const apoyoRegistro = new ApoyoRegistro(CreateApoyoDto);
-    return await this.apoyoRegistroRepository.create(apoyoRegistro);
+    const apoyoRegistroCreado = await this.apoyoRegistroRepository.create(apoyoRegistro);
+    if (apoyoRegistroCreado) {
+      console.log('Emitiendo evento de apoyo al registro creado');
+      this.client.emit(SERVICE.APOYO_MODULE, apoyoRegistro);
+    }
+    return apoyoRegistroCreado;
   }
 
   async findOne(id: string): Promise<ApoyoRegistro> {

@@ -5,17 +5,26 @@ import { ICausasService } from './interfaces/causas.service.interface';
 import { CausaSolidaria } from './domain/causa_solidaria.domain';
 import { CausasRepository } from './repositories/causas.repository';
 import { IllegalArgumentError } from 'src/base/argumentError';
+import { ClientProxy } from '@nestjs/microservices';
+import { SERVICE } from 'src/nats/nats.clients';
 
 @Injectable()
 export class CausasServiceImpl implements ICausasService {
   constructor(
     @Inject(CausasRepository)
     private causasRepository: CausasRepository,
+    @Inject('NATS_SERVICE') private client: ClientProxy
   ) {}
 
   async create(createCausaDto: CreateCausaDto): Promise<CausaSolidaria> {
     const causa = new CausaSolidaria(createCausaDto);
-    return await this.causasRepository.create(causa);
+    const causaCreada = await this.causasRepository.create(causa);
+    if (causaCreada) {
+      console.log('Emitiendo evento de causa solidaria creada');
+      this.client.emit(SERVICE.CAUSAS_MODULE, causaCreada);
+    }
+    
+    return causaCreada
   }
 
   async findAll(): Promise<CausaSolidaria[]> {

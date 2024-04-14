@@ -1,18 +1,109 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-7">
-      <div class="card bg-light mb-3">
-        <div class="card-header">
-          <h1 class="card-title">Estadisticas</h1>
+<body onload="getEstadistica()">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card bg-light mb-3">
+          <div class="card-header">
+            <h1 class="card-title">Estadisticas</h1>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-5">
-      <div class="card bg-light">
-        <div class="card-body">
-          <canvas id="miGrafico"></canvas>
+      <div id="user" class="row col-md-12">
+        <div class="card-header d-flex justify-content-center">
+          <h4 class="card-title">Graficos Usuarios</h4>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <canvas id="usuarioRegistradoTotal"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <canvas id="usuarioRegistradoPais"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="comunidad" class="row col-md-12 mt-3">
+        <div class="card-header d-flex justify-content-center">
+          <h4 class="card-title">Graficos Comunidad</h4>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <canvas id="comunidadRegistradoTotal"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="causas" class="row col-md-12 mt-3">
+        <div class="card-header d-flex justify-content-center">
+          <h4 class="card-title">Graficos Causas</h4>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <canvas id="causasRegistradoTotal"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6" style="max-width: 22rem; max-height: 45rem;" >
+          <div class="card bg-light" > 
+            <div class="card-body">
+              <canvas id="causasPorObjetivos"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="acciones" class="row col-md-12 mt-3">
+        <div class="card-header d-flex justify-content-center">
+          <h4 class="card-title">Graficos Acciones</h4>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <canvas id="accionesRegistradoTotal"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6" style="max-width: 22rem; max-height: 45rem;">
+          <div class="card bg-light">
+            <div class="card-body">
+              <canvas id="accionesPorTipo"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="contribucion" class="row col-md-12 mt-3">
+        <div class="card-header d-flex justify-content-center">
+          <h4 class="card-title">Graficos Contribucion</h4>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <canvas id="cotribucionRegistradoTotal"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <canvas id="contribucionPorDiaSemana"></canvas>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</body>

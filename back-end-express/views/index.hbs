@@ -1,3 +1,40 @@
-<div class="container mt-5">
-  <h1> Estadistica y Informe </h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-7">
+      <div class="card bg-light mb-3">
+        <div class="card-header">
+          <h1 class="card-title">Lista de Comunidades</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col justify-content-center align-items-center">
+    {{#if comunidades}}
+    {{#each comunidades}}
+      <div class="comunidades card m-2">
+        <div class="card-body">
+          <h2 class="card-title"><a
+              href="/informes/{{this.id}}"
+              onclick="/informes/{{this.id}}"
+              data-comunidad-id="{{this.id}}"
+            >{{this.nombre}}</a></h2>
+          <p class="card-text">{{this.descripcion}}</p>
+          <p class="card-text">Fecha de inicio: {{this.fechaInicio}}</p>
+          <p class="card-text">Categorías:</p>
+          <ul class="card-text">
+            {{#each this.categorias}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    {{/each}}
+    {{else}}
+      <div class="card mb-5">
+        <div class="card-body">
+          <h2 class="card-title">No hay comunidades creadas</h2>
+        </div>
+      </div>
+    {{/if}}
+  </div>
 </div>

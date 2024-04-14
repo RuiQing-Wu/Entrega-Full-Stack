@@ -1,24 +1,42 @@
 const EstadisticasRepository = require("../repositories/estadisticasRepository");
 
 class EstadisticasController {
-  static async getEstadisticasAllComunidades() {
-    // ...
-    const estadisticas =
-      await EstadisticasRepository.getEstadisticasAllComunidades();
-    return estadisticas;
+  static async saveEstadistica(tipo_evento, mensaje) {
+    console.log(tipo_evento);
+ 
+    const estadisticaGuardada =
+      await EstadisticasRepository.saveEstadistica(tipo_evento, mensaje);
+    return estadisticaGuardada;
+  }
+  
+  static async getEstadisticaUsuario() {
+    const estadisticaUsuario =
+      await EstadisticasRepository.getEstadisticaUsuario();
+    return estadisticaUsuario;
   }
 
-  async getComunidadById(req, res) {
-    const comunidad = await EstadisticasRepository.getComunidadById(
-      req.params.id
-    );
-    return comunidad;
+  static async getEstadisticaComunidad() {
+    const estadisticaComunidad =
+      await EstadisticasRepository.getEstadisticaComunidad();
+    return estadisticaComunidad;
   }
 
-  async getEstadisticasComunidad(req, res) {
-    const { id } = req.params;
-    const estadisticas = await EstadisticasRepository.getEstadisticas(id);
-    res.json(estadisticas);
+  static async getEstadisticaCausas() {
+    const estadisticaCausas =
+      await EstadisticasRepository.getEstadisticaCausas();
+    return estadisticaCausas;
+  }
+
+  static async getEstadisticaAcciones() {
+    const estadisticaAcciones =
+      await EstadisticasRepository.getEstadisticaAcciones();
+    return estadisticaAcciones;
+  }
+
+  static async getEstadisticaContribucion() {
+    const estadisticaContribucion =
+      await EstadisticasRepository.getEstadisticaContribucion();
+    return estadisticaContribucion;
   }
 }
 

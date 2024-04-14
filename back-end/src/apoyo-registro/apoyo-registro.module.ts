@@ -7,10 +7,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ApoyoRegistroServiceImpl } from './apoyo-registro.service';
 import { ApoyoRegistroRepository } from './repositories/apoyo-registro.repository';
 import { ApoyoRegistroRepositoryMongo } from './repositories/apoyo-registro.repository.mongo';
+import { NatsClientModule } from 'src/nats/nats.clients';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: ApoyoRegistro.name, schema: ApoyoRegistroSchema }]),
+    NatsClientModule
   ],
 
   controllers: [ApoyoRegistroController],

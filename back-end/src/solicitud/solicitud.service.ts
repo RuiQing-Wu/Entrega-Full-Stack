@@ -6,19 +6,28 @@ import { ISolicitudesService } from './interfaces/solicitudes.service.interface'
 import { Solicitud } from './domain/solicitud.domain';
 import { IllegalArgumentError } from 'src/base/argumentError';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { ClientProxy } from '@nestjs/microservices';
+import { SERVICE } from 'src/nats/nats.clients';
 
 @Injectable()
 export class SolicitudServiceImpl extends ISolicitudesService {
   constructor(
     @Inject(SolicitudesRepository)
     private solicitudesRepository: SolicitudesRepository,
+    @Inject('NATS_SERVICE') private client: ClientProxy
   ) {
     super();
   }
 
   async create(createSolicitudDto: CreateSolicitudDto): Promise<Solicitud> {
     const solicitud = new Solicitud(createSolicitudDto);
-    return await this.solicitudesRepository.create(solicitud);
+    const solicitudCreada = await this.solicitudesRepository.create(solicitud);
+    if (solicitudCreada) {
+      console.log('Emitiendo evento de solicitud creada');
+      this.client.emit(SERVICE.SOLICITUD_MODULE, solicitudCreada);
+    }
+
+    return solicitudCreada;
   }
 
   async findAll(): Promise<Solicitud[]> {

@@ -8,6 +8,7 @@ import { SolicitudesRepository } from './repositories/solicitudes.repository';
 import { SolicitudesRepositoryMongo } from './repositories/solicitudes.repository.mongo';
 import { SolicitudController } from './solicitud.controller';
 import { ScheduleModule } from '@nestjs/schedule';
+import { NatsClientModule } from 'src/nats/nats.clients';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       { name: Solicitud.name, schema: SolicitudSchema },
     ]),
     ScheduleModule.forRoot(),
+    NatsClientModule
   ],
 
   controllers: [SolicitudController],
@@ -31,4 +33,4 @@ import { ScheduleModule } from '@nestjs/schedule';
 
   exports: [ISolicitudesService, SolicitudesRepository],
 })
-export class SolicitudModule {}
+export class SolicitudModule { }

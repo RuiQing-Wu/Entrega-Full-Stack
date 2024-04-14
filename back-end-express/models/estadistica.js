@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
 
 const estadisticaSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  price: Number,
-  stock: Number,
+  tipo_evento: String,
+  fecha_evento: Date,
+  mensaje: String,
 });
 
 module.exports = mongoose.model("Estadistica", estadisticaSchema);

@@ -1,7 +1,57 @@
-<div class="container p-4">
-   <div class="row">
+<body onload="cargarGraficas('{{informe}}')">
+
+<div class="container">
+  <div class="row">
     <div class="col-md-7">
-        <h1>Informe</h1>
+      <div class="card bg-light mb-3">
+        <div class="card-header d-flex justify-content-between">
+          <h4 class="card-title">{{comunidad.nombreComunidad}}</h4>
+          <button class="btn btn-primary" id="btn-generar-informe" onclick="informe('{{informe}}')">Generar Informe</button>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Creador de la comunidad:
+            <p class="card-text m-3"> Id de Administrador: {{comunidad.idAdministrador}} </p>
+            <p class="card-text m-3"> Nombre de Administrador: {{comunidad.usernameAdministrador}} </p>
+          </p>
+          <p class="card-text">Fecha de creación: {{comunidad.fechaInicioComunidad}}</p>
+          <p class="card-text">Categorías:</p>
+          <ul class="card-text">
+            {{#each comunidad.categoriasComunidad}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+          <p class="card-text">Ids Usuarios comunidad:</p>
+          <ul class="card-text">
+            {{#each comunidad.usuariosComunidad}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+          
+          <p class="card-text">Causas:</p>
+          <ul class="card-text">
+            {{#each comunidad.tituloCausa}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+          <p class="card-text">Número de Apoyos Totales : {{comunidad.numeroTotalApoyos}}</p>
+        </div>
+      </div>
     </div>
-  <div>
+    <div class="col-md-5">
+      <div class="card bg-light" style="max-width: 20rem; max-height: 45rem;">
+        <div class="card-header d-flex justify-content-between">
+          <h4 class="card-title">Graficos</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="miGraficoContribucionComunidad"></canvas>
+        </div>
+        <div class="card-body">
+           <canvas id="miGraficoContribucionSolicitudes"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <iframe width="100%" height="800px" class="mt-3"></iframe>
+  </div>
 </div>
+</body>

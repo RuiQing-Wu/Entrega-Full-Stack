@@ -4,7 +4,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 export const SERVICE = {
   USER_MODULE: 'user_created',
   COMUNIDAD_MODULE: 'comunidad_created',
-  ACCION_MODULE : 'accion_created'
+  CAUSAS_MODULE: 'causa_created',
+  ACCION_MODULE : 'accion_created',
+  SOLICITUD_MODULE: 'solicitud_created',
+  APOYO_MODULE: 'apoyo_created',
+  CONTRIBUCION_MODULE: 'contribucion_created',
 }
 
 @Module({

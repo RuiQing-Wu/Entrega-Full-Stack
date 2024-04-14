@@ -8,7 +8,8 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var estadisticaRouter = require("./routes/estadistica");
 var informeRouter = require("./routes/informe");
-// var comunidadesRouter = require("./routes/comunidades");
+
+var estadisticasController = require("./controllers/estadisticasController");
 
 var nats = require("nats");
 const { SERVICE } = require("./utils/constantes");
@@ -35,17 +36,11 @@ async function main() {
   console.log("Conexión a NATS establecida");
   // Procesamiento de los mensajes
   for await (const msg of sub) {
-    if (msg.subject === SERVICE.USER_MODULE) {
-      console.log("Mensaje de usuario creado recibido");
-      console.log(`Tema: ${msg.subject}`);
-      console.log(`Mensaje recibido: ${msg.data}`);
-    }
-    else {
-      console.log("Mensaje recibido");
-      console.log(`Tema: ${msg.subject}`);
-      console.log(`Mensaje recibido: ${msg.data}`);
-    }
-    
+    const data = JSON.parse(msg.data);
+    console.log(`Mensaje recibido con tema de evento: ${msg.subject}`);
+    console.log(`Mensaje recibido: ${msg.data}`);
+
+    await estadisticasController.saveEstadistica(msg.subject, data.data);
   }
 }
 
@@ -62,7 +57,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/estadisticas", estadisticaRouter);
 app.use("/informes", informeRouter);
-// app.use("/comunidades", comunidadesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

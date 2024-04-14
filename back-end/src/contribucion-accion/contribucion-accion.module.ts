@@ -8,10 +8,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ContribucionSchema } from './schemas/contribucion-accion.schema';
 import { ContribucionAccion } from './domain/contribucion-accion.domain';
 import { ContribucionAccionController } from './contribucion-accion.controler';
+import { NatsClientModule } from 'src/nats/nats.clients';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: ContribucionAccion.name, schema: ContribucionSchema }]),
+    NatsClientModule
   ],
   providers: [
     {

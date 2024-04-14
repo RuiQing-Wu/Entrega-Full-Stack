@@ -7,10 +7,12 @@ import { CausaSchema } from './schemas/causa.schema';
 import { ICausasService } from './interfaces/causas.service.interface';
 import { CausasRepository } from './repositories/causas.repository';
 import { CausasRepositoryMongo } from './repositories/causas.repository.mongo';
+import { NatsClientModule } from 'src/nats/nats.clients';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: CausaSolidaria.name, schema: CausaSchema }]),
+    NatsClientModule
   ],
   controllers: [CausasController],
   providers: [

@@ -8,6 +8,7 @@ import { EntityNotFoundError } from '../base/entityNotFounError';
 import { IllegalArgumentError } from '../base/argumentError';
 import { RepositoryError } from '../base/repositoryError';
 import { ClientProxy } from '@nestjs/microservices';
+import { SERVICE } from 'src/nats/nats.clients';
 
 @Injectable()
 export class AccionesServiceImpl implements IAccionService {
@@ -24,7 +25,7 @@ export class AccionesServiceImpl implements IAccionService {
     
     if (accionCreada) {
       console.log('Emitiendo evento de accion solidaria creada');
-      this.client.emit('ACCION_MODULE', accionCreada);
+      this.client.emit(SERVICE.ACCION_MODULE, accionCreada);
     }
     
     return accionCreada;
